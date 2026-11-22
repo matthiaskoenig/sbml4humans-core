@@ -5,26 +5,51 @@
 
 use serde_json::Value;
 
-/// Compare `ours` with `theirs` and return the differences, an empty list when they agree.
+/// Compare `ours` with `theirs` and return the differences, an empty list where they agree.
 ///
-/// Every difference names the JSON pointer and both values. A pointer which equals or lies
-/// below an entry of `excluded` is skipped. The order of an array is significant, the order
-/// of the keys of an object is not, and two numbers agree when they are the same `f64`. A key
-/// present on one side only is a difference, which catches a field the port forgot.
+/// Every difference names the JSON pointer and both values. The order of an array is
+/// significant, the order of the keys of an object is not, and two numbers agree when they are
+/// the same `f64`. A key present on one side only is a difference, which catches a field the
+/// port forgot.
+///
+/// An entry of `excluded` silences a part of the report and comes in one of two forms:
+///
+/// - An exact pointer, such as `/models/0/listOfRules`, which silences that pointer and
+///   everything below it, and nothing else: a sibling whose pointer merely starts with the same
+///   text stays compared. The entry is matched against the pointer of the walk, whose tokens are
+///   escaped as RFC 6901 asks, so an entry has to carry the same escaping: a key which holds a
+///   slash is `~1` in the entry, a key which holds a tilde is `~0`.
+/// - A trailing segment, written `**/derivedUnits`, which silences every pointer whose last
+///   segment is exactly that segment, and everything below those. It is the form for a field
+///   which sits on every element, where one exact pointer per element would be unreadable.
+///
+/// An empty entry, or the bare `**/`, names nothing and is skipped rather than silencing the
+/// whole report.
 pub fn compare(ours: &Value, theirs: &Value, excluded: &[&str]) -> Vec<String> {
     let mut differences = Vec::new();
     walk("", ours, theirs, excluded, &mut differences);
     differences
 }
 
-/// Whether `pointer` equals or lies below one of the excluded pointers.
+/// The last segment of a pointer, `None` for the pointer of the root, which has none.
+fn last_segment(pointer: &str) -> Option<&str> {
+    pointer.rsplit_once('/').map(|(_, last)| last)
+}
+
+/// Whether `pointer` is silenced by one of the entries of `excluded`.
 fn is_excluded(pointer: &str, excluded: &[&str]) -> bool {
-    excluded.iter().any(|e| {
-        pointer == *e
-            || pointer
-                .strip_prefix(e)
-                .is_some_and(|rest| rest.starts_with('/'))
-    })
+    excluded
+        .iter()
+        .any(|entry| match entry.strip_prefix("**/") {
+            Some(segment) => !segment.is_empty() && last_segment(pointer) == Some(segment),
+            None => {
+                !entry.is_empty()
+                    && (pointer == *entry
+                        || pointer
+                            .strip_prefix(entry)
+                            .is_some_and(|rest| rest.starts_with('/')))
+            }
+        })
 }
 
 /// Escape a key as a JSON pointer token (RFC 6901).

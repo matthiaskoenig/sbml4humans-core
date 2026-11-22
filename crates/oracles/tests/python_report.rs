@@ -105,3 +105,39 @@ fn an_exclusion_hides_a_pointer_and_its_descendants_and_not_a_sibling_with_the_s
     assert_eq!(compare(&ours, &theirs, &["/kind/x"]).len(), 1);
     assert_eq!(compare(&ours, &theirs, &["/kind", "/kindOf"]).len(), 0);
 }
+
+#[test]
+fn an_exact_exclusion_carries_the_escaping_of_rfc_6901() {
+    use serde_json::json;
+    let ours = json!({"a/b": 1, "c~d": 1});
+    let theirs = json!({"a/b": 2, "c~d": 2});
+    assert_eq!(compare(&ours, &theirs, &["/a~1b", "/c~0d"]).len(), 0);
+    assert_eq!(compare(&ours, &theirs, &["/a/b", "/c~d"]).len(), 2);
+}
+
+#[test]
+fn a_trailing_segment_exclusion_hides_that_segment_wherever_it_sits() {
+    use serde_json::json;
+    let ours = json!({"a": {"x": 1}, "b": [{"x": {"deep": 1}}], "x": 1});
+    let theirs = json!({"a": {"x": 2}, "b": [{"x": {"deep": 2}}], "x": 2});
+    assert_eq!(compare(&ours, &theirs, &[]).len(), 3);
+    assert_eq!(compare(&ours, &theirs, &["**/x"]).len(), 0);
+}
+
+#[test]
+fn a_trailing_segment_exclusion_matches_the_whole_segment_and_not_its_end() {
+    use serde_json::json;
+    let ours = json!({"a": {"yx": 1}, "ax": 1});
+    let theirs = json!({"a": {"yx": 2}, "ax": 2});
+    assert_eq!(compare(&ours, &theirs, &["**/x"]).len(), 2);
+    assert_eq!(compare(&ours, &theirs, &["**/yx", "**/ax"]).len(), 0);
+}
+
+#[test]
+fn an_empty_exclusion_hides_nothing_rather_than_the_whole_report() {
+    use serde_json::json;
+    let ours = json!({"a": 1});
+    let theirs = json!({"a": 2});
+    assert_eq!(compare(&ours, &theirs, &[""]).len(), 1);
+    assert_eq!(compare(&ours, &theirs, &["**/"]).len(), 1);
+}
