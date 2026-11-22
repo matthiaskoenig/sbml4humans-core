@@ -340,7 +340,7 @@ pub struct Report {
     pub external_model_definitions: Vec<serde_json::Value>,
     /// The link graph.
     pub link_graph: LinkGraph,
-    /// The `ode_system`, `null` when the document does not set it.
+    /// The `ode_system`, `null` when the equations of the model are not computed, which this slice never does.
     pub ode_system: Option<serde_json::Value>,
     /// The `ode_error`, `null` when the document does not set it.
     pub ode_error: Option<String>,

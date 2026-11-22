@@ -23,7 +23,9 @@ The crates live in `crates/`, each named `sbml4humans-<name>`.
 export LIBSBML_DIR=/path/to/prefix
 ```
 
-`scripts/build-libsbml.sh` builds a static libsbml 5.21.2 into `third_party/prefix`. It was written for continuous integration and other machines and has never been run: this slice used an existing prefix instead, so treat the script as unverified.
+`scripts/build-libsbml.sh` builds a static libsbml 5.21.2 into `third_party/prefix`, with exactly the packages python-libsbml 5.21.2 registers, because the report lists the packages the library knows and the oracle gate compares that list. It was written for continuous integration and other machines and has never been run: this slice used an existing prefix instead, so treat the script as unverified.
+
+libsbml is licensed under the LGPL 2.1, so a binary which links `crates/libsbml` carries the conditions of the LGPL 2.1 next to the MIT license of this workspace. Nothing of this workspace is distributed yet, and the constraint goes with the crate once the reader in pure Rust replaces it.
 
 ## Usage
 
