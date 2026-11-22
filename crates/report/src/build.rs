@@ -8,12 +8,21 @@ use crate::{
 };
 
 /// The derived units python writes when no unit is derived, deriving a unit belongs to a later slice.
+///
+/// The builder writes it for every element, which is wrong for a document which sets units at all.
+/// It is the one value of the report this slice fabricates, and the oracle gate declares it as such.
 const NO_DERIVED_UNITS: &str = "-";
 
-/// The shared fields of an element, keyed in `scope` under the key of `index`.
-fn sbase(scope: &str, sbml_type: &'static str, element: &Element, index: usize) -> SBase {
+/// The scope and the key python gives the document, the one element keyed by a fixed name.
+const DOCUMENT_KEY: &str = "document";
+
+/// The key python gives a model which carries neither an id nor a metaId (`MAIN_MODEL_KEY`).
+const MAIN_MODEL_KEY: &str = "model";
+
+/// The shared fields of an element, keyed in `scope` under `key`.
+fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key: &str) -> SBase {
     SBase {
-        pk: pk::of(scope, sbml_type, &pk::key(element, index)),
+        pk: pk::of(scope, sbml_type, key),
         sbml_type,
         id: element.id.clone(),
         meta_id: element.meta_id.clone(),
@@ -25,31 +34,38 @@ fn sbase(scope: &str, sbml_type: &'static str, element: &Element, index: usize) 
     }
 }
 
-fn derived_units() -> Option<String> {
-    Some(NO_DERIVED_UNITS.to_owned())
+/// The key of an element of a list, its id, else its metaId, else its position in that list.
+fn key_in_list(element: &Element, index: usize) -> String {
+    pk::key(element, || index.to_string())
 }
 
-fn model(model: &Model, index: usize) -> ReportModel {
-    let scope = pk::model_key(&model.element);
+fn model(model: &Model) -> ReportModel {
+    // the key of the model is the scope of every element below it
+    let scope = pk::key(&model.element, || MAIN_MODEL_KEY.to_owned());
     let compartments = model
         .compartments
         .iter()
         .enumerate()
         .map(|(i, c)| ReportCompartment {
-            sbase: sbase(&scope, "Compartment", &c.element, i),
+            sbase: sbase(
+                &scope,
+                "Compartment",
+                &c.element,
+                &key_in_list(&c.element, i),
+            ),
             spatial_dimensions: c.spatial_dimensions.map(Double),
             size: c.size.map(Double),
             constant: c.constant,
             units: c.units.clone(),
             units_latex: None,
-            derived_units: derived_units(),
+            derived_units: Some(NO_DERIVED_UNITS.to_owned()),
         });
     let species = model
         .species
         .iter()
         .enumerate()
         .map(|(i, s)| ReportSpecies {
-            sbase: sbase(&scope, "Species", &s.element, i),
+            sbase: sbase(&scope, "Species", &s.element, &key_in_list(&s.element, i)),
             compartment: s.compartment.clone(),
             initial_amount: s.initial_amount.map(Double),
             initial_concentration: s.initial_concentration.map(Double),
@@ -58,7 +74,7 @@ fn model(model: &Model, index: usize) -> ReportModel {
             boundary_condition: s.boundary_condition,
             constant: s.constant,
             units_latex: None,
-            derived_units: derived_units(),
+            derived_units: Some(NO_DERIVED_UNITS.to_owned()),
             conversion_factor: None,
             fbc: None,
         });
@@ -67,17 +83,16 @@ fn model(model: &Model, index: usize) -> ReportModel {
         .iter()
         .enumerate()
         .map(|(i, p)| ReportParameter {
-            sbase: sbase(&scope, "Parameter", &p.element, i),
+            sbase: sbase(&scope, "Parameter", &p.element, &key_in_list(&p.element, i)),
             value: p.value.map(Double),
             constant: p.constant,
             units: p.units.clone(),
             units_latex: None,
-            derived_units: derived_units(),
+            derived_units: Some(NO_DERIVED_UNITS.to_owned()),
         });
-    let mut model_sbase = sbase(&scope, "Model", &model.element, index);
-    model_sbase.pk = pk::of(&scope, "Model", &scope);
     ReportModel {
-        sbase: model_sbase,
+        // the model is keyed by the key which is its own scope, python writes `<key>/Model:<key>`
+        sbase: sbase(&scope, "Model", &model.element, &scope),
         kind: "model",
         annotation_xml: model.element.annotation.clone(),
         substance_units: None,
@@ -117,12 +132,16 @@ fn model(model: &Model, index: usize) -> ReportModel {
 
 /// Builds the report of a document. The walk is a flat loop over the lists, it never recurses.
 pub fn build(document: &Document) -> Report {
-    let mut doc_sbase = sbase("document", "SBMLDocument", &document.element, 0);
-    // The document is the one element keyed by a fixed name, python writes `document/SBMLDocument:document`.
-    doc_sbase.pk = pk::of("document", "SBMLDocument", "document");
     Report {
         document: ReportDocument {
-            sbase: doc_sbase,
+            // the document is the one element whose scope and key are both a fixed name,
+            // python writes `document/SBMLDocument:document`
+            sbase: sbase(
+                DOCUMENT_KEY,
+                "SBMLDocument",
+                &document.element,
+                DOCUMENT_KEY,
+            ),
             level: i64::from(document.level),
             version: i64::from(document.version),
             packages: document
@@ -135,12 +154,7 @@ pub fn build(document: &Document) -> Report {
                 .collect(),
             annotation_xml: document.element.annotation.clone(),
         },
-        models: document
-            .model
-            .iter()
-            .enumerate()
-            .map(|(i, m)| model(m, i))
-            .collect(),
+        models: document.model.iter().map(model).collect(),
         external_model_definitions: vec![],
         link_graph: LinkGraph::default(),
         ode_system: None,
