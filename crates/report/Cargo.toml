@@ -1,0 +1,17 @@
+[package]
+name = "sbml4humans-report"
+description = "The serde types of the report of sbml4humans"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
