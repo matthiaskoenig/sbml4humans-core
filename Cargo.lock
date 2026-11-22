@@ -56,6 +56,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "sbml4humans-cli"
+version = "0.1.0"
+dependencies = [
+ "sbml4humans-libsbml",
+ "sbml4humans-report",
+ "serde_json",
+]
+
+[[package]]
 name = "sbml4humans-libsbml"
 version = "0.1.0"
 dependencies = [

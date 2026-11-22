@@ -1,0 +1,22 @@
+[package]
+name = "sbml4humans-cli"
+description = "The command line of the report of sbml4humans"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish = false
+
+[[bin]]
+name = "sbml4humans-core"
+path = "src/main.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+sbml4humans-libsbml = { path = "../libsbml" }
+sbml4humans-report = { path = "../report" }
+serde_json.workspace = true
