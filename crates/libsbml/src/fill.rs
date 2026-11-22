@@ -15,7 +15,7 @@ use crate::sys;
 /// Why a source is no document the report can be built of.
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum ReadError {
-    /// The document holds no model, with the errors libsbml logged of the read.
+    /// A document which libsbml read without errors holds no model, with the log of the read.
     #[error("the document holds no model: {0}")]
     NoModel(String),
     /// libsbml could not read the source.
@@ -79,7 +79,13 @@ unsafe fn document(doc: *mut sys::SBMLDocument) -> Result<Document, ReadError> {
         }
         let sbase = sys::s4h_document_model(doc);
         if sbase.is_null() {
-            return Err(ReadError::NoModel(error_log(doc)));
+            let log = error_log(doc);
+            // a source libsbml logged errors of is no document, whatever it holds
+            return Err(if sys::s4h_document_num_errors(doc) > 0 {
+                ReadError::Libsbml(log)
+            } else {
+                ReadError::NoModel(log)
+            });
         }
         Ok(Document {
             level: sys::s4h_document_level(doc),

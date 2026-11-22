@@ -44,6 +44,7 @@ unsafe extern "C" {
     pub(crate) fn s4h_document_model(doc: *mut SBMLDocument) -> *mut SBase;
     pub(crate) fn s4h_document_error_log(doc: *mut SBMLDocument) -> *mut c_char;
     pub(crate) fn s4h_document_out_of_memory(doc: *mut SBMLDocument) -> c_int;
+    pub(crate) fn s4h_document_num_errors(doc: *mut SBMLDocument) -> c_uint;
     pub(crate) fn s4h_document_num_plugins(doc: *mut SBMLDocument) -> c_uint;
     pub(crate) fn s4h_document_package(doc: *mut SBMLDocument, n: c_uint) -> Package;
 

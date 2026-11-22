@@ -137,6 +137,16 @@ int s4h_document_out_of_memory(SBMLDocument* doc) {
     return 0;
 }
 
+/// The number of errors and fatal errors libsbml logged of the read of a document.
+unsigned int s4h_document_num_errors(SBMLDocument* doc) {
+    SBMLErrorLog* log = doc->getErrorLog();
+    if (log == nullptr) {
+        return 0;
+    }
+    return log->getNumFailsWithSeverity(LIBSBML_SEV_ERROR) +
+           log->getNumFailsWithSeverity(LIBSBML_SEV_FATAL);
+}
+
 /// The number of plugins of a document, of which some are packages.
 unsigned int s4h_document_num_plugins(SBMLDocument* doc) {
     return doc->getNumPlugins();

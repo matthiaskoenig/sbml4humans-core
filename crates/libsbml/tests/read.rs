@@ -64,9 +64,32 @@ fn every_element_carries_the_line_it_starts_on() {
 }
 
 #[test]
-fn a_document_without_a_model_is_an_error_and_not_a_panic() {
+fn a_document_without_a_model_which_libsbml_logs_an_error_of_is_a_libsbml_error() {
+    // the model is required in L3V1, so libsbml logs the error 20201 of the read
     let sbml = br#"<?xml version="1.0" encoding="UTF-8"?><sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1"/>"#;
+    match read(sbml) {
+        Err(ReadError::Libsbml(message)) => assert!(message.contains("20201"), "{message}"),
+        other => panic!("expected a Libsbml error, got {other:?}"),
+    }
+}
+
+#[test]
+fn a_well_formed_document_without_a_model_which_libsbml_accepts_holds_no_model() {
+    // the model is optional in L3V2, so libsbml logs no error and there is none to report
+    let sbml = br#"<?xml version="1.0" encoding="UTF-8"?><sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2"/>"#;
     assert!(matches!(read(sbml), Err(ReadError::NoModel(_))));
+}
+
+#[test]
+fn bytes_which_do_not_parse_are_a_libsbml_error_and_not_a_missing_model() {
+    for source in [b"not xml at all".as_slice(), b"<sbml><model>", b""] {
+        match read(source) {
+            Err(ReadError::Libsbml(message)) => {
+                assert!(message.contains("not well-formed"), "{message}");
+            }
+            other => panic!("expected a Libsbml error for {source:?}, got {other:?}"),
+        }
+    }
 }
 
 #[test]
