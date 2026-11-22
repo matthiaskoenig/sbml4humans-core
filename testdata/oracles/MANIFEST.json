@@ -33,6 +33,10 @@
     {
       "source": "minimal_model.xml",
       "fixture": "minimal_model.json"
+    },
+    {
+      "source": "level2_model.xml",
+      "fixture": "level2_model.json"
     }
   ]
 }

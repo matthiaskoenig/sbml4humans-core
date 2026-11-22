@@ -36,21 +36,34 @@ const EXCLUDED: &[&str] = &[
     "/odeError",
 ];
 
-#[test]
-fn the_report_of_minimal_model_equals_the_python_report() {
-    let source = std::fs::read("../../testdata/minimal_model.xml").unwrap();
+/// Compares the Rust report of `testdata/<name>.xml` with the python fixture of the same name.
+fn gate(name: &str) {
+    let source = std::fs::read(format!("../../testdata/{name}.xml")).unwrap();
     let ours = serde_json::to_value(sbml4humans_report::build(
         &sbml4humans_libsbml::read(&source).unwrap(),
     ))
     .unwrap();
     let theirs: serde_json::Value = serde_json::from_slice(
-        &std::fs::read("../../testdata/oracles/minimal_model.json").unwrap(),
+        &std::fs::read(format!("../../testdata/oracles/{name}.json")).unwrap(),
     )
     .unwrap();
     let differences = compare(&ours, &theirs, EXCLUDED);
     assert!(differences.is_empty(), "{}", differences.join("\n"));
     // anti-vacuity: the walk reaches the fixture, so an empty report is not equal to it
     assert!(!compare(&ours, &serde_json::json!({}), EXCLUDED).is_empty());
+}
+
+#[test]
+fn the_report_of_minimal_model_equals_the_python_report() {
+    gate("minimal_model");
+}
+
+#[test]
+fn the_report_of_a_level_2_document_equals_the_python_report() {
+    // Level 2 is where libsbml and the python report agree on values no document states: the
+    // defaults of the specification as set attributes, and the layout and the render plugin as
+    // declared packages. The fixture pins both rather than a hand comparison.
+    gate("level2_model");
 }
 
 #[test]

@@ -45,10 +45,10 @@ cargo test                # the default members: abi, cli, libsbml, model, repor
 cargo test --workspace    # everything, including the gate of the oracles crate
 ```
 
-Running the gate needs no python at all, because the fixture of the python report is committed in `testdata/oracles/`. Regenerating the fixture needs a checkout of sbml4humans and `uv`:
+Running the gate needs no python at all, because the fixtures of the python report are committed in `testdata/oracles/`. Regenerating them needs a checkout of sbml4humans and `uv`, and the prefix, whose version and package set the manifest records next to the python ones. Every fixture is written by one run, which also writes the manifest:
 
 ```bash
-uv run --frozen --project /path/to/sbml4humans/backend python scripts/oracle_fixtures.py testdata/minimal_model.xml
+LIBSBML_DIR=/path/to/prefix uv run --frozen --project /path/to/sbml4humans/backend python scripts/oracle_fixtures.py testdata/minimal_model.xml testdata/level2_model.xml
 ```
 
 The one command which runs everything is the workspace test command. Clippy and the format check are the other two gates, run as below:
