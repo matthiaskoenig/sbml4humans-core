@@ -105,14 +105,16 @@ fn bytes_which_are_no_document_are_an_error_and_not_a_panic() {
 }
 
 #[test]
-fn a_latin1_document_does_not_panic_and_keeps_what_it_can_read() {
-    // the name of the compartment is 0xE4 in latin-1, which is not valid UTF-8
+fn a_latin1_document_reads_with_the_name_transcoded_to_utf8() {
+    // the name of the compartment is the one byte 0xE4, which is not valid UTF-8 on its own
     let sbml = b"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><sbml xmlns=\"http://www.sbml.org/sbml/level3/version1/core\" level=\"3\" version=\"1\"><model id=\"m\"><listOfCompartments><compartment id=\"c\" name=\"\xe4\" constant=\"true\"/></listOfCompartments></model></sbml>";
     let doc = read(sbml).expect("a latin-1 document reads");
-    assert_eq!(
-        doc.model.unwrap().compartments[0].element.id.as_deref(),
-        Some("c")
-    );
+    let compartment = &doc.model.unwrap().compartments[0];
+    assert_eq!(compartment.element.id.as_deref(), Some("c"));
+    // expat transcodes the encoding the document declares, so what libsbml hands the filler is
+    // already the UTF-8 of `ä`. The lossy conversion of the filler is defense in depth against a
+    // string of libsbml which is no UTF-8, not the path this document takes.
+    assert_eq!(compartment.element.name.as_deref(), Some("ä"));
 }
 
 // what the constraints of the crate ask of it, next to what it reads

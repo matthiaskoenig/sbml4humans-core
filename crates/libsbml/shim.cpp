@@ -48,11 +48,15 @@ char* handed_over(const std::string& text) {
 ///
 /// `text` has to come from a getter of libsbml which answers a
 /// `const std::string&`, a string of the document which outlives the call. A
-/// getter which answers a string by value, `getNotesString`,
-/// `getAnnotationString`, `getSBOTermID`, `getURI` and `getElementName` among
-/// them, binds a temporary here which dies at the end of the `return` of the
-/// caller and would hand Rust a pointer into freed memory; such a getter goes
-/// through `handed_over` instead.
+/// getter which answers a string by value, `SBase::getNotesString`,
+/// `SBase::getAnnotationString`, `SBase::getSBOTermID`, `SBase::getURI` and
+/// `SBase::getPrefix` among them, binds a temporary here which dies at the end
+/// of the `return` of the caller and would hand Rust a pointer into freed
+/// memory; such a getter goes through `handed_over` instead.
+///
+/// `getPrefix` is the one name which collides. `SBasePlugin::getPrefix`
+/// answers a `const std::string&` and is borrowed below; `SBase::getPrefix`
+/// answers a `std::string` by value and must never be.
 const char* borrowed(bool is_set, const std::string& text) {
     return is_set ? text.c_str() : nullptr;
 }
