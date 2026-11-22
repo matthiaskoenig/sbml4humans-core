@@ -22,3 +22,16 @@ pub fn key(element: &Element, index: usize) -> String {
         .or(element.meta_id.as_deref())
         .map_or_else(|| index.to_string(), str::to_owned)
 }
+
+/// The key of the model of a document: its id, else its metaId, else the literal `model`.
+///
+/// Python keys the model without either by `MAIN_MODEL_KEY` and not by a position, and the key of the
+/// model is the scope of every element below it. Python answers a digest of the xml instead when a comp
+/// model definition of the same document carries the id `model`, which is the work of the comp slice.
+pub fn model_key(element: &Element) -> String {
+    element
+        .id
+        .as_deref()
+        .or(element.meta_id.as_deref())
+        .map_or_else(|| "model".to_owned(), str::to_owned)
+}

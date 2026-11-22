@@ -30,7 +30,7 @@ fn derived_units() -> Option<String> {
 }
 
 fn model(model: &Model, index: usize) -> ReportModel {
-    let scope = pk::key(&model.element, index);
+    let scope = pk::model_key(&model.element);
     let compartments = model
         .compartments
         .iter()
@@ -74,8 +74,10 @@ fn model(model: &Model, index: usize) -> ReportModel {
             units_latex: None,
             derived_units: derived_units(),
         });
+    let mut model_sbase = sbase(&scope, "Model", &model.element, index);
+    model_sbase.pk = pk::of(&scope, "Model", &scope);
     ReportModel {
-        sbase: sbase(&scope, "Model", &model.element, index),
+        sbase: model_sbase,
         kind: "model",
         annotation_xml: model.element.annotation.clone(),
         substance_units: None,

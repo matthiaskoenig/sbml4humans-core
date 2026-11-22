@@ -89,3 +89,23 @@ fn an_element_without_an_id_is_keyed_by_its_meta_id_and_siblings_without_either_
     assert_ne!(pks[1], pks[2]);
     assert!(pks[1].starts_with("m/Compartment:"));
 }
+
+#[test]
+fn a_model_without_an_id_or_a_meta_id_is_keyed_model_in_the_scope_model() {
+    let model = Model {
+        compartments: vec![Compartment {
+            element: Element {
+                id: Some("cell".to_owned()),
+                ..Element::default()
+            },
+            ..Compartment::default()
+        }],
+        ..Model::default()
+    };
+    let report = build(&doc_with(model));
+    assert_eq!(report.models[0].sbase.pk, "model/Model:model");
+    assert_eq!(
+        report.models[0].list_of_compartments[0].sbase.pk,
+        "model/Compartment:cell"
+    );
+}
