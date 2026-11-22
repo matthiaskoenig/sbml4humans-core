@@ -125,35 +125,44 @@ fn a_second_path_fails() {
 
 #[cfg(unix)]
 #[test]
-fn a_path_which_is_no_utf8_fails() {
+fn a_path_which_is_no_utf8_is_read_like_any_other() {
     use std::os::unix::ffi::OsStrExt;
-    let path = std::ffi::OsStr::from_bytes(b"no_such_\xff.xml");
+    // the path reaches the file system as the bytes it is, never as a String, so a name which is
+    // no UTF-8 names a readable file like any other and the report of that file is written
+    let dir = std::env::temp_dir().join(format!("s4h-cli-no-utf8-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let path = dir.join(std::ffi::OsStr::from_bytes(b"model_\xff.xml"));
+    std::fs::copy("../../testdata/minimal_model.xml", &path).unwrap();
     let out = Command::new(env!("CARGO_BIN_EXE_sbml4humans-core"))
         .arg("report")
-        .arg(path)
+        .arg(&path)
         .output()
         .unwrap();
-    assert_fails(&out);
+    std::fs::remove_dir_all(&dir).unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(v["document"]["pk"], "document/SBMLDocument:document");
 }
 
 #[cfg(unix)]
 #[test]
 fn a_closed_stdout_is_a_failure_with_no_panic() {
-    // the reader of the pipe is gone before the binary writes, as in `--help | head -c0`
-    let mut child = Command::new(env!("CARGO_BIN_EXE_sbml4humans-core"))
+    // The read end of the pipe is closed before the binary starts, so its first write to stdout
+    // gets EPIPE and nothing of it can land in the buffer of the pipe first: no race to lose.
+    // Closing the descriptor outright instead would prove nothing, because the standard library
+    // reopens a closed descriptor 0, 1 or 2 onto /dev/null before main runs and the write
+    // succeeds. The exit code is the whole point of the test, so it is asserted exactly.
+    let (reader, writer) = std::io::pipe().unwrap();
+    drop(reader);
+    let child = Command::new(env!("CARGO_BIN_EXE_sbml4humans-core"))
         .arg("--help")
-        .stdout(Stdio::piped())
+        .stdout(writer)
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    drop(child.stdout.take());
-    let out = child.wait_with_output().unwrap();
-    let stderr = String::from_utf8_lossy(&out.stderr);
-    assert!(!stderr.contains("panicked"), "{stderr}");
-    // the write races the close, so the exit is 0 when it came first and 1 when it lost
-    assert!(
-        matches!(out.status.code(), Some(0 | 1)),
-        "{:?} {stderr}",
-        out.status
-    );
+    assert_fails(&child.wait_with_output().unwrap());
 }
