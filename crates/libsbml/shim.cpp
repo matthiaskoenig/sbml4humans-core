@@ -45,6 +45,14 @@ char* handed_over(const std::string& text) {
 }
 
 /// The string of a reference of libsbml, null when the attribute is not set.
+///
+/// `text` has to come from a getter of libsbml which answers a
+/// `const std::string&`, a string of the document which outlives the call. A
+/// getter which answers a string by value, `getNotesString`,
+/// `getAnnotationString`, `getSBOTermID`, `getURI` and `getElementName` among
+/// them, binds a temporary here which dies at the end of the `return` of the
+/// caller and would hand Rust a pointer into freed memory; such a getter goes
+/// through `handed_over` instead.
 const char* borrowed(bool is_set, const std::string& text) {
     return is_set ? text.c_str() : nullptr;
 }
