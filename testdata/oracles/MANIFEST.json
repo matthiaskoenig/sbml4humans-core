@@ -1,0 +1,10 @@
+{
+  "sbml4humans_commit": "c89f3b1a7b45f23d4d18e30d1e1ea34c9c9bd4e2",
+  "libsbml_version": "5.21.2",
+  "files": [
+    {
+      "source": "minimal_model.xml",
+      "fixture": "minimal_model.json"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+//! The comparison of the Rust report with the report the python implementation produces.
+//!
+//! The comparison is structural: it walks two parsed JSON values and never looks at text,
+//! so `1e21` and `1e+21`, or `3` and `3.0`, are the same number.
+
+use serde_json::Value;
+
+/// Compare `ours` with `theirs` and return the differences, an empty list when they agree.
+///
+/// Every difference names the JSON pointer and both values. A pointer which equals or lies
+/// below an entry of `excluded` is skipped. The order of an array is significant, the order
+/// of the keys of an object is not, and two numbers agree when they are the same `f64`. A key
+/// present on one side only is a difference, which catches a field the port forgot.
+pub fn compare(ours: &Value, theirs: &Value, excluded: &[&str]) -> Vec<String> {
+    let mut differences = Vec::new();
+    walk("", ours, theirs, excluded, &mut differences);
+    differences
+}
+
+/// Whether `pointer` equals or lies below one of the excluded pointers.
+fn is_excluded(pointer: &str, excluded: &[&str]) -> bool {
+    excluded.iter().any(|e| {
+        pointer == *e
+            || pointer
+                .strip_prefix(e)
+                .is_some_and(|rest| rest.starts_with('/'))
+    })
+}
+
+/// Escape a key as a JSON pointer token (RFC 6901).
+fn escape(key: &str) -> String {
+    key.replace('~', "~0").replace('/', "~1")
+}
+
+/// Record a difference at `pointer`.
+fn record(pointer: &str, ours: Option<&Value>, theirs: Option<&Value>, out: &mut Vec<String>) {
+    let show = |v: Option<&Value>| v.map_or_else(|| "<absent>".to_string(), Value::to_string);
+    let at = if pointer.is_empty() { "/" } else { pointer };
+    out.push(format!(
+        "{at}: ours {} but python {}",
+        show(ours),
+        show(theirs)
+    ));
+}
+
+/// Walk both values in parallel.
+fn walk(pointer: &str, ours: &Value, theirs: &Value, excluded: &[&str], out: &mut Vec<String>) {
+    if is_excluded(pointer, excluded) {
+        return;
+    }
+    match (ours, theirs) {
+        (Value::Object(a), Value::Object(b)) => {
+            for (key, va) in a {
+                let child = format!("{pointer}/{}", escape(key));
+                match b.get(key) {
+                    Some(vb) => walk(&child, va, vb, excluded, out),
+                    None if is_excluded(&child, excluded) => {}
+                    None => record(&child, Some(va), None, out),
+                }
+            }
+            for (key, vb) in b {
+                if !a.contains_key(key) {
+                    let child = format!("{pointer}/{}", escape(key));
+                    if !is_excluded(&child, excluded) {
+                        record(&child, None, Some(vb), out);
+                    }
+                }
+            }
+        }
+        (Value::Array(a), Value::Array(b)) => {
+            for i in 0..a.len().max(b.len()) {
+                let child = format!("{pointer}/{i}");
+                match (a.get(i), b.get(i)) {
+                    (Some(va), Some(vb)) => walk(&child, va, vb, excluded, out),
+                    (va, vb) => {
+                        if !is_excluded(&child, excluded) {
+                            record(&child, va, vb, out);
+                        }
+                    }
+                }
+            }
+        }
+        (Value::Number(a), Value::Number(b)) => {
+            if a.as_f64() != b.as_f64() {
+                record(pointer, Some(ours), Some(theirs), out);
+            }
+        }
+        _ => {
+            if ours != theirs {
+                record(pointer, Some(ours), Some(theirs), out);
+            }
+        }
+    }
+}

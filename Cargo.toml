@@ -1,6 +1,7 @@
 [workspace]
 resolver = "3"
-members = ["crates/abi", "crates/libsbml", "crates/model", "crates/report"]
+members = ["crates/abi", "crates/libsbml", "crates/model", "crates/oracles", "crates/report"]
+default-members = ["crates/abi", "crates/libsbml", "crates/model", "crates/report"]
 
 [workspace.package]
 version = "0.1.0"

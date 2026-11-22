@@ -43,7 +43,10 @@ fn the_document_is_keyed_in_the_document_scope_and_an_element_in_the_scope_of_it
     };
     let report = build(&doc_with(model));
     assert_eq!(report.document.sbase.pk, "document/SBMLDocument:document");
-    assert_eq!(report.models[0].sbase.pk, "document/Model:minimal_model");
+    assert_eq!(
+        report.models[0].sbase.pk,
+        "minimal_model/Model:minimal_model"
+    );
     assert_eq!(
         report.models[0].list_of_compartments[0].sbase.pk,
         "minimal_model/Compartment:cell"

@@ -75,7 +75,7 @@ fn model(model: &Model, index: usize) -> ReportModel {
             derived_units: derived_units(),
         });
     ReportModel {
-        sbase: sbase("document", "Model", &model.element, index),
+        sbase: sbase(&scope, "Model", &model.element, index),
         kind: "model",
         annotation_xml: model.element.annotation.clone(),
         substance_units: None,
