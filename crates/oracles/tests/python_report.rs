@@ -5,12 +5,9 @@ use sbml4humans_oracles::compare;
 // what this slice does not build yet. Every later slice removes lines from this list,
 // and the list is empty when the port is complete.
 const EXCLUDED: &[&str] = &[
-    "/document/annotationXml",
     "/models/0/listOfReactions",
     "/models/0/listOfPorts",
     "/models/0/fbc",
-    "/models/0/kind",
-    "/models/0/substanceUnits",
     "/models/0/listOfFunctionDefinitions",
     "/models/0/listOfUnitDefinitions",
     "/models/0/listOfInitialAssignments",
@@ -25,8 +22,15 @@ const EXCLUDED: &[&str] = &[
     "/models/0/listOfQualitativeSpecies",
     "/models/0/listOfTransitions",
     // The annotation of an element is not read into cvterms yet, python reads the bqbiol:is of the
-    // parameter k1 into one. Removed by the slice which reads the annotation RDF.
-    "/models/0/listOfParameters/0/cvterms",
+    // parameter k1 into one. The container itself stays compared, so a second term would differ.
+    // Removed by the slice which reads the annotation RDF.
+    "/models/0/listOfParameters/0/cvterms/0",
+    // The one field the builder knowingly fabricates: it writes the `-` python writes for an
+    // element whose unit does not derive, for every compartment, species and parameter. Python
+    // derives the unit of an element, `l` for a compartment with a size, `\frac{mol}{l}` for a
+    // species with an amount, so the value is wrong for a document which sets units at all.
+    // Removed by the slice which derives units.
+    "**/derivedUnits",
     "/linkGraph",
     "/odeSystem",
     "/odeError",
