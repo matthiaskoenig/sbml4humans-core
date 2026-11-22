@@ -1,6 +1,34 @@
 {
   "sbml4humans_commit": "c89f3b1a7b45f23d4d18e30d1e1ea34c9c9bd4e2",
-  "libsbml_version": "5.21.2",
+  "python_libsbml": {
+    "version": "5.21.2",
+    "packages": [
+      "comp",
+      "distrib",
+      "fbc",
+      "groups",
+      "l3v2extendedmath",
+      "layout",
+      "multi",
+      "qual",
+      "render",
+      "spatial"
+    ]
+  },
+  "rust_libsbml": {
+    "version": "5.21.2",
+    "packages": [
+      "arrays",
+      "comp",
+      "distrib",
+      "fbc",
+      "groups",
+      "l3v2extendedmath",
+      "layout",
+      "qual",
+      "render"
+    ]
+  },
   "files": [
     {
       "source": "minimal_model.xml",

@@ -134,8 +134,12 @@ fn an_attribute_is_none_exactly_when_libsbml_reports_it_as_not_set() {
     let sbml = br#"<?xml version="1.0" encoding="UTF-8"?><sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4"><model id="m"><listOfCompartments><compartment id="c" size="2"/></listOfCompartments><listOfSpecies><species id="s" compartment="c" initialAmount="3"/></listOfSpecies></model></sbml>"#;
     let doc = read(sbml).unwrap();
     assert_eq!((doc.level, doc.version), (2, 4));
-    // libsbml gives every Level 2 document the layout and the render plugin,
-    // which the report of the python implementation lists as well
+    // libsbml gives every Level 2 document the layout and the render plugin, which the
+    // report of the python implementation lists as well. Which plugins a document gets
+    // depends on the package set the linked libsbml was built with: scripts/build-libsbml.sh
+    // pins that set to the one python-libsbml 5.21.2 registers,
+    // testdata/oracles/MANIFEST.json records it for both sides of the gate, and a prefix
+    // built without layout or without render fails here.
     let packages: Vec<_> = doc.packages.iter().map(|p| p.prefix.as_str()).collect();
     assert_eq!(packages, vec!["layout", "render"]);
     let m = doc.model.unwrap();
