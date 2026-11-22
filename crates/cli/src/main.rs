@@ -50,6 +50,14 @@ fn parse(args: impl IntoIterator<Item = OsString>) -> Result<Command, String> {
     }
 }
 
+/// Writes to stdout and returns the message of a failure, which a closed pipe is.
+fn write_stdout(bytes: &[u8]) -> Result<(), String> {
+    let mut out = std::io::stdout().lock();
+    out.write_all(bytes)
+        .and_then(|()| out.flush())
+        .map_err(|e| format!("cannot write to stdout: {e}"))
+}
+
 /// Reads the file, builds the report and writes it to stdout.
 fn report(path: &OsString, pretty: bool) -> Result<(), String> {
     let source =
@@ -70,17 +78,15 @@ fn report(path: &OsString, pretty: bool) -> Result<(), String> {
 
 fn main() -> ExitCode {
     let result = match parse(std::env::args_os().skip(1)) {
-        Ok(Command::Help) => {
-            print!("{USAGE}");
-            return ExitCode::SUCCESS;
-        }
+        Ok(Command::Help) => write_stdout(USAGE.as_bytes()),
         Ok(Command::Report { path, pretty }) => report(&path, pretty),
         Err(message) => Err(format!("{message}\n\n{USAGE}")),
     };
     match result {
         Ok(()) => ExitCode::SUCCESS,
         Err(message) => {
-            eprintln!("error: {message}");
+            // a closed stderr leaves no way to say so, and the exit code still does
+            let _ = writeln!(std::io::stderr(), "error: {message}");
             ExitCode::FAILURE
         }
     }

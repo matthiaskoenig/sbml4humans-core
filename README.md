@@ -17,7 +17,7 @@ The crates live in `crates/`, each named `sbml4humans-<name>`.
 
 ## Building libsbml for the filler
 
-`crates/libsbml` links libsbml, so the workspace does not build without a libsbml prefix (a directory with `include/` and `lib/`). `crates/libsbml/build.rs` reads the prefix from the environment variable `LIBSBML_DIR`, or else from `third_party/prefix`. Without one of them every command below fails at build time, in every crate and not only in `libsbml`. Point `LIBSBML_DIR` at an existing prefix:
+`crates/libsbml` links libsbml, so the workspace does not build without a libsbml prefix (a directory with `include/` and `lib/`). `crates/libsbml/build.rs` reads the prefix from the environment variable `LIBSBML_DIR`, or else from `third_party/prefix`. Without one of them every command which builds `libsbml` fails at build time: the workspace wide commands, and `-p` of any crate which depends on it (`libsbml`, `cli`, `oracles`). `abi` and `model` do not link libsbml, so `cargo test -p sbml4humans-abi` builds without a prefix. Point `LIBSBML_DIR` at an existing prefix:
 
 ```bash
 export LIBSBML_DIR=/path/to/prefix
@@ -32,7 +32,7 @@ cargo run -p sbml4humans-cli -- report model.xml
 cargo run -p sbml4humans-cli -- report --pretty model.xml
 ```
 
-`report <path>` writes the JSON of the report to stdout. A file which cannot be read or is no SBML document produces a message on stderr and exit code 1, and the exit code is 0 only when a report was written. `--help` prints the usage.
+`report <path>` writes the JSON of the report to stdout. A file which cannot be read or is no SBML document produces a message on stderr and exit code 1, and for `report` the exit code is 0 only when a report was written. `--help` prints the usage.
 
 ## Running the gate
 
@@ -43,10 +43,18 @@ cargo test                # the default members: abi, cli, libsbml, model, repor
 cargo test --workspace    # everything, including the gate of the oracles crate
 ```
 
-The one command which runs everything, with clippy and the format check as the other two gates:
+Running the gate needs no python at all, because the fixture of the python report is committed in `testdata/oracles/`. Regenerating the fixture needs a checkout of sbml4humans and `uv`:
+
+```bash
+uv run --frozen --project /path/to/sbml4humans/backend python scripts/oracle_fixtures.py testdata/minimal_model.xml
+```
+
+The one command which runs everything is the workspace test command. Clippy and the format check are the other two gates, run as below:
 
 ```bash
 LIBSBML_DIR=/path/to/prefix cargo test --workspace
+LIBSBML_DIR=/path/to/prefix cargo clippy --workspace --all-targets -- -D warnings
+cargo fmt --check
 ```
 
 Licensed under the MIT license, see `LICENSE`.
