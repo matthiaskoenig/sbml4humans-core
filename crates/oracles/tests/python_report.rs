@@ -2,8 +2,10 @@
 
 use sbml4humans_oracles::compare;
 
-// what this slice does not build yet. Every later slice removes lines from this list,
-// and the list is empty when the port is complete.
+// What this slice does not build yet, and the one value it fabricates, each line saying which
+// slice removes it. Nothing else belongs here: a field this slice does build is compared, so a
+// regression in the code the gate guards shows up. Every later slice removes lines from this
+// list, and the list is empty when the port is complete.
 const EXCLUDED: &[&str] = &[
     "/models/0/listOfReactions",
     "/models/0/listOfPorts",

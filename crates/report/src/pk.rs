@@ -10,8 +10,8 @@ pub fn of(scope: &str, sbml_type: &str, key: &str) -> String {
 /// The key of an element within its scope: its id, else its metaId, else what `fallback` answers.
 ///
 /// The builder answers the index of the element in the list of its parent, and the literal `model` for
-/// the model of a document, which is what python keys a model without either by (`MAIN_MODEL_KEY`, and
-/// not a position); the key of the model is the scope of every element below it. The fallback is a
+/// the model of a document, which is what python keys a model without either by (`MAIN_MODEL_KEY`) and
+/// not by a position; the key of the model is the scope of every element below it. The fallback is a
 /// closure so that an element which carries a key does not pay for building one it does not use.
 ///
 /// The index is the rule of this slice and is not the rule of the python implementation. Python takes the id,

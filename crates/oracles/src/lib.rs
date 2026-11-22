@@ -12,6 +12,11 @@ use serde_json::Value;
 /// the same `f64`. A key present on one side only is a difference, which catches a field the
 /// port forgot.
 ///
+/// The number of a value parsed from the text of a fixture is the double that text round trips
+/// to, which is what the `float_roundtrip` feature of serde_json makes of it: without it the
+/// 17 significant digits python writes for a double parse to a neighbour of the double they
+/// came from, and the two sides of the gate would differ on a number both sides got right.
+///
 /// An entry of `excluded` silences a part of the report and comes in one of two forms:
 ///
 /// - An exact pointer, such as `/models/0/listOfRules`, which silences that pointer and
