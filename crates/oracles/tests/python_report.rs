@@ -45,6 +45,8 @@ fn the_report_of_minimal_model_equals_the_python_report() {
     .unwrap();
     let differences = compare(&ours, &theirs, EXCLUDED);
     assert!(differences.is_empty(), "{}", differences.join("\n"));
+    // anti-vacuity: the walk reaches the fixture, so an empty report is not equal to it
+    assert!(!compare(&ours, &serde_json::json!({}), EXCLUDED).is_empty());
 }
 
 #[test]
@@ -56,4 +58,50 @@ fn the_comparison_is_structural_and_not_textual() {
     assert_eq!(compare(&a, &c, &[]).len(), 2);
     let d = serde_json::json!({"a": [1.0, 2.0], "b": 2});
     assert_eq!(compare(&a, &d, &["/b"]).len(), 0);
+}
+
+#[test]
+fn a_key_present_on_one_side_only_is_a_difference_in_both_directions() {
+    let with = serde_json::json!({"a": 1, "b": 2});
+    let without = serde_json::json!({"a": 1});
+    assert_eq!(compare(&with, &without, &[]).len(), 1);
+    assert_eq!(compare(&without, &with, &[]).len(), 1);
+    assert_eq!(compare(&with, &without, &["/b"]).len(), 0);
+    assert_eq!(compare(&without, &with, &["/b"]).len(), 0);
+}
+
+#[test]
+fn arrays_of_a_different_length_differ_once_per_surplus_item() {
+    let short = serde_json::json!([1, 2]);
+    let long = serde_json::json!([1, 2, 3, 4]);
+    assert_eq!(compare(&short, &long, &[]).len(), 2);
+    assert_eq!(compare(&long, &short, &[]).len(), 2);
+    assert_eq!(compare(&long, &short, &["/2"]).len(), 1);
+}
+
+#[test]
+fn a_type_mismatch_is_a_difference() {
+    use serde_json::json;
+    assert_eq!(compare(&json!({}), &json!([]), &[]).len(), 1);
+    assert_eq!(compare(&json!(0), &json!("0"), &[]).len(), 1);
+    assert_eq!(compare(&json!(false), &json!(null), &[]).len(), 1);
+}
+
+#[test]
+fn an_integer_and_a_float_of_the_same_value_agree() {
+    use serde_json::json;
+    assert_eq!(compare(&json!({"b": 1}), &json!({"b": 1.0}), &[]).len(), 0);
+    assert_eq!(compare(&json!({"b": 1.0}), &json!({"b": 1}), &[]).len(), 0);
+    assert_eq!(compare(&json!({"b": 1}), &json!({"b": 1.5}), &[]).len(), 1);
+}
+
+#[test]
+fn an_exclusion_hides_a_pointer_and_its_descendants_and_not_a_sibling_with_the_same_prefix() {
+    use serde_json::json;
+    let ours = json!({"kind": {"x": 1}, "kindOf": 1});
+    let theirs = json!({"kind": {"x": 2}, "kindOf": 2});
+    assert_eq!(compare(&ours, &theirs, &[]).len(), 2);
+    assert_eq!(compare(&ours, &theirs, &["/kind"]).len(), 1);
+    assert_eq!(compare(&ours, &theirs, &["/kind/x"]).len(), 1);
+    assert_eq!(compare(&ours, &theirs, &["/kind", "/kindOf"]).len(), 0);
 }
