@@ -1,0 +1,20 @@
+[package]
+name = "sbml4humans-libsbml"
+description = "Fills the document model of sbml4humans from libsbml, until the reader of our own agrees with it"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish = false
+
+[dependencies]
+sbml4humans-model = { path = "../model" }
+thiserror.workspace = true
+
+[build-dependencies]
+cc.workspace = true
+
+[lints]
+workspace = true
