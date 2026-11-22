@@ -342,7 +342,7 @@ pub struct Report {
     pub link_graph: LinkGraph,
     /// The `ode_system`, `null` when the equations of the model are not computed, which this slice never does.
     pub ode_system: Option<serde_json::Value>,
-    /// The `ode_error`, `null` when the document does not set it.
+    /// The `ode_error`, the message of a failure to compute the equations, `null` when none failed.
     pub ode_error: Option<String>,
 }
 
