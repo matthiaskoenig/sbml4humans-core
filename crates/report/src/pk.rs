@@ -9,6 +9,15 @@ pub fn of(scope: &str, sbml_type: &str, key: &str) -> String {
     format!("{scope}/{sbml_type}:{key}")
 }
 
+/// The key an element carries of its own: its id, else its metaId, `None` when it carries neither.
+///
+/// It is the rule `_has_own_key` reads (`sbmlinfo.py:190`) and the first two branches of `_key`
+/// (`sbmlinfo.py:447-452`), which both [`key`] and [`derived`] below ask for: `key` answers a
+/// fallback where this is `None` and `derived` numbers the children where it is.
+fn own_key(element: &Element) -> Option<&str> {
+    element.id.as_deref().or(element.meta_id.as_deref())
+}
+
 /// The key of an element within its scope: its id, else its metaId, else what `fallback` answers.
 ///
 /// The builder answers the index of the element in the list of its parent, the name a parent gives the one
@@ -26,11 +35,7 @@ pub fn of(scope: &str, sbml_type: &str, key: &str) -> String {
 /// fallback. What is still owed is the digest, and a digest for a model named `model` when a comp model
 /// definition of the same document carries that id.
 pub fn key(element: &Element, fallback: impl FnOnce() -> String) -> String {
-    element
-        .id
-        .as_deref()
-        .or(element.meta_id.as_deref())
-        .map_or_else(fallback, str::to_owned)
+    own_key(element).map_or_else(fallback, str::to_owned)
 }
 
 /// The key of every child of one list, in the order of the list.
@@ -53,14 +58,7 @@ pub fn derived<'a, T>(
 ) -> Vec<String> {
     let own: Vec<Option<String>> = children
         .iter()
-        .map(|child| {
-            let element = element_of(child);
-            element
-                .id
-                .as_deref()
-                .or(element.meta_id.as_deref())
-                .map(str::to_owned)
-        })
+        .map(|child| own_key(element_of(child)).map(str::to_owned))
         .collect();
     let candidates: Vec<String> = children
         .iter()

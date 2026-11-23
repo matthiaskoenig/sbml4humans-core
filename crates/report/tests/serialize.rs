@@ -20,11 +20,11 @@ fn a_double_which_is_not_finite_serializes_as_its_string() {
 #[test]
 fn an_element_serializes_the_shared_fields_in_camel_case_and_keeps_the_unset_ones_null() {
     let c = ReportCompartment {
+        // the type is a field of the constructor and no field of the literal, so no element of a
+        // report can be built without one
         sbase: SBase {
-            pk: "m/Compartment:cell".into(),
-            sbml_type: "Compartment",
             id: Some("cell".into()),
-            ..SBase::default()
+            ..SBase::new("m/Compartment:cell".into(), "Compartment")
         },
         spatial_dimensions: Some(Double(3.0)),
         size: Some(Double(1.0)),

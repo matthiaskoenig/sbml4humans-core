@@ -147,6 +147,13 @@ pub struct DebugInfo {
 }
 
 /// The attributes every SBML object shares.
+///
+/// Every `SBase` is built through [`SBase::new`], which takes the two fields no element of a report
+/// may be without, so neither can be forgotten: `Default::default()` leaves `sbml_type` the empty
+/// string, which would serialize as an `sbmlType` of no type at all. The `Default` of the struct is
+/// there for the fields which follow those two, as the tail of a `..SBase::new(...)`, and for the
+/// two types which flatten an `SBase` into a default of their own ([`Uncertainty`], [`ListOf`]); it
+/// is no value to serialize on its own.
 #[derive(Debug, Default, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SBase {
@@ -178,6 +185,21 @@ pub struct SBase {
     pub key_value_pairs: Vec<KeyValuePair>,
     /// The `lists`.
     pub lists: Vec<ListOf>,
+}
+
+impl SBase {
+    /// The shared fields of an element of `sbml_type`, keyed by `pk`, and nothing else set.
+    ///
+    /// It is the one constructor of an `SBase`: the type of an element is a field of the report the
+    /// frontend reads of every object, so it is taken here rather than left to a `Default` which
+    /// would write no type at all.
+    pub fn new(pk: String, sbml_type: &'static str) -> Self {
+        Self {
+            pk,
+            sbml_type,
+            ..Self::default()
+        }
+    }
 }
 
 /// A function definition with its lambda.
@@ -300,7 +322,13 @@ pub struct ReportSpecies {
     /// The attributes every SBML object shares.
     #[serde(flatten)]
     pub sbase: SBase,
-    /// The id of the compartment.
+    /// The id of the compartment, the empty string where libsbml answers nothing.
+    ///
+    /// Python declares the field a required string (`compartment: str`, `model.py:363`) and writes
+    /// whatever `getCompartment()` hands it, which is the empty string for a species of an invalid
+    /// document which names no compartment, so the empty string is the faithful value and no
+    /// fabricated one. The attribute is required of a species (core §4.6), so no valid document
+    /// reaches it.
     pub compartment: String,
     /// The `initial_amount`, `null` when the document does not set it.
     pub initial_amount: Option<Double>,

@@ -9,6 +9,28 @@ fn run(args: &[&str]) -> Output {
         .unwrap()
 }
 
+/// A temporary directory of one test, removed whichever way the test leaves its scope.
+///
+/// The removal is a `Drop` and no statement of the test, so a panic between the creation and the
+/// end of the test, of an assertion or of an `unwrap` of the setup, leaves nothing behind; and it
+/// ignores a failure to remove, which would otherwise mask the failure the test is about.
+struct TempDir(std::path::PathBuf);
+
+impl TempDir {
+    /// A new directory named after `what` and the process, created empty.
+    fn new(what: &str) -> Self {
+        let path = std::env::temp_dir().join(format!("s4h-cli-{what}-{}", std::process::id()));
+        std::fs::create_dir_all(&path).unwrap();
+        Self(path)
+    }
+}
+
+impl Drop for TempDir {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.0);
+    }
+}
+
 /// Asserts a failure of the command line: exit code 1, a message and nothing on stdout.
 fn assert_fails(out: &Output) {
     let stderr = String::from_utf8_lossy(&out.stderr);
@@ -87,11 +109,10 @@ fn a_directory_fails() {
 
 #[test]
 fn an_empty_file_fails() {
-    let path = std::env::temp_dir().join(format!("s4h-cli-empty-{}", std::process::id()));
+    let dir = TempDir::new("empty");
+    let path = dir.0.join("empty.xml");
     std::fs::write(&path, b"").unwrap();
-    let out = run(&["report", path.to_str().unwrap()]);
-    std::fs::remove_file(&path).unwrap();
-    assert_fails(&out);
+    assert_fails(&run(&["report", path.to_str().unwrap()]));
 }
 
 #[test]
@@ -129,16 +150,14 @@ fn a_path_which_is_no_utf8_is_read_like_any_other() {
     use std::os::unix::ffi::OsStrExt;
     // the path reaches the file system as the bytes it is, never as a String, so a name which is
     // no UTF-8 names a readable file like any other and the report of that file is written
-    let dir = std::env::temp_dir().join(format!("s4h-cli-no-utf8-{}", std::process::id()));
-    std::fs::create_dir_all(&dir).unwrap();
-    let path = dir.join(std::ffi::OsStr::from_bytes(b"model_\xff.xml"));
+    let dir = TempDir::new("no-utf8");
+    let path = dir.0.join(std::ffi::OsStr::from_bytes(b"model_\xff.xml"));
     std::fs::copy("../../testdata/minimal_model.xml", &path).unwrap();
     let out = Command::new(env!("CARGO_BIN_EXE_sbml4humans-core"))
         .arg("report")
         .arg(&path)
         .output()
         .unwrap();
-    std::fs::remove_dir_all(&dir).unwrap();
     assert!(
         out.status.success(),
         "{}",

@@ -30,17 +30,18 @@ const DOCUMENT_KEY: &str = "document";
 const MAIN_MODEL_KEY: &str = "model";
 
 /// The shared fields of an element, keyed in `scope` under `key`.
+///
+/// It is the one place of the builder which makes an `SBase`, through [`SBase::new`], which takes
+/// the type of the element: a report object of no `sbmlType` is one the frontend cannot read.
 fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key: &str) -> SBase {
     SBase {
-        pk: pk::of(scope, sbml_type, key),
-        sbml_type,
         id: element.id.clone(),
         meta_id: element.meta_id.clone(),
         name: element.name.clone(),
         sbo: element.sbo.clone(),
         notes: element.notes.clone(),
         xml: element.xml.clone(),
-        ..SBase::default()
+        ..SBase::new(pk::of(scope, sbml_type, key), sbml_type)
     }
 }
 

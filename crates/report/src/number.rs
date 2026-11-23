@@ -92,8 +92,10 @@ mod tests {
         assert_eq!(python_float(f64::NAN), "nan");
     }
 
+    // This pins a divergence from python and not the behaviour python has: it is the test to flip
+    // when the two are made to agree.
     #[test]
-    fn a_double_between_two_shortest_representations_is_rounded_as_rust_rounds_it() {
+    fn a_double_between_two_shortest_representations_diverges_from_python() {
         // The double of this literal is exactly 1333333333333333.25, which `1333333333333333.2` and
         // `1333333333333333.3` both round trip to. Python 3.14 writes the half to even and answers the
         // first; the digits here are Rust's, which rounds the half away from zero, and the doc comment
