@@ -81,17 +81,35 @@
 //!
 //! | shape | stack | is a latex written |
 //! | --- | --- | --- |
-//! | 253 quotients, or differences whose operands are compared, over a chain of sums | 704 KiB | yes |
-//! | a chain of a thousand sums or products, unrolled into one operator | 512 KiB | yes |
-//! | a chain of a thousand quotients, or of differences, at 1,408 KiB through [`latex`] | 384 KiB | no |
-//! | a chain of a thousand `abs`, of a piecewise or of a lambda | 320 KiB | no |
+//! | 253 quotients over a chain of sums, the deepest mathml the bound allows | 684 KiB | yes |
+//! | 253 differences over that same chain, their operands compared at every level | 704 KiB | yes |
+//! | a chain of a thousand sums or products, unrolled into one operator | 463 KiB | yes |
+//! | a chain of a thousand quotients, or of differences | 352 KiB | no |
+//! | a chain of a thousand `abs`, of a piecewise or of a lambda | 305 KiB | no |
 //!
-//! The first row is the deepest mathml the bound allows, and every figure is the
-//! deepest **measured** walk of its shape and no proof of the deepest possible
+//! Every figure here is the smallest stack on which the walk still completes,
+//! bisected over the size of the thread it runs on in steps of 1 KiB, and it
+//! drifts by about a step between runs: read each one as plus or minus 1 KiB.
+//! The same five were taken on a grid of 64 KiB before and read 704, 704, 512,
+//! 384 and 320 KiB, each the figure next to it rounded up, so a later
+//! measurement on a coarser grid writes a larger number for the same walk and
+//! no regression.
+//!
+//! They are the deepest **measured** walks and no proof of the deepest possible
 //! one: a shape nobody has built may cost more per level. The two shapes of the
-//! first row are the two which were measured there, the plain walk and the one
-//! which compares a string value at every level, and the test of the parent
-//! module carries both.
+//! first two rows are the two which were measured at the bound, the plain walk
+//! and the one which compares a string value at every level, and the
+//! differences are the worse of them. **Their 704 KiB is the one figure of this
+//! file a later slice must not lose**: it is what the 64 KiB grid read for the
+//! quotients alone before the shape was measured, so the row it stood in held
+//! no slack at all, and what it leaves of the megabyte of wasm is the 320 KiB
+//! of a debug build and nothing a measurement of the target has confirmed. The
+//! test of the parent module carries both shapes.
+//!
+//! The two chains of a thousand of the fourth row cost 1,335 KiB (quotients)
+//! and 1,401 KiB (differences) through [`latex`] alone, the second of them the
+//! figure of the first table above: the same walk, which the depth rule now
+//! keeps a report away from.
 //!
 //! So the deepest latex walk which is still reachable fits, with room to spare,
 //! in the megabyte of wasm in a debug build. A release build has smaller frames

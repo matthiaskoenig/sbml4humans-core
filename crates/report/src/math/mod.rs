@@ -263,8 +263,9 @@ mod tests {
     // `operands` does by recursing per level of the chain it unrolls and which
     // is the deepest call stack `math` reaches.
     //
-    // Measured on this thread in a debug build: a chain of quotients needs
-    // 384 KiB and the two which unroll 512 KiB, both far inside the megabyte.
+    // Measured on this thread in a debug build, bisected to 1 KiB: a chain of
+    // quotients needs 352 KiB and the two which unroll 463 KiB, both far inside
+    // the megabyte. The table of `latex.rs` says what the figures are.
     #[test]
     fn the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm() {
         on_a_wasm_stack(|| {
@@ -331,10 +332,14 @@ mod tests {
     // which compares a string value at every level and costs more per level for
     // it. A tree whose mathml is one element deeper than these never reaches the
     // latex writer at all, which is why the walk of a bare chain of a thousand
-    // quotients or differences, the 1,408 KiB `latex` alone needs for it in a
-    // debug build and the one figure of this crate which does not fit in the
-    // stack of wasm, is now unreachable through `math`. Both shapes need at most
-    // 704 KiB on this thread in a debug build, the differences the more of it.
+    // quotients or differences, the 1,335 KiB and 1,401 KiB `latex` alone needs
+    // for them in a debug build and the figures of this crate which do not fit
+    // in the stack of wasm, is now unreachable through `math`.
+    //
+    // Measured on this thread in a debug build, bisected to 1 KiB: the quotients
+    // need 684 KiB and the differences 704 KiB, which is the worst walk this
+    // crate has measured and the figure the table of `latex.rs` says a later
+    // slice must not lose.
     #[test]
     fn the_deepest_latex_the_bound_allows_is_written_within_the_stack_of_wasm() {
         for shape in [
