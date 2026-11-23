@@ -37,6 +37,9 @@ unsafe extern "C" {
     pub(crate) fn s4h_string_free(text: *mut c_char);
 
     pub(crate) fn s4h_read(xml: *const c_char) -> *mut SBMLDocument;
+    pub(crate) fn s4h_registry_num_packages() -> c_uint;
+    pub(crate) fn s4h_registry_package_name(n: c_uint) -> *mut c_char;
+
     pub(crate) fn s4h_document_free(doc: *mut SBMLDocument);
     pub(crate) fn s4h_document_level(doc: *mut SBMLDocument) -> c_uint;
     pub(crate) fn s4h_document_version(doc: *mut SBMLDocument) -> c_uint;

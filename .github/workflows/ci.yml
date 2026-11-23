@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# least privilege
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # a newer run supersedes the running one of the same branch or pull request
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install the build dependencies of libsbml
+        run: sudo apt-get update && sudo apt-get install --yes cmake libexpat1-dev zlib1g-dev libbz2-dev
+      - name: Cache the libsbml prefix
+        id: libsbml
+        uses: actions/cache@v6
+        with:
+          path: third_party/prefix
+          # the source build happens once per change of the script
+          key: libsbml-${{ runner.os }}-${{ hashFiles('scripts/build-libsbml.sh') }}
+      - name: Build libsbml
+        if: steps.libsbml.outputs.cache-hit != 'true'
+        run: bash scripts/build-libsbml.sh
+      - name: Install the toolchain of rust-toolchain.toml
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: Check the format
+        run: cargo fmt --check
+      - name: Lint
+        run: cargo clippy --workspace --all-targets -- -D warnings
+      - name: Test
+        run: cargo test --workspace

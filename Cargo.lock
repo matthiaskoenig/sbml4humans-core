@@ -70,6 +70,7 @@ version = "0.1.0"
 dependencies = [
  "cc",
  "sbml4humans-model",
+ "serde_json",
  "thiserror",
 ]
 

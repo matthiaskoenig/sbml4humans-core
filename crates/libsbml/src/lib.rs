@@ -16,3 +16,17 @@ mod strings;
 mod sys;
 
 pub use fill::{ReadError, read};
+
+/// The names of the packages the linked libsbml registers, sorted.
+///
+/// This is the package set of the library the crate was built against, which
+/// the oracle manifest records so that a prefix with another set is noticed.
+pub fn registered_packages() -> Vec<String> {
+    let _lock = fill::locked();
+    let count = unsafe { sys::s4h_registry_num_packages() };
+    let mut names: Vec<String> = (0..count)
+        .filter_map(|n| unsafe { strings::handed_over(sys::s4h_registry_package_name(n)) })
+        .collect();
+    names.sort();
+    names
+}

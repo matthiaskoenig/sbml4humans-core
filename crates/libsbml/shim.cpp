@@ -29,6 +29,7 @@
 #include <sbml/SBMLTypes.h>
 #include <sbml/SBMLNamespaces.h>
 #include <sbml/extension/SBasePlugin.h>
+#include <sbml/extension/SBMLExtensionRegistry.h>
 
 LIBSBML_CPP_NAMESPACE_USE
 
@@ -430,6 +431,24 @@ const char* s4h_parameter_units(SBase* sbase) {
         return nullptr;
     }
     return borrowed(parameter->isSetUnits(), parameter->getUnits());
+}
+
+/// The number of packages the registry of libsbml knows.
+unsigned int s4h_registry_num_packages() {
+    return SBMLExtensionRegistry::getNumRegisteredPackages();
+}
+
+/// The name of registered package `n`, handed over, null when there is none.
+///
+/// `SBMLExtensionRegistry::getRegisteredPackageName(unsigned int)` answers a
+/// `std::string` by value (SBMLExtensionRegistry.h), so it is copied out with
+/// `handed_over` and never borrowed.
+char* s4h_registry_package_name(unsigned int n) {
+    try {
+        return handed_over(SBMLExtensionRegistry::getRegisteredPackageName(n));
+    } catch (...) {
+        return nullptr;
+    }
 }
 
 }  // extern "C"

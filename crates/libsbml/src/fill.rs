@@ -34,7 +34,7 @@ static LIBSBML: Mutex<()> = Mutex::new(());
 ///
 /// A poisoned lock says that a read ended in a panic, which says nothing about
 /// the document of the next one, so the lock is taken over rather than an error.
-fn locked() -> MutexGuard<'static, ()> {
+pub(crate) fn locked() -> MutexGuard<'static, ()> {
     LIBSBML
         .lock()
         .unwrap_or_else(|poisoned| poisoned.into_inner())
