@@ -5,8 +5,13 @@ use sbml4humans_oracles::compare;
 // What this slice does not build yet, and the values it fabricates, each line saying which slice
 // removes it. Nothing else belongs here: a field this slice does build is compared, so a
 // regression in the code the gate guards shows up. Every later slice removes lines from this
-// list, and the list is empty when the port is complete. The list itself is measured by
-// `every_entry_of_the_exclusion_list_silences_a_difference_of_one_document_at_least` below.
+// list, and the list is empty when the port is complete.
+//
+// Every entry of this list silences the same pointer of every document of the gate, so a pointer
+// which names an element by its place in a list belongs to the one document it is owed on and not
+// here: `/models/0/listOfReactions/1` is a different reaction in every document. Those entries are
+// the `only` of a line of `GATED` below. Both lists are measured by
+// `every_entry_of_the_exclusion_lists_silences_a_difference_of_a_document_it_covers`.
 const EXCLUDED: &[&str] = &[
     "/models/0/listOfPorts",
     "/models/0/fbc",
@@ -17,21 +22,6 @@ const EXCLUDED: &[&str] = &[
     "/models/0/listOfUserDefinedConstraints",
     "/models/0/listOfQualitativeSpecies",
     "/models/0/listOfTransitions",
-    // The annotation of an element is not read into cvterms yet, python reads the bqbiol:is of the
-    // parameter k1 into one. The container itself stays compared, so a second term would differ.
-    // Removed by the slice which reads the annotation RDF.
-    "/models/0/listOfParameters/0/cvterms/0",
-    // Python keys an element which carries no id and no metaId by the sha1 digest of its xml
-    // (`_key`, `sbmlinfo.py:463`); this port keys it by the index of the element in the list of its
-    // parent (`pk::key`), the rule every element type of slice 1 and of this slice follows, and
-    // the digest is named there as what the port still owes. `core_elements.xml` holds one such
-    // element, the reaction which states nothing at all, and these are the two pointers its key
-    // reaches: the pk of the reaction and the pk of the reference below it, whose key its parent
-    // derives from the key of the reaction. Every other value of both elements stays compared.
-    // Removed by the slice which writes the digest, which the other element types keyed by it need
-    // as well.
-    "/models/0/listOfReactions/1/pk",
-    "/models/0/listOfReactions/1/listOfReactants/0/pk",
     // The one field the builder knowingly fabricates: it writes the `-` python writes for an
     // element whose unit does not derive, for every compartment, species, parameter, initial
     // assignment, rule, kinetic law and local parameter, the seven types of the report which carry
@@ -51,16 +41,79 @@ const EXCLUDED: &[&str] = &[
     "/odeError",
 ];
 
-// The documents of the gate. Each `the_report_of_..._equals_the_python_report` test below names
-// one of them, and the liveness test of the exclusion list walks all of them: one list is shared by
-// every document, so an entry which is dead on one of them is normal and an entry which is dead on
-// all of them is a line which outlived its slice. A document added to the gate belongs here too.
-const GATED: &[&str] = &[
-    "minimal_model",
-    "level2_model",
-    "core_elements",
-    "level2_reactions",
+// The annotation of an element is not read into cvterms yet, and `minimal_model.xml` is the one
+// document of the gate which carries one: python reads the bqbiol:is of its parameter `k1` into a
+// cvterm, and the port writes the empty list. The container itself stays compared, so a second
+// term would differ. The pointer names the parameter by its place, so it is scoped to this
+// document: the parameter at that place in another document carries no annotation today and would
+// lose the comparison of a cvterm it grew tomorrow. Removed by the slice which reads the
+// annotation RDF.
+const MINIMAL_MODEL_ONLY: &[&str] = &["/models/0/listOfParameters/0/cvterms/0"];
+
+// Python keys an element which carries no id and no metaId by the sha1 digest of its xml (`_key`,
+// `sbmlinfo.py:463`); this port keys it by the index of the element in the list of its parent
+// (`pk::key`), the rule every element type of slice 1 and of this slice follows, and the digest is
+// named there as what the port still owes. `core_elements.xml` holds the one such element of the
+// gate, the reaction which states nothing at all, and these are the two pointers its key reaches:
+// the pk of the reaction, which sits at the index 1 of the reactions of this document, and the pk
+// of the reference below it, whose key its parent derives from the key of the reaction. Every
+// other value of both elements stays compared. They are scoped to this document because they name
+// their element by its place: in `level2_reactions.xml` the same two pointers are the pk of the
+// reaction `J1` and of its reference, both of which the port builds as python does and which are
+// compared. Removed by the slice which writes the digest, which the other element types keyed by
+// it need as well.
+const CORE_ELEMENTS_ONLY: &[&str] = &[
+    "/models/0/listOfReactions/1/pk",
+    "/models/0/listOfReactions/1/listOfReactants/0/pk",
 ];
+
+/// One document of the gate: the stem of `testdata/<name>.xml` and of its fixture, and the entries
+/// which silence a part of the report of that document and of no other.
+struct Gated {
+    /// The stem of the document and of the fixture of the python report of it.
+    name: &'static str,
+    /// What is excluded on this document alone, next to the shared `EXCLUDED`.
+    only: &'static [&'static str],
+}
+
+/// Writes `GATED` and the gate test of every document from one list.
+///
+/// The documents of the gate are named once, in the invocation below, so that a document cannot be
+/// gated without being measured by the liveness test of the exclusion lists, nor be listed there
+/// without being gated. A line is the name of its test, the stem of the document and the entries
+/// excluded on it alone.
+macro_rules! gated {
+    ($($test:ident = $name:literal, $only:expr;)*) => {
+        const GATED: &[Gated] = &[$(Gated { name: $name, only: $only }),*];
+        $(
+            #[test]
+            fn $test() {
+                gate($name);
+            }
+        )*
+    };
+}
+
+gated! {
+    // The document of the first slice: the compartments, the species and the parameters, with the
+    // comp port and the fbc plugin libsbml gives it and the one annotation of the gate.
+    the_report_of_minimal_model_equals_the_python_report = "minimal_model", MINIMAL_MODEL_ONLY;
+    // Level 2 is where libsbml and the python report agree on values no document states: the
+    // defaults of the specification as set attributes, and the layout and the render plugin as
+    // declared packages. The fixture pins both rather than a hand comparison.
+    the_report_of_a_level_2_document_equals_the_python_report = "level2_model", &[];
+    // The document of this slice, one element of every type of SBML core: the shapes whose value
+    // no other document of the gate pins, among them a reaction and an event which state nothing
+    // at all, a reference keyed by an id of its own next to one keyed by its place, the three
+    // stoichiometries the half equation of python formats by a branch of its own, a local
+    // parameter which shadows a global one and a unit of a fractional exponent.
+    the_report_of_core_elements_equals_the_python_report = "core_elements", CORE_ELEMENTS_ONLY;
+    // What only an older level has: the defaults Level 2 gives `reversible`, `fast` and the
+    // stoichiometry of a reference which states none, a kinetic law whose parameters the document
+    // writes as `<parameter>` in a `<listOfParameters>`, and a reference with a `stoichiometryMath`,
+    // which is a stoichiometry of its own and is reported as none.
+    the_report_of_level2_reactions_equals_the_python_report = "level2_reactions", &[];
+}
 
 // The entries of `EXCLUDED` which no document of the gate reaches, and why: each is the list of the
 // elements of a package, which the port writes as the empty list python writes for a document
@@ -80,6 +133,19 @@ const UNREACHED: &[&str] = &[
     "/models/0/listOfTransitions",
 ];
 
+/// The document of `GATED` named `name`, which the gate test of every one of them passes.
+fn of(name: &str) -> &'static Gated {
+    GATED
+        .iter()
+        .find(|document| document.name == name)
+        .unwrap_or_else(|| panic!("{name} is no document of GATED"))
+}
+
+/// What is silenced of the report of one document: the shared entries and the entries of its own.
+fn excluded_for(document: &Gated) -> Vec<&'static str> {
+    EXCLUDED.iter().chain(document.only).copied().collect()
+}
+
 /// The Rust report of `testdata/<name>.xml` and the python fixture of the same name, as JSON.
 fn reports(name: &str) -> (serde_json::Value, serde_json::Value) {
     let source = std::fs::read(format!("../../testdata/{name}.xml")).unwrap();
@@ -96,93 +162,150 @@ fn reports(name: &str) -> (serde_json::Value, serde_json::Value) {
 
 /// Compares the Rust report of `testdata/<name>.xml` with the python fixture of the same name.
 fn gate(name: &str) {
+    let document = of(name);
+    let excluded = excluded_for(document);
     let (ours, theirs) = reports(name);
-    let differences = compare(&ours, &theirs, EXCLUDED);
+    let differences = compare(&ours, &theirs, &excluded);
     assert!(differences.is_empty(), "{}", differences.join("\n"));
     // anti-vacuity: the walk reaches the fixture, so an empty report is not equal to it
-    assert!(!compare(&ours, &serde_json::json!({}), EXCLUDED).is_empty());
+    assert!(!compare(&ours, &serde_json::json!({}), &excluded).is_empty());
 }
 
-#[test]
-fn the_report_of_minimal_model_equals_the_python_report() {
-    gate("minimal_model");
-}
-
-#[test]
-fn the_report_of_a_level_2_document_equals_the_python_report() {
-    // Level 2 is where libsbml and the python report agree on values no document states: the
-    // defaults of the specification as set attributes, and the layout and the render plugin as
-    // declared packages. The fixture pins both rather than a hand comparison.
-    gate("level2_model");
-}
-
-#[test]
-fn the_report_of_core_elements_equals_the_python_report() {
-    // The document of this slice, one element of every type of SBML core: the shapes whose value
-    // no other document of the gate pins, among them a reaction and an event which state nothing
-    // at all, a reference keyed by an id of its own next to one keyed by its place, the three
-    // stoichiometries the half equation of python formats by a branch of its own, a local
-    // parameter which shadows a global one and a unit of a fractional exponent.
-    gate("core_elements");
-}
-
-#[test]
-fn the_report_of_level2_reactions_equals_the_python_report() {
-    // What only an older level has: the defaults Level 2 gives `reversible`, `fast` and the
-    // stoichiometry of a reference which states none, a kinetic law whose parameters the document
-    // writes as `<parameter>` in a `<listOfParameters>`, and a reference with a `stoichiometryMath`,
-    // which is a stoichiometry of its own and is reported as none.
-    gate("level2_reactions");
-}
-
-/// On how many documents of the gate `entry` silences a difference of its own.
-///
-/// An entry is live on a document when taking that entry alone silences at least one difference of
-/// that document, measured against the comparison with nothing silenced at all. Taking it alone
-/// isolates it, so an entry whose pointer lies below another one is counted for itself and the
-/// order of the list says nothing; and silencing a pointer prunes the walk below it, so the count
-/// of the differences drops exactly when the entry names one of them.
-fn live_on(entry: &str, gated: &[(serde_json::Value, serde_json::Value)]) -> usize {
-    gated
-        .iter()
-        .filter(|(ours, theirs)| {
-            compare(ours, theirs, &[entry]).len() < compare(ours, theirs, &[]).len()
-        })
-        .count()
-}
-
-// The liveness of the exclusion list, the measure of what the port does not build yet. One list is
-// shared by every document, so an entry which is dead on one of them is normal and an entry which
-// is dead on all of them names nothing any more: either the value it hid is a value the port now
-// builds, and the gate would no longer guard that value, or no document of the gate reaches it, and
-// the line reads as a gap of the port which is none. The second is the honest state of the seven
-// package lists of `UNREACHED`, which name what they wait for; every other entry has to be live.
-#[test]
-fn every_entry_of_the_exclusion_list_silences_a_difference_of_one_document_at_least() {
-    let gated: Vec<(serde_json::Value, serde_json::Value)> =
-        GATED.iter().map(|name| reports(name)).collect();
-    // every document differs in something, or the measure would be vacuous for every entry
-    for ((ours, theirs), name) in gated.iter().zip(GATED) {
-        assert!(!compare(ours, theirs, &[]).is_empty(), "{name}");
+/// The value with every leaf of it replaced, so that a comparison with it answers one difference
+/// per leaf the walk reaches: the objects and the arrays keep their shape and every leaf becomes a
+/// string no leaf of a report equals, whatever its type.
+fn every_leaf_replaced(value: &serde_json::Value) -> serde_json::Value {
+    match value {
+        serde_json::Value::Object(fields) => serde_json::Value::Object(
+            fields
+                .iter()
+                .map(|(key, value)| (key.clone(), every_leaf_replaced(value)))
+                .collect(),
+        ),
+        serde_json::Value::Array(items) => {
+            serde_json::Value::Array(items.iter().map(every_leaf_replaced).collect())
+        }
+        _ => serde_json::Value::String("\u{0}no leaf of a report".to_owned()),
     }
-    let mut dead = Vec::new();
-    let mut reached = Vec::new();
+}
+
+/// How many leaves of the report of a document the gate compares with `excluded` silenced.
+fn compared_leaves(
+    ours: &serde_json::Value,
+    theirs: &serde_json::Value,
+    excluded: &[&str],
+) -> usize {
+    compare(ours, &every_leaf_replaced(theirs), excluded).len()
+}
+
+// That an entry which is owed on one document silences no other, which is what scoping it to its
+// line of `GATED` is for. The two pointers of `CORE_ELEMENTS_ONLY` name a value of
+// `level2_reactions.xml` as well: the pk of its reaction `J1`, which sits at the index 1 of its
+// reactions, and the pk of the reference below it, which its parent derived from the key of that
+// reaction. Both are keys the port builds as python does, so with those two entries shared by every
+// document the gate of this one would pass over the only two pointers at which it reads an id keyed
+// reaction and a parent derived reference key.
+#[test]
+fn an_entry_which_is_owed_on_one_document_silences_no_pointer_of_another() {
+    let document = of("level2_reactions");
+    let (ours, theirs) = reports(document.name);
+    let keys = [
+        "level2_reactions/Reaction:J1",
+        "level2_reactions/SpeciesReference:J1.reactant.S2",
+    ];
+    let excluded = excluded_for(document);
+    for (entry, key) in CORE_ELEMENTS_ONLY.iter().zip(keys) {
+        // the pointer names a key of this document, and a key both sides agree on
+        assert_eq!(ours.pointer(entry).and_then(|v| v.as_str()), Some(key));
+        assert_eq!(theirs.pointer(entry), ours.pointer(entry));
+        assert!(!excluded.contains(entry), "{entry}");
+    }
+    // and the two are leaves the gate of this document reaches: silencing them takes exactly two
+    // compared leaves out of the walk, which is what sharing them would cost
+    let shared: Vec<&str> = excluded
+        .iter()
+        .copied()
+        .chain(CORE_ELEMENTS_ONLY.iter().copied())
+        .collect();
+    assert_eq!(
+        compared_leaves(&ours, &theirs, &excluded) - compared_leaves(&ours, &theirs, &shared),
+        2
+    );
+}
+
+/// Whether `entry`, taken alone, silences a difference of this document.
+///
+/// `baseline` is the number of differences of the document with nothing silenced at all. Taking the
+/// entry alone isolates it, so an entry whose pointer lies below another one is measured for itself
+/// and the order of a list says nothing; and silencing a pointer prunes the walk below it, so the
+/// count of the differences drops exactly when the entry names one of them.
+fn silences(
+    entry: &str,
+    ours: &serde_json::Value,
+    theirs: &serde_json::Value,
+    baseline: usize,
+) -> bool {
+    compare(ours, theirs, &[entry]).len() < baseline
+}
+
+// The liveness of the exclusion lists, the measure of what the port does not build yet. A shared
+// entry of `EXCLUDED` is measured against every document, since one list is shared by all of them:
+// an entry which is dead on one document is normal and an entry which is dead on all of them names
+// nothing any more. An entry which is scoped to one document is measured against that document
+// alone, which is the document it is owed on and the only one it silences. Either way a dead entry
+// is one of two things: the value it hid is a value the port now builds, and the gate would no
+// longer guard that value, or no document of the gate reaches it, and the line reads as a gap of the
+// port which is none. The second is the honest state of the seven package lists of `UNREACHED`,
+// which name what they wait for; every other entry has to be live.
+#[test]
+fn every_entry_of_the_exclusion_lists_silences_a_difference_of_a_document_it_covers() {
+    let gated: Vec<(serde_json::Value, serde_json::Value)> = GATED
+        .iter()
+        .map(|document| reports(document.name))
+        .collect();
+    // the differences of a document with nothing silenced, one walk per document rather than one
+    // per entry, and the measure of every entry below
+    let baselines: Vec<usize> = gated
+        .iter()
+        .map(|(ours, theirs)| compare(ours, theirs, &[]).len())
+        .collect();
+    for (baseline, document) in baselines.iter().zip(GATED) {
+        // every document differs in something, or the measure would be vacuous for every entry
+        assert!(*baseline > 0, "{}", document.name);
+    }
+    let mut dead: Vec<String> = Vec::new();
+    let mut reached: Vec<&str> = Vec::new();
     for entry in EXCLUDED {
-        let live = live_on(entry, &gated);
+        let live = gated
+            .iter()
+            .zip(&baselines)
+            .filter(|((ours, theirs), baseline)| silences(entry, ours, theirs, **baseline))
+            .count();
         if live == 0 && !UNREACHED.contains(entry) {
-            dead.push(*entry);
+            dead.push(format!("{entry}, of EXCLUDED"));
         }
         if live > 0 && UNREACHED.contains(entry) {
-            reached.push(*entry);
+            reached.push(entry);
+        }
+    }
+    for (((ours, theirs), baseline), document) in gated.iter().zip(&baselines).zip(GATED) {
+        for entry in document.only {
+            if !silences(entry, ours, theirs, *baseline) {
+                dead.push(format!("{entry}, of {}", document.name));
+            }
+            // and an entry is owed on one document or on all of them, never in both lists
+            assert!(
+                !EXCLUDED.contains(entry),
+                "{entry} is an entry of {} and of EXCLUDED",
+                document.name,
+            );
         }
     }
     assert!(
         dead.is_empty(),
-        "{} of the {} entries of the exclusion list silence no difference of any of the {} \
-         documents of the gate, so they name nothing the port still owes: {dead:?}",
+        "{} entry or entries of the exclusion lists silence no difference of a document they \
+         cover, so they name nothing the port still owes: {dead:?}",
         dead.len(),
-        EXCLUDED.len(),
-        GATED.len(),
     );
     assert!(
         reached.is_empty(),
