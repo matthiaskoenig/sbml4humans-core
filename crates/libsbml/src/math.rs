@@ -84,12 +84,19 @@ fn read_tree(
 /// The node at level `depth` of a syntax tree of libsbml and its children.
 ///
 /// `name` holds the name libsbml answers of the node: the identifier a `ci`
-/// refers to, the name of a call of a function of the model, and the text of a
-/// csymbol, which is `time` for the time csymbol and `avogadro` for the
-/// Avogadro one, so that the kinds `NameTime` and `NameAvogadro` carry the
-/// name the writers typeset. A built-in function, a constant and a lambda
-/// carry the name libsbml gives them of its own, an operator and a number
-/// carry none.
+/// refers to, the name of a call of a function of the model, and **the text the
+/// document itself wrote in a csymbol**, which is whatever it wrote and not the
+/// word libsbml knows the csymbol under: a document which spells the time
+/// csymbol `t` gives the kind `NameTime` and the name `t`. A built-in function,
+/// a constant and a lambda carry the name libsbml gives them of its own, an
+/// operator and a number carry none.
+///
+/// The two writers of `crates/report` differ on that field on purpose, each
+/// following the implementation it ports. The formula writer ignores it for a
+/// csymbol and writes `time` and `avogadro`, which is what
+/// `L3FormulaFormatter.cpp` does; the latex writer typesets it, which is what
+/// `ctopff.xsl` does with the text of the `csymbol` element. So a document
+/// which writes `t` has the formula `time` and the latex ` t`.
 ///
 /// `number` and `units` are the value and the `sbml:units` of a number node,
 /// and `None` of every other node.

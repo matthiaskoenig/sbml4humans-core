@@ -50,7 +50,7 @@ fn nested(levels: usize) -> String {
 /// Two kinds are not in the table, and each is covered by a test of its own.
 /// `AstKind::Other` is by definition the type the shim does not name, which
 /// `a_type_the_report_has_no_kind_of_is_other` reads. `AstKind::Power` is the
-/// `^` of a Level 1 or Level 2 `formula` attribute, which libsbml parses
+/// `^` of the `formula` attribute of a Level 1 math, which libsbml parses
 /// outside of MathML, where `<power/>` is `AstKind::FunctionPower`, and which
 /// `the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power`
 /// reads. `AstKind::Function`, a call of a function the model defines, is no
@@ -433,7 +433,7 @@ fn the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power() {
     // call `read_formula` makes, `SBML_parseFormula` of the formula of the
     // kinetic law (`KineticLaw.cpp`)
     let source = include_str!("../testdata/level1_power.xml");
-    let document = read(source.as_bytes()).expect("libsbml reads the document without an error");
+    let document = read(source.as_bytes()).expect("libsbml answers a report of the document");
     assert_eq!((document.level, document.version), (1, 2));
     let ast = read_formula(level1_formula()).expect("the formula parses");
     assert_eq!(ast.kind, AstKind::Times);
@@ -493,4 +493,58 @@ fn the_math_reads_of_many_threads_do_not_race() {
 fn a_tree_deeper_than_the_bound_is_an_error() {
     let deep = nested(MAX_AST_DEPTH);
     assert!(matches!(read_math(&deep), Err(ReadError::MathTooDeep)));
+}
+
+#[test]
+fn a_number_whose_value_is_not_finite_is_filled_with_that_value() {
+    // `writeCN` of libsbml writes a `notanumber`, an `infinity` or an apply of
+    // a minus and an infinity for every node `ASTNode::isReal()` covers whose
+    // value is not finite, and `isReal()` is `AST_REAL`, `AST_REAL_E` and
+    // `AST_RATIONAL`. These are the three ways a document reaches such a node,
+    // which the latex writer of `crates/report` has to recognise; this pins
+    // that the fill side really produces them.
+    let rational = read_math(&math("<cn type=\"rational\"> 3 <sep/> 0 </cn>"))
+        .expect("a rational of a zero denominator is content MathML");
+    assert_eq!(rational.kind, AstKind::Rational);
+    assert_eq!(
+        rational.number,
+        Some(AstNumber::Rational {
+            numerator: 3,
+            denominator: 0,
+        })
+    );
+    assert!(rational.children.is_empty());
+
+    // the `formula` of a Level 1 math, which `KineticLaw::getMath` parses with
+    // the call `read_formula` makes
+    let infinite = read_formula("-INF").expect("the formula parses");
+    assert_eq!(infinite.kind, AstKind::Real);
+    assert_eq!(infinite.number, Some(AstNumber::Real(f64::NEG_INFINITY)));
+    assert!(infinite.children.is_empty());
+
+    let overflowed = read_formula("-1e400").expect("the formula parses");
+    assert_eq!(overflowed.kind, AstKind::RealE);
+    assert_eq!(
+        overflowed.number,
+        Some(AstNumber::RealE {
+            mantissa: -1.0,
+            exponent: 400,
+        })
+    );
+    assert!(overflowed.children.is_empty());
+}
+
+#[test]
+fn the_name_of_a_csymbol_is_the_text_the_document_wrote() {
+    // libsbml answers the text of the `csymbol` element, not the word it knows
+    // the csymbol under, and the two writers of `crates/report` differ on that
+    // field on purpose: the formula writer ignores it and the latex writer
+    // typesets it
+    let time = read_math(&math(
+        "<csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> \
+         t </csymbol>",
+    ))
+    .expect("a csymbol is content MathML");
+    assert_eq!(time.kind, AstKind::NameTime);
+    assert_eq!(time.name.as_deref(), Some("t"));
 }

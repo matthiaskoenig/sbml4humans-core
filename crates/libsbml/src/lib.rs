@@ -9,8 +9,9 @@
 //!
 //! [`read`] answers a [`ReadError`] for every source which is no document,
 //! [`read_math`] one for every string which is no content MathML and
-//! [`read_formula`] one for every string which is no formula of a Level 1 or
-//! Level 2 math, and all three hold one lock of the process while they read,
+//! [`read_formula`] one for every string which is no formula of a Level 1 math
+//! (Level 2 dropped the `formula` attribute), and all three hold one lock of
+//! the process while they read,
 //! since libsbml keeps global state. None of them panics, whatever the source
 //! holds.
 

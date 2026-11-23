@@ -78,6 +78,18 @@ fn real(value: f64) -> Ast {
     }
 }
 
+/// A `cn type="rational"`.
+fn rational(numerator: i64, denominator: i64) -> Ast {
+    Ast {
+        kind: AstKind::Rational,
+        number: Some(AstNumber::Rational {
+            numerator,
+            denominator,
+        }),
+        ..Ast::default()
+    }
+}
+
 /// A `cn type="e-notation"`.
 fn real_e(mantissa: f64, exponent: i64) -> Ast {
     Ast {
@@ -483,4 +495,94 @@ fn a_negative_number_in_exponent_form_keeps_its_sign_in_a_sum() {
     let sum = node(AstKind::Plus, vec![real(-0.5)]);
     let product = node(AstKind::Times, vec![name("x"), sum]);
     assert_eq!(written(&product), " \\mathit{x}\\cdot (-0.5)");
+}
+
+#[test]
+fn a_number_whose_value_is_not_finite_is_written_as_the_element_libsbml_writes() {
+    // `writeCN` of libsbml branches on the value of every node `isReal()`
+    // covers, which is `AST_REAL`, `AST_REAL_E` and `AST_RATIONAL`, and writes a
+    // `notanumber`, an `infinity` or an apply of a minus and an infinity rather
+    // than a `cn`. A rational of a zero denominator is such a node and needs
+    // nothing but plain content MathML to reach. python answers each of these.
+    assert_eq!(written(&rational(3, 0)), " \\infty ");
+    assert_eq!(written(&rational(-3, 0)), " -\\infty ");
+    assert_eq!(written(&rational(0, 0)), " \\mathrm{NaN}");
+
+    // libsbml writes a number in exponent form whose value is the positive
+    // infinity as a `cn` all the same, which is the one asymmetry of the branch
+    assert_eq!(written(&real_e(-1.0, 400)), " -\\infty ");
+    assert_eq!(written(&real_e(1.0, 400)), " 1\\cdot {10}^{400}");
+
+    // and the element stands wherever the number stood
+    let sum = node(AstKind::Plus, vec![name("x"), rational(3, 0)]);
+    assert_eq!(written(&sum), " \\mathit{x}+\\infty ");
+    let product = node(AstKind::Times, vec![name("x"), rational(-3, 0)]);
+    assert_eq!(written(&product), " \\mathit{x}\\cdot -\\infty ");
+    let power = node(AstKind::Power, vec![rational(-3, 0), integer(2)]);
+    assert_eq!(written(&power), " {(-\\infty )}^{2}");
+    // the argument is an application, so the template parenthesises it
+    let call = named(AstKind::FunctionSin, "sin", vec![rational(-3, 0)]);
+    assert_eq!(written(&call), " \\mathrm{sin}\\left(-\\infty \\right)");
+    let logarithm = named(
+        AstKind::FunctionLog,
+        "log",
+        vec![rational(-3, 0), name("x")],
+    );
+    assert_eq!(
+        written(&logarithm),
+        " {\\mathrm{log}}_{-\\infty }, \\mathit{x}"
+    );
+}
+
+#[test]
+fn a_negative_infinity_is_a_negated_operand_of_a_sum() {
+    // the plus template asks `self::m:apply[count(*)=2 and *[1][self::m:minus]]`,
+    // which the apply libsbml writes for a negative infinity satisfies although
+    // the node carries no child at all. python answers each of these; the Level 1
+    // formula `a + -INF` is one way a document reaches it.
+    let sum = node(AstKind::Plus, vec![name("a"), real(f64::NEG_INFINITY)]);
+    assert_eq!(written(&sum), " \\mathit{a}-\\infty ");
+    let sum = node(AstKind::Plus, vec![name("a"), real_e(-1.0, 400)]);
+    assert_eq!(written(&sum), " \\mathit{a}-\\infty ");
+    let sum = node(AstKind::Plus, vec![name("a"), rational(-3, 0)]);
+    assert_eq!(written(&sum), " \\mathit{a}-\\infty ");
+    // the positive infinity and the not a number are ordinary operands
+    let sum = node(AstKind::Plus, vec![name("a"), real(f64::INFINITY)]);
+    assert_eq!(written(&sum), " \\mathit{a}+\\infty ");
+    let sum = node(AstKind::Plus, vec![name("a"), real(f64::NAN)]);
+    assert_eq!(written(&sum), " \\mathit{a}+\\mathrm{NaN}");
+    // a difference writes the sign of its right operand as it stands
+    let difference = node(AstKind::Minus, vec![name("a"), real_e(-1.0, 400)]);
+    assert_eq!(written(&difference), " \\mathit{a}--\\infty ");
+}
+
+#[test]
+fn the_apply_of_a_negative_infinity_is_written_inline_and_its_text_is_three_spaces() {
+    // `writeCN` writes that apply with `setAutoIndent(false)` and a space around
+    // each of its two elements, so its string value is three spaces where the
+    // same apply spelled out by a document carries the indentation of its level.
+    // The two therefore differ, and the difference below is parenthesised where
+    // one of the same shape on both sides would not be. python answers
+    // ` \mathit{a}\cdot -\infty -(\mathit{a}-\infty )`.
+    let negated = node(AstKind::Minus, vec![real(f64::INFINITY)]);
+    let product = node(AstKind::Times, vec![name("a"), real(f64::NEG_INFINITY)]);
+    let sum = node(AstKind::Plus, vec![name("a"), negated]);
+    let difference = node(AstKind::Minus, vec![product, sum]);
+    assert_eq!(
+        written(&difference),
+        " \\mathit{a}\\cdot -\\infty -(\\mathit{a}-\\infty )"
+    );
+}
+
+#[test]
+fn the_largest_int_is_written_in_exponent_notation_like_libxml2() {
+    // `xmlXPathFormatNumber` writes a value as an integer only where
+    // `number > INT_MIN && number < INT_MAX`, so the largest `int` itself is
+    // written by the branch above it. python answers
+    // ` \mathit{a}-2.147483647e+09` for this sum, whose operand the plus
+    // template negates and writes with the XPath number format.
+    let sum = node(AstKind::Plus, vec![name("a"), integer(-2_147_483_647)]);
+    assert_eq!(written(&sum), " \\mathit{a}-2.147483647e+09");
+    let sum = node(AstKind::Plus, vec![name("a"), integer(-2_147_483_646)]);
+    assert_eq!(written(&sum), " \\mathit{a}-2147483646");
 }

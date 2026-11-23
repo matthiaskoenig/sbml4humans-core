@@ -65,10 +65,13 @@
 //! **Those are a debug native build on the 2 MiB stack a test thread gets.**
 //! The target this constraint exists for is `wasm32-unknown-unknown`, whose
 //! stack is 1 MiB (`stack-size=1048576` in its target spec) and which traps on
-//! an overflow. Nothing in the workspace builds or runs wasm yet, so the frame
-//! cost of a release wasm build is unmeasured and the figures above do not
-//! stand in for it. The slice which first builds wasm has to measure it and
-//! then either raise the stack at link time or lower [`MAX_AST_DEPTH`].
+//! an overflow. **1,401 KiB does not fit in 1 MiB**, so a wasm build of these
+//! frame sizes would trap on the deepest tree the bound allows. A release build
+//! has smaller frames than a debug one, by how much nobody has measured, and
+//! nothing in the workspace builds or runs wasm yet. The slice which first
+//! builds wasm has to measure the release frame cost and then either raise the
+//! stack at link time or lower [`MAX_AST_DEPTH`]; the figures above are the
+//! only ones there are and they are not a wasm measurement.
 //!
 //! # The string value
 //!
@@ -198,11 +201,13 @@ fn fix_name(name: &str) -> String {
 /// the ascii characters latex gives a meaning and the two characters ctopff
 /// writes of a constant; every other character is written as it stands.
 ///
-/// **This is a known non-parity case.** An SId is ascii, so a `ci` is safe, but
-/// the text of a csymbol is whatever the document wrote: python answers
-/// ` \mathrm{\alpha \beta }` for a csymbol whose text is two greek letters and
-/// this answers ` \mathrm{\u{3b1}\u{3b2}}`. Closing it means porting the table
-/// of `entities.xsl`, which no document of the corpus needs.
+/// **This is a known non-parity case**, for the text of any token which is not
+/// ascii, a `ci` as much as a csymbol: python answers ` \mathit{\alpha }` for a
+/// `ci` whose text is one greek letter and this answers the letter itself. The
+/// SId of a valid document is ascii, but `read_math` enforces no SId syntax and
+/// a report of an invalid document is the point of the project. Closing it
+/// means porting the table of `entities.xsl`, which no document of the corpus
+/// needs.
 fn write_token(text: &str, out: &mut String) {
     let mut first = true;
     for word in text.split_whitespace() {
@@ -350,10 +355,13 @@ fn xpath_number(value: f64) -> String {
     if value.is_infinite() {
         return if value < 0.0 { "-Infinity" } else { "Infinity" }.to_owned();
     }
-    // the cast of C is undefined beyond the range of an int and the one of Rust
-    // saturates, which answers the comparison the same way: a value outside the
-    // range is equal to neither result
-    if value == f64::from(value as i32) {
+    // `xmlXPathFormatNumber` writes an integer only for a value strictly within
+    // the range of an `int`, so the two ends of that range are written by the
+    // branch below rather than as themselves
+    if value > f64::from(i32::MIN)
+        && value < f64::from(i32::MAX)
+        && value == f64::from(value as i32)
+    {
         return (value as i32).to_string();
     }
     let magnitude = value.abs();
@@ -457,10 +465,10 @@ fn first_and_last(children: &[Ast], alone: bool) -> Vec<&Ast> {
 /// negative infinity as a negated one, which is the one number that is an apply.
 fn is_apply(node: &Ast) -> bool {
     match node.kind {
-        AstKind::Real => special_real(node) == Some(SpecialReal::NegativeInfinity),
+        AstKind::Real | AstKind::RealE | AstKind::Rational => {
+            special_real(node) == Some(SpecialReal::NegativeInfinity)
+        }
         AstKind::Integer
-        | AstKind::RealE
-        | AstKind::Rational
         | AstKind::Name
         | AstKind::NameTime
         | AstKind::NameAvogadro
@@ -487,22 +495,51 @@ enum SpecialReal {
 }
 
 /// Which element libsbml writes for `node`, [`None`] for every node it writes a `cn` for.
+///
+/// `writeCN` branches on the **value** of a node, not on its kind, and it does
+/// so for every node `ASTNode::isReal()` covers, which is `AST_REAL`,
+/// `AST_REAL_E` and `AST_RATIONAL`. So a rational of a zero denominator, which
+/// plain content MathML can write, is an `infinity` or a `notanumber`, and a
+/// number in exponent form whose value overflows is the apply of a minus and an
+/// infinity. The one asymmetry is `writeCN`'s own: a node of the kind
+/// `AST_REAL_E` whose value is the positive infinity is excluded from the
+/// `infinity` branch and written as a `cn` all the same.
 fn special_real(node: &Ast) -> Option<SpecialReal> {
-    if node.kind != AstKind::Real {
-        return None;
-    }
-    let Some(AstNumber::Real(value)) = node.number else {
-        return None;
-    };
+    let value = real_value(node)?;
     if value.is_nan() {
         Some(SpecialReal::NotANumber)
-    } else if value == f64::INFINITY {
+    } else if value == f64::INFINITY && node.kind != AstKind::RealE {
         Some(SpecialReal::Infinity)
     } else if value == f64::NEG_INFINITY {
         Some(SpecialReal::NegativeInfinity)
     } else {
         None
     }
+}
+
+/// The value `ASTNode::getReal()` answers for `node`, [`None`] for a node
+/// `ASTNode::isReal()` does not cover.
+///
+/// An integer is not among them, so `writeCN` always writes it as a `cn`.
+fn real_value(node: &Ast) -> Option<f64> {
+    if !matches!(
+        node.kind,
+        AstKind::Real | AstKind::RealE | AstKind::Rational
+    ) {
+        return None;
+    }
+    Some(match node.number {
+        Some(AstNumber::Real(value)) => value,
+        Some(AstNumber::RealE { mantissa, exponent }) => mantissa * 10f64.powf(exponent as f64),
+        Some(AstNumber::Rational {
+            numerator,
+            denominator,
+        }) => numerator as f64 / denominator as f64,
+        // libsbml holds the value of a number node which was never given one,
+        // and of one whose value does not match its kind, as the real it holds
+        Some(AstNumber::Integer(integer)) => integer as f64,
+        None => 0.0,
+    })
 }
 
 /* ------------------------------------------- the string value of a node */
@@ -553,7 +590,9 @@ enum Current<'a> {
 ///   [`string_values_differ`] produces the two in step and stops at the first
 ///   byte which differs, which for a chain is within the first few.
 /// - The production keeps its own stack rather than the call stack, so the
-///   comparison adds nothing to the depth the latex walk already stands at.
+///   comparison recurses no further than the one `operands` call `expand` makes
+///   for a chain of sums or products, whatever the depth the latex walk already
+///   stands at.
 ///
 /// `level` is how deep the element stands, which decides the indentation before
 /// each of its children. The two operands of a difference are siblings and so
@@ -623,11 +662,13 @@ impl<'a> StringValue<'a> {
         match special_real(node) {
             // an empty element, which carries no text at all
             Some(SpecialReal::NotANumber | SpecialReal::Infinity) => {}
-            // the apply of a minus and an infinity, two empty elements
+            // the apply of a minus and an infinity, which `writeCN` writes
+            // with `setAutoIndent(false)` and a space around each of its two
+            // empty elements, so its text is three spaces and no indentation
             Some(SpecialReal::NegativeInfinity) => steps.extend([
-                Step::Indent(level + 1),
-                Step::Indent(level + 1),
-                Step::Indent(level),
+                Step::Text(Cow::Borrowed(" ")),
+                Step::Text(Cow::Borrowed(" ")),
+                Step::Text(Cow::Borrowed(" ")),
             ]),
             None => match node.kind {
                 AstKind::Integer | AstKind::Real | AstKind::RealE | AstKind::Rational => {
@@ -1327,6 +1368,12 @@ fn emit_summand(
         write_mn(&xpath_number(-number_value(child)), out);
         return Ok(());
     }
+    if special_real(child) == Some(SpecialReal::NegativeInfinity) {
+        // the one element of that apply is the infinity, which the node holds
+        // no child for
+        write_mi("\u{221e}", out);
+        return Ok(());
+    }
     if is_unary_minus(child) {
         if let Some(operand) = child.children.first() {
             emit(operand, 2, Some(child), 0, depth + 2, out)?;
@@ -1534,9 +1581,15 @@ fn right_of_minus(parent: Option<&Ast>, index: usize, depth: usize) -> Result<bo
     string_values_differ(left, right, depth)
 }
 
-/// Whether `node` is a negative sign rather than a difference.
+/// Whether libsbml writes `node` as an apply of a minus and one element.
+///
+/// This is `self::m:apply[count(*)=2 and *[1][self::m:minus]]` of the plus
+/// template. A number whose value is the negative infinity satisfies it as well
+/// as a negated expression does: `writeCN` writes it as that apply, although the
+/// node carries no child at all.
 fn is_unary_minus(node: &Ast) -> bool {
     node.kind == AstKind::Minus && node.children.len() == 1
+        || special_real(node) == Some(SpecialReal::NegativeInfinity)
 }
 
 /// Whether libsbml writes `node` as a `cn` without a `sep` whose number is below zero.

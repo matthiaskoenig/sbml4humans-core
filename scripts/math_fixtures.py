@@ -16,6 +16,7 @@ import zipfile
 from pathlib import Path
 
 import libsbml
+import lxml.etree
 import sbml4humans
 from sbml4humans.mathml import astnode_to_latex
 
@@ -107,6 +108,13 @@ def main() -> None:
         "sbml4humans_commit": oracle_fixtures.checkout_commit(),
         "python_libsbml": oracle_fixtures.python_libsbml(),
         "rust_libsbml": oracle_fixtures.rust_libsbml(),
+        # the latex is the output of two stylesheets, so the engine which ran
+        # them is part of the provenance: `xpath_number` of the rust writer is a
+        # port of libxml2's `xmlXPathFormatNumber`, whose switch to exponent
+        # notation and whose integer range have changed across versions, and the
+        # `mn` template reads libxml2's own lenient `number()`
+        "lxml": ".".join(str(part) for part in lxml.etree.LXML_VERSION),
+        "libxml2": ".".join(str(part) for part in lxml.etree.LIBXML_VERSION),
         "corpus": CORPUS,
         "enumeration": (
             "document wide (getListOfAllElements), not the lists of the main model only: "

@@ -67,7 +67,7 @@ ast_kinds! {
     Times = 402,
     /// A quotient of two children.
     Divide = 403,
-    /// A power written with the `^` of a Level 1 or Level 2 formula, which renders like `FunctionPower`.
+    /// A power written with the `^` of the `formula` of a Level 1 math, which renders like `FunctionPower`.
     Power = 404,
     /// A call of a user function, whose name is in `name`.
     Function = 500,
