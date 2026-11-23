@@ -41,9 +41,9 @@ const EXCLUDED: &[&str] = &[
 /// Compares the Rust report of `testdata/<name>.xml` with the python fixture of the same name.
 fn gate(name: &str) {
     let source = std::fs::read(format!("../../testdata/{name}.xml")).unwrap();
-    let ours = serde_json::to_value(sbml4humans_report::build(
-        &sbml4humans_libsbml::read(&source).unwrap(),
-    ))
+    let ours = serde_json::to_value(
+        sbml4humans_report::build(&sbml4humans_libsbml::read(&source).unwrap()).unwrap(),
+    )
     .unwrap();
     let theirs: serde_json::Value = serde_json::from_slice(
         &std::fs::read(format!("../../testdata/oracles/{name}.json")).unwrap(),

@@ -9,7 +9,7 @@ mod number;
 pub mod pk;
 mod types;
 
-pub use build::build;
+pub use build::{BuildError, build};
 pub use double::Double;
 pub use math::{MathError, formula, latex, math};
 pub use types::*;

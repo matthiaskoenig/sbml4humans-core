@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Every element whose math Level 3 Version 2 made optional, each one empty, so that
+     the report writes a null math for every one of them and no reader of a math unwraps
+     a value the document controls. -->
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="no_maths">
+    <listOfFunctionDefinitions><functionDefinition id="f"/></listOfFunctionDefinitions>
+    <listOfInitialAssignments><initialAssignment/></listOfInitialAssignments>
+    <listOfRules><algebraicRule/></listOfRules>
+    <listOfConstraints><constraint/></listOfConstraints>
+  </model>
+</sbml>

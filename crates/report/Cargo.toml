@@ -17,3 +17,9 @@ serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
 sbml4humans-model = { path = "../model" }
+
+# the builder reads the model of `sbml4humans-model` alone and nothing of libsbml, which the
+# tests read a document with: a fixture of theirs is a document of SBML and no model built by hand,
+# so that the report they assert on is the report of a file an end user holds
+[dev-dependencies]
+sbml4humans-libsbml = { path = "../libsbml" }

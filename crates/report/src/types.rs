@@ -176,6 +176,98 @@ pub struct SBase {
     pub lists: Vec<ListOf>,
 }
 
+/// A function definition with its lambda.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportFunctionDefinition {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+}
+
+/// One factor of a unit definition: a base unit with exponent, scale and multiplier.
+///
+/// A unit carries no identifier and nothing in SBML refers to it, so it is a
+/// nested object of its definition and no element of the report with a primary
+/// key of its own.
+#[derive(Debug, Default, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportUnit {
+    /// The `kind`, `null` when the document does not set it.
+    pub kind: Option<String>,
+    /// The `exponent`, a double since Level 3 allows a fractional one, `null` when the document does not set it.
+    pub exponent: Option<Double>,
+    /// The `scale`, `null` when the document does not set it.
+    pub scale: Option<i64>,
+    /// The `multiplier`, `null` when the document does not set it.
+    pub multiplier: Option<Double>,
+}
+
+/// A unit definition with its units and their rendered formula.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportUnitDefinition {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `units_latex`, `null` when the document does not set it.
+    pub units_latex: Option<String>,
+    /// The `list_of_units`, in the order of the document.
+    pub list_of_units: Vec<ReportUnit>,
+}
+
+/// An initial assignment of a symbol.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportInitialAssignment {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The id of the element the assignment sets.
+    pub symbol: String,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+    /// The `derived_units`, `null` when the document does not set it.
+    pub derived_units: Option<String>,
+}
+
+/// A rule of one of the three rule classes of SBML.
+///
+/// Python has a class per class of rule and the report tells them apart by the
+/// `sbmlType` of the element, which is the one field of the three classes which
+/// differs in its value. Two of them declare a `variable` and the algebraic rule,
+/// which sets none, declares none, so the field is left out of its object
+/// altogether and is no `variable: null`.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportRule {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The id of the element the rule sets, `None` for an algebraic rule, whose class declares none.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub variable: Option<String>,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+    /// The `derived_units`, `null` when the document does not set it.
+    pub derived_units: Option<String>,
+}
+
+/// A constraint with its message.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportConstraint {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+    /// The `message`, `null` when the document does not set it.
+    pub message: Option<String>,
+}
+
 /// A compartment.
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -285,9 +377,9 @@ pub struct ReportModel {
     /// The `conversion_factor`, `null` when the document does not set it.
     pub conversion_factor: Option<ConversionFactor>,
     /// The `list_of_function_definitions`, in the order of `sbmlinfo.py`.
-    pub list_of_function_definitions: Vec<serde_json::Value>,
+    pub list_of_function_definitions: Vec<ReportFunctionDefinition>,
     /// The `list_of_unit_definitions`, in the order of `sbmlinfo.py`.
-    pub list_of_unit_definitions: Vec<serde_json::Value>,
+    pub list_of_unit_definitions: Vec<ReportUnitDefinition>,
     /// The `list_of_compartments`, in the order of `sbmlinfo.py`.
     pub list_of_compartments: Vec<ReportCompartment>,
     /// The `list_of_species`, in the order of `sbmlinfo.py`.
@@ -295,11 +387,11 @@ pub struct ReportModel {
     /// The `list_of_parameters`, in the order of `sbmlinfo.py`.
     pub list_of_parameters: Vec<ReportParameter>,
     /// The `list_of_initial_assignments`, in the order of `sbmlinfo.py`.
-    pub list_of_initial_assignments: Vec<serde_json::Value>,
+    pub list_of_initial_assignments: Vec<ReportInitialAssignment>,
     /// The `list_of_rules`, in the order of `sbmlinfo.py`.
-    pub list_of_rules: Vec<serde_json::Value>,
+    pub list_of_rules: Vec<ReportRule>,
     /// The `list_of_constraints`, in the order of `sbmlinfo.py`.
-    pub list_of_constraints: Vec<serde_json::Value>,
+    pub list_of_constraints: Vec<ReportConstraint>,
     /// The `list_of_reactions`, in the order of `sbmlinfo.py`.
     pub list_of_reactions: Vec<serde_json::Value>,
     /// The `list_of_events`, in the order of `sbmlinfo.py`.

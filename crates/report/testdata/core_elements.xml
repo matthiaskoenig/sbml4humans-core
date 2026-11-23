@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="core_elements">
+    <listOfFunctionDefinitions>
+      <functionDefinition id="f" name="twice">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar><ci>x</ci></bvar>
+            <apply><times/><cn type="integer">2</cn><ci>x</ci></apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfUnitDefinitions>
+      <unitDefinition id="mmole_per_litre">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="-3" multiplier="1"/>
+          <unit kind="litre" exponent="-1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="root_metre">
+        <listOfUnits>
+          <unit kind="metre" exponent="0.5" scale="-2" multiplier="2.5"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="bare_mole">
+        <listOfUnits>
+          <unit kind="mole"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="no_unit">
+        <listOfUnits/>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="c" spatialDimensions="3" size="1" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="c" initialConcentration="1" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="S2" compartment="c" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="S3" compartment="c" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="E" compartment="c" initialConcentration="1" hasOnlySubstanceUnits="false" boundaryCondition="true" constant="true"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="k1" value="0.1" constant="true"/>
+      <parameter id="k2" constant="false"/>
+      <parameter id="k3" value="0" constant="false"/>
+      <parameter id="k4" constant="false"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="S2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply><times/><ci>k1</ci><cn type="integer">2</cn></apply>
+        </math>
+      </initialAssignment>
+      <initialAssignment id="ia_S3" symbol="S3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k1</ci></math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfRules>
+      <assignmentRule variable="k2">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply><times/><cn type="integer">2</cn><ci>k1</ci></apply>
+        </math>
+      </assignmentRule>
+      <rateRule variable="k3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k1</ci></math>
+      </rateRule>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply><minus/><ci>k4</ci><ci>k1</ci></apply>
+        </math>
+      </algebraicRule>
+      <algebraicRule metaid="meta_algebraic">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply><minus/><ci>S1</ci><ci>k1</ci></apply>
+        </math>
+      </algebraicRule>
+    </listOfRules>
+    <listOfConstraints>
+      <constraint>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply><gt/><ci>S1</ci><cn type="integer">0</cn></apply>
+        </math>
+        <message>
+          <p xmlns="http://www.w3.org/1999/xhtml">S1 has to stay positive</p>
+        </message>
+      </constraint>
+      <constraint>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply><lt/><ci>S2</ci><cn type="integer">10</cn></apply>
+        </math>
+      </constraint>
+    </listOfConstraints>
+    <listOfReactions>
+      <reaction id="J0" name="first" reversible="false" compartment="c">
+        <listOfReactants>
+          <speciesReference id="sr_S1" species="S1" stoichiometry="2" constant="true"/>
+          <speciesReference species="S1" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S2" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="E"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply><times/><ci>Vmax</ci><ci>S1</ci></apply>
+              <apply><plus/><ci>Km</ci><ci>S1</ci></apply>
+            </apply>
+          </math>
+          <listOfLocalParameters>
+            <localParameter id="Km" value="0.5" units="mmole_per_litre"/>
+            <localParameter id="Vmax" value="1"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction>
+        <listOfReactants>
+          <speciesReference species="S3"/>
+        </listOfReactants>
+      </reaction>
+    </listOfReactions>
+    <listOfEvents>
+      <event id="E0" useValuesFromTriggerTime="true">
+        <trigger initialValue="false" persistent="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply><gt/><csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time">time</csymbol><cn type="integer">10</cn></apply>
+          </math>
+        </trigger>
+        <priority>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">1</cn></math>
+        </priority>
+        <delay>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">2</cn></math>
+        </delay>
+        <listOfEventAssignments>
+          <eventAssignment variable="S1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">0</cn></math>
+          </eventAssignment>
+          <eventAssignment id="ea_k4" variable="k4">
+            <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k1</ci></math>
+          </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event/>
+    </listOfEvents>
+  </model>
+</sbml>
