@@ -96,6 +96,7 @@ dependencies = [
  "sbml4humans-model",
  "serde",
  "serde_json",
+ "thiserror",
 ]
 
 [[package]]
