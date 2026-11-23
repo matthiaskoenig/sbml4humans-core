@@ -24,8 +24,12 @@ pub(crate) struct SBase {
 
 /// A node of a syntax tree of libsbml.
 ///
-/// The root of a tree of `s4h_read_math_from_string` is owned by whoever read
-/// it, every other node by its parent.
+/// The root of a tree of `s4h_read_math_from_string` and of `s4h_read_formula`
+/// is owned by whoever read it, every other node by its parent or by the
+/// document of its element. A node which is owned is a `*mut ASTNode`, which
+/// `s4h_ast_free` takes and nothing else does; a node which is borrowed, the
+/// math of an element among them, is a `*const ASTNode`. Which of the two a
+/// pointer is is therefore a question of its type.
 #[repr(C)]
 pub(crate) struct ASTNode {
     _opaque: [u8; 0],
@@ -92,7 +96,7 @@ unsafe extern "C" {
     pub(crate) fn s4h_model_num_events(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_model_event(sbase: *mut SBase, n: c_uint) -> *mut SBase;
 
-    pub(crate) fn s4h_function_definition_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_function_definition_math(sbase: *mut SBase) -> *const ASTNode;
 
     pub(crate) fn s4h_unit_definition_num_units(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_unit_definition_unit(sbase: *mut SBase, n: c_uint) -> *mut SBase;
@@ -129,13 +133,13 @@ unsafe extern "C" {
     pub(crate) fn s4h_parameter_units(sbase: *mut SBase) -> *const c_char;
 
     pub(crate) fn s4h_initial_assignment_symbol(sbase: *mut SBase) -> *const c_char;
-    pub(crate) fn s4h_initial_assignment_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_initial_assignment_math(sbase: *mut SBase) -> *const ASTNode;
 
     pub(crate) fn s4h_rule_kind(sbase: *mut SBase) -> c_int;
     pub(crate) fn s4h_rule_variable(sbase: *mut SBase) -> *const c_char;
-    pub(crate) fn s4h_rule_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_rule_math(sbase: *mut SBase) -> *const ASTNode;
 
-    pub(crate) fn s4h_constraint_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_constraint_math(sbase: *mut SBase) -> *const ASTNode;
     pub(crate) fn s4h_constraint_message(sbase: *mut SBase) -> *mut c_char;
 
     pub(crate) fn s4h_reaction_reversible(sbase: *mut SBase, value: *mut c_int) -> c_int;
@@ -158,7 +162,7 @@ unsafe extern "C" {
     pub(crate) fn s4h_species_reference_stoichiometry_math(sbase: *mut SBase) -> c_int;
     pub(crate) fn s4h_species_reference_constant(sbase: *mut SBase, value: *mut c_int) -> c_int;
 
-    pub(crate) fn s4h_kinetic_law_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_kinetic_law_math(sbase: *mut SBase) -> *const ASTNode;
     pub(crate) fn s4h_kinetic_law_num_parameters(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_kinetic_law_parameter(sbase: *mut SBase, n: c_uint) -> *mut SBase;
 
@@ -175,28 +179,28 @@ unsafe extern "C" {
     pub(crate) fn s4h_event_num_event_assignments(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_event_event_assignment(sbase: *mut SBase, n: c_uint) -> *mut SBase;
 
-    pub(crate) fn s4h_trigger_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_trigger_math(sbase: *mut SBase) -> *const ASTNode;
     pub(crate) fn s4h_trigger_initial_value(sbase: *mut SBase, value: *mut c_int) -> c_int;
     pub(crate) fn s4h_trigger_persistent(sbase: *mut SBase, value: *mut c_int) -> c_int;
 
-    pub(crate) fn s4h_math_element_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_math_element_math(sbase: *mut SBase) -> *const ASTNode;
 
     pub(crate) fn s4h_event_assignment_variable(sbase: *mut SBase) -> *const c_char;
-    pub(crate) fn s4h_event_assignment_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_event_assignment_math(sbase: *mut SBase) -> *const ASTNode;
 
     pub(crate) fn s4h_read_math_from_string(xml: *const c_char) -> *mut ASTNode;
     pub(crate) fn s4h_read_formula(formula: *const c_char) -> *mut ASTNode;
     pub(crate) fn s4h_ast_free(node: *mut ASTNode);
-    pub(crate) fn s4h_ast_kind(node: *mut ASTNode) -> c_int;
-    pub(crate) fn s4h_ast_num_children(node: *mut ASTNode) -> c_uint;
-    pub(crate) fn s4h_ast_child(node: *mut ASTNode, n: c_uint) -> *mut ASTNode;
-    pub(crate) fn s4h_ast_name(node: *mut ASTNode) -> *const c_char;
+    pub(crate) fn s4h_ast_kind(node: *const ASTNode) -> c_int;
+    pub(crate) fn s4h_ast_num_children(node: *const ASTNode) -> c_uint;
+    pub(crate) fn s4h_ast_child(node: *const ASTNode, n: c_uint) -> *const ASTNode;
+    pub(crate) fn s4h_ast_name(node: *const ASTNode) -> *const c_char;
     pub(crate) fn s4h_ast_number(
-        node: *mut ASTNode,
+        node: *const ASTNode,
         integer: *mut c_longlong,
         real: *mut c_double,
         exponent: *mut c_longlong,
         denominator: *mut c_longlong,
     ) -> c_int;
-    pub(crate) fn s4h_ast_units(node: *mut ASTNode) -> *mut c_char;
+    pub(crate) fn s4h_ast_units(node: *const ASTNode) -> *mut c_char;
 }

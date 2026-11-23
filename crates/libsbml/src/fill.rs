@@ -33,6 +33,15 @@ pub enum ReadError {
         sbml4humans_model::MAX_AST_DEPTH
     )]
     MathTooDeep,
+    /// An element of the document is of a class the filler has no kind of.
+    ///
+    /// libsbml read the source, and the filler refuses to guess the kind of a
+    /// class it does not know, the way the python implementation refuses the
+    /// report of one (`sbmlinfo.rule` raises `TypeError` for a rule which is
+    /// neither an assignment, a rate nor an algebraic rule). The text names
+    /// the element and what is wrong with it.
+    #[error("the document holds {0}")]
+    ElementUnknownKind(String),
     /// The syntax tree of a math holds a node of a type the report has no kind of.
     ///
     /// The shim names every type a document reaches, so this is a type of a
@@ -407,9 +416,8 @@ unsafe fn rule(sbase: *mut sys::SBase) -> Result<Rule, ReadError> {
             RULE_RATE => RuleKind::Rate,
             RULE_ALGEBRAIC => RuleKind::Algebraic,
             _ => {
-                return Err(ReadError::Libsbml(
-                    "the model holds a rule which is neither an assignment, a rate nor an \
-                     algebraic rule"
+                return Err(ReadError::ElementUnknownKind(
+                    "a rule which is neither an assignment, a rate nor an algebraic rule"
                         .to_owned(),
                 ));
             }
@@ -731,7 +739,7 @@ unsafe fn element_with_id_attribute(sbase: *mut sys::SBase) -> Element {
 /// of its class.
 unsafe fn math(
     sbase: *mut sys::SBase,
-    of: unsafe extern "C" fn(*mut sys::SBase) -> *mut sys::ASTNode,
+    of: unsafe extern "C" fn(*mut sys::SBase) -> *const sys::ASTNode,
 ) -> Result<Option<Ast>, ReadError> {
     let node = unsafe { of(sbase) };
     if node.is_null() {

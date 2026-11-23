@@ -104,14 +104,18 @@ pub struct InitialAssignment {
 ///
 /// It is the discriminator the report writes as the type of the element, and
 /// an algebraic rule is the one of the three which sets no variable.
+///
+/// The default is the algebraic rule, so that the default [`Rule`], which
+/// carries no variable, is a rule of the one class which needs none: a default
+/// of either other class would be a rule the `variable` of which is missing.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum RuleKind {
     /// An assignment rule, which states the value of its variable.
-    #[default]
     Assignment,
     /// A rate rule, which states the rate of change of its variable.
     Rate,
     /// An algebraic rule, which states an expression of value zero.
+    #[default]
     Algebraic,
 }
 

@@ -17,9 +17,19 @@
  *    value when the document sets the attribute, and 0 without touching the
  *    value when it does not. An attribute which is not set has no value, never
  *    the default of its type.
+ *  - A node of a syntax tree is a `const ASTNode*` where it belongs to a
+ *    document or to the parent it was read from, which is every node the
+ *    filler reads, and an `ASTNode*` where the caller owns the tree and frees
+ *    it with `s4h_ast_free`, which is the root of a tree of
+ *    `s4h_read_math_from_string` and of `s4h_read_formula` alone. Every getter
+ *    of a node therefore takes a `const ASTNode*`, so that the type says which
+ *    of the two a pointer is and a node of a document cannot be freed.
  *  - An exception must not cross into Rust, which would end the process, so
  *    every function which allocates catches everything and answers its empty
- *    value. The plain getters of a number or of a reference cannot throw.
+ *    value. The plain getters of a number or of a reference cannot throw. The
+ *    `getMath` of a rule and of a kinetic law is no plain getter: it parses
+ *    the `formula` attribute of a Level 1 document on the first call
+ *    (Rule.cpp, KineticLaw.cpp), so those two catch as well.
  */
 
 #include <cstdlib>
@@ -60,17 +70,6 @@ char* handed_over(const std::string& text) {
 /// answers a `std::string` by value and must never be.
 const char* borrowed(bool is_set, const std::string& text) {
     return is_set ? text.c_str() : nullptr;
-}
-
-/// A node of a syntax tree of a document as the Rust side reads it.
-///
-/// Every `getMath` of libsbml answers a `const ASTNode*`, while the getters of
-/// a node take an `ASTNode*`, since `ASTNode::getChild` is no const member.
-/// The cast is sound: the node belongs to a document which is not const, and
-/// every getter the reader of a math calls is a const member, so nothing here
-/// and nothing in Rust writes to the tree.
-ASTNode* readable(const ASTNode* node) {
-    return const_cast<ASTNode*>(node);
 }
 
 }  // namespace
@@ -402,14 +401,15 @@ SBase* s4h_model_event(SBase* sbase, unsigned int n) {
 
 /// The `math` of a function definition, borrowed, null when it has none.
 ///
-/// The tree belongs to the element and is freed with the document, so it is
-/// never handed to `s4h_ast_free`.
-ASTNode* s4h_function_definition_math(SBase* sbase) {
+/// The tree belongs to the element and is freed with the document, which is
+/// what the `const` of every math of an element says: it is never handed to
+/// `s4h_ast_free`.
+const ASTNode* s4h_function_definition_math(SBase* sbase) {
     FunctionDefinition* definition = dynamic_cast<FunctionDefinition*>(sbase);
     if (definition == nullptr || !definition->isSetMath()) {
         return nullptr;
     }
-    return readable(definition->getMath());
+    return definition->getMath();
 }
 
 /* --------------------------------------------------------- unit definition */
@@ -629,12 +629,12 @@ const char* s4h_initial_assignment_symbol(SBase* sbase) {
 }
 
 /// The `math` of an initial assignment, borrowed, null when it has none.
-ASTNode* s4h_initial_assignment_math(SBase* sbase) {
+const ASTNode* s4h_initial_assignment_math(SBase* sbase) {
     InitialAssignment* assignment = dynamic_cast<InitialAssignment*>(sbase);
     if (assignment == nullptr || !assignment->isSetMath()) {
         return nullptr;
     }
-    return readable(assignment->getMath());
+    return assignment->getMath();
 }
 
 /* -------------------------------------------------------------------- rule */
@@ -677,25 +677,35 @@ const char* s4h_rule_variable(SBase* sbase) {
 /// The `math` of a rule, borrowed, null when it has none.
 ///
 /// A Level 1 rule writes its math as the attribute `formula`, which
-/// `Rule::getMath` parses on the first call and keeps in the element, so the
-/// tree is owned by the element in every level and is never freed here.
-ASTNode* s4h_rule_math(SBase* sbase) {
-    Rule* rule = dynamic_cast<Rule*>(sbase);
-    if (rule == nullptr || !rule->isSetMath()) {
+/// `Rule::getMath` parses with `SBML_parseFormula` on the first call and keeps
+/// in the element (Rule.cpp), so the tree is owned by the element in every
+/// level and is never freed here. `Rule::isSetMath` asks `getMath` itself, to
+/// answer false for a formula which does not parse, so both calls allocate and
+/// the whole function catches: a `std::bad_alloc` which crossed into Rust
+/// would end the process. A formula which does not parse answers null here,
+/// which is what `_attribute(rule, "math")` of the python implementation
+/// answers of it as well.
+const ASTNode* s4h_rule_math(SBase* sbase) {
+    try {
+        Rule* rule = dynamic_cast<Rule*>(sbase);
+        if (rule == nullptr || !rule->isSetMath()) {
+            return nullptr;
+        }
+        return rule->getMath();
+    } catch (...) {
         return nullptr;
     }
-    return readable(rule->getMath());
 }
 
 /* -------------------------------------------------------------- constraint */
 
 /// The `math` of a constraint, borrowed, null when it has none.
-ASTNode* s4h_constraint_math(SBase* sbase) {
+const ASTNode* s4h_constraint_math(SBase* sbase) {
     Constraint* constraint = dynamic_cast<Constraint*>(sbase);
     if (constraint == nullptr || !constraint->isSetMath()) {
         return nullptr;
     }
-    return readable(constraint->getMath());
+    return constraint->getMath();
 }
 
 /// The `message` of a constraint as XML, handed over, null when it has none.
@@ -855,14 +865,21 @@ int s4h_species_reference_constant(SBase* sbase, int* value) {
 /// The `math` of a kinetic law, borrowed, null when it has none.
 ///
 /// A Level 1 law writes its math as the attribute `formula`, which
-/// `KineticLaw::getMath` parses on the first call and keeps in the element, so
-/// the tree is owned by the element in every level and is never freed here.
-ASTNode* s4h_kinetic_law_math(SBase* sbase) {
-    KineticLaw* law = dynamic_cast<KineticLaw*>(sbase);
-    if (law == nullptr || !law->isSetMath()) {
+/// `KineticLaw::getMath` parses with `SBML_parseFormula` on the first call and
+/// keeps in the element (KineticLaw.cpp), so the tree is owned by the element
+/// in every level and is never freed here. `KineticLaw::isSetMath` asks
+/// `getMath` itself, so both calls allocate and the whole function catches,
+/// exactly as `s4h_rule_math` does.
+const ASTNode* s4h_kinetic_law_math(SBase* sbase) {
+    try {
+        KineticLaw* law = dynamic_cast<KineticLaw*>(sbase);
+        if (law == nullptr || !law->isSetMath()) {
+            return nullptr;
+        }
+        return law->getMath();
+    } catch (...) {
         return nullptr;
     }
-    return readable(law->getMath());
 }
 
 /// The number of parameters of a kinetic law, of a document of any level.
@@ -968,12 +985,12 @@ SBase* s4h_event_event_assignment(SBase* sbase, unsigned int n) {
 /* ----------------------------------------------------------------- trigger */
 
 /// The `math` of a trigger, borrowed, null when it has none.
-ASTNode* s4h_trigger_math(SBase* sbase) {
+const ASTNode* s4h_trigger_math(SBase* sbase) {
     Trigger* trigger = dynamic_cast<Trigger*>(sbase);
     if (trigger == nullptr || !trigger->isSetMath()) {
         return nullptr;
     }
-    return readable(trigger->getMath());
+    return trigger->getMath();
 }
 
 /// The `initialValue` of a trigger.
@@ -1003,14 +1020,14 @@ int s4h_trigger_persistent(SBase* sbase, int* value) {
 /// Both classes derive from `SBase` directly and neither shares a base which
 /// declares `getMath`, so the one function the filler of the two asks tries
 /// each of them.
-ASTNode* s4h_math_element_math(SBase* sbase) {
+const ASTNode* s4h_math_element_math(SBase* sbase) {
     Priority* priority = dynamic_cast<Priority*>(sbase);
     if (priority != nullptr) {
-        return priority->isSetMath() ? readable(priority->getMath()) : nullptr;
+        return priority->isSetMath() ? priority->getMath() : nullptr;
     }
     Delay* delay = dynamic_cast<Delay*>(sbase);
     if (delay != nullptr) {
-        return delay->isSetMath() ? readable(delay->getMath()) : nullptr;
+        return delay->isSetMath() ? delay->getMath() : nullptr;
     }
     return nullptr;
 }
@@ -1028,12 +1045,12 @@ const char* s4h_event_assignment_variable(SBase* sbase) {
 }
 
 /// The `math` of an event assignment, borrowed, null when it has none.
-ASTNode* s4h_event_assignment_math(SBase* sbase) {
+const ASTNode* s4h_event_assignment_math(SBase* sbase) {
     EventAssignment* assignment = dynamic_cast<EventAssignment*>(sbase);
     if (assignment == nullptr || !assignment->isSetMath()) {
         return nullptr;
     }
-    return readable(assignment->getMath());
+    return assignment->getMath();
 }
 
 /* ------------------------------------------------------------- syntax tree */
@@ -1070,6 +1087,10 @@ ASTNode* s4h_read_formula(const char* formula) {
 
 /// Frees a syntax tree of `s4h_read_math_from_string` or `s4h_read_formula`
 /// with its children.
+///
+/// It is the one function of a node which takes a mutable `ASTNode*`, which is
+/// the tree its caller owns. A node of a document is a `const ASTNode*` and
+/// reaches no free.
 void s4h_ast_free(ASTNode* node) {
     delete node;
 }
@@ -1098,7 +1119,7 @@ void s4h_ast_free(ASTNode* node) {
 /// `readMathMLFromString` answers none of them and `writeMathMLToString` writes
 /// no MathML of one, so the python implementation raises rather than writing a
 /// formula or a latex which this could be faithful to.
-int s4h_ast_kind(ASTNode* node) {
+int s4h_ast_kind(const ASTNode* node) {
     if (node == nullptr) {
         return 0;  // Other
     }
@@ -1190,14 +1211,14 @@ int s4h_ast_kind(ASTNode* node) {
 }
 
 /// The number of children of a node, 0 for a null node.
-unsigned int s4h_ast_num_children(ASTNode* node) {
+unsigned int s4h_ast_num_children(const ASTNode* node) {
     return node == nullptr ? 0 : node->getNumChildren();
 }
 
 /// Child `n` of a node, null when there is none and for a null node.
 ///
 /// The child is owned by its parent and is freed with the tree.
-ASTNode* s4h_ast_child(ASTNode* node, unsigned int n) {
+const ASTNode* s4h_ast_child(const ASTNode* node, unsigned int n) {
     return node == nullptr ? nullptr : node->getChild(n);
 }
 
@@ -1209,7 +1230,7 @@ ASTNode* s4h_ast_child(ASTNode* node, unsigned int n) {
 /// csymbol, the name of a call of a function of the model, and otherwise the
 /// name libsbml gives a built-in function, constant or lambda of its own; it is
 /// null for an operator, for a number and for a null node.
-const char* s4h_ast_name(ASTNode* node) {
+const char* s4h_ast_name(const ASTNode* node) {
     return node == nullptr ? nullptr : node->getName();
 }
 
@@ -1221,7 +1242,7 @@ const char* s4h_ast_name(ASTNode* node) {
 /// libsbml answers as its integer. The parts of a number in e-notation and of
 /// a rational stay apart, since `ASTNode::getValue` and `ASTNode::getReal`
 /// multiply or divide them out and lose the form the document wrote.
-int s4h_ast_number(ASTNode* node, long long* integer, double* real, long long* exponent,
+int s4h_ast_number(const ASTNode* node, long long* integer, double* real, long long* exponent,
                    long long* denominator) {
     if (node == nullptr) {
         return 0;
@@ -1254,7 +1275,7 @@ int s4h_ast_number(ASTNode* node, long long* integer, double* real, long long* e
 /// out with `handed_over` and never borrowed. `ASTNode::isSetUnits()` is that
 /// the string is not empty, so the null of this says the same and the shim
 /// needs no predicate of its own.
-char* s4h_ast_units(ASTNode* node) {
+char* s4h_ast_units(const ASTNode* node) {
     try {
         if (node == nullptr) {
             return nullptr;

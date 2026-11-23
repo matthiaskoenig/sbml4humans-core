@@ -106,6 +106,14 @@ const CORE_ELEMENTS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
           <unit kind="metre" exponent="0.5" scale="-2" multiplier="2.5"/>
         </listOfUnits>
       </unitDefinition>
+      <unitDefinition id="bare_mole">
+        <listOfUnits>
+          <unit kind="mole"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="no_unit">
+        <listOfUnits/>
+      </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
       <compartment id="c" spatialDimensions="3" size="1" constant="true"/>
@@ -268,6 +276,32 @@ const LEVEL2_REACTIONS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
   </model>
 </sbml>"#;
 
+/// A Level 1 Version 2 document whose rules are written the way Level 1 does.
+///
+/// Level 1 has no MathML and no `variable`: a rule writes its math as the
+/// attribute `formula`, which `Rule::getMath` of libsbml parses with the
+/// parser of Level 1 on the first call, and it names what it sets by its class
+/// and the attribute of that class. The class of a rule is its `type`
+/// attribute, which defaults to `scalar`, an assignment rule.
+const LEVEL1_RULES: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model name="level1_rules">
+    <listOfCompartments>
+      <compartment name="cell" volume="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species name="S1" compartment="cell" initialAmount="10"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter name="k1" value="0.1"/>
+    </listOfParameters>
+    <listOfRules>
+      <parameterRule name="k1" formula="2 ^ 3"/>
+      <speciesConcentrationRule species="S1" formula="k1 * S1" type="rate"/>
+    </listOfRules>
+  </model>
+</sbml>"#;
+
 #[test]
 fn the_elements_which_carry_a_math_are_filled_from_the_document() {
     let document = read(CORE_ELEMENTS.as_bytes()).unwrap();
@@ -339,7 +373,10 @@ fn a_unit_definition_keeps_its_units_in_the_order_of_the_document() {
         .iter()
         .map(|u| u.element.id.as_deref().unwrap())
         .collect();
-    assert_eq!(ids, vec!["mmole_per_litre", "root_metre"]);
+    assert_eq!(
+        ids,
+        vec!["mmole_per_litre", "root_metre", "bare_mole", "no_unit"]
+    );
     let kinds: Vec<_> = model.unit_definitions[0]
         .units
         .iter()
@@ -353,6 +390,24 @@ fn a_unit_definition_keeps_its_units_in_the_order_of_the_document() {
     assert_eq!(root.kind.as_deref(), Some("metre"));
     assert_eq!(root.scale, Some(-2));
     assert_eq!(root.multiplier, Some(2.5));
+}
+
+#[test]
+fn a_unit_which_states_nothing_but_its_kind_carries_nothing_else() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    // every attribute of a unit is optional to libsbml, which reports the
+    // three the document leaves out as not set rather than as their default
+    let bare = &model.unit_definitions[2].units[0];
+    assert_eq!(bare.kind.as_deref(), Some("mole"));
+    assert_eq!(bare.exponent, None);
+    assert_eq!(bare.scale, None);
+    assert_eq!(bare.multiplier, None);
+    // a definition whose `listOfUnits` is empty holds no unit at all
+    assert_eq!(
+        model.unit_definitions[3].element.id.as_deref(),
+        Some("no_unit")
+    );
+    assert!(model.unit_definitions[3].units.is_empty());
 }
 
 #[test]
@@ -389,6 +444,49 @@ fn the_rules_keep_their_kind_and_their_order() {
     );
     assert_eq!(model.rules[1].variable.as_deref(), Some("k3"));
     assert_eq!(model.rules[3].variable, None);
+}
+
+#[test]
+fn a_level_1_rule_carries_the_kind_of_its_type_and_the_math_of_its_formula() {
+    let model = read(LEVEL1_RULES.as_bytes()).unwrap().model.unwrap();
+    assert_eq!(model.rules.len(), 2);
+    // the `type` attribute defaults to `scalar`, which libsbml reads as an
+    // assignment rule, and the class of the rule names the variable it sets
+    assert_eq!(model.rules[0].kind, RuleKind::Assignment);
+    assert_eq!(model.rules[0].variable.as_deref(), Some("k1"));
+    // the math is the one `Rule::getMath` parses of the `formula` attribute
+    // with the parser of Level 1, whose `^` is the kind `Power`, a kind no
+    // content MathML yields
+    let power = model.rules[0].math.as_ref().expect("the formula parses");
+    assert_eq!(power.kind, AstKind::Power);
+    assert_eq!(power.children.len(), 2);
+    assert_eq!(model.rules[1].kind, RuleKind::Rate);
+    assert_eq!(model.rules[1].variable.as_deref(), Some("S1"));
+    assert_eq!(
+        model.rules[1].math.as_ref().map(|math| math.kind),
+        Some(AstKind::Times)
+    );
+    // Level 1 has no id and no metaid, so a rule of it carries neither
+    assert_eq!(model.rules[0].element.id, None);
+    assert_eq!(model.rules[0].element.meta_id, None);
+}
+
+#[test]
+fn a_level_1_rule_whose_formula_does_not_parse_is_filled_without_a_math() {
+    // `Rule::isSetMath` asks `getMath`, which answers null for a formula the
+    // parser of Level 1 refuses, so the rule is reported without its math
+    // rather than refused, which is what the python implementation does of it
+    let sbml = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model name="broken_formula">
+    <listOfParameters><parameter name="k1" value="1"/></listOfParameters>
+    <listOfRules><parameterRule name="k1" formula="2 +"/></listOfRules>
+  </model>
+</sbml>"#;
+    let model = read(sbml).unwrap().model.unwrap();
+    assert_eq!(model.rules.len(), 1);
+    assert_eq!(model.rules[0].kind, RuleKind::Assignment);
+    assert_eq!(model.rules[0].math, None);
 }
 
 #[test]

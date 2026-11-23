@@ -106,7 +106,7 @@ fn read_tree(
 ///
 /// `node` is a node of a syntax tree of libsbml which is alive, and the caller
 /// holds the lock of libsbml.
-pub(crate) unsafe fn ast_of(node: *mut sys::ASTNode, depth: usize) -> Result<Ast, ReadError> {
+pub(crate) unsafe fn ast_of(node: *const sys::ASTNode, depth: usize) -> Result<Ast, ReadError> {
     if depth > MAX_AST_DEPTH {
         return Err(ReadError::MathTooDeep);
     }
@@ -147,7 +147,7 @@ pub(crate) unsafe fn ast_of(node: *mut sys::ASTNode, depth: usize) -> Result<Ast
 /// # Safety
 ///
 /// `node` is a node of a syntax tree of libsbml which is alive.
-unsafe fn number(node: *mut sys::ASTNode) -> Option<AstNumber> {
+unsafe fn number(node: *const sys::ASTNode) -> Option<AstNumber> {
     let mut integer: c_longlong = 0;
     let mut real: c_double = 0.0;
     let mut exponent: c_longlong = 0;
