@@ -6,13 +6,16 @@
 //! the same document, which the gate of `crates/oracles` compares entry by entry
 //! against the whole corpus.
 //!
-//! A writer reads the `name` of a node for a symbol and for a call of a
-//! function of the model only, and keys everything else off the kind of the
-//! node: libsbml answers its own built-in name for every other node, so a node
-//! of the kind [`AstKind::FunctionAbs`] carries the name `abs` and one of the
-//! kind [`AstKind::ConstantPi`] carries `pi`, and a writer which fell back to
-//! the name would be right on those and wrong wherever libsbml names a node
-//! differently from the way a formula or a latex writes it.
+//! A writer reads the `name` of a node for a symbol, for a call of a function of
+//! the model and for a csymbol, which are the three the MathML carries the text
+//! of, and keys everything else off the kind of the node: libsbml answers its
+//! own built-in name for every other node, so a node of the kind
+//! [`AstKind::FunctionAbs`] carries the name `abs` and one of the kind
+//! [`AstKind::ConstantPi`] carries `pi`, and a writer which fell back to the
+//! name would be right on those and wrong wherever libsbml names a node
+//! differently from the way a formula or a latex writes it. A csymbol is
+//! typeset by the text the document gave it, so one which spells the time
+//! csymbol `t` is written ` t` and not ` \mathrm{time}`.
 //!
 //! No writer panics on any tree, whatever a document holds: this crate is built
 //! for WebAssembly, where a panic traps the instance and takes the report of

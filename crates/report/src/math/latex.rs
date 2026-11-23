@@ -44,15 +44,49 @@
 //!
 //! Nothing here panics on any tree: a child a node lacks is written as the empty
 //! string, which is what the stylesheets write of a missing element, and a tree
-//! past [`MAX_AST_DEPTH`] is [`MathError::TooDeep`]. A math may be nested to
-//! that bound and the walk follows it on the stack, so every function of the
-//! walk writes into one string rather than building its own and hands each
-//! construct to a function of its own, which keeps the frame of one level small
-//! enough for a thread of the default stack to carry the deepest tree the bound
-//! allows.
+//! past [`MAX_AST_DEPTH`] is [`MathError::TooDeep`].
+//!
+//! # The stack
+//!
+//! A math may be nested to that bound and the walk follows it on the stack, so
+//! every function of the walk writes into one string rather than building its
+//! own and hands each construct to a function of its own, and the string value
+//! of an element is produced with a stack of its own ([`StringValue`]) rather
+//! than by a second recursion. The two chain tests of `tests/latex.rs` carry the
+//! deepest tree the bound allows; the stack a chain of a thousand levels needs,
+//! measured by bisecting the size of the thread it is written on, is
+//!
+//! | shape | stack |
+//! | --- | --- |
+//! | `minus(chain, plus(a, b))`, which compares the string values at every level | 1,401 KiB |
+//! | a chain of `abs`, which is the plain walk | 1,369 KiB |
+//! | a chain of `plus`, which is unrolled into one operator | 415 KiB |
+//!
+//! **Those are a debug native build on the 2 MiB stack a test thread gets.**
+//! The target this constraint exists for is `wasm32-unknown-unknown`, whose
+//! stack is 1 MiB (`stack-size=1048576` in its target spec) and which traps on
+//! an overflow. Nothing in the workspace builds or runs wasm yet, so the frame
+//! cost of a release wasm build is unmeasured and the figures above do not
+//! stand in for it. The slice which first builds wasm has to measure it and
+//! then either raise the stack at link time or lower [`MAX_AST_DEPTH`].
+//!
+//! # The string value
+//!
+//! [`StringValue`] emulates the XPath string value of the mathml libsbml writes,
+//! the indentation included. It was checked against `lxml`'s `itertext()` over
+//! the mathml of all 1,832 entries of the corpus fixture while this was written:
+//! 0 differed. That check is not committed, and of the committed tests the gate
+//! of `crates/oracles/tests/math.rs` covers it only in part: 11 of the 1,832
+//! entries hold a difference whose right operand asks for the comparison and in
+//! all 11 the two values differ, so **no entry of the corpus covers the case
+//! where they are equal**. That case is covered by
+//! `the_right_operand_of_a_difference_is_parenthesised_by_its_text` of
+//! `crates/report/tests/latex.rs` alone, whose two expectations were probed
+//! against python.
 
 use super::MathError;
 use sbml4humans_model::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};
+use std::borrow::Cow;
 
 /// The latex of `ast`, as the python implementation writes it.
 ///
@@ -160,11 +194,15 @@ fn fix_name(name: &str) -> String {
 
 /// Writes the text of a token element: `normalize-space` and then `replaceEntities`.
 ///
-/// `entities.xsl` maps a few hundred characters to a command. The ones a
-/// document can put in a token are the ascii characters latex gives a meaning,
-/// which are mapped here, and the two characters ctopff writes of a constant;
-/// every other character is written as it stands, where the stylesheet would
-/// write the command of the ones it lists.
+/// `entities.xsl` maps a few hundred characters to a command. Mapped here are
+/// the ascii characters latex gives a meaning and the two characters ctopff
+/// writes of a constant; every other character is written as it stands.
+///
+/// **This is a known non-parity case.** An SId is ascii, so a `ci` is safe, but
+/// the text of a csymbol is whatever the document wrote: python answers
+/// ` \mathrm{\alpha \beta }` for a csymbol whose text is two greek letters and
+/// this answers ` \mathrm{\u{3b1}\u{3b2}}`. Closing it means porting the table
+/// of `entities.xsl`, which no document of the corpus needs.
 fn write_token(text: &str, out: &mut String) {
     let mut first = true;
     for word in text.split_whitespace() {
@@ -467,80 +505,33 @@ fn special_real(node: &Ast) -> Option<SpecialReal> {
     }
 }
 
-/* ----------------------------------------- the string value of a node */
+/* ------------------------------------------- the string value of a node */
 
-/// Where the string value of an element is written.
-///
-/// The value of the left operand of a difference is collected and the value of
-/// the right one is compared against it piece by piece, because the two are
-/// known to differ as soon as one piece does and the walk of the right operand
-/// can stop there. The indentation libsbml writes grows with the depth of an
-/// element, so the string value of a deep tree is quadratic in its depth on its
-/// own, and a chain of differences asks for one at every level of itself: a
-/// comparison which reads both values whole walks such a chain in the cube of
-/// its depth, which the first differing piece almost always makes unnecessary.
+/// One piece of work left in the production of a string value.
 #[derive(Debug)]
-struct Sink<'a> {
-    /// What has been written, which is read where nothing is compared.
-    text: String,
-    /// What each piece is compared against, [`None`] where the value is collected.
-    expected: Option<&'a str>,
-    /// How many bytes of `expected` the pieces have matched.
-    written: usize,
-    /// Whether a piece differed from `expected`.
-    differs: bool,
+enum Step<'a> {
+    /// The string value of this node, which stands at this level of the
+    /// document and this deep in the tree.
+    Node(&'a Ast, usize, usize),
+    /// A newline and the indentation of this level.
+    Indent(usize),
+    /// This text.
+    Text(Cow<'a, str>),
 }
 
-impl<'a> Sink<'a> {
-    /// A sink which collects the whole value.
-    fn collecting() -> Self {
-        Self {
-            text: String::new(),
-            expected: None,
-            written: 0,
-            differs: false,
-        }
-    }
-
-    /// A sink which compares the value it is given against `expected`.
-    fn comparing(expected: &'a str) -> Self {
-        Self {
-            text: String::new(),
-            expected: Some(expected),
-            written: 0,
-            differs: false,
-        }
-    }
-
-    /// Appends `piece`, or compares it against what is expected next.
-    fn push_str(&mut self, piece: &str) {
-        let Some(expected) = self.expected else {
-            self.text.push_str(piece);
-            return;
-        };
-        if self.differs {
-            return;
-        }
-        let next = self.written.saturating_add(piece.len());
-        if expected.as_bytes().get(self.written..next) == Some(piece.as_bytes()) {
-            self.written = next;
-        } else {
-            self.differs = true;
-        }
-    }
-
-    /// Whether the answer is settled and the walk which writes into this can stop.
-    fn settled(&self) -> bool {
-        self.differs
-    }
-
-    /// Whether the value written differs from the one expected.
-    fn value_differs(&self) -> bool {
-        self.differs || self.written != self.expected.map_or(0, str::len)
-    }
+/// The piece being produced, and how many of its bytes are done.
+#[derive(Debug)]
+enum Current<'a> {
+    /// Nothing is being produced.
+    Nothing,
+    /// A newline and the indentation of this level.
+    Indent(usize, usize),
+    /// This text.
+    Text(Cow<'a, str>, usize),
 }
 
-/// Writes the XPath string value of the mathml element libsbml writes for `node`.
+/// The bytes of the XPath string value of the mathml element libsbml writes for
+/// a node, produced one at a time.
 ///
 /// The plus template and the binary template of ctopff ask `. != ../*[2]`, which
 /// in XPath 1.0 compares the string values of two elements, to tell the right
@@ -552,160 +543,200 @@ impl<'a> Sink<'a> {
 /// what this writes: `(a*b) - (a+b)` is
 /// ` \mathit{a}\cdot \mathit{b}-\mathit{a}+\mathit{b}`.
 ///
+/// The value is produced rather than built for two reasons, and both of them are
+/// about a chain of differences, which asks for this comparison at every level
+/// of itself:
+///
+/// - The indentation grows with the level of an element, so the string value of
+///   a tree is quadratic in its depth on its own, and a comparison which built
+///   both values whole would walk such a chain in the cube of its depth.
+///   [`string_values_differ`] produces the two in step and stops at the first
+///   byte which differs, which for a chain is within the first few.
+/// - The production keeps its own stack rather than the call stack, so the
+///   comparison adds nothing to the depth the latex walk already stands at.
+///
 /// `level` is how deep the element stands, which decides the indentation before
 /// each of its children. The two operands of a difference are siblings and so
-/// stand at the same level, and comparing their string values at level zero
-/// answers the comparison of their real ones.
+/// stand at the same level, and comparing their values at level zero answers the
+/// comparison of their real ones.
+#[derive(Debug)]
+struct StringValue<'a> {
+    /// What is left to produce, the next piece last.
+    steps: Vec<Step<'a>>,
+    /// The piece being produced.
+    current: Current<'a>,
+}
+
+impl<'a> StringValue<'a> {
+    /// The string value of `node`, which stands `depth` deep in the tree.
+    fn of(node: &'a Ast, depth: usize) -> Self {
+        Self {
+            steps: vec![Step::Node(node, 0, depth)],
+            current: Current::Nothing,
+        }
+    }
+
+    /// The next byte of the value, [`None`] where it is complete.
+    ///
+    /// # Errors
+    ///
+    /// [`MathError::TooDeep`] for a subtree nested deeper than [`MAX_AST_DEPTH`].
+    fn next_byte(&mut self) -> Result<Option<u8>, MathError> {
+        loop {
+            match &mut self.current {
+                Current::Indent(level, at) => {
+                    // a newline and two spaces per level
+                    if *at <= 2 * *level {
+                        let byte = if *at == 0 { b'\n' } else { b' ' };
+                        *at += 1;
+                        return Ok(Some(byte));
+                    }
+                }
+                Current::Text(text, at) => {
+                    if let Some(byte) = text.as_bytes().get(*at) {
+                        *at += 1;
+                        return Ok(Some(*byte));
+                    }
+                }
+                Current::Nothing => {}
+            }
+            let Some(step) = self.steps.pop() else {
+                return Ok(None);
+            };
+            match step {
+                Step::Indent(level) => self.current = Current::Indent(level, 0),
+                Step::Text(text) => self.current = Current::Text(text, 0),
+                Step::Node(node, level, depth) => {
+                    self.current = Current::Nothing;
+                    self.expand(node, level, depth)?;
+                }
+            }
+        }
+    }
+
+    /// Puts the pieces of the string value of `node` on the stack.
+    fn expand(&mut self, node: &'a Ast, level: usize, depth: usize) -> Result<(), MathError> {
+        if depth > MAX_AST_DEPTH {
+            return Err(MathError::TooDeep);
+        }
+        let mut steps: Vec<Step<'a>> = Vec::new();
+        match special_real(node) {
+            // an empty element, which carries no text at all
+            Some(SpecialReal::NotANumber | SpecialReal::Infinity) => {}
+            // the apply of a minus and an infinity, two empty elements
+            Some(SpecialReal::NegativeInfinity) => steps.extend([
+                Step::Indent(level + 1),
+                Step::Indent(level + 1),
+                Step::Indent(level),
+            ]),
+            None => match node.kind {
+                AstKind::Integer | AstKind::Real | AstKind::RealE | AstKind::Rational => {
+                    let (first, second) = number_texts(node);
+                    steps.extend(spaced(Cow::Owned(first)));
+                    if let Some(second) = second {
+                        steps.extend(spaced(Cow::Owned(second)));
+                    }
+                }
+                AstKind::Name | AstKind::NameTime | AstKind::NameAvogadro => {
+                    steps.extend(spaced(named_text(node)));
+                }
+                AstKind::ConstantE
+                | AstKind::ConstantFalse
+                | AstKind::ConstantPi
+                | AstKind::ConstantTrue => {}
+                AstKind::FunctionPiecewise => {
+                    // each case of a piecewise stands in a piece or an otherwise
+                    for case in node.children.chunks(2) {
+                        steps.push(Step::Indent(level + 1));
+                        for child in case {
+                            steps.push(Step::Indent(level + 2));
+                            steps.push(Step::Node(child, level + 2, depth + 1));
+                        }
+                        steps.push(Step::Indent(level + 1));
+                    }
+                    if !node.children.is_empty() {
+                        steps.push(Step::Indent(level));
+                    }
+                }
+                AstKind::Lambda => {
+                    // every child of a lambda but the last stands in a bvar
+                    let last = node.children.len().saturating_sub(1);
+                    for (n, child) in node.children.iter().enumerate() {
+                        steps.push(Step::Indent(level + 1));
+                        if n == last {
+                            steps.push(Step::Node(child, level + 1, depth + 1));
+                        } else {
+                            steps.push(Step::Indent(level + 2));
+                            steps.push(Step::Node(child, level + 2, depth + 1));
+                            steps.push(Step::Indent(level + 1));
+                        }
+                    }
+                    if !node.children.is_empty() {
+                        steps.push(Step::Indent(level));
+                    }
+                }
+                // every other kind is an apply whose first element names it: a
+                // ci or a csymbol which carries a text, or an element of none
+                kind => {
+                    steps.push(Step::Indent(level + 1));
+                    if kind == AstKind::Function || is_csymbol_function(kind) {
+                        steps.extend(spaced(named_text(node)));
+                    }
+                    let args = operands(node, depth)?;
+                    // the first operand of a logarithm and of a root of two
+                    // stands in a logbase or a degree, one element deeper
+                    let wrapped = matches!(kind, AstKind::FunctionLog | AstKind::FunctionRoot)
+                        && args.len() == 2;
+                    for (n, child) in args.iter().enumerate() {
+                        steps.push(Step::Indent(level + 1));
+                        if wrapped && n == 0 {
+                            steps.push(Step::Indent(level + 2));
+                            steps.push(Step::Node(child, level + 2, depth + 1));
+                            steps.push(Step::Indent(level + 1));
+                        } else {
+                            steps.push(Step::Node(child, level + 1, depth + 1));
+                        }
+                    }
+                    steps.push(Step::Indent(level));
+                }
+            },
+        }
+        self.steps.extend(steps.into_iter().rev());
+        Ok(())
+    }
+}
+
+/// The text libsbml writes in the `ci` or the `csymbol` of a named node.
+fn named_text(node: &Ast) -> Cow<'_, str> {
+    Cow::Borrowed(node.name.as_deref().unwrap_or_default())
+}
+
+/// `text` with the space libsbml writes on each side of the text of an element.
+fn spaced(text: Cow<'_, str>) -> [Step<'_>; 3] {
+    [
+        Step::Text(Cow::Borrowed(" ")),
+        Step::Text(text),
+        Step::Text(Cow::Borrowed(" ")),
+    ]
+}
+
+/// Whether the string values of `left` and of `right` differ.
+///
+/// The two are produced in step and read up to the first byte which differs, so
+/// neither is ever built whole. See [`StringValue`].
 ///
 /// # Errors
 ///
 /// [`MathError::TooDeep`] for a subtree nested deeper than [`MAX_AST_DEPTH`].
-fn write_string_value(
-    node: &Ast,
-    level: usize,
-    depth: usize,
-    out: &mut Sink,
-) -> Result<(), MathError> {
-    if depth > MAX_AST_DEPTH {
-        return Err(MathError::TooDeep);
-    }
-    if out.settled() {
-        return Ok(());
-    }
-    match special_real(node) {
-        // an empty element, which carries no text at all
-        Some(SpecialReal::NotANumber | SpecialReal::Infinity) => return Ok(()),
-        // the apply of a minus and an infinity, two empty elements
-        Some(SpecialReal::NegativeInfinity) => {
-            indent(level + 1, out);
-            indent(level + 1, out);
-            indent(level, out);
-            return Ok(());
+fn string_values_differ(left: &Ast, right: &Ast, depth: usize) -> Result<bool, MathError> {
+    let mut left = StringValue::of(left, depth);
+    let mut right = StringValue::of(right, depth);
+    loop {
+        match (left.next_byte()?, right.next_byte()?) {
+            (None, None) => return Ok(false),
+            (ours, theirs) if ours != theirs => return Ok(true),
+            _ => {}
         }
-        None => {}
-    }
-    match node.kind {
-        AstKind::Integer | AstKind::Real | AstKind::RealE | AstKind::Rational => {
-            write_number_string_value(node, out);
-        }
-        AstKind::Name | AstKind::NameTime | AstKind::NameAvogadro => {
-            write_name_string_value(node, out);
-        }
-        AstKind::ConstantE
-        | AstKind::ConstantFalse
-        | AstKind::ConstantPi
-        | AstKind::ConstantTrue => {}
-        AstKind::FunctionPiecewise => write_piecewise_string_value(node, level, depth, out)?,
-        AstKind::Lambda => write_lambda_string_value(node, level, depth, out)?,
-        _ => write_apply_string_value(node, level, depth, out)?,
-    }
-    Ok(())
-}
-
-/// Writes the string value of the `cn` of a number node, its `sep` included.
-fn write_number_string_value(node: &Ast, out: &mut Sink) {
-    let (first, second) = number_texts(node);
-    out.push_str(" ");
-    out.push_str(&first);
-    out.push_str(" ");
-    if let Some(second) = second {
-        out.push_str(" ");
-        out.push_str(&second);
-        out.push_str(" ");
-    }
-}
-
-/// Writes the string value of the `ci` or the `csymbol` of a named node.
-fn write_name_string_value(node: &Ast, out: &mut Sink) {
-    out.push_str(" ");
-    out.push_str(node.name.as_deref().unwrap_or_default());
-    out.push_str(" ");
-}
-
-/// Writes the string value of an `apply`, whose first element names it.
-///
-/// A call of a function of the model is named by a `ci` and a csymbol function
-/// by a `csymbol`, both of which carry a text; every other function is named by
-/// an element of its own, which carries none.
-fn write_apply_string_value(
-    node: &Ast,
-    level: usize,
-    depth: usize,
-    out: &mut Sink,
-) -> Result<(), MathError> {
-    indent(level + 1, out);
-    if node.kind == AstKind::Function || is_csymbol_function(node.kind) {
-        write_name_string_value(node, out);
-    }
-    let args = operands(node, depth)?;
-    // the first operand of a logarithm and of a root of two stands in a logbase
-    // or a degree, one element deeper than the other children
-    let wrapped =
-        matches!(node.kind, AstKind::FunctionLog | AstKind::FunctionRoot) && args.len() == 2;
-    for (n, child) in args.iter().enumerate() {
-        indent(level + 1, out);
-        if wrapped && n == 0 {
-            indent(level + 2, out);
-            write_string_value(child, level + 2, depth + 1, out)?;
-            indent(level + 1, out);
-        } else {
-            write_string_value(child, level + 1, depth + 1, out)?;
-        }
-    }
-    indent(level, out);
-    Ok(())
-}
-
-/// Writes the string value of a `piecewise`, whose cases each stand in an element.
-fn write_piecewise_string_value(
-    node: &Ast,
-    level: usize,
-    depth: usize,
-    out: &mut Sink,
-) -> Result<(), MathError> {
-    for case in node.children.chunks(2) {
-        indent(level + 1, out);
-        for child in case {
-            indent(level + 2, out);
-            write_string_value(child, level + 2, depth + 1, out)?;
-        }
-        indent(level + 1, out);
-    }
-    if !node.children.is_empty() {
-        indent(level, out);
-    }
-    Ok(())
-}
-
-/// Writes the string value of a `lambda`, whose bound variables each stand in a `bvar`.
-fn write_lambda_string_value(
-    node: &Ast,
-    level: usize,
-    depth: usize,
-    out: &mut Sink,
-) -> Result<(), MathError> {
-    let last = node.children.len().saturating_sub(1);
-    for (n, child) in node.children.iter().enumerate() {
-        indent(level + 1, out);
-        if n == last {
-            write_string_value(child, level + 1, depth + 1, out)?;
-        } else {
-            indent(level + 2, out);
-            write_string_value(child, level + 2, depth + 1, out)?;
-            indent(level + 1, out);
-        }
-    }
-    if !node.children.is_empty() {
-        indent(level, out);
-    }
-    Ok(())
-}
-
-/// Writes the newline and the indentation of `level` libsbml writes before an element.
-fn indent(level: usize, out: &mut Sink) {
-    out.push_str("\n");
-    for _ in 0..level {
-        out.push_str("  ");
     }
 }
 
@@ -1312,8 +1343,13 @@ fn emit_summand(
 /// and answers whether it did.
 ///
 /// The template writes the first factor itself where it is a negative number,
-/// whose sign it has already written, and where it is a difference of three
-/// operands or more, of which libsbml writes the first and the last alone.
+/// whose sign it has already written, and where it is a difference whose apply
+/// holds more than three elements (`count(*) > 3` of `ctopff.xsl:537`), of which
+/// it writes the first alone. **That second branch is dead in both
+/// implementations**: `writeOperatorArgs` of libsbml writes the left and the
+/// right child of a difference and nothing between them, so the apply of a
+/// difference never holds more than three elements. It is ported because the
+/// template has it, not because a tree reaches it.
 fn emit_pulled_product(child: &Ast, depth: usize, out: &mut String) -> Result<bool, MathError> {
     let factors = operands(child, depth + 1)?;
     let Some(first) = factors.first() else {
@@ -1321,8 +1357,12 @@ fn emit_pulled_product(child: &Ast, depth: usize, out: &mut String) -> Result<bo
     };
     if is_negative_number(first) {
         write_mn(&xpath_number(-number_value(first)), out);
-    } else if first.kind == AstKind::Minus && operands(first, depth + 2)?.len() >= 3 {
-        if let Some(inner) = operands(first, depth + 2)?.first() {
+    } else if first.kind == AstKind::Minus {
+        let inner = operands(first, depth + 2)?;
+        if inner.len() < 3 {
+            return Ok(false);
+        }
+        if let Some(inner) = inner.first() {
             emit(inner, 0, Some(first), 0, depth + 3, out)?;
         }
     } else {
@@ -1471,7 +1511,7 @@ fn parent_operator(parent: Option<&Ast>) -> Operator {
 /// The templates tell the two operands of a difference apart by their string
 /// values rather than by their position, so two operands of the same text are
 /// taken for one and the right one is written without parentheses. See
-/// [`write_string_value`].
+/// [`StringValue`].
 ///
 /// # Errors
 ///
@@ -1491,11 +1531,7 @@ fn right_of_minus(parent: Option<&Ast>, index: usize, depth: usize) -> Result<bo
     if index != 1 {
         return Ok(false);
     }
-    let mut collected = Sink::collecting();
-    write_string_value(left, 0, depth, &mut collected)?;
-    let mut comparison = Sink::comparing(&collected.text);
-    write_string_value(right, 0, depth, &mut comparison)?;
-    Ok(comparison.value_differs())
+    string_values_differ(left, right, depth)
 }
 
 /// Whether `node` is a negative sign rather than a difference.
@@ -1505,12 +1541,19 @@ fn is_unary_minus(node: &Ast) -> bool {
 
 /// Whether libsbml writes `node` as a `cn` without a `sep` whose number is below zero.
 ///
-/// A rational and a number in exponent form carry a `sep` and are no candidates,
-/// and neither is a real which is written as an element of its own.
+/// This is `self::m:cn[not(m:sep) and (number(.) < 0)]` of the plus template.
+/// The `sep` is what separates the two text pieces of a number, so a rational
+/// and every number libsbml writes in exponent form are no candidates. Which
+/// those are is not decided by the kind of the node but by the number it holds:
+/// a plain `cn` whose `"%.15g"` carries an exponent is written in exponent form
+/// as well, and `-1e-6` of a document is such a node. A real which libsbml
+/// writes as an element of its own is no `cn` at all.
 fn is_negative_number(node: &Ast) -> bool {
     match node.kind {
         AstKind::Integer | AstKind::Real => {
-            special_real(node).is_none() && number_value(node) < 0.0
+            special_real(node).is_none()
+                && number_texts(node).1.is_none()
+                && number_value(node) < 0.0
         }
         _ => false,
     }
@@ -1629,11 +1672,11 @@ fn set_function_name(kind: AstKind) -> Option<&'static str> {
 /// The name ctopff gives an operator element it writes as a call of its name.
 ///
 /// Only a difference of no operand reaches this: every other operator has a
-/// template of its own whatever its number of operands.
+/// template of its own whatever its number of operands, a sum and a product of
+/// none included.
 fn operator_name(kind: AstKind) -> Result<&'static str, MathError> {
-    Ok(match kind {
-        AstKind::Minus => "minus",
-        AstKind::Plus => "plus",
-        _ => return Err(MathError::UnknownKind(kind)),
-    })
+    match kind {
+        AstKind::Minus => Ok("minus"),
+        _ => Err(MathError::UnknownKind(kind)),
+    }
 }

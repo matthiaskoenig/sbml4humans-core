@@ -69,6 +69,15 @@ fn integer_with_units(value: i64, units: &str) -> Ast {
     }
 }
 
+/// A `cn`, which libsbml writes with a `sep` where its `"%.15g"` carries an exponent.
+fn real(value: f64) -> Ast {
+    Ast {
+        kind: AstKind::Real,
+        number: Some(AstNumber::Real(value)),
+        ..Ast::default()
+    }
+}
+
 /// A `cn type="e-notation"`.
 fn real_e(mantissa: f64, exponent: i64) -> Ast {
     Ast {
@@ -85,7 +94,8 @@ fn written(ast: &Ast) -> String {
 
 #[test]
 fn a_name_with_one_underscore_becomes_a_subscript() {
-    // the entry `kf_0` of the fixture
+    // the `kf_0` of the entry `comp1 * (kf_0 * B - kr_0 * BL)` of the fixture,
+    // which is a sub-expression of that entry and no entry of its own
     assert_eq!(written(&name("kf_0")), " \\mathit{kf_{0}}");
 }
 
@@ -382,10 +392,8 @@ fn a_chain_of_any_construct_to_the_bound_is_written_without_overflowing_the_stac
     // a panic traps a WebAssembly instance, and so does the abort of a stack
     // which ran out: the walk has to carry the deepest tree the bound allows
     // whatever it is made of. The chain is built once with its tail on the left
-    // and once on the right, because a difference walks its right operand a
-    // second time to compare the text of the two, and a sum and a product are
-    // written as one operator over a whole chain of their own kind rather than
-    // one per level.
+    // and once on the right, because a sum and a product are written as one
+    // operator over a whole chain of their own kind rather than one per level.
     let kinds = [
         AstKind::Minus,
         AstKind::Plus,
@@ -414,4 +422,65 @@ fn a_chain_of_any_construct_to_the_bound_is_written_without_overflowing_the_stac
             );
         }
     }
+}
+
+#[test]
+fn a_chain_of_differences_whose_operands_are_compared_is_written_without_overflowing_the_stack() {
+    // this is the shape which asks for the comparison of two string values at
+    // every level of itself and with the chain on the side which is read first:
+    // the right operand of each difference is an application, so it is written
+    // by the template which asks `. != ../*[2]`, and the left operand it is
+    // compared against is the whole chain below. A comparison which built that
+    // value would walk the chain again at every level, on top of the frames the
+    // latex walk already stands on.
+    // the sum of the innermost difference hangs two levels below it, so a chain
+    // of this many differences is a tree of exactly the bound
+    let mut ast = name("x");
+    for _ in 2..MAX_AST_DEPTH {
+        let sum = node(AstKind::Plus, vec![name("a"), name("b")]);
+        ast = node(AstKind::Minus, vec![ast, sum]);
+    }
+    assert!(latex(&ast).is_ok(), "a chain of the bound is written");
+    let deeper = node(
+        AstKind::Minus,
+        vec![ast, node(AstKind::Plus, vec![name("a"), name("b")])],
+    );
+    assert_eq!(latex(&deeper), Err(MathError::TooDeep));
+}
+
+#[test]
+fn a_negative_number_in_exponent_form_keeps_its_sign_in_a_sum() {
+    // the plus template of ctopff writes a minus of its own before an operand
+    // which is a negative `cn`, and the number of that operand negated, but only
+    // for a `cn` without a `sep`: `self::m:cn[not(m:sep) and (number(.) < 0)]`.
+    // A plain `cn` whose `"%.15g"` carries an exponent is written with one, so it
+    // takes the ordinary branch and keeps the minus of its own mantissa. python
+    // answers each of these; the corpus holds no negative number of that shape,
+    // so the gate is silent on it.
+    let sum = node(AstKind::Plus, vec![name("a"), real(-1e-6)]);
+    assert_eq!(written(&sum), " \\mathit{a}+-1\\cdot {10}^{-6}");
+    // a negative number which needs no exponent does take that branch
+    let sum = node(AstKind::Plus, vec![name("a"), real(-0.5)]);
+    assert_eq!(written(&sum), " \\mathit{a}-0.5");
+
+    // the same holds where the number is the first factor of a product, whose
+    // sign the template pulls out
+    let product = node(AstKind::Times, vec![real(-1e-6), name("b")]);
+    let sum = node(AstKind::Plus, vec![name("a"), product]);
+    assert_eq!(
+        written(&sum),
+        " \\mathit{a}+-1\\cdot {10}^{-6}\\cdot \\mathit{b}"
+    );
+
+    // and in the parentheses of a sum of one operand, which hold an operator of
+    // their own only where the template wrote that minus
+    let sum = node(AstKind::Plus, vec![real(-1e-6)]);
+    let product = node(AstKind::Times, vec![name("x"), sum]);
+    assert_eq!(
+        written(&product),
+        " \\mathit{x}\\cdot \\left(-1\\cdot {10}^{-6}\\right)"
+    );
+    let sum = node(AstKind::Plus, vec![real(-0.5)]);
+    let product = node(AstKind::Times, vec![name("x"), sum]);
+    assert_eq!(written(&product), " \\mathit{x}\\cdot (-0.5)");
 }
