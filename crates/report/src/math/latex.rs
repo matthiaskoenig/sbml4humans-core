@@ -83,10 +83,10 @@
 //!
 //! [`StringValue`] emulates the XPath string value of the mathml libsbml writes,
 //! the indentation included. It was checked against `lxml`'s `itertext()` over
-//! the mathml of all 1,832 entries of the corpus fixture while this was written:
-//! 0 differed. That check is not committed, and of the committed tests the gate
-//! of `crates/oracles/tests/math.rs` covers it only in part: 11 of the 1,832
-//! entries hold a difference whose right operand asks for the comparison and in
+//! the mathml of all 1,832 maths of the corpus in the fixture while this was
+//! written: 0 differed. That check is not committed, and of the committed tests
+//! the gate of `crates/oracles/tests/math.rs` covers it only in part: 11 of
+//! those 1,832 hold a difference whose right operand asks for the comparison and in
 //! all 11 the two values differ, so **no entry of the corpus covers the case
 //! where they are equal**. That case is covered by
 //! `the_right_operand_of_a_difference_is_parenthesised_by_its_text` of
@@ -643,11 +643,14 @@ pub(super) fn holds_a_childless_lambda(ast: &Ast) -> bool {
 /// Measured against libsbml 5.21.2 and the python implementation at the bound,
 /// shape by shape, in `tests::the_mathml_depth_of_a_shape_is_the_one_libsbml_writes`
 /// of the parent module. It was also checked against the depth `lxml` reads of
-/// the mathml of all 1,832 entries of the corpus fixture while this was
+/// the mathml of all 1,832 maths of the corpus in the fixture while this was
 /// written: 0 differed, over documents of 2 to 15 elements. That check is not
-/// committed, since the fixture carries no depth of its own, and no entry of
-/// the corpus comes anywhere near the bound; the table of that test is what
-/// guards the mapping.
+/// committed, since the fixture carries no depth of its own, and no math of the
+/// corpus comes anywhere near the bound. What guards the mapping is the table of
+/// that test and the pair of entries the fixture carries at the bound itself, a
+/// chain of 254 nested divides and one of 255, which python typesets the first of
+/// and not the second (`the_fixture_holds_the_two_maths_at_the_bound_of_the_latex_pipeline`
+/// of `crates/oracles/tests/math.rs`).
 ///
 /// # Errors
 ///

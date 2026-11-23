@@ -1,0 +1,1872 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": null,
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 2,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "core_elements/Model:core_elements",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "core_elements/Species:S1",
+        "target": "core_elements/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "core_elements/Species:S2",
+        "target": "core_elements/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "core_elements/Species:S3",
+        "target": "core_elements/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "core_elements/Species:E",
+        "target": "core_elements/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "core_elements/InitialAssignment:S2",
+        "target": "core_elements/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/InitialAssignment:S2",
+        "target": "core_elements/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "core_elements/InitialAssignment:ia_S3",
+        "target": "core_elements/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/InitialAssignment:ia_S3",
+        "target": "core_elements/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "core_elements/AssignmentRule:k2",
+        "target": "core_elements/Parameter:k2",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/AssignmentRule:k2",
+        "target": "core_elements/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "core_elements/RateRule:k3",
+        "target": "core_elements/Parameter:k3",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/RateRule:k3",
+        "target": "core_elements/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/AlgebraicRule:algebraicRule.0",
+        "target": "core_elements/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/AlgebraicRule:algebraicRule.0",
+        "target": "core_elements/Parameter:k4",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/AlgebraicRule:meta_algebraic",
+        "target": "core_elements/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/AlgebraicRule:meta_algebraic",
+        "target": "core_elements/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/Constraint:constraint.0",
+        "target": "core_elements/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/Constraint:constraint.1",
+        "target": "core_elements/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "core_elements/Reaction:J0",
+        "target": "core_elements/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/Reaction:J0",
+        "target": "core_elements/SpeciesReference:sr_S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/SpeciesReference:sr_S1",
+        "target": "core_elements/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/Reaction:J0",
+        "target": "core_elements/SpeciesReference:J0.reactant.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/SpeciesReference:J0.reactant.S1",
+        "target": "core_elements/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "core_elements/Reaction:J0",
+        "target": "core_elements/SpeciesReference:J0.product.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "core_elements/SpeciesReference:J0.product.S2",
+        "target": "core_elements/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "modifier",
+        "source": "core_elements/Reaction:J0",
+        "target": "core_elements/ModifierSpeciesReference:J0.modifier.E",
+        "targetEntry": null
+      },
+      {
+        "kind": "modifier",
+        "source": "core_elements/ModifierSpeciesReference:J0.modifier.E",
+        "target": "core_elements/Species:E",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "core_elements/Reaction:J0",
+        "target": "core_elements/KineticLaw:J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/KineticLaw:J0.kineticLaw",
+        "target": "core_elements/LocalParameter:J0.kineticLaw.Km",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/KineticLaw:J0.kineticLaw",
+        "target": "core_elements/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/KineticLaw:J0.kineticLaw",
+        "target": "core_elements/LocalParameter:J0.kineticLaw.Vmax",
+        "targetEntry": null
+      },
+      {
+        "kind": "localParameter",
+        "source": "core_elements/KineticLaw:J0.kineticLaw",
+        "target": "core_elements/LocalParameter:J0.kineticLaw.Km",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "core_elements/LocalParameter:J0.kineticLaw.Km",
+        "target": "core_elements/UnitDefinition:mmole_per_litre",
+        "targetEntry": null
+      },
+      {
+        "kind": "localParameter",
+        "source": "core_elements/KineticLaw:J0.kineticLaw",
+        "target": "core_elements/LocalParameter:J0.kineticLaw.Vmax",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/Reaction:4f0ba7f89e92e336b41f5aedb3e782cc35536b53",
+        "target": "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3",
+        "target": "core_elements/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/Reaction:R2",
+        "target": "core_elements/SpeciesReference:sr_S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/SpeciesReference:sr_S2",
+        "target": "core_elements/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "core_elements/Reaction:R2",
+        "target": "core_elements/KineticLaw:R2.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/KineticLaw:R2.kineticLaw",
+        "target": "core_elements/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/KineticLaw:R2.kineticLaw",
+        "target": "core_elements/LocalParameter:R2.kineticLaw.k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "localParameter",
+        "source": "core_elements/KineticLaw:R2.kineticLaw",
+        "target": "core_elements/LocalParameter:R2.kineticLaw.k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "localParameter",
+        "source": "core_elements/KineticLaw:R2.kineticLaw",
+        "target": "core_elements/LocalParameter:R2.kineticLaw.k5",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/Reaction:R4",
+        "target": "core_elements/SpeciesReference:R4.reactant.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/SpeciesReference:R4.reactant.S1",
+        "target": "core_elements/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/Reaction:R4",
+        "target": "core_elements/SpeciesReference:R4.reactant.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "core_elements/SpeciesReference:R4.reactant.S2",
+        "target": "core_elements/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "core_elements/Reaction:R4",
+        "target": "core_elements/SpeciesReference:R4.product.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "core_elements/SpeciesReference:R4.product.S3",
+        "target": "core_elements/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "trigger",
+        "source": "core_elements/Event:E0",
+        "target": "core_elements/Trigger:E0.trigger",
+        "targetEntry": null
+      },
+      {
+        "kind": "priority",
+        "source": "core_elements/Event:E0",
+        "target": "core_elements/Priority:E0.priority",
+        "targetEntry": null
+      },
+      {
+        "kind": "delay",
+        "source": "core_elements/Event:E0",
+        "target": "core_elements/Delay:E0.delay",
+        "targetEntry": null
+      },
+      {
+        "kind": "eventAssignment",
+        "source": "core_elements/Event:E0",
+        "target": "core_elements/EventAssignment:E0.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "core_elements/EventAssignment:E0.S1",
+        "target": "core_elements/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "eventAssignment",
+        "source": "core_elements/Event:E0",
+        "target": "core_elements/EventAssignment:ea_k4",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "core_elements/EventAssignment:ea_k4",
+        "target": "core_elements/Parameter:k4",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "core_elements/EventAssignment:ea_k4",
+        "target": "core_elements/Parameter:k1",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "core_elements/AlgebraicRule:algebraicRule.0": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/AlgebraicRule:algebraicRule.0",
+        "sbmlType": "AlgebraicRule"
+      },
+      "core_elements/AlgebraicRule:meta_algebraic": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/AlgebraicRule:meta_algebraic",
+        "sbmlType": "AlgebraicRule"
+      },
+      "core_elements/AssignmentRule:k2": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/AssignmentRule:k2",
+        "sbmlType": "AssignmentRule"
+      },
+      "core_elements/Compartment:c": {
+        "id": "c",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Compartment:c",
+        "sbmlType": "Compartment"
+      },
+      "core_elements/Constraint:constraint.0": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Constraint:constraint.0",
+        "sbmlType": "Constraint"
+      },
+      "core_elements/Constraint:constraint.1": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Constraint:constraint.1",
+        "sbmlType": "Constraint"
+      },
+      "core_elements/Delay:E0.delay": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Delay:E0.delay",
+        "sbmlType": "Delay"
+      },
+      "core_elements/Event:E0": {
+        "id": "E0",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Event:E0",
+        "sbmlType": "Event"
+      },
+      "core_elements/Event:event.1": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Event:event.1",
+        "sbmlType": "Event"
+      },
+      "core_elements/EventAssignment:E0.S1": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/EventAssignment:E0.S1",
+        "sbmlType": "EventAssignment"
+      },
+      "core_elements/EventAssignment:ea_k4": {
+        "id": "ea_k4",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/EventAssignment:ea_k4",
+        "sbmlType": "EventAssignment"
+      },
+      "core_elements/FunctionDefinition:f": {
+        "id": "f",
+        "model": "core_elements/Model:core_elements",
+        "name": "twice",
+        "pk": "core_elements/FunctionDefinition:f",
+        "sbmlType": "FunctionDefinition"
+      },
+      "core_elements/InitialAssignment:S2": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/InitialAssignment:S2",
+        "sbmlType": "InitialAssignment"
+      },
+      "core_elements/InitialAssignment:ia_S3": {
+        "id": "ia_S3",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/InitialAssignment:ia_S3",
+        "sbmlType": "InitialAssignment"
+      },
+      "core_elements/KineticLaw:J0.kineticLaw": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/KineticLaw:J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "core_elements/KineticLaw:R2.kineticLaw": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/KineticLaw:R2.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "core_elements/LocalParameter:J0.kineticLaw.Km": {
+        "id": "Km",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/LocalParameter:J0.kineticLaw.Km",
+        "sbmlType": "LocalParameter"
+      },
+      "core_elements/LocalParameter:J0.kineticLaw.Vmax": {
+        "id": "Vmax",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/LocalParameter:J0.kineticLaw.Vmax",
+        "sbmlType": "LocalParameter"
+      },
+      "core_elements/LocalParameter:R2.kineticLaw.k1": {
+        "id": "k1",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/LocalParameter:R2.kineticLaw.k1",
+        "sbmlType": "LocalParameter"
+      },
+      "core_elements/LocalParameter:R2.kineticLaw.k5": {
+        "id": "k5",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/LocalParameter:R2.kineticLaw.k5",
+        "sbmlType": "LocalParameter"
+      },
+      "core_elements/Model:core_elements": {
+        "id": "core_elements",
+        "model": null,
+        "name": null,
+        "pk": "core_elements/Model:core_elements",
+        "sbmlType": "Model"
+      },
+      "core_elements/ModifierSpeciesReference:J0.modifier.E": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/ModifierSpeciesReference:J0.modifier.E",
+        "sbmlType": "ModifierSpeciesReference"
+      },
+      "core_elements/Parameter:k1": {
+        "id": "k1",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Parameter:k1",
+        "sbmlType": "Parameter"
+      },
+      "core_elements/Parameter:k2": {
+        "id": "k2",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Parameter:k2",
+        "sbmlType": "Parameter"
+      },
+      "core_elements/Parameter:k3": {
+        "id": "k3",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Parameter:k3",
+        "sbmlType": "Parameter"
+      },
+      "core_elements/Parameter:k4": {
+        "id": "k4",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Parameter:k4",
+        "sbmlType": "Parameter"
+      },
+      "core_elements/Priority:E0.priority": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Priority:E0.priority",
+        "sbmlType": "Priority"
+      },
+      "core_elements/RateRule:k3": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/RateRule:k3",
+        "sbmlType": "RateRule"
+      },
+      "core_elements/Reaction:4f0ba7f89e92e336b41f5aedb3e782cc35536b53": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Reaction:4f0ba7f89e92e336b41f5aedb3e782cc35536b53",
+        "sbmlType": "Reaction"
+      },
+      "core_elements/Reaction:J0": {
+        "id": "J0",
+        "model": "core_elements/Model:core_elements",
+        "name": "first",
+        "pk": "core_elements/Reaction:J0",
+        "sbmlType": "Reaction"
+      },
+      "core_elements/Reaction:R2": {
+        "id": "R2",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Reaction:R2",
+        "sbmlType": "Reaction"
+      },
+      "core_elements/Reaction:R3": {
+        "id": "R3",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Reaction:R3",
+        "sbmlType": "Reaction"
+      },
+      "core_elements/Reaction:R4": {
+        "id": "R4",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Reaction:R4",
+        "sbmlType": "Reaction"
+      },
+      "core_elements/Species:E": {
+        "id": "E",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Species:E",
+        "sbmlType": "Species"
+      },
+      "core_elements/Species:S1": {
+        "id": "S1",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Species:S1",
+        "sbmlType": "Species"
+      },
+      "core_elements/Species:S2": {
+        "id": "S2",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Species:S2",
+        "sbmlType": "Species"
+      },
+      "core_elements/Species:S3": {
+        "id": "S3",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Species:S3",
+        "sbmlType": "Species"
+      },
+      "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/SpeciesReference:J0.product.S2": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:J0.product.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/SpeciesReference:J0.reactant.S1": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:J0.reactant.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/SpeciesReference:R4.product.S3": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:R4.product.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/SpeciesReference:R4.reactant.S1": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:R4.reactant.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/SpeciesReference:R4.reactant.S2": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:R4.reactant.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/SpeciesReference:sr_S1": {
+        "id": "sr_S1",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:sr_S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/SpeciesReference:sr_S2": {
+        "id": "sr_S2",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:sr_S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/Trigger:E0.trigger": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Trigger:E0.trigger",
+        "sbmlType": "Trigger"
+      },
+      "core_elements/UnitDefinition:bare_mole": {
+        "id": "bare_mole",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/UnitDefinition:bare_mole",
+        "sbmlType": "UnitDefinition"
+      },
+      "core_elements/UnitDefinition:mmole_per_litre": {
+        "id": "mmole_per_litre",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/UnitDefinition:mmole_per_litre",
+        "sbmlType": "UnitDefinition"
+      },
+      "core_elements/UnitDefinition:no_unit": {
+        "id": "no_unit",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/UnitDefinition:no_unit",
+        "sbmlType": "UnitDefinition"
+      },
+      "core_elements/UnitDefinition:root_metre": {
+        "id": "root_metre",
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/UnitDefinition:root_metre",
+        "sbmlType": "UnitDefinition"
+      },
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "core_elements",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "c",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Compartment:c",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"c\" spatialDimensions=\"3\" size=\"1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "S1 > 0",
+            "latex": " \\mathit{S1}>0"
+          },
+          "message": "<message>\n  <p xmlns=\"http://www.w3.org/1999/xhtml\">S1 has to stay positive</p>\n</message>",
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Constraint:constraint.0",
+          "sbmlType": "Constraint",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<constraint>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <gt/>\n      <ci> S1 </ci>\n      <cn type=\"integer\"> 0 </cn>\n    </apply>\n  </math>\n  <message>\n    <p xmlns=\"http://www.w3.org/1999/xhtml\">S1 has to stay positive</p>\n  </message>\n</constraint>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "S2 < 10",
+            "latex": " \\mathit{S2}<10"
+          },
+          "message": null,
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Constraint:constraint.1",
+          "sbmlType": "Constraint",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<constraint>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <lt/>\n      <ci> S2 </ci>\n      <cn type=\"integer\"> 10 </cn>\n    </apply>\n  </math>\n</constraint>"
+        }
+      ],
+      "listOfEvents": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "delay": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "2",
+              "latex": " 2"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "core_elements/Delay:E0.delay",
+            "sbmlType": "Delay",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<delay>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn type=\"integer\"> 2 </cn>\n  </math>\n</delay>"
+          },
+          "history": null,
+          "id": "E0",
+          "keyValuePairs": [],
+          "listOfEventAssignments": [
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "math": {
+                "formula": "0",
+                "latex": " 0"
+              },
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/EventAssignment:E0.S1",
+              "sbmlType": "EventAssignment",
+              "sbo": null,
+              "uncertainties": [],
+              "variable": "S1",
+              "xml": "<eventAssignment variable=\"S1\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn type=\"integer\"> 0 </cn>\n  </math>\n</eventAssignment>"
+            },
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": "ea_k4",
+              "keyValuePairs": [],
+              "lists": [],
+              "math": {
+                "formula": "k1",
+                "latex": " \\mathit{k1}"
+              },
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/EventAssignment:ea_k4",
+              "sbmlType": "EventAssignment",
+              "sbo": null,
+              "uncertainties": [],
+              "variable": "k4",
+              "xml": "<eventAssignment id=\"ea_k4\" variable=\"k4\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> k1 </ci>\n  </math>\n</eventAssignment>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Event:E0",
+          "priority": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "1",
+              "latex": " 1"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "core_elements/Priority:E0.priority",
+            "sbmlType": "Priority",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<priority>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn type=\"integer\"> 1 </cn>\n  </math>\n</priority>"
+          },
+          "sbmlType": "Event",
+          "sbo": null,
+          "trigger": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "initialValue": false,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "time > 10",
+              "latex": " \\mathrm{time}>10"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "persistent": true,
+            "pk": "core_elements/Trigger:E0.trigger",
+            "sbmlType": "Trigger",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<trigger initialValue=\"false\" persistent=\"true\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <gt/>\n      <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n      <cn type=\"integer\"> 10 </cn>\n    </apply>\n  </math>\n</trigger>"
+          },
+          "uncertainties": [],
+          "useValuesFromTriggerTime": true,
+          "xml": "<event id=\"E0\" useValuesFromTriggerTime=\"true\">\n  <trigger initialValue=\"false\" persistent=\"true\">\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <gt/>\n        <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n        <cn type=\"integer\"> 10 </cn>\n      </apply>\n    </math>\n  </trigger>\n  <delay>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <cn type=\"integer\"> 2 </cn>\n    </math>\n  </delay>\n  <priority>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <cn type=\"integer\"> 1 </cn>\n    </math>\n  </priority>\n  <listOfEventAssignments>\n    <eventAssignment variable=\"S1\">\n      <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n        <cn type=\"integer\"> 0 </cn>\n      </math>\n    </eventAssignment>\n    <eventAssignment id=\"ea_k4\" variable=\"k4\">\n      <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n        <ci> k1 </ci>\n      </math>\n    </eventAssignment>\n  </listOfEventAssignments>\n</event>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "delay": null,
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "listOfEventAssignments": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Event:event.1",
+          "priority": null,
+          "sbmlType": "Event",
+          "sbo": null,
+          "trigger": null,
+          "uncertainties": [],
+          "useValuesFromTriggerTime": null,
+          "xml": "<event/>"
+        }
+      ],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "f",
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "lambda(x, 2 * x)",
+            "latex": " \\lambda(\\mathit{x}) =\\left(2\\cdot \\mathit{x}\\right)"
+          },
+          "metaId": null,
+          "name": "twice",
+          "notes": null,
+          "pk": "core_elements/FunctionDefinition:f",
+          "sbmlType": "FunctionDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<functionDefinition id=\"f\" name=\"twice\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <lambda>\n      <bvar>\n        <ci> x </ci>\n      </bvar>\n      <apply>\n        <times/>\n        <cn type=\"integer\"> 2 </cn>\n        <ci> x </ci>\n      </apply>\n    </lambda>\n  </math>\n</functionDefinition>"
+        }
+      ],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "k1 * 2",
+            "latex": " \\mathit{k1}\\cdot 2"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/InitialAssignment:S2",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "S2",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"S2\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k1 </ci>\n      <cn type=\"integer\"> 2 </cn>\n    </apply>\n  </math>\n</initialAssignment>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "ia_S3",
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "k1",
+            "latex": " \\mathit{k1}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/InitialAssignment:ia_S3",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "S3",
+          "uncertainties": [],
+          "xml": "<initialAssignment id=\"ia_S3\" symbol=\"S3\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> k1 </ci>\n  </math>\n</initialAssignment>"
+        }
+      ],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Parameter:k1",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k1\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k2",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Parameter:k2",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": null,
+          "xml": "<parameter id=\"k2\" constant=\"false\"/>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k3",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Parameter:k3",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.0,
+          "xml": "<parameter id=\"k3\" value=\"0\" constant=\"false\"/>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k4",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Parameter:k4",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": null,
+          "xml": "<parameter id=\"k4\" constant=\"false\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": "c",
+          "cvterms": [],
+          "equation": "2.0 S1 + S1 ➞ S2",
+          "fast": null,
+          "fbc": null,
+          "history": null,
+          "id": "J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [
+              {
+                "comp": null,
+                "cvterms": [],
+                "derivedUnits": "\\frac{mmol}{l}",
+                "history": null,
+                "id": "Km",
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "name": null,
+                "notes": null,
+                "pk": "core_elements/LocalParameter:J0.kineticLaw.Km",
+                "sbmlType": "LocalParameter",
+                "sbo": null,
+                "uncertainties": [],
+                "units": "mmole_per_litre",
+                "unitsLatex": "\\frac{mmol}{l}",
+                "value": 0.5,
+                "xml": "<localParameter id=\"Km\" value=\"0.5\" units=\"mmole_per_litre\"/>"
+              },
+              {
+                "comp": null,
+                "cvterms": [],
+                "derivedUnits": "-",
+                "history": null,
+                "id": "Vmax",
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "name": null,
+                "notes": null,
+                "pk": "core_elements/LocalParameter:J0.kineticLaw.Vmax",
+                "sbmlType": "LocalParameter",
+                "sbo": null,
+                "uncertainties": [],
+                "units": null,
+                "unitsLatex": null,
+                "value": 1.0,
+                "xml": "<localParameter id=\"Vmax\" value=\"1\"/>"
+              }
+            ],
+            "lists": [],
+            "math": {
+              "formula": "Vmax * S1 / (Km + S1)",
+              "latex": " \\frac{\\mathit{Vmax}\\cdot \\mathit{S1}}{\\mathit{Km}+\\mathit{S1}}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "core_elements/KineticLaw:J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <divide/>\n      <apply>\n        <times/>\n        <ci> Vmax </ci>\n        <ci> S1 </ci>\n      </apply>\n      <apply>\n        <plus/>\n        <ci> Km </ci>\n        <ci> S1 </ci>\n      </apply>\n    </apply>\n  </math>\n  <listOfLocalParameters>\n    <localParameter id=\"Km\" value=\"0.5\" units=\"mmole_per_litre\"/>\n    <localParameter id=\"Vmax\" value=\"1\"/>\n  </listOfLocalParameters>\n</kineticLaw>"
+          },
+          "listOfModifiers": [
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/ModifierSpeciesReference:J0.modifier.E",
+              "sbmlType": "ModifierSpeciesReference",
+              "sbo": null,
+              "species": "E",
+              "uncertainties": [],
+              "xml": "<modifierSpeciesReference species=\"E\"/>"
+            }
+          ],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/SpeciesReference:J0.product.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": "sr_S1",
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/SpeciesReference:sr_S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 2.0,
+              "uncertainties": [],
+              "xml": "<speciesReference id=\"sr_S1\" species=\"S1\" stoichiometry=\"2\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/SpeciesReference:J0.reactant.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "first",
+          "notes": null,
+          "pk": "core_elements/Reaction:J0",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J0\" name=\"first\" reversible=\"false\" compartment=\"c\">\n  <listOfReactants>\n    <speciesReference id=\"sr_S1\" species=\"S1\" stoichiometry=\"2\" constant=\"true\"/>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <listOfModifiers>\n    <modifierSpeciesReference species=\"E\"/>\n  </listOfModifiers>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <divide/>\n        <apply>\n          <times/>\n          <ci> Vmax </ci>\n          <ci> S1 </ci>\n        </apply>\n        <apply>\n          <plus/>\n          <ci> Km </ci>\n          <ci> S1 </ci>\n        </apply>\n      </apply>\n    </math>\n    <listOfLocalParameters>\n      <localParameter id=\"Km\" value=\"0.5\" units=\"mmole_per_litre\"/>\n      <localParameter id=\"Vmax\" value=\"1\"/>\n    </listOfLocalParameters>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "? S3 ⇆ ",
+          "fast": null,
+          "fbc": null,
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": null,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Reaction:4f0ba7f89e92e336b41f5aedb3e782cc35536b53",
+          "reversible": null,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction>\n  <listOfReactants>\n    <speciesReference species=\"S3\"/>\n  </listOfReactants>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "sr_S2 S2 ⇆ ",
+          "fast": null,
+          "fbc": null,
+          "history": null,
+          "id": "R2",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [
+              {
+                "comp": null,
+                "cvterms": [],
+                "derivedUnits": "-",
+                "history": null,
+                "id": "k1",
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "name": null,
+                "notes": null,
+                "pk": "core_elements/LocalParameter:R2.kineticLaw.k1",
+                "sbmlType": "LocalParameter",
+                "sbo": null,
+                "uncertainties": [],
+                "units": null,
+                "unitsLatex": null,
+                "value": 2.0,
+                "xml": "<localParameter id=\"k1\" value=\"2\"/>"
+              },
+              {
+                "comp": null,
+                "cvterms": [],
+                "derivedUnits": "dimensionless",
+                "history": null,
+                "id": "k5",
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "name": null,
+                "notes": null,
+                "pk": "core_elements/LocalParameter:R2.kineticLaw.k5",
+                "sbmlType": "LocalParameter",
+                "sbo": null,
+                "uncertainties": [],
+                "units": "dimensionless",
+                "unitsLatex": "-",
+                "value": 3.0,
+                "xml": "<localParameter id=\"k5\" value=\"3\" units=\"dimensionless\"/>"
+              }
+            ],
+            "lists": [],
+            "math": {
+              "formula": "k1 * S2",
+              "latex": " \\mathit{k1}\\cdot \\mathit{S2}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "core_elements/KineticLaw:R2.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k1 </ci>\n      <ci> S2 </ci>\n    </apply>\n  </math>\n  <listOfLocalParameters>\n    <localParameter id=\"k1\" value=\"2\"/>\n    <localParameter id=\"k5\" value=\"3\" units=\"dimensionless\"/>\n  </listOfLocalParameters>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": "sr_S2",
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/SpeciesReference:sr_S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": null,
+              "uncertainties": [],
+              "xml": "<speciesReference id=\"sr_S2\" species=\"S2\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Reaction:R2",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"R2\" reversible=\"true\">\n  <listOfReactants>\n    <speciesReference id=\"sr_S2\" species=\"S2\" constant=\"true\"/>\n  </listOfReactants>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k1 </ci>\n        <ci> S2 </ci>\n      </apply>\n    </math>\n    <listOfLocalParameters>\n      <localParameter id=\"k1\" value=\"2\"/>\n      <localParameter id=\"k5\" value=\"3\" units=\"dimensionless\"/>\n    </listOfLocalParameters>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": " ⇆ ",
+          "fast": null,
+          "fbc": null,
+          "history": null,
+          "id": "R3",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [],
+          "listOfReactants": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Reaction:R3",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"R3\" reversible=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "-S1 + 0.5 S2 ➞ 1e-05 S3",
+          "fast": null,
+          "fbc": null,
+          "history": null,
+          "id": "R4",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/SpeciesReference:R4.product.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": 1e-05,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\" stoichiometry=\"1e-05\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/SpeciesReference:R4.reactant.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": -1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"-1\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "core_elements/SpeciesReference:R4.reactant.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 0.5,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"0.5\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Reaction:R4",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"R4\" reversible=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S1\" stoichiometry=\"-1\" constant=\"true\"/>\n    <speciesReference species=\"S2\" stoichiometry=\"0.5\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S3\" stoichiometry=\"1e-05\" constant=\"true\"/>\n  </listOfProducts>\n</reaction>"
+        }
+      ],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "2 * k1",
+            "latex": " 2\\cdot \\mathit{k1}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/AssignmentRule:k2",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "k2",
+          "xml": "<assignmentRule variable=\"k2\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <cn type=\"integer\"> 2 </cn>\n      <ci> k1 </ci>\n    </apply>\n  </math>\n</assignmentRule>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "k1",
+            "latex": " \\mathit{k1}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/RateRule:k3",
+          "sbmlType": "RateRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "k3",
+          "xml": "<rateRule variable=\"k3\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> k1 </ci>\n  </math>\n</rateRule>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "k4 - k1",
+            "latex": " \\mathit{k4}-\\mathit{k1}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/AlgebraicRule:algebraicRule.0",
+          "sbmlType": "AlgebraicRule",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<algebraicRule>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <minus/>\n      <ci> k4 </ci>\n      <ci> k1 </ci>\n    </apply>\n  </math>\n</algebraicRule>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "S1 - k1",
+            "latex": " \\mathit{S1}-\\mathit{k1}"
+          },
+          "metaId": "meta_algebraic",
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/AlgebraicRule:meta_algebraic",
+          "sbmlType": "AlgebraicRule",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<algebraicRule metaid=\"meta_algebraic\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <minus/>\n      <ci> S1 </ci>\n      <ci> k1 </ci>\n    </apply>\n  </math>\n</algebraicRule>"
+        }
+      ],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "c",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S1",
+          "initialAmount": null,
+          "initialConcentration": 1.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Species:S1",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S1\" compartment=\"c\" initialConcentration=\"1\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "c",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Species:S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S2\" compartment=\"c\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "c",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S3",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Species:S3",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S3\" compartment=\"c\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "c",
+          "constant": true,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "E",
+          "initialAmount": null,
+          "initialConcentration": 1.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/Species:E",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"E\" compartment=\"c\" initialConcentration=\"1\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"true\" constant=\"true\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_litre",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 1.0,
+              "scale": -3
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/UnitDefinition:mmole_per_litre",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{l}",
+          "xml": "<unitDefinition id=\"mmole_per_litre\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"-3\" multiplier=\"1\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "root_metre",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 0.5,
+              "kind": "metre",
+              "multiplier": 2.5,
+              "scale": -2
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/UnitDefinition:root_metre",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "5.0 mm^0.5",
+          "xml": "<unitDefinition id=\"root_metre\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"0.5\" scale=\"-2\" multiplier=\"2.5\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "bare_mole",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": null,
+              "kind": "mole",
+              "multiplier": null,
+              "scale": null
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/UnitDefinition:bare_mole",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "mol",
+          "xml": "<unitDefinition id=\"bare_mole\">\n  <listOfUnits>\n    <unit kind=\"mole\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "no_unit",
+          "keyValuePairs": [],
+          "listOfUnits": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "core_elements/UnitDefinition:no_unit",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "-",
+          "xml": "<unitDefinition id=\"no_unit\">\n  <listOfUnits/>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "core_elements/Model:core_elements",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": "The id '' is not an SId and cannot be typeset.",
+  "odeSystem": null
+}

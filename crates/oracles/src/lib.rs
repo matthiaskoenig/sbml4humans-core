@@ -26,7 +26,9 @@ use serde_json::Value;
 ///   slash is `~1` in the entry, a key which holds a tilde is `~0`.
 /// - A trailing segment, written `**/derivedUnits`, which silences every pointer whose last
 ///   segment is exactly that segment, and everything below those. It is the form for a field
-///   which sits on every element, where one exact pointer per element would be unreadable.
+///   which sits on every element, where one exact pointer per element would be unreadable. The
+///   `**/` carries one segment and not a path: what follows it is compared with the last segment
+///   of the pointer, which never holds a slash, so `**/listOfRules/math` names nothing.
 ///
 /// An empty entry, or the bare `**/`, names nothing and is skipped rather than silencing the
 /// whole report.
@@ -130,8 +132,13 @@ pub struct MathFixture {
     pub mathml: String,
     /// The Level 3 formula of libsbml.
     pub formula: String,
-    /// The latex python writes.
-    pub latex: String,
+    /// The latex python writes, `None` for a math it cannot typeset.
+    ///
+    /// The generator writes what `math_info` of `mathml.py` answers, which is the `null` of the
+    /// report for the two maths the python implementation cannot typeset. One entry of the fixture
+    /// is such a math, the deeper of the two chains of divides the generator adds at the bound of
+    /// the latex pipeline; no math of the model corpus is one.
+    pub latex: Option<String>,
 }
 
 /// The maths of the corpus fixture `testdata/oracles/maths.json`, sorted by `mathml`.

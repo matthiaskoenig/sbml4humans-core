@@ -2,7 +2,7 @@
 //!
 //! Every expected string of this file is what the python implementation writes:
 //! the ones which name an entry come from the math fixture
-//! `testdata/oracles/maths.json`, whose 1,832 entries the gate of
+//! `testdata/oracles/maths.json`, whose 1,834 entries the gate of
 //! `crates/oracles/tests/math.rs` compares, and the others are what
 //! `sbml4humans.mathml.astnode_to_latex` answered for the tree built here, for
 //! constructs the corpus holds none of. The trees are built by hand, since

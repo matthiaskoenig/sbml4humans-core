@@ -3,7 +3,7 @@
 //! Every expected string of this file is the `formula` of an entry of the math
 //! fixture `testdata/oracles/maths.json`, which holds what the python
 //! implementation writes; the gate of `crates/oracles/tests/math.rs` compares
-//! every one of its 1,832 entries. The trees are built here by hand, since
+//! every one of its 1,834 entries. The trees are built here by hand, since
 //! `crates/report` does not depend on libsbml and so cannot read a MathML,
 //! and each test names the entry its string comes from.
 
