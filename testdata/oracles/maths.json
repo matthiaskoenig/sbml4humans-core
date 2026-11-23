@@ -34,6 +34,7 @@
     "corpus": [
       "resources/biomodels/*.omex",
       "resources/models/**/*.xml",
+      "resources/models/**/*.sbml",
       "resources/examples/*.xml"
     ],
     "enumeration": "document wide (getListOfAllElements), not the lists of the main model only: includes the math inside comp model definitions, as the report does",
@@ -44,14 +45,17 @@
       "Delay",
       "EventAssignment",
       "FunctionDefinition",
+      "FunctionTerm",
       "InitialAssignment",
       "KineticLaw",
       "Priority",
       "RateRule",
-      "Trigger"
+      "Trigger",
+      "UncertParameter"
     ],
-    "count": 2305,
-    "distinct": 1811
+    "excluded": "resources/models/fbc/Recon3D.xml.gz and e_coli_core.xml.gz: the gzipped FBC models carry no math",
+    "count": 2328,
+    "distinct": 1832
   },
   "maths": [
     {
@@ -740,6 +744,56 @@
       "latex": " \\begin{cases} 1& \\text{  if  } & \\mathit{T}>\\mathit{T_{threshold}}\\\\ 0& {\\text{  otherwise}}\\end{cases}"
     },
     {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <eq/>\n      <ci> Cdc20 </ci>\n      <cn type=\"integer\"> 0 </cn>\n    </apply>\n    <apply>\n      <eq/>\n      <ci> Cdh1 </ci>\n      <cn type=\"integer\"> 0 </cn>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(Cdc20 == 0) && (Cdh1 == 0)",
+      "latex": " (\\mathit{Cdc20}=0)\\wedge (\\mathit{Cdh1}=0)"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <geq/>\n      <ci> Cro </ci>\n      <cn type=\"integer\"> 3 </cn>\n    </apply>\n    <apply>\n      <lt/>\n      <ci> CI </ci>\n      <cn type=\"integer\"> 2 </cn>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(Cro >= 3) && (CI < 2)",
+      "latex": " (\\mathit{Cro}\\ge 3)\\wedge (\\mathit{CI}<2)"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <geq/>\n      <ci> E2F </ci>\n      <cn type=\"integer\"> 1 </cn>\n    </apply>\n    <apply>\n      <eq/>\n      <ci> Rb </ci>\n      <cn type=\"integer\"> 0 </cn>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(E2F >= 1) && (Rb == 0)",
+      "latex": " (\\mathit{E2F}\\ge 1)\\wedge (\\mathit{Rb}=0)"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <geq/>\n      <ci> G </ci>\n      <ci> theta_G_G </ci>\n    </apply>\n    <apply>\n      <lt/>\n      <ci> P </ci>\n      <ci> theta_G_P </ci>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(G >= theta_G_G) && (P < theta_G_P)",
+      "latex": " (\\mathit{G}\\ge \\mathit{theta\\_G\\_G})\\wedge (\\mathit{P}<\\mathit{theta\\_G\\_P})"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <geq/>\n      <ci> G </ci>\n      <ci> w_P_G </ci>\n    </apply>\n    <apply>\n      <eq/>\n      <ci> P </ci>\n      <cn type=\"integer\"> 0 </cn>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(G >= w_P_G) && (P == 0)",
+      "latex": " (\\mathit{G}\\ge \\mathit{w\\_P\\_G})\\wedge (\\mathit{P}=0)"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <geq/>\n      <ci> G </ci>\n      <ci> w_P_G </ci>\n    </apply>\n    <apply>\n      <lt/>\n      <ci> P </ci>\n      <ci> theta_P_P </ci>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(G >= w_P_G) && (P < theta_P_P)",
+      "latex": " (\\mathit{G}\\ge \\mathit{w\\_P\\_G})\\wedge (\\mathit{P}<\\mathit{theta\\_P\\_P})"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <geq/>\n      <ci> N </ci>\n      <cn type=\"integer\"> 1 </cn>\n    </apply>\n    <apply>\n      <lt/>\n      <ci> CI </ci>\n      <cn type=\"integer\"> 2 </cn>\n    </apply>\n    <apply>\n      <lt/>\n      <ci> Cro </ci>\n      <cn type=\"integer\"> 3 </cn>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(N >= 1) && (CI < 2) && (Cro < 3)",
+      "latex": " (\\mathit{N}\\ge 1)\\wedge (\\mathit{CI}<2)\\wedge (\\mathit{Cro}<3)"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <geq/>\n      <ci> S </ci>\n      <ci> theta_G_S </ci>\n    </apply>\n    <apply>\n      <lt/>\n      <ci> P </ci>\n      <ci> theta_G_P </ci>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(S >= theta_G_S) && (P < theta_G_P)",
+      "latex": " (\\mathit{S}\\ge \\mathit{theta\\_G\\_S})\\wedge (\\mathit{P}<\\mathit{theta\\_G\\_P})"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <lt/>\n      <ci> CI </ci>\n      <cn type=\"integer\"> 1 </cn>\n    </apply>\n    <apply>\n      <lt/>\n      <ci> Cro </ci>\n      <cn type=\"integer\"> 2 </cn>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(CI < 1) && (Cro < 2)",
+      "latex": " (\\mathit{CI}<1)\\wedge (\\mathit{Cro}<2)"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <and/>\n    <apply>\n      <lt/>\n      <ci> Cro </ci>\n      <cn type=\"integer\"> 3 </cn>\n    </apply>\n    <apply>\n      <lt/>\n      <ci> CI </ci>\n      <cn type=\"integer\"> 2 </cn>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(Cro < 3) && (CI < 2)",
+      "latex": " (\\mathit{Cro}<3)\\wedge (\\mathit{CI}<2)"
+    },
+    {
       "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/bernoulli\"> bernoulli </csymbol>\n    <cn type=\"integer\"> 10 </cn>\n  </apply>\n</math>",
       "formula": "bernoulli(10)",
       "latex": " \\mathrm{bernoulli}\\left(10\\right)"
@@ -815,6 +869,11 @@
       "latex": " \\mathrm{lognormal}\\left(0,1\\right)"
     },
     {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\"> normal </csymbol>\n    <ci> Vmax_mean </ci>\n    <cn> 0.04 </cn>\n  </apply>\n</math>",
+      "formula": "normal(Vmax_mean, 0.04)",
+      "latex": " \\mathrm{normal}\\left(\\mathit{Vmax_{mean}},0.04\\right)"
+    },
+    {
       "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\"> normal </csymbol>\n    <cn type=\"integer\"> 0 </cn>\n    <cn type=\"integer\"> 1 </cn>\n    <cn type=\"integer\"> 0 </cn>\n    <cn type=\"integer\"> 10 </cn>\n  </apply>\n</math>",
       "formula": "normal(0, 1, 0, 10)",
       "latex": " \\mathrm{normal}\\left(0,1,0,10\\right)"
@@ -823,6 +882,11 @@
       "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\"> normal </csymbol>\n    <cn type=\"integer\"> 0 </cn>\n    <cn type=\"integer\"> 1 </cn>\n  </apply>\n</math>",
       "formula": "normal(0, 1)",
       "latex": " \\mathrm{normal}\\left(0,1\\right)"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\"> normal </csymbol>\n    <cn> 2 </cn>\n    <cn> 2 </cn>\n  </apply>\n</math>",
+      "formula": "normal(2, 2)",
+      "latex": " \\mathrm{normal}\\left(2,2\\right)"
     },
     {
       "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/poisson\"> poisson </csymbol>\n    <cn> 0.5 </cn>\n    <cn type=\"integer\"> 0 </cn>\n    <cn type=\"integer\"> 10 </cn>\n  </apply>\n</math>",
@@ -1433,6 +1497,16 @@
       "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <divide/>\n    <cn type=\"integer\"> 1 </cn>\n    <apply>\n      <plus/>\n      <apply>\n        <exp/>\n        <apply>\n          <divide/>\n          <apply>\n            <plus/>\n            <ci> V </ci>\n            <cn type=\"integer\"> 30 </cn>\n          </apply>\n          <cn type=\"integer\"> 10 </cn>\n        </apply>\n      </apply>\n      <cn type=\"integer\"> 1 </cn>\n    </apply>\n  </apply>\n</math>",
       "formula": "1 / (exp((V + 30) / 10) + 1)",
       "latex": " \\frac{1}{{e}^{\\frac{\\mathit{V}+30}{10}}+1}"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <geq/>\n    <ci> CycB </ci>\n    <cn type=\"integer\"> 1 </cn>\n  </apply>\n</math>",
+      "formula": "CycB >= 1",
+      "latex": " \\mathit{CycB}\\ge 1"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <geq/>\n    <ci> CycD </ci>\n    <cn type=\"integer\"> 1 </cn>\n  </apply>\n</math>",
+      "formula": "CycD >= 1",
+      "latex": " \\mathit{CycD}\\ge 1"
     },
     {
       "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <geq/>\n    <ci> SPF </ci>\n    <cn> 0.1 </cn>\n  </apply>\n</math>",
@@ -2118,6 +2192,41 @@
       "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <minus/>\n    <cn type=\"integer\"> 1 </cn>\n    <ci> Wee1 </ci>\n  </apply>\n</math>",
       "formula": "1 - Wee1",
       "latex": " 1-\\mathit{Wee1}"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <or/>\n    <apply>\n      <and/>\n      <apply>\n        <eq/>\n        <ci> CycA </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycB </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycD </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycE </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n    </apply>\n    <apply>\n      <and/>\n      <apply>\n        <geq/>\n        <ci> p27 </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycB </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycD </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n    </apply>\n  </apply>\n</math>",
+      "formula": "((CycA == 0) && (CycB == 0) && (CycD == 0) && (CycE == 0)) || ((p27 >= 1) && (CycB == 0) && (CycD == 0))",
+      "latex": " ((\\mathit{CycA}=0)\\wedge (\\mathit{CycB}=0)\\wedge (\\mathit{CycD}=0)\\wedge (\\mathit{CycE}=0))\\vee ((\\mathit{p27}\\ge 1)\\wedge (\\mathit{CycB}=0)\\wedge (\\mathit{CycD}=0))"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <or/>\n    <apply>\n      <and/>\n      <apply>\n        <eq/>\n        <ci> CycA </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycB </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n    </apply>\n    <apply>\n      <geq/>\n      <ci> Cdc20 </ci>\n      <cn type=\"integer\"> 1 </cn>\n    </apply>\n    <apply>\n      <and/>\n      <apply>\n        <geq/>\n        <ci> p27 </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycB </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n    </apply>\n  </apply>\n</math>",
+      "formula": "((CycA == 0) && (CycB == 0)) || (Cdc20 >= 1) || ((p27 >= 1) && (CycB == 0))",
+      "latex": " ((\\mathit{CycA}=0)\\wedge (\\mathit{CycB}=0))\\vee (\\mathit{Cdc20}\\ge 1)\\vee ((\\mathit{p27}\\ge 1)\\wedge (\\mathit{CycB}=0))"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <or/>\n    <apply>\n      <and/>\n      <apply>\n        <eq/>\n        <ci> CycD </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycE </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycA </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycB </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n    </apply>\n    <apply>\n      <and/>\n      <apply>\n        <geq/>\n        <ci> p27 </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <not/>\n        <apply>\n          <and/>\n          <apply>\n            <geq/>\n            <ci> CycE </ci>\n            <cn type=\"integer\"> 1 </cn>\n          </apply>\n          <apply>\n            <geq/>\n            <ci> CycA </ci>\n            <cn type=\"integer\"> 1 </cn>\n          </apply>\n        </apply>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycB </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycD </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n    </apply>\n  </apply>\n</math>",
+      "formula": "((CycD == 0) && (CycE == 0) && (CycA == 0) && (CycB == 0)) || ((p27 >= 1) && (!((CycE >= 1) && (CycA >= 1))) && (CycB == 0) && (CycD == 0))",
+      "latex": " ((\\mathit{CycD}=0)\\wedge (\\mathit{CycE}=0)\\wedge (\\mathit{CycA}=0)\\wedge (\\mathit{CycB}=0))\\vee ((\\mathit{p27}\\ge 1)\\wedge \\neg ((\\mathit{CycE}\\ge 1)\\wedge (\\mathit{CycA}\\ge 1))\\wedge (\\mathit{CycB}=0)\\wedge (\\mathit{CycD}=0))"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <or/>\n    <apply>\n      <and/>\n      <apply>\n        <eq/>\n        <ci> Rb </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycA </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycB </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n    </apply>\n    <apply>\n      <and/>\n      <apply>\n        <geq/>\n        <ci> p27 </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> Rb </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> CycB </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n    </apply>\n  </apply>\n</math>",
+      "formula": "((Rb == 0) && (CycA == 0) && (CycB == 0)) || ((p27 >= 1) && (Rb == 0) && (CycB == 0))",
+      "latex": " ((\\mathit{Rb}=0)\\wedge (\\mathit{CycA}=0)\\wedge (\\mathit{CycB}=0))\\vee ((\\mathit{p27}\\ge 1)\\wedge (\\mathit{Rb}=0)\\wedge (\\mathit{CycB}=0))"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <or/>\n    <apply>\n      <and/>\n      <apply>\n        <geq/>\n        <ci> E2F </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> Rb </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> Cdc20 </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <not/>\n        <apply>\n          <and/>\n          <apply>\n            <geq/>\n            <ci> Cdh1 </ci>\n            <cn type=\"integer\"> 1 </cn>\n          </apply>\n          <apply>\n            <geq/>\n            <ci> UbcH10 </ci>\n            <cn type=\"integer\"> 1 </cn>\n          </apply>\n        </apply>\n      </apply>\n    </apply>\n    <apply>\n      <and/>\n      <apply>\n        <geq/>\n        <ci> CycA </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> Rb </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <eq/>\n        <ci> Cdc20 </ci>\n        <cn type=\"integer\"> 0 </cn>\n      </apply>\n      <apply>\n        <not/>\n        <apply>\n          <and/>\n          <apply>\n            <geq/>\n            <ci> Cdh1 </ci>\n            <cn type=\"integer\"> 1 </cn>\n          </apply>\n          <apply>\n            <geq/>\n            <ci> UbcH10 </ci>\n            <cn type=\"integer\"> 1 </cn>\n          </apply>\n        </apply>\n      </apply>\n    </apply>\n  </apply>\n</math>",
+      "formula": "((E2F >= 1) && (Rb == 0) && (Cdc20 == 0) && !((Cdh1 >= 1) && (UbcH10 >= 1))) || ((CycA >= 1) && (Rb == 0) && (Cdc20 == 0) && !((Cdh1 >= 1) && (UbcH10 >= 1)))",
+      "latex": " ((\\mathit{E2F}\\ge 1)\\wedge (\\mathit{Rb}=0)\\wedge (\\mathit{Cdc20}=0)\\wedge \\neg ((\\mathit{Cdh1}\\ge 1)\\wedge (\\mathit{UbcH10}\\ge 1)))\\vee ((\\mathit{CycA}\\ge 1)\\wedge (\\mathit{Rb}=0)\\wedge (\\mathit{Cdc20}=0)\\wedge \\neg ((\\mathit{Cdh1}\\ge 1)\\wedge (\\mathit{UbcH10}\\ge 1)))"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <or/>\n    <apply>\n      <eq/>\n      <ci> Cdh1 </ci>\n      <cn type=\"integer\"> 0 </cn>\n    </apply>\n    <apply>\n      <and/>\n      <apply>\n        <geq/>\n        <ci> Cdh1 </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <geq/>\n        <ci> UbcH10 </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <or/>\n        <apply>\n          <geq/>\n          <ci> Cdc20 </ci>\n          <cn type=\"integer\"> 1 </cn>\n        </apply>\n        <apply>\n          <geq/>\n          <ci> CycA </ci>\n          <cn type=\"integer\"> 1 </cn>\n        </apply>\n        <apply>\n          <geq/>\n          <ci> CycB </ci>\n          <cn type=\"integer\"> 1 </cn>\n        </apply>\n      </apply>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(Cdh1 == 0) || ((Cdh1 >= 1) && (UbcH10 >= 1) && ((Cdc20 >= 1) || (CycA >= 1) || (CycB >= 1)))",
+      "latex": " (\\mathit{Cdh1}=0)\\vee ((\\mathit{Cdh1}\\ge 1)\\wedge (\\mathit{UbcH10}\\ge 1)\\wedge (\\mathit{Cdc20}\\ge 1)\\vee (\\mathit{CycA}\\ge 1)\\vee (\\mathit{CycB}\\ge 1))"
+    },
+    {
+      "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <or/>\n    <apply>\n      <lt/>\n      <ci> Cro </ci>\n      <cn type=\"integer\"> 1 </cn>\n    </apply>\n    <apply>\n      <and/>\n      <apply>\n        <geq/>\n        <ci> Cro </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n      <apply>\n        <geq/>\n        <ci> CII </ci>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n    </apply>\n  </apply>\n</math>",
+      "formula": "(Cro < 1) || ((Cro >= 1) && (CII >= 1))",
+      "latex": " (\\mathit{Cro}<1)\\vee ((\\mathit{Cro}\\ge 1)\\wedge (\\mathit{CII}\\ge 1))"
     },
     {
       "mathml": "\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <apply>\n    <plus/>\n    <apply>\n      <minus/>\n      <apply>\n        <times/>\n        <ci> k31 </ci>\n        <ci> Ca_Cyt </ci>\n        <ci> p3 </ci>\n      </apply>\n    </apply>\n    <apply>\n      <times/>\n      <ci> k31 </ci>\n      <ci> K3 </ci>\n      <apply>\n        <minus/>\n        <cn type=\"integer\"> 1 </cn>\n        <ci> p3 </ci>\n      </apply>\n    </apply>\n  </apply>\n</math>",
