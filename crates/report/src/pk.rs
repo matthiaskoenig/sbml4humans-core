@@ -11,8 +11,9 @@ pub fn of(scope: &str, sbml_type: &str, key: &str) -> String {
 
 /// The key an element carries of its own: its id, else its metaId, `None` when it carries neither.
 ///
-/// It is the rule `_has_own_key` reads (`sbmlinfo.py:190`) and the first two branches of `_key`
-/// (`sbmlinfo.py:447-452`), which both [`key`] and [`derived`] below ask for: `key` answers a
+/// It is the rule `_has_own_key` reads (`sbmlinfo.py:190`): the id branch and the metaId branch of
+/// `_key` (`sbmlinfo.py:455-460`) without the target branch which stands between them, which the
+/// builder answers for itself. Both [`key`] and [`derived`] below ask for it: `key` answers a
 /// fallback where this is `None` and `derived` numbers the children where it is.
 fn own_key(element: &Element) -> Option<&str> {
     element.id.as_deref().or(element.meta_id.as_deref())
