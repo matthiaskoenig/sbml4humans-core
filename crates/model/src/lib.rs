@@ -6,6 +6,8 @@
 
 mod document;
 mod element;
+mod math;
 
 pub use document::{Compartment, Document, Model, Package, Parameter, Species};
 pub use element::Element;
+pub use math::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};
