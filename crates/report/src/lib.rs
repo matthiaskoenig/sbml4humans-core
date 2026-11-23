@@ -5,6 +5,7 @@
 mod build;
 mod double;
 pub mod math;
+mod number;
 pub mod pk;
 mod types;
 
