@@ -12,9 +12,13 @@ use crate::Double;
 #[derive(Debug, Default, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Math {
-    /// The `latex`.
-    pub latex: String,
-    /// The `formula`.
+    /// The `latex`, `null` for the two maths the python implementation reports
+    /// without one, which `crate::math::math` names.
+    ///
+    /// The key stays in the JSON either way, which is what python writes: the
+    /// frontend reads the field and shows the formula alone where it is `null`.
+    pub latex: Option<String>,
+    /// The `formula`, which is written for any tree at any depth.
     pub formula: String,
 }
 

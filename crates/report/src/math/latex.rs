@@ -46,6 +46,12 @@
 //! string, which is what the stylesheets write of a missing element, and a tree
 //! past [`MAX_AST_DEPTH`] is [`MathError::TooDeep`].
 //!
+//! The two maths the python implementation writes no latex of at all are here as
+//! well, since both are questions about the mathml libsbml writes and not about
+//! the latex: [`holds_a_childless_lambda`] is the shape its writer dies on and
+//! [`mathml_depth`] is the depth [`MAX_MATHML_DEPTH`] bounds. `math` of the
+//! parent module asks them before it asks for a latex.
+//!
 //! # The stack
 //!
 //! A math may be nested to that bound and the walk follows it on the stack, so
@@ -566,6 +572,233 @@ fn real_value(node: &Ast) -> Option<f64> {
         Some(AstNumber::Integer(integer)) => integer as f64,
         None => 0.0,
     })
+}
+
+/* ------------------------------------------ the maths python writes no latex of */
+
+/// The deepest mathml document the python implementation converts, the `<math>`
+/// root counted as its first element.
+///
+/// `_convert_cmathml` of `mathml.py` parses the mathml libsbml wrote with
+/// `lxml.etree.fromstring`, which refuses a document deeper than this with
+/// `Excessive depth in document: 256, use XML_PARSE_HUGE option`; `math_info`
+/// (`mathml.py:309-332`) catches that `LxmlError`, logs a warning and reports
+/// the math without its latex, as its formula alone.
+pub(super) const MAX_MATHML_DEPTH: usize = 256;
+
+/// Whether `ast` holds a lambda without children anywhere in it.
+///
+/// `unwritable_mathml` of `mathml.py` (`mathml.py:194-223`): `writeLambda` of
+/// libsbml reads the number of bound variables as the number of children less
+/// one, which wraps to `UINT_MAX` for a childless node, and then dereferences
+/// the null child it asks for, so `writeMathMLToString` ends the process with
+/// SIGSEGV (sbmlteam/libsbml#521). The python implementation therefore never
+/// hands such a tree to the writer and reports the math without its latex.
+///
+/// The shape can sit anywhere inside a larger math, so the whole tree is
+/// walked, the children of a node of the kind [`AstKind::Unknown`] included:
+/// the walk of the python guard reads the syntax tree and not what the writer
+/// writes of it, and a lambda without children below an unknown node answers
+/// the guard there as well (measured against 5.21.2).
+///
+/// The walk keeps its own stack, so a tree of any depth costs no call frames.
+pub(super) fn holds_a_childless_lambda(ast: &Ast) -> bool {
+    let mut stack = vec![ast];
+    while let Some(node) = stack.pop() {
+        if node.kind == AstKind::Lambda && node.children.is_empty() {
+            return true;
+        }
+        stack.extend(node.children.iter());
+    }
+    false
+}
+
+/// How many elements deep the mathml document libsbml writes for `ast` is, the
+/// `<math>` root counted as its first element.
+///
+/// The depth is read off the tree rather than by writing the mathml, so the
+/// mapping from a node to the elements it writes is the whole of this function.
+/// It is the mapping of `ASTNode::write` of libsbml, the elements it writes
+/// above its children and the wrapper each child stands in:
+///
+/// | kind | elements | the branch below the top element |
+/// | --- | --- | --- |
+/// | [`AstKind::Unknown`] | none at all, nor anything of its children | - |
+/// | a `ci`, a `csymbol` or a constant | the one element | - |
+/// | an `Integer`, and a `Real` whose `"%.15g"` carries no exponent | the `cn` | - |
+/// | a `Rational`, and a `Real` or a `RealE` in exponent form | the `cn` and its `sep` | - |
+/// | a `Real` which is the positive infinity or no number | `infinity`, `notanumber` | - |
+/// | one which is the negative infinity | `apply`, `minus`, `infinity` | - |
+/// | a piecewise | the `piecewise` | every child in a `piece` or an `otherwise` |
+/// | a lambda | the `lambda` | every child but the last in a `bvar` |
+/// | a logarithm or a root of more than one child | the `apply` and its operator | the first child in a `logbase` or a `degree`, the last as the argument |
+/// | every other node libsbml writes as an `apply` | the `apply` and its operator | the operands of [`operands`] |
+///
+/// A wrapper follows the position of a child and not what is written of it, so
+/// an empty `piece`, `bvar`, `logbase` or `degree` is a level of its own; an
+/// `apply` writes its operator element whatever its operands are, so it is two
+/// levels deep even where it has none; and a `piecewise` of no children at all
+/// is one element.
+///
+/// Measured against libsbml 5.21.2 and the python implementation at the bound,
+/// shape by shape, in `tests::the_mathml_depth_of_a_shape_is_the_one_libsbml_writes`
+/// of the parent module. It was also checked against the depth `lxml` reads of
+/// the mathml of all 1,832 entries of the corpus fixture while this was
+/// written: 0 differed, over documents of 2 to 15 elements. That check is not
+/// committed, since the fixture carries no depth of its own, and no entry of
+/// the corpus comes anywhere near the bound; the table of that test is what
+/// guards the mapping.
+///
+/// # Errors
+///
+/// [`MathError::TooDeep`] for a tree nested deeper than [`MAX_AST_DEPTH`],
+/// which is the bound of every walk of this crate. The walk keeps its own
+/// stack, so no tree costs it more than the frames of [`operands`].
+pub(super) fn mathml_depth(ast: &Ast) -> Result<usize, MathError> {
+    let mut stack = vec![frame(0, ast, 1)?];
+    // the depth of the elements of the node whose frame was last finished,
+    // which for the root is the depth of the whole document below `<math>`
+    let mut depth = 0;
+    while let Some(top) = stack.last_mut() {
+        if let Some(&(wrappers, child)) = top.children.get(top.next) {
+            top.next += 1;
+            if stack.len() >= MAX_AST_DEPTH {
+                return Err(MathError::TooDeep);
+            }
+            let level = stack.len() + 1;
+            stack.push(frame(wrappers, child, level)?);
+            continue;
+        }
+        // every child of the node is walked, so the depth of its elements is
+        // known and its frame is handed up to its parent
+        let (own, deepest, wrappers) = (top.own, top.deepest, top.wrappers);
+        let _ = stack.pop();
+        depth = own + deepest;
+        if let Some(parent) = stack.last_mut() {
+            parent.deepest = parent.deepest.max(wrappers + depth);
+        }
+    }
+    Ok(1 + depth)
+}
+
+/// One node of the walk of [`mathml_depth`], and what is known of it so far.
+#[derive(Debug)]
+struct Frame<'a> {
+    /// The wrapper elements libsbml writes between the top element of the
+    /// parent of the node and the top element of the node itself.
+    wrappers: usize,
+    /// The children libsbml writes below the node, each with its wrappers.
+    children: Vec<(usize, &'a Ast)>,
+    /// Which of them the walk takes next.
+    next: usize,
+    /// The elements the node writes above its children: one, or none for a node
+    /// libsbml writes nothing of.
+    own: usize,
+    /// The deepest branch of the ones walked so far, below the top element.
+    deepest: usize,
+}
+
+/// The frame of `node`, which stands below `wrappers` wrapper elements of its
+/// parent and at `level` of the tree.
+///
+/// # Errors
+///
+/// [`MathError::TooDeep`] where the unrolling of [`operands`] would follow a
+/// chain of sums or products deeper than [`MAX_AST_DEPTH`].
+fn frame(wrappers: usize, node: &Ast, level: usize) -> Result<Frame<'_>, MathError> {
+    // a child of the kind `Unknown` is walked like any other: it answers a
+    // depth of zero, which leaves the wrapper it stands in as the only element
+    // of its branch, and that is what libsbml writes of it
+    let (own, deepest, children) = match node.kind {
+        // libsbml writes no element of a math it could not read and none of
+        // what stands below it: a chain of a thousand applies below such a node
+        // adds nothing to the document (measured against 5.21.2)
+        AstKind::Unknown => (0, 0, Vec::new()),
+        // a token element, which carries text and no element
+        AstKind::Name
+        | AstKind::NameTime
+        | AstKind::NameAvogadro
+        | AstKind::Integer
+        | AstKind::ConstantE
+        | AstKind::ConstantFalse
+        | AstKind::ConstantPi
+        | AstKind::ConstantTrue
+        // the writers refuse a tree which holds a node of a kind the shim does
+        // not map before this is ever asked, so the arm is defensive only
+        | AstKind::Other => (1, 0, Vec::new()),
+        AstKind::Real | AstKind::RealE | AstKind::Rational => {
+            let below = match special_real(node) {
+                // `apply`, `minus` and `infinity`, which is two levels
+                Some(SpecialReal::NegativeInfinity) => 1,
+                // one `infinity` or one `notanumber`
+                Some(SpecialReal::NotANumber | SpecialReal::Infinity) => 0,
+                // a `cn`, with a `sep` below it in exponent form
+                None => usize::from(number_texts(node).1.is_some()),
+            };
+            (1, below, Vec::new())
+        }
+        // every child of a piecewise stands in a `piece` or in an `otherwise`,
+        // which libsbml writes by the position of the child; a piecewise of no
+        // children at all is the one element
+        AstKind::FunctionPiecewise => {
+            (1, 0, node.children.iter().map(|child| (1, child)).collect())
+        }
+        // every child of a lambda but the last stands in a `bvar`
+        AstKind::Lambda => {
+            let last = node.children.len().saturating_sub(1);
+            let children = node
+                .children
+                .iter()
+                .enumerate()
+                .map(|(index, child)| (usize::from(index < last), child))
+                .collect();
+            (1, 0, children)
+        }
+        // an `apply` writes its operator element whatever its operands are, so
+        // the branch below it is never empty
+        AstKind::FunctionLog | AstKind::FunctionRoot => (1, 1, logarithm_or_root(node)),
+        _ => (
+            1,
+            1,
+            operands(node, level)?
+                .into_iter()
+                .map(|child| (0, child))
+                .collect(),
+        ),
+    };
+    Ok(Frame {
+        wrappers,
+        children,
+        next: 0,
+        own,
+        deepest,
+    })
+}
+
+/// The children libsbml writes below the `apply` of a logarithm or of a root,
+/// each with the wrapper element it stands in.
+///
+/// `writeFunctionLog` writes the base of a logarithm in a `logbase` and
+/// `writeFunctionRoot` the degree of a root in a `degree`, each only where the
+/// node carries more than one child, and then the last child as the argument;
+/// so a logarithm of one child writes no argument at all, and a root of one
+/// writes its child as the argument without a degree. The wrapper is written
+/// whether or not the child inside it writes anything, which is where this
+/// differs from [`operands`], whose caller reads the operands of the
+/// stylesheets and not the elements of the document.
+fn logarithm_or_root(node: &Ast) -> Vec<(usize, &Ast)> {
+    let mut children = Vec::new();
+    if node.children.len() > 1 {
+        if let Some(first) = node.children.first() {
+            children.push((1, first));
+        }
+        if let Some(last) = node.children.last() {
+            children.push((0, last));
+        }
+    } else if node.kind == AstKind::FunctionRoot {
+        children.extend(node.children.iter().map(|child| (0, child)));
+    }
+    children
 }
 
 /* ------------------------------------------- the string value of a node */
