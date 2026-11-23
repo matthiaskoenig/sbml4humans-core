@@ -1,0 +1,1639 @@
+//! The latex of a syntax tree.
+//!
+//! The python implementation writes no latex of its own
+//! (`backend/sbml4humans/mathml.py`): it writes the content MathML of the tree
+//! with `libsbml.writeMathMLToString`, converts it to presentation MathML with
+//! `ctopff.xsl`, converts that to latex with the `xsltml` stylesheet set, and
+//! then runs ten string replacements and two heuristics over the whole result.
+//! This module is a port of that pipeline, in the same three steps:
+//!
+//! 1. [`emit`] writes what the two stylesheets write of a tree, `$ ` and `$`
+//!    around it included. It follows the shape of the stylesheets rather than
+//!    the shape of a latex writer: the parameter `p` is the `$p` of ctopff, the
+//!    precedence of the parent which decides a parenthesis, and [`open`] is the
+//!    `\left`/`\right` rule of `tokens.xsl`, which depends on whether another
+//!    operator stands between a pair of parentheses.
+//! 2. [`replacements`] is `cmathml_to_latex` of the python module, verbatim and
+//!    in its order. The replacements are global: `}\mathit` becomes
+//!    `}, \mathit` **wherever** it stands, not only in the lambda it was written
+//!    for, so `sin(x)` of a plain name is ` \mathrm{sin}, \mathit{x}`. Running
+//!    them over the output of step 1, rather than writing their effect into the
+//!    writer, is what reproduces those accidents without guessing where they
+//!    fire.
+//! 3. [`fix_mathit_symbols`] is `_fix_mathit_symbols`: a name of one underscore
+//!    between two alphanumeric runs becomes a subscript, and a name which is one
+//!    of the greek words becomes its command.
+//!
+//! The writer therefore has to answer one question only: what the stylesheets
+//! write. Two things of libsbml are part of that answer, since the stylesheets
+//! read the MathML libsbml writes and not the tree:
+//!
+//! - The text of a number is the one `writeCN` of libsbml writes, which is the
+//!   `"%.15g"` of its value and, where that carries an exponent, a mantissa and
+//!   an exponent apart ([`number_texts`]).
+//! - The children of an `apply` are the ones `writeOperatorArgs` writes, which
+//!   for an operator are its left and its right child alone and for a plus or a
+//!   times of at most two children unrolls a child of the same kind
+//!   ([`operands`]).
+//!
+//! The name of a node is read for a symbol, for a call of a function of the
+//! model and for a csymbol, which are the three the MathML carries the text of:
+//! a csymbol is typeset by its text, so a document which spells the time
+//! csymbol `t` is written ` t` and not ` \mathrm{time}`. Every other node is
+//! written by its kind.
+//!
+//! Nothing here panics on any tree: a child a node lacks is written as the empty
+//! string, which is what the stylesheets write of a missing element, and a tree
+//! past [`MAX_AST_DEPTH`] is [`MathError::TooDeep`]. A math may be nested to
+//! that bound and the walk follows it on the stack, so every function of the
+//! walk writes into one string rather than building its own and hands each
+//! construct to a function of its own, which keeps the frame of one level small
+//! enough for a thread of the default stack to carry the deepest tree the bound
+//! allows.
+
+use super::MathError;
+use sbml4humans_model::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};
+
+/// The latex of `ast`, as the python implementation writes it.
+///
+/// The string begins with the space which is left where the `$` of the inline
+/// math of `mmltex.xsl` was removed, which every latex of the report carries.
+///
+/// # Errors
+///
+/// [`MathError::TooDeep`] for a tree nested deeper than [`MAX_AST_DEPTH`] and
+/// [`MathError::UnknownKind`] for a tree which holds a node of a kind the
+/// libsbml shim does not map, whose latex would not be the one of the document.
+pub fn latex(ast: &Ast) -> Result<String, MathError> {
+    let mut out = String::from("$ ");
+    emit(ast, 0, None, 0, 1, &mut out)?;
+    out.push('$');
+    Ok(fix_mathit_symbols(&replacements(&out)))
+}
+
+/* ------------------------------------------------------- the replacements */
+
+/// `cmathml_to_latex` of the python module: its ten replacements, in its order.
+///
+/// The order is part of the result. The three replacements of the piecewise run
+/// before the three of the lambda, so the `{ccc}` of the column alignment of the
+/// array is gone by the time `}\mathit` is replaced and never becomes
+/// `{ccc}, \mathit`; and the two which strip a `\left(`/`\right)` pair around a
+/// piecewise run before the two which do not, so a piecewise which stands as the
+/// body of a lambda loses the parentheses of the `mfenced` around it.
+fn replacements(text: &str) -> String {
+    text.replace('$', "")
+        .replace("\\hfill", "")
+        .replace("\\multicolumn{2}{c}", "")
+        .replace("\\left(\\{\\begin{array}{ccc}", "\\begin{cases} ")
+        .replace("\\end{array}\\right)", "\\end{cases}")
+        .replace("\\{\\begin{array}{ccc}", "\\begin{cases} ")
+        .replace("\\end{array}", "\\end{cases}")
+        .replace("}\\mathit", "}, \\mathit")
+        .replace("\\lambda ", "\\lambda(")
+        .replace("}.", "}) =")
+}
+
+/// The greek words a name is typeset as a command for, which `mathml.py` lists.
+///
+/// The small lambda is not among them: it marks the definition of a function.
+const GREEK_SYMBOLS: [&str; 29] = [
+    "alpha", "beta", "gamma", "Gamma", "delta", "Delta", "epsilon", "zeta", "eta", "theta", "iota",
+    "kappa", "Lambda", "mu", "nu", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "Upsilon",
+    "phi", "Phi", "chi", "psi", "Psi", "omega", "Omega",
+];
+
+/// `_fix_mathit_symbols` of the python module: the subscripts and the greek words.
+///
+/// A `\mathit{a\_b}` of one escaped underscore between two alphanumeric runs
+/// becomes `\mathit{a_{b}}`, so `kf_0` reads as a subscript while `LI__pattern`,
+/// which holds two, keeps its escaped underscores. A `\mathit{alpha}` becomes
+/// `\mathit{\alpha}` afterwards, so a name which was turned into a subscript is
+/// no longer a candidate. The python implementation replaces each name it found
+/// everywhere in the string at once, which is the same result as walking the
+/// names one by one: the two rules are mutually exclusive and neither makes a
+/// name the other matches.
+fn fix_mathit_symbols(text: &str) -> String {
+    let mut out = String::with_capacity(text.len());
+    let mut rest = text;
+    while let Some(start) = rest.find("\\mathit{") {
+        let (before, from) = rest.split_at(start);
+        out.push_str(before);
+        let body = from.get("\\mathit{".len()..).unwrap_or_default();
+        match body.find('}') {
+            Some(end) => {
+                let name = body.get(..end).unwrap_or_default();
+                out.push_str("\\mathit{");
+                out.push_str(&fix_name(name));
+                out.push('}');
+                rest = body.get(end + 1..).unwrap_or_default();
+            }
+            // a `\mathit{` which is never closed, which no token of the writer
+            // produces: nothing of it is a name, so it is copied as it stands
+            None => {
+                out.push_str(from);
+                rest = "";
+            }
+        }
+    }
+    out.push_str(rest);
+    out
+}
+
+/// The body of a `\mathit{...}` after the two heuristics of `_fix_mathit_symbols`.
+fn fix_name(name: &str) -> String {
+    if let Some((head, tail)) = name.split_once("\\_")
+        && !head.is_empty()
+        && !tail.is_empty()
+        && head.chars().all(|c| c.is_ascii_alphanumeric())
+        && tail.chars().all(|c| c.is_ascii_alphanumeric())
+    {
+        return format!("{head}_{{{tail}}}");
+    }
+    if GREEK_SYMBOLS.contains(&name) {
+        return format!("\\{name}");
+    }
+    name.to_owned()
+}
+
+/* ------------------------------------------------------------- the tokens */
+
+/// Writes the text of a token element: `normalize-space` and then `replaceEntities`.
+///
+/// `entities.xsl` maps a few hundred characters to a command. The ones a
+/// document can put in a token are the ascii characters latex gives a meaning,
+/// which are mapped here, and the two characters ctopff writes of a constant;
+/// every other character is written as it stands, where the stylesheet would
+/// write the command of the ones it lists.
+fn write_token(text: &str, out: &mut String) {
+    let mut first = true;
+    for word in text.split_whitespace() {
+        if !first {
+            out.push_str("\\; ");
+        }
+        first = false;
+        for character in word.chars() {
+            match character {
+                '{' | '}' | '$' | '#' | '&' | '%' | '_' => {
+                    out.push('\\');
+                    out.push(character);
+                }
+                '\\' => out.push_str("\\backslash "),
+                '\'' => out.push_str("\\text{'}"),
+                '\u{03c0}' => out.push_str("\\pi "),
+                '\u{221e}' => out.push_str("\\infty "),
+                _ => out.push(character),
+            }
+        }
+    }
+}
+
+/// Writes an `mi` without a `mathvariant`, which `tokens.xsl` sets upright where
+/// its text is longer than one character.
+fn write_mi(text: &str, out: &mut String) {
+    if text
+        .split_whitespace()
+        .flat_map(str::chars)
+        .nth(1)
+        .is_some()
+    {
+        out.push_str("\\mathrm{");
+        write_token(text, out);
+        out.push('}');
+    } else {
+        write_token(text, out);
+    }
+}
+
+/// Writes an `mi mathvariant="italic"`, which is what ctopff writes of a `ci`.
+fn write_mi_italic(text: &str, out: &mut String) {
+    out.push_str("\\mathit{");
+    write_token(text, out);
+    out.push('}');
+}
+
+/// Writes an `mn`, which `tokens.xsl` sets upright where its text is no number.
+fn write_mn(text: &str, out: &mut String) {
+    if is_number(text) {
+        write_token(text, out);
+    } else {
+        out.push_str("\\mathrm{");
+        write_token(text, out);
+        out.push('}');
+    }
+}
+
+/// Whether `string(number(text))` of XPath is not `NaN`, which the `mn` template asks.
+fn is_number(text: &str) -> bool {
+    let trimmed = text.trim();
+    !trimmed.is_empty() && trimmed.parse::<f64>().is_ok_and(|value| !value.is_nan())
+}
+
+/* ------------------------------------------------------------ the numbers */
+
+/// The text pieces of the `cn` libsbml writes for a number node.
+///
+/// One piece for an integer and for a real which needs no exponent, two for a
+/// rational and for a real in exponent form, which libsbml separates with a
+/// `sep` element. A real whose `"%.15g"` carries an exponent is written in
+/// exponent form as well, which is why the kind of the node does not decide this
+/// on its own.
+fn number_texts(node: &Ast) -> (String, Option<String>) {
+    match node.number {
+        Some(AstNumber::Integer(integer)) => (integer.to_string(), None),
+        Some(AstNumber::Rational {
+            numerator,
+            denominator,
+        }) => (numerator.to_string(), Some(denominator.to_string())),
+        Some(AstNumber::RealE { mantissa, exponent }) => exponent_texts(mantissa, exponent),
+        Some(AstNumber::Real(real)) => real_texts(real),
+        // libsbml holds the value of a number node which was never given one as
+        // the real zero
+        None => real_texts(0.0),
+    }
+}
+
+/// The text pieces of `writeDouble` of libsbml for `value`.
+fn real_texts(value: f64) -> (String, Option<String>) {
+    let text = significant_15(value);
+    match text.split_once('e') {
+        Some((mantissa, exponent)) => exponent_texts(
+            mantissa.parse::<f64>().unwrap_or_default(),
+            exponent.parse::<i64>().unwrap_or_default(),
+        ),
+        None => (text, None),
+    }
+}
+
+/// The two text pieces of `writeENotation` of libsbml for a mantissa and an exponent.
+///
+/// A mantissa whose own `"%.15g"` carries an exponent adds it to the exponent of
+/// the node, which is the special case the function of libsbml exists for.
+fn exponent_texts(mantissa: f64, exponent: i64) -> (String, Option<String>) {
+    let text = significant_15(mantissa);
+    match text.split_once('e') {
+        Some((head, tail)) => (
+            head.to_owned(),
+            Some(
+                exponent
+                    .saturating_add(tail.parse::<i64>().unwrap_or_default())
+                    .to_string(),
+            ),
+        ),
+        None => (text, Some(exponent.to_string())),
+    }
+}
+
+/// `value` as the `"%.15g"` of C writes it, the float format of libsbml.
+fn significant_15(value: f64) -> String {
+    super::formula::significant_15(value)
+}
+
+/// `string(number)` of XPath, as libxml2 writes it (`xmlXPathFormatNumber`).
+///
+/// This is the one place a number is not written by libsbml: the plus template
+/// of ctopff negates a `cn` which is below zero with `-(.)`, and the string of
+/// that number is written by the XPath engine. libxml2 writes a value which is
+/// an `int` as that integer, a value beyond a thousand million or below a
+/// hundred thousandth in exponent notation with fifteen significant digits, and
+/// every other value as a fixed decimal of fifteen significant digits; in each
+/// case the trailing zeros of the fraction, and a bare point, are removed.
+fn xpath_number(value: f64) -> String {
+    /// The significant digits libxml2 writes, its `DBL_DIG`.
+    const DIGITS: i32 = 15;
+    /// Above this a value is written in exponent notation, its `UPPER_DOUBLE`.
+    const UPPER: f64 = 1e9;
+    /// Below this a value is written in exponent notation, its `LOWER_DOUBLE`.
+    const LOWER: f64 = 1e-5;
+
+    if value.is_nan() {
+        return "NaN".to_owned();
+    }
+    if value.is_infinite() {
+        return if value < 0.0 { "-Infinity" } else { "Infinity" }.to_owned();
+    }
+    // the cast of C is undefined beyond the range of an int and the one of Rust
+    // saturates, which answers the comparison the same way: a value outside the
+    // range is equal to neither result
+    if value == f64::from(value as i32) {
+        return (value as i32).to_string();
+    }
+    let magnitude = value.abs();
+    if magnitude > UPPER || magnitude < LOWER {
+        let scientific = format!("{:.*e}", (DIGITS - 1) as usize, value);
+        let (mantissa, exponent) = scientific.split_once('e').unwrap_or((&scientific, "0"));
+        let exponent: i64 = exponent.parse().unwrap_or_default();
+        let sign = if exponent < 0 { '-' } else { '+' };
+        return format!(
+            "{}e{sign}{:02}",
+            without_trailing_zeros(mantissa),
+            exponent.unsigned_abs()
+        );
+    }
+    let integer_place = magnitude.log10() as i32;
+    let fraction_place = if integer_place > 0 {
+        DIGITS - integer_place - 1
+    } else {
+        DIGITS - integer_place
+    };
+    let fixed = format!("{value:.*}", usize::try_from(fraction_place).unwrap_or(0));
+    without_trailing_zeros(&fixed).to_owned()
+}
+
+/// `formatted` without the trailing zeros of its fraction and without a bare point.
+fn without_trailing_zeros(formatted: &str) -> &str {
+    if formatted.contains('.') {
+        formatted.trim_end_matches('0').trim_end_matches('.')
+    } else {
+        formatted
+    }
+}
+
+/* --------------------------------------------------- the mathml of a node */
+
+/// The operand elements libsbml writes under the `apply` of `node`.
+///
+/// `writeOperatorArgs` writes the left and the right child of an operator and
+/// nothing between them, so a difference, a quotient or a power of three
+/// children loses its middle one; and for a plus or a times of at most two
+/// children it unrolls a child of the same kind, so `a + (b + c)` is written as
+/// one sum of three operands. `writeFunctionLog` writes the base of a logarithm
+/// in a `logbase` and `writeFunctionRoot` the degree of a root in a `degree`,
+/// both of them only where the node carries more than one child, and then the
+/// right child as the argument: a logarithm of one child carries no argument at
+/// all, and a root of one writes it without a degree. Every other node is
+/// written with all its children.
+///
+/// # Errors
+///
+/// [`MathError::TooDeep`] where the unrolling would follow a chain of sums or
+/// products deeper than [`MAX_AST_DEPTH`].
+fn operands(node: &Ast, depth: usize) -> Result<Vec<&Ast>, MathError> {
+    if depth > MAX_AST_DEPTH {
+        return Err(MathError::TooDeep);
+    }
+    let children = &node.children;
+    match node.kind {
+        AstKind::Plus | AstKind::Times if children.len() <= 2 => {
+            let mut out = Vec::new();
+            for child in children {
+                if child.kind == node.kind {
+                    out.append(&mut operands(child, depth + 1)?);
+                } else {
+                    out.push(child);
+                }
+            }
+            Ok(out)
+        }
+        AstKind::Minus | AstKind::Divide | AstKind::Power | AstKind::FunctionRoot => {
+            Ok(first_and_last(children, true))
+        }
+        AstKind::FunctionLog => Ok(first_and_last(children, false)),
+        _ => Ok(children.iter().collect()),
+    }
+}
+
+/// The first and the last of `children`, the first alone where there is one and
+/// `alone` says libsbml writes it.
+fn first_and_last(children: &[Ast], alone: bool) -> Vec<&Ast> {
+    let mut out = Vec::new();
+    if let Some(first) = children.first()
+        && (children.len() > 1 || alone)
+    {
+        out.push(first);
+    }
+    if children.len() > 1
+        && let Some(last) = children.last()
+    {
+        out.push(last);
+    }
+    out
+}
+
+/// Whether libsbml writes `node` as an `apply`, which several templates of ctopff test.
+///
+/// A trigonometric function and a logarithm parenthesise an argument which is an
+/// `apply` and write one which is not without parentheses, and a power and an
+/// exponential wrap themselves where their parent is a power and they carry one.
+/// A real which is no number at all is written as an element of its own, and the
+/// negative infinity as a negated one, which is the one number that is an apply.
+fn is_apply(node: &Ast) -> bool {
+    match node.kind {
+        AstKind::Real => special_real(node) == Some(SpecialReal::NegativeInfinity),
+        AstKind::Integer
+        | AstKind::RealE
+        | AstKind::Rational
+        | AstKind::Name
+        | AstKind::NameTime
+        | AstKind::NameAvogadro
+        | AstKind::ConstantE
+        | AstKind::ConstantFalse
+        | AstKind::ConstantPi
+        | AstKind::ConstantTrue
+        | AstKind::Lambda
+        | AstKind::FunctionPiecewise
+        | AstKind::Other => false,
+        _ => true,
+    }
+}
+
+/// A real libsbml writes as an element of its own rather than as a `cn`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum SpecialReal {
+    /// `notanumber`.
+    NotANumber,
+    /// `infinity`.
+    Infinity,
+    /// `apply` of `minus` and `infinity`.
+    NegativeInfinity,
+}
+
+/// Which element libsbml writes for `node`, [`None`] for every node it writes a `cn` for.
+fn special_real(node: &Ast) -> Option<SpecialReal> {
+    if node.kind != AstKind::Real {
+        return None;
+    }
+    let Some(AstNumber::Real(value)) = node.number else {
+        return None;
+    };
+    if value.is_nan() {
+        Some(SpecialReal::NotANumber)
+    } else if value == f64::INFINITY {
+        Some(SpecialReal::Infinity)
+    } else if value == f64::NEG_INFINITY {
+        Some(SpecialReal::NegativeInfinity)
+    } else {
+        None
+    }
+}
+
+/* ----------------------------------------- the string value of a node */
+
+/// Where the string value of an element is written.
+///
+/// The value of the left operand of a difference is collected and the value of
+/// the right one is compared against it piece by piece, because the two are
+/// known to differ as soon as one piece does and the walk of the right operand
+/// can stop there. The indentation libsbml writes grows with the depth of an
+/// element, so the string value of a deep tree is quadratic in its depth on its
+/// own, and a chain of differences asks for one at every level of itself: a
+/// comparison which reads both values whole walks such a chain in the cube of
+/// its depth, which the first differing piece almost always makes unnecessary.
+#[derive(Debug)]
+struct Sink<'a> {
+    /// What has been written, which is read where nothing is compared.
+    text: String,
+    /// What each piece is compared against, [`None`] where the value is collected.
+    expected: Option<&'a str>,
+    /// How many bytes of `expected` the pieces have matched.
+    written: usize,
+    /// Whether a piece differed from `expected`.
+    differs: bool,
+}
+
+impl<'a> Sink<'a> {
+    /// A sink which collects the whole value.
+    fn collecting() -> Self {
+        Self {
+            text: String::new(),
+            expected: None,
+            written: 0,
+            differs: false,
+        }
+    }
+
+    /// A sink which compares the value it is given against `expected`.
+    fn comparing(expected: &'a str) -> Self {
+        Self {
+            text: String::new(),
+            expected: Some(expected),
+            written: 0,
+            differs: false,
+        }
+    }
+
+    /// Appends `piece`, or compares it against what is expected next.
+    fn push_str(&mut self, piece: &str) {
+        let Some(expected) = self.expected else {
+            self.text.push_str(piece);
+            return;
+        };
+        if self.differs {
+            return;
+        }
+        let next = self.written.saturating_add(piece.len());
+        if expected.as_bytes().get(self.written..next) == Some(piece.as_bytes()) {
+            self.written = next;
+        } else {
+            self.differs = true;
+        }
+    }
+
+    /// Whether the answer is settled and the walk which writes into this can stop.
+    fn settled(&self) -> bool {
+        self.differs
+    }
+
+    /// Whether the value written differs from the one expected.
+    fn value_differs(&self) -> bool {
+        self.differs || self.written != self.expected.map_or(0, str::len)
+    }
+}
+
+/// Writes the XPath string value of the mathml element libsbml writes for `node`.
+///
+/// The plus template and the binary template of ctopff ask `. != ../*[2]`, which
+/// in XPath 1.0 compares the string values of two elements, to tell the right
+/// operand of a difference from the left one. The string value of an element is
+/// the text of everything below it, the indentation libsbml writes between its
+/// elements included, so two operands which differ in their operators alone have
+/// the same string value and the right one of them is written without the
+/// parentheses it needs. That is what the python implementation writes, so it is
+/// what this writes: `(a*b) - (a+b)` is
+/// ` \mathit{a}\cdot \mathit{b}-\mathit{a}+\mathit{b}`.
+///
+/// `level` is how deep the element stands, which decides the indentation before
+/// each of its children. The two operands of a difference are siblings and so
+/// stand at the same level, and comparing their string values at level zero
+/// answers the comparison of their real ones.
+///
+/// # Errors
+///
+/// [`MathError::TooDeep`] for a subtree nested deeper than [`MAX_AST_DEPTH`].
+fn write_string_value(
+    node: &Ast,
+    level: usize,
+    depth: usize,
+    out: &mut Sink,
+) -> Result<(), MathError> {
+    if depth > MAX_AST_DEPTH {
+        return Err(MathError::TooDeep);
+    }
+    if out.settled() {
+        return Ok(());
+    }
+    match special_real(node) {
+        // an empty element, which carries no text at all
+        Some(SpecialReal::NotANumber | SpecialReal::Infinity) => return Ok(()),
+        // the apply of a minus and an infinity, two empty elements
+        Some(SpecialReal::NegativeInfinity) => {
+            indent(level + 1, out);
+            indent(level + 1, out);
+            indent(level, out);
+            return Ok(());
+        }
+        None => {}
+    }
+    match node.kind {
+        AstKind::Integer | AstKind::Real | AstKind::RealE | AstKind::Rational => {
+            write_number_string_value(node, out);
+        }
+        AstKind::Name | AstKind::NameTime | AstKind::NameAvogadro => {
+            write_name_string_value(node, out);
+        }
+        AstKind::ConstantE
+        | AstKind::ConstantFalse
+        | AstKind::ConstantPi
+        | AstKind::ConstantTrue => {}
+        AstKind::FunctionPiecewise => write_piecewise_string_value(node, level, depth, out)?,
+        AstKind::Lambda => write_lambda_string_value(node, level, depth, out)?,
+        _ => write_apply_string_value(node, level, depth, out)?,
+    }
+    Ok(())
+}
+
+/// Writes the string value of the `cn` of a number node, its `sep` included.
+fn write_number_string_value(node: &Ast, out: &mut Sink) {
+    let (first, second) = number_texts(node);
+    out.push_str(" ");
+    out.push_str(&first);
+    out.push_str(" ");
+    if let Some(second) = second {
+        out.push_str(" ");
+        out.push_str(&second);
+        out.push_str(" ");
+    }
+}
+
+/// Writes the string value of the `ci` or the `csymbol` of a named node.
+fn write_name_string_value(node: &Ast, out: &mut Sink) {
+    out.push_str(" ");
+    out.push_str(node.name.as_deref().unwrap_or_default());
+    out.push_str(" ");
+}
+
+/// Writes the string value of an `apply`, whose first element names it.
+///
+/// A call of a function of the model is named by a `ci` and a csymbol function
+/// by a `csymbol`, both of which carry a text; every other function is named by
+/// an element of its own, which carries none.
+fn write_apply_string_value(
+    node: &Ast,
+    level: usize,
+    depth: usize,
+    out: &mut Sink,
+) -> Result<(), MathError> {
+    indent(level + 1, out);
+    if node.kind == AstKind::Function || is_csymbol_function(node.kind) {
+        write_name_string_value(node, out);
+    }
+    let args = operands(node, depth)?;
+    // the first operand of a logarithm and of a root of two stands in a logbase
+    // or a degree, one element deeper than the other children
+    let wrapped =
+        matches!(node.kind, AstKind::FunctionLog | AstKind::FunctionRoot) && args.len() == 2;
+    for (n, child) in args.iter().enumerate() {
+        indent(level + 1, out);
+        if wrapped && n == 0 {
+            indent(level + 2, out);
+            write_string_value(child, level + 2, depth + 1, out)?;
+            indent(level + 1, out);
+        } else {
+            write_string_value(child, level + 1, depth + 1, out)?;
+        }
+    }
+    indent(level, out);
+    Ok(())
+}
+
+/// Writes the string value of a `piecewise`, whose cases each stand in an element.
+fn write_piecewise_string_value(
+    node: &Ast,
+    level: usize,
+    depth: usize,
+    out: &mut Sink,
+) -> Result<(), MathError> {
+    for case in node.children.chunks(2) {
+        indent(level + 1, out);
+        for child in case {
+            indent(level + 2, out);
+            write_string_value(child, level + 2, depth + 1, out)?;
+        }
+        indent(level + 1, out);
+    }
+    if !node.children.is_empty() {
+        indent(level, out);
+    }
+    Ok(())
+}
+
+/// Writes the string value of a `lambda`, whose bound variables each stand in a `bvar`.
+fn write_lambda_string_value(
+    node: &Ast,
+    level: usize,
+    depth: usize,
+    out: &mut Sink,
+) -> Result<(), MathError> {
+    let last = node.children.len().saturating_sub(1);
+    for (n, child) in node.children.iter().enumerate() {
+        indent(level + 1, out);
+        if n == last {
+            write_string_value(child, level + 1, depth + 1, out)?;
+        } else {
+            indent(level + 2, out);
+            write_string_value(child, level + 2, depth + 1, out)?;
+            indent(level + 1, out);
+        }
+    }
+    if !node.children.is_empty() {
+        indent(level, out);
+    }
+    Ok(())
+}
+
+/// Writes the newline and the indentation of `level` libsbml writes before an element.
+fn indent(level: usize, out: &mut Sink) {
+    out.push_str("\n");
+    for _ in 0..level {
+        out.push_str("  ");
+    }
+}
+
+/* --------------------------------------------------------------- the walk */
+
+/// Writes the latex of `node` as the two stylesheets write it.
+///
+/// `p` is the `$p` of ctopff, the precedence its parent passed down, `parent`
+/// and `index` are what the templates which ask `name(../*[1])` and
+/// `. != ../*[2]` read, and `depth` is how deep the node stands.
+fn emit(
+    node: &Ast,
+    p: i32,
+    parent: Option<&Ast>,
+    index: usize,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    if depth > MAX_AST_DEPTH {
+        return Err(MathError::TooDeep);
+    }
+    if node.kind == AstKind::Other {
+        return Err(MathError::UnknownKind(node.kind));
+    }
+    if let Some(special) = special_real(node) {
+        emit_special_real(special, p, out);
+        return Ok(());
+    }
+    match node.kind {
+        AstKind::Name => write_mi_italic(node.name.as_deref().unwrap_or_default(), out),
+        // a csymbol is typeset by the text the document gave it, not by the word
+        // libsbml knows it under
+        AstKind::NameTime | AstKind::NameAvogadro => {
+            write_mi(node.name.as_deref().unwrap_or_default(), out);
+        }
+        AstKind::Integer | AstKind::Real | AstKind::RealE | AstKind::Rational => {
+            emit_number(node, out);
+        }
+        AstKind::ConstantE => write_mi("e", out),
+        AstKind::ConstantPi => write_mi("\u{03c0}", out),
+        AstKind::ConstantTrue => write_mi("true", out),
+        AstKind::ConstantFalse => write_mi("false", out),
+        _ => return emit_apply(node, p, parent, index, depth, out),
+    }
+    Ok(())
+}
+
+/// Writes a real libsbml writes as an element of its own rather than as a `cn`.
+fn emit_special_real(special: SpecialReal, p: i32, out: &mut String) {
+    match special {
+        SpecialReal::NotANumber => write_mi("NaN", out),
+        SpecialReal::Infinity => write_mi("\u{221e}", out),
+        SpecialReal::NegativeInfinity => {
+            // the unary minus template, whose one operand is the infinity
+            let group = p >= 5;
+            open(group, true, out);
+            out.push('-');
+            write_mi("\u{221e}", out);
+            close(group, true, out);
+        }
+    }
+}
+
+/// Writes a number: its `cn`, and the `sep` of a rational or of an exponent form.
+fn emit_number(node: &Ast, out: &mut String) {
+    let (first, second) = number_texts(node);
+    write_mn(&first, out);
+    let Some(second) = second else {
+        return;
+    };
+    if node.kind == AstKind::Rational {
+        out.push('/');
+        write_mn(&second, out);
+    } else {
+        out.push_str("\\cdot {10}^{");
+        write_mn(&second, out);
+        out.push('}');
+    }
+}
+
+/// Writes a node which libsbml writes as an `apply`, a `piecewise` or a `lambda`.
+///
+/// Every construct is written by a function of its own, which keeps the frame of
+/// this one small: a chain of a thousand nodes puts a thousand of them on the
+/// stack.
+fn emit_apply(
+    node: &Ast,
+    p: i32,
+    parent: Option<&Ast>,
+    index: usize,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    let op = parent_operator(parent);
+    let args = operands(node, depth)?;
+    if let Some(shape) = shape(node.kind) {
+        return match shape {
+            Shape::Delimited(delimiters) => emit_delimited(node, &args, delimiters, depth, out),
+            Shape::Named(name) => emit_named(node, &args, name, false, p, op, depth, out),
+            Shape::Infix(token, this_p) => emit_infix(node, &args, token, this_p, p, depth, out),
+            Shape::Set(name) => emit_set(node, &args, name, depth, out),
+        };
+    }
+    match node.kind {
+        AstKind::Divide => {
+            // a quotient is wrapped only as the base of a power, where the
+            // parentheses hold a fraction alone and so are stretched
+            emit_fraction(node, &args, p >= 5 && op == Operator::Power, depth, out)
+        }
+        AstKind::Minus if args.len() == 1 => emit_negation(node, &args, p, depth, out),
+        AstKind::Minus if args.len() >= 2 => {
+            emit_binary(node, &args, "-", 2, p, parent, index, depth, out)
+        }
+        AstKind::LogicalImplies => emit_binary(
+            node,
+            &args,
+            "\\Rightarrow ",
+            3,
+            p,
+            parent,
+            index,
+            depth,
+            out,
+        ),
+        AstKind::Plus => emit_plus(node, &args, p, parent, index, depth, out),
+        AstKind::Times => emit_times(node, &args, p, op, 0, depth, out),
+        AstKind::Power | AstKind::FunctionPower => {
+            let group = op == Operator::Power && args.get(1).is_some_and(|e| is_apply(e));
+            emit_power(node, &args, group, depth, out)
+        }
+        AstKind::FunctionExp => {
+            let group = op == Operator::Power && args.first().is_some_and(|e| is_apply(e));
+            emit_exponential(node, &args, group, depth, out)
+        }
+        AstKind::FunctionLog => emit_logarithm(node, &args, p, op, depth, out),
+        AstKind::FunctionRoot => emit_root(node, &args, depth, out),
+        AstKind::FunctionPiecewise => emit_piecewise(node, depth, out),
+        AstKind::Lambda => emit_lambda(node, depth, out),
+        // the generic apply template: a call of a function of the model, a
+        // csymbol function, and a difference of no operand, which is written as
+        // a call of its name
+        _ => emit_call(node, &args, depth, out),
+    }
+}
+
+/// A construct ctopff writes by one template which a fixed token or name fills in.
+#[derive(Debug, Clone, Copy)]
+enum Shape {
+    /// A node whose arguments stand between delimiters, such as the floor.
+    Delimited(&'static Delimiters),
+    /// A trigonometric function or the natural logarithm, written by its name.
+    Named(&'static str),
+    /// A relation or a conjunction, written between its operands.
+    Infix(&'static str, i32),
+    /// A maximum, a minimum or a remainder, written as a name and a set.
+    Set(&'static str),
+}
+
+/// How ctopff writes a node of `kind`, [`None`] for a construct with a template
+/// of its own.
+///
+/// Reading the shape of a node once, rather than asking each table in turn in
+/// the dispatcher, is what keeps the frame of [`emit_apply`] small.
+fn shape(kind: AstKind) -> Option<Shape> {
+    if let Some(delimiters) = delimiters(kind) {
+        return Some(Shape::Delimited(delimiters));
+    }
+    if let Some(name) = trigonometric_name(kind) {
+        return Some(Shape::Named(name));
+    }
+    if let Some((token, this_p)) = infix_operator(kind) {
+        return Some(Shape::Infix(token, this_p));
+    }
+    set_function_name(kind).map(Shape::Set)
+}
+
+/// Writes a logarithm, whose base stands below its name unless it is ten.
+fn emit_logarithm(
+    node: &Ast,
+    args: &[&Ast],
+    p: i32,
+    op: Operator,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    // the base stands in a logbase and is no child of the apply, so the
+    // argument alone is written and tested
+    let rest: Vec<&Ast> = args.get(1..).unwrap_or_default().to_vec();
+    let subscript = args.len() > 1 && !args.first().is_some_and(|b| wrapper_number_is(b, 10.0));
+    emit_named(node, &rest, "log", subscript, p, op, depth, out)
+}
+
+/// Writes a quotient as a fraction, in parentheses where it is the base of a power.
+fn emit_fraction(
+    node: &Ast,
+    args: &[&Ast],
+    group: bool,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    open(group, false, out);
+    out.push_str("\\frac{");
+    argument(node, args, 0, 0, depth, out)?;
+    out.push_str("}{");
+    argument(node, args, 1, 0, depth, out)?;
+    out.push('}');
+    close(group, false, out);
+    Ok(())
+}
+
+/// Writes a negation, the unary minus template of ctopff.
+fn emit_negation(
+    node: &Ast,
+    args: &[&Ast],
+    p: i32,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    let group = p >= 5;
+    open(group, true, out);
+    out.push('-');
+    argument(node, args, 0, 5, depth, out)?;
+    close(group, true, out);
+    Ok(())
+}
+
+/// Writes a power as a superscript, its base wrapped where the power is itself one.
+fn emit_power(
+    node: &Ast,
+    args: &[&Ast],
+    group: bool,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    open(group, false, out);
+    out.push('{');
+    argument(node, args, 0, 5, depth, out)?;
+    out.push_str("}^{");
+    argument(node, args, 1, 0, depth, out)?;
+    out.push('}');
+    close(group, false, out);
+    Ok(())
+}
+
+/// Writes an exponential as a power of `e`.
+fn emit_exponential(
+    node: &Ast,
+    args: &[&Ast],
+    group: bool,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    open(group, false, out);
+    out.push_str("{e}^{");
+    argument(node, args, 0, 0, depth, out)?;
+    out.push('}');
+    close(group, false, out);
+    Ok(())
+}
+
+/// What ctopff writes before, between and after the arguments of a delimited
+/// node, and the precedence it passes them.
+#[derive(Debug, Clone, Copy)]
+struct Delimiters {
+    /// What stands before the first argument.
+    before: &'static str,
+    /// What stands between the two arguments, [`None`] where one is written.
+    between: Option<&'static str>,
+    /// What stands after the last argument.
+    after: &'static str,
+    /// The `$p` the arguments are written with.
+    inner_p: i32,
+}
+
+/// `\left|a\right|`, the absolute value.
+const ABSOLUTE_VALUE: Delimiters = Delimiters {
+    before: "\\left|",
+    between: None,
+    after: "\\right|",
+    inner_p: 0,
+};
+
+/// `\lfloor a\rfloor `, the floor.
+const FLOOR: Delimiters = Delimiters {
+    before: "\\lfloor ",
+    between: None,
+    after: "\\rfloor ",
+    inner_p: 0,
+};
+
+/// `\lceil a\rceil `, the ceiling.
+const CEILING: Delimiters = Delimiters {
+    before: "\\lceil ",
+    between: None,
+    after: "\\rceil ",
+    inner_p: 0,
+};
+
+/// `\lfloor a/b\rfloor `, the integer quotient of the extended math.
+const INTEGER_QUOTIENT: Delimiters = Delimiters {
+    before: "\\lfloor ",
+    between: Some("/"),
+    after: "\\rfloor ",
+    inner_p: 0,
+};
+
+/// `a!`, the factorial.
+const FACTORIAL: Delimiters = Delimiters {
+    before: "",
+    between: None,
+    after: "!",
+    inner_p: 7,
+};
+
+/// `\neg a`, the logical negation.
+const NEGATION: Delimiters = Delimiters {
+    before: "\\neg ",
+    between: None,
+    after: "",
+    inner_p: 7,
+};
+
+/// The delimiters ctopff writes around the arguments of a node of `kind`,
+/// [`None`] for every node it writes otherwise.
+fn delimiters(kind: AstKind) -> Option<&'static Delimiters> {
+    Some(match kind {
+        AstKind::FunctionAbs => &ABSOLUTE_VALUE,
+        AstKind::FunctionFloor => &FLOOR,
+        AstKind::FunctionCeiling => &CEILING,
+        AstKind::FunctionQuotient => &INTEGER_QUOTIENT,
+        AstKind::FunctionFactorial => &FACTORIAL,
+        AstKind::LogicalNot => &NEGATION,
+        _ => return None,
+    })
+}
+
+/// Writes a node whose arguments stand between delimiters of their own.
+fn emit_delimited(
+    node: &Ast,
+    args: &[&Ast],
+    delimiters: &Delimiters,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    out.push_str(delimiters.before);
+    argument(node, args, 0, delimiters.inner_p, depth, out)?;
+    if let Some(token) = delimiters.between {
+        out.push_str(token);
+        argument(node, args, 1, delimiters.inner_p, depth, out)?;
+    }
+    out.push_str(delimiters.after);
+    Ok(())
+}
+
+/// Writes a root, as a square root unless its degree says otherwise.
+fn emit_root(node: &Ast, args: &[&Ast], depth: usize, out: &mut String) -> Result<(), MathError> {
+    let degreed = args.len() > 1;
+    if !degreed
+        || args
+            .first()
+            .is_some_and(|degree| wrapper_number_is(degree, 2.0))
+    {
+        out.push_str("\\sqrt{");
+        // a root of one child carries its radicand there, one of two after its degree
+        argument(node, args, usize::from(degreed), 0, depth, out)?;
+        out.push('}');
+        return Ok(());
+    }
+    out.push_str("\\sqrt[");
+    if let Some(degree) = args.first() {
+        emit(degree, 0, None, 0, depth + 1, out)?;
+    }
+    out.push_str("]{");
+    argument(node, args, 1, 0, depth, out)?;
+    out.push('}');
+    Ok(())
+}
+
+/// Writes a relation or a conjunction, the `infix` template of ctopff.
+fn emit_infix(
+    node: &Ast,
+    args: &[&Ast],
+    token: &str,
+    this_p: i32,
+    p: i32,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    let group = this_p < p;
+    let has_operator = args.len() > 1;
+    open(group, has_operator, out);
+    for (n, child) in args.iter().enumerate() {
+        if n > 0 {
+            out.push_str(token);
+        }
+        emit(child, this_p, Some(node), n, depth + 1, out)?;
+    }
+    close(group, has_operator, out);
+    Ok(())
+}
+
+/// Writes a maximum, a minimum or a remainder, the `set` template of ctopff.
+///
+/// The template separates its arguments with a comma, which is an operator
+/// between the parentheses and keeps them unstretched.
+fn emit_set(
+    node: &Ast,
+    args: &[&Ast],
+    name: &str,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    write_mi(name, out);
+    let has_operator = args.len() > 1;
+    open(true, has_operator, out);
+    for (n, child) in args.iter().enumerate() {
+        if n > 0 {
+            out.push(',');
+        }
+        emit(child, 0, Some(node), n, depth + 1, out)?;
+    }
+    close(true, has_operator, out);
+    Ok(())
+}
+
+/// Writes a call of a function of the model or of a csymbol, the generic apply template.
+///
+/// The arguments stand in an `mfenced`, which `glayout.xsl` writes between a
+/// stretched pair of parentheses whatever stands inside them.
+fn emit_call(node: &Ast, args: &[&Ast], depth: usize, out: &mut String) -> Result<(), MathError> {
+    let name = node.name.as_deref().unwrap_or_default();
+    if node.kind == AstKind::Function {
+        write_mi_italic(name, out);
+    } else if is_csymbol_function(node.kind) {
+        write_mi(name, out);
+    } else {
+        write_mi(operator_name(node.kind)?, out);
+    }
+    out.push_str("\\left(");
+    for (n, child) in args.iter().enumerate() {
+        if n > 0 {
+            out.push(',');
+        }
+        emit(child, 0, Some(node), n, depth + 1, out)?;
+    }
+    out.push_str("\\right)");
+    Ok(())
+}
+
+/// Writes operand `n` of `node`, nothing where the node has none.
+///
+/// The stylesheets select the element of an operand by its position and write
+/// nothing where there is none, so a quotient of one operand is `\frac{a}{}`
+/// rather than an error.
+fn argument(
+    node: &Ast,
+    args: &[&Ast],
+    n: usize,
+    p: i32,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    match args.get(n) {
+        Some(child) => emit(child, p, Some(node), n, depth + 1, out),
+        None => Ok(()),
+    }
+}
+
+/// Writes a trigonometric function, a natural logarithm or a logarithm.
+///
+/// The template writes parentheses around the argument only where the node
+/// carries an `apply` among its children, and wraps the whole call where its
+/// parent binds at least as tight as a power and the argument is no `apply`.
+/// `args` are the operands the apply carries, whose first is the argument;
+/// `subscript` says that the base of a logarithm stands below its name, in which
+/// case it is the first child of the node itself.
+#[expect(clippy::too_many_arguments, reason = "the parameters of the template")]
+fn emit_named(
+    node: &Ast,
+    args: &[&Ast],
+    name: &str,
+    subscript: bool,
+    p: i32,
+    op: Operator,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    let has_apply = args.iter().any(|child| is_apply(child));
+    let group = p >= 5 && !has_apply && op != Operator::Minus;
+    // the name and the invisible function application stand between the outer
+    // parentheses, so those are never stretched
+    open(group, true, out);
+    if subscript {
+        out.push('{');
+        write_mi(name, out);
+        out.push_str("}_{");
+        if let Some(base) = node.children.first() {
+            emit(base, 0, None, 0, depth + 1, out)?;
+        }
+        out.push('}');
+    } else {
+        write_mi(name, out);
+    }
+    open(has_apply, false, out);
+    if let Some(first) = args.first() {
+        emit(first, 0, Some(node), 0, depth + 1, out)?;
+    }
+    close(has_apply, false, out);
+    close(group, true, out);
+    Ok(())
+}
+
+/// Writes a difference or an implication, the `binary` template of ctopff.
+#[expect(clippy::too_many_arguments, reason = "the parameters of the template")]
+fn emit_binary(
+    node: &Ast,
+    args: &[&Ast],
+    token: &str,
+    this_p: i32,
+    p: i32,
+    parent: Option<&Ast>,
+    index: usize,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    let group = this_p < p
+        || (this_p == p
+            && token == "-"
+            && parent_operator(parent) == Operator::Minus
+            && right_of_minus(parent, index, depth)?);
+    open(group, true, out);
+    argument(node, args, 0, this_p, depth, out)?;
+    out.push_str(token);
+    argument(node, args, 1, this_p, depth, out)?;
+    close(group, true, out);
+    Ok(())
+}
+
+/// Writes a sum, the plus template of ctopff.
+///
+/// The template writes a minus rather than a plus before an operand which is a
+/// negative number or a negated expression.
+fn emit_plus(
+    node: &Ast,
+    args: &[&Ast],
+    p: i32,
+    parent: Option<&Ast>,
+    index: usize,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    let op = parent_operator(parent);
+    let group = (p > 2 && op != Operator::Minus)
+        || (op == Operator::Minus && args.len() != 1 && right_of_minus(parent, index, depth)?);
+    // an operand of its own carries no operator, so a sum of one positive
+    // operand is written between stretched parentheses
+    let has_operator = args.len() > 1
+        || args
+            .first()
+            .is_some_and(|first| is_unary_minus(first) || is_negative_number(first));
+    open(group, has_operator, out);
+    for (n, child) in args.iter().enumerate() {
+        if is_unary_minus(child) || is_negative_number(child) {
+            out.push('-');
+        } else if n > 0 {
+            out.push('+');
+        }
+        emit_summand(node, child, n, depth, out)?;
+    }
+    close(group, has_operator, out);
+    Ok(())
+}
+
+/// Writes one operand of a sum, whose sign the plus template has written.
+///
+/// The template writes the number of a negative operand negated, and pulls the
+/// sign out of a product whose first factor is a negative number, which drops
+/// that sign altogether, and out of one whose first factor is a difference of
+/// three operands or more.
+fn emit_summand(
+    node: &Ast,
+    child: &Ast,
+    index: usize,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    if is_negative_number(child) {
+        write_mn(&xpath_number(-number_value(child)), out);
+        return Ok(());
+    }
+    if is_unary_minus(child) {
+        if let Some(operand) = child.children.first() {
+            emit(operand, 2, Some(child), 0, depth + 2, out)?;
+        }
+        return Ok(());
+    }
+    if child.kind == AstKind::Times && emit_pulled_product(child, depth, out)? {
+        return Ok(());
+    }
+    emit(child, 2, Some(node), index, depth + 1, out)
+}
+
+/// Writes a product of a sum whose first factor the plus template pulls apart,
+/// and answers whether it did.
+///
+/// The template writes the first factor itself where it is a negative number,
+/// whose sign it has already written, and where it is a difference of three
+/// operands or more, of which libsbml writes the first and the last alone.
+fn emit_pulled_product(child: &Ast, depth: usize, out: &mut String) -> Result<bool, MathError> {
+    let factors = operands(child, depth + 1)?;
+    let Some(first) = factors.first() else {
+        return Ok(false);
+    };
+    if is_negative_number(first) {
+        write_mn(&xpath_number(-number_value(first)), out);
+    } else if first.kind == AstKind::Minus && operands(first, depth + 2)?.len() >= 3 {
+        if let Some(inner) = operands(first, depth + 2)?.first() {
+            emit(inner, 0, Some(first), 0, depth + 3, out)?;
+        }
+    } else {
+        return Ok(false);
+    }
+    emit_times(child, &factors, 2, Operator::Other, 1, depth + 1, out)?;
+    Ok(true)
+}
+
+/// Writes a product, the times template of ctopff.
+///
+/// `first` is the `$first` of the template: the number of leading factors whose
+/// own latex is left out, which the plus template sets where it has written the
+/// first factor of a product itself.
+fn emit_times(
+    node: &Ast,
+    args: &[&Ast],
+    p: i32,
+    op: Operator,
+    first: usize,
+    depth: usize,
+    out: &mut String,
+) -> Result<(), MathError> {
+    let group = p > 3 && op != Operator::Minus;
+    let has_operator = args.len() > 1;
+    open(group, has_operator, out);
+    for (n, child) in args.iter().enumerate() {
+        if n > 0 {
+            out.push_str("\\cdot ");
+        }
+        if n >= first {
+            emit(child, 3, Some(node), n, depth + 1, out)?;
+        }
+    }
+    close(group, has_operator, out);
+    Ok(())
+}
+
+/// Writes a piecewise as the array `tables.xsl` writes, which the replacements
+/// turn into a cases environment.
+fn emit_piecewise(node: &Ast, depth: usize, out: &mut String) -> Result<(), MathError> {
+    out.push_str("\\{\\begin{array}{");
+    // the template counts the columns of the first row, which is three whether
+    // that row is a piece or the otherwise
+    if !node.children.is_empty() {
+        out.push_str("ccc");
+    }
+    out.push('}');
+    for (n, case) in node.children.chunks(2).enumerate() {
+        if n > 0 {
+            out.push_str("\\\\ ");
+        }
+        if let Some(value) = case.first() {
+            emit(value, 0, Some(node), 2 * n, depth + 1, out)?;
+        }
+        match case.get(1) {
+            Some(condition) => {
+                out.push_str("& \\text{\u{a0} if \u{a0}}\\hfill & ");
+                emit(condition, 0, Some(node), 2 * n + 1, depth + 1, out)?;
+            }
+            None => out.push_str("& \\multicolumn{2}{c}{\\text{\u{a0} otherwise}}"),
+        }
+    }
+    out.push_str("\\end{array}");
+    Ok(())
+}
+
+/// Writes a lambda, whose bound variables the replacements separate and close.
+///
+/// The syntax tree does not record which children of a lambda are its bound
+/// variables, so the last one is read as its body, which is what every lambda of
+/// a document has. A lambda of a bound variable and no body, which is not valid
+/// SBML and which libsbml writes with the bound variable in both places, is
+/// written here as a body alone.
+fn emit_lambda(node: &Ast, depth: usize, out: &mut String) -> Result<(), MathError> {
+    let Some((body, bvars)) = node.children.split_last() else {
+        // a lambda of no child at all, which ctopff writes by the template of a
+        // lambda without a bound variable
+        out.push_str("{|}_{}");
+        return Ok(());
+    };
+    if bvars.is_empty() {
+        emit(body, 0, Some(node), 0, depth + 1, out)?;
+        out.push_str("{|}_{}");
+        return Ok(());
+    }
+    out.push_str("\\lambda ");
+    for (n, bvar) in bvars.iter().enumerate() {
+        emit(bvar, 0, Some(node), n, depth + 1, out)?;
+    }
+    out.push_str(".\\left(");
+    emit(body, 0, Some(node), bvars.len(), depth + 1, out)?;
+    out.push_str("\\right)");
+    Ok(())
+}
+
+/* -------------------------------------------------------- the parentheses */
+
+/// Writes the opening parenthesis of a group, stretched where it holds no operator.
+///
+/// `tokens.xsl` writes `\left(` for a parenthesis whose nearest operator sibling
+/// is another parenthesis and a plain `(` where an operator stands between the
+/// two, which is why `(a+b)` is plain and `\left(\frac{a}{b}\right)` is
+/// stretched.
+fn open(group: bool, has_operator: bool, out: &mut String) {
+    if group {
+        out.push_str(if has_operator { "(" } else { "\\left(" });
+    }
+}
+
+/// Writes the closing parenthesis of a group.
+fn close(group: bool, has_operator: bool, out: &mut String) {
+    if group {
+        out.push_str(if has_operator { ")" } else { "\\right)" });
+    }
+}
+
+/* ---------------------------------------------------------- the predicates */
+
+/// The operator of the parent of a node, which is `name(../*[1])` of ctopff.
+///
+/// Only a difference and a power are asked for by name: a minus spares its
+/// operands the parentheses their precedence would ask for, and a power asks its
+/// base for ones it would not.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Operator {
+    /// The parent is a `minus`.
+    Minus,
+    /// The parent is a `power`.
+    Power,
+    /// The parent is anything else, or the node is the root of the math.
+    Other,
+}
+
+/// The operator element of the `apply` of the parent of a node.
+fn parent_operator(parent: Option<&Ast>) -> Operator {
+    match parent.map(|node| node.kind) {
+        Some(AstKind::Minus) => Operator::Minus,
+        Some(AstKind::Power | AstKind::FunctionPower) => Operator::Power,
+        _ => Operator::Other,
+    }
+}
+
+/// `(. != ../*[2] or count(../*) = 2)`: whether a node is the right operand of a difference.
+///
+/// The templates tell the two operands of a difference apart by their string
+/// values rather than by their position, so two operands of the same text are
+/// taken for one and the right one is written without parentheses. See
+/// [`write_string_value`].
+///
+/// # Errors
+///
+/// [`MathError::TooDeep`] where an operand is nested deeper than [`MAX_AST_DEPTH`].
+fn right_of_minus(parent: Option<&Ast>, index: usize, depth: usize) -> Result<bool, MathError> {
+    let Some(parent) = parent else {
+        return Ok(false);
+    };
+    if parent.kind != AstKind::Minus {
+        return Ok(false);
+    }
+    let args = operands(parent, depth)?;
+    let (Some(left), Some(right)) = (args.first(), args.get(1)) else {
+        // a negation, whose apply carries two elements
+        return Ok(true);
+    };
+    if index != 1 {
+        return Ok(false);
+    }
+    let mut collected = Sink::collecting();
+    write_string_value(left, 0, depth, &mut collected)?;
+    let mut comparison = Sink::comparing(&collected.text);
+    write_string_value(right, 0, depth, &mut comparison)?;
+    Ok(comparison.value_differs())
+}
+
+/// Whether `node` is a negative sign rather than a difference.
+fn is_unary_minus(node: &Ast) -> bool {
+    node.kind == AstKind::Minus && node.children.len() == 1
+}
+
+/// Whether libsbml writes `node` as a `cn` without a `sep` whose number is below zero.
+///
+/// A rational and a number in exponent form carry a `sep` and are no candidates,
+/// and neither is a real which is written as an element of its own.
+fn is_negative_number(node: &Ast) -> bool {
+    match node.kind {
+        AstKind::Integer | AstKind::Real => {
+            special_real(node).is_none() && number_value(node) < 0.0
+        }
+        _ => false,
+    }
+}
+
+/// The value `number(.)` of XPath reads of the `cn` of a number node.
+fn number_value(node: &Ast) -> f64 {
+    match node.number {
+        Some(AstNumber::Integer(integer)) => integer as f64,
+        Some(AstNumber::Real(real)) => real,
+        _ => 0.0,
+    }
+}
+
+/// Whether `number()` of the wrapper around `node` is `value`.
+///
+/// ctopff asks this of the `logbase` of a logarithm and of the `degree` of a
+/// root, whose string value is a number only where they hold a number of one
+/// text piece: a rational, a number in exponent form and every expression answer
+/// `NaN` and so are written out.
+fn wrapper_number_is(node: &Ast, value: f64) -> bool {
+    if !matches!(node.kind, AstKind::Integer | AstKind::Real) || special_real(node).is_some() {
+        return false;
+    }
+    let (first, second) = number_texts(node);
+    second.is_none() && first.parse::<f64>().is_ok_and(|parsed| parsed == value)
+}
+
+/// Whether libsbml writes a node of `kind` as a csymbol applied to its arguments.
+///
+/// The delay, the rate of change and every distribution of the distrib package
+/// are csymbols, which carry the text the document gave them; the functions of
+/// the extended math of Level 3 Version 2 are elements of their own.
+fn is_csymbol_function(kind: AstKind) -> bool {
+    matches!(
+        kind,
+        AstKind::FunctionDelay
+            | AstKind::FunctionRateOf
+            | AstKind::DistribBernoulli
+            | AstKind::DistribBinomial
+            | AstKind::DistribCauchy
+            | AstKind::DistribChisquare
+            | AstKind::DistribExponential
+            | AstKind::DistribGamma
+            | AstKind::DistribLaplace
+            | AstKind::DistribLognormal
+            | AstKind::DistribNormal
+            | AstKind::DistribPoisson
+            | AstKind::DistribRayleigh
+            | AstKind::DistribUniform
+    )
+}
+
+/// The name of the mathml element of a node ctopff writes upright before its
+/// argument, [`None`] for every other kind.
+///
+/// ctopff writes the local name of the element, so these are the names of the
+/// MathML elements libsbml writes and not the words it gives the nodes.
+fn trigonometric_name(kind: AstKind) -> Option<&'static str> {
+    Some(match kind {
+        AstKind::FunctionSin => "sin",
+        AstKind::FunctionCos => "cos",
+        AstKind::FunctionTan => "tan",
+        AstKind::FunctionSec => "sec",
+        AstKind::FunctionCsc => "csc",
+        AstKind::FunctionCot => "cot",
+        AstKind::FunctionSinh => "sinh",
+        AstKind::FunctionCosh => "cosh",
+        AstKind::FunctionTanh => "tanh",
+        AstKind::FunctionSech => "sech",
+        AstKind::FunctionCsch => "csch",
+        AstKind::FunctionCoth => "coth",
+        AstKind::FunctionArcsin => "arcsin",
+        AstKind::FunctionArccos => "arccos",
+        AstKind::FunctionArctan => "arctan",
+        AstKind::FunctionArcsinh => "arcsinh",
+        AstKind::FunctionArccosh => "arccosh",
+        AstKind::FunctionArctanh => "arctanh",
+        AstKind::FunctionArcsec => "arcsec",
+        AstKind::FunctionArcsech => "arcsech",
+        AstKind::FunctionArccsc => "arccsc",
+        AstKind::FunctionArccsch => "arccsch",
+        AstKind::FunctionArccot => "arccot",
+        AstKind::FunctionArccoth => "arccoth",
+        AstKind::FunctionLn => "ln",
+        _ => return None,
+    })
+}
+
+/// The token and the precedence of a node ctopff writes with the `infix` template.
+fn infix_operator(kind: AstKind) -> Option<(&'static str, i32)> {
+    Some(match kind {
+        AstKind::RelationalEq => ("=", 1),
+        AstKind::RelationalNeq => ("\\ne ", 1),
+        AstKind::RelationalGt => (">", 1),
+        AstKind::RelationalLt => ("<", 1),
+        AstKind::RelationalGeq => ("\\ge ", 1),
+        AstKind::RelationalLeq => ("\\le ", 1),
+        AstKind::LogicalAnd => ("\\wedge ", 2),
+        AstKind::LogicalOr => ("\\vee ", 3),
+        AstKind::LogicalXor => ("\\oplus ", 3),
+        _ => return None,
+    })
+}
+
+/// The name of a node ctopff writes as a name and a parenthesised set of arguments.
+fn set_function_name(kind: AstKind) -> Option<&'static str> {
+    Some(match kind {
+        AstKind::FunctionMax => "max",
+        AstKind::FunctionMin => "min",
+        AstKind::FunctionRem => "rem",
+        _ => return None,
+    })
+}
+
+/// The name ctopff gives an operator element it writes as a call of its name.
+///
+/// Only a difference of no operand reaches this: every other operator has a
+/// template of its own whatever its number of operands.
+fn operator_name(kind: AstKind) -> Result<&'static str, MathError> {
+    Ok(match kind {
+        AstKind::Minus => "minus",
+        AstKind::Plus => "plus",
+        _ => return Err(MathError::UnknownKind(kind)),
+    })
+}

@@ -913,7 +913,10 @@ fn decimal(value: i64) -> String {
 /// in exponent notation, with an exponent of at least two digits, and writes
 /// every other value in fixed notation; it drops the trailing zeros of the
 /// fraction and the point of a fraction of no digit.
-fn significant_15(value: f64) -> String {
+///
+/// The latex writer uses it as well: libsbml writes the `cn` of a number of its
+/// MathML with the same format, and that MathML is what the latex is made of.
+pub(super) fn significant_15(value: f64) -> String {
     /// The significant digits of the float format of libsbml.
     const PRECISION: i64 = 15;
 

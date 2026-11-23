@@ -3,7 +3,7 @@
 use sbml4humans_libsbml::read_math;
 use sbml4humans_model::AstKind;
 use sbml4humans_oracles::load_maths;
-use sbml4humans_report::formula;
+use sbml4humans_report::{formula, latex};
 
 /// The differences a run of the gate prints before it names their number.
 const PRINTED: usize = 20;
@@ -57,6 +57,43 @@ fn the_formula_of_every_math_of_the_fixture_equals_the_python_one() {
     assert!(
         differences.is_empty(),
         "{} of the {} maths of the fixture write another formula than python:\n{}",
+        differences.len(),
+        maths.len(),
+        differences
+            .iter()
+            .take(PRINTED)
+            .cloned()
+            .collect::<Vec<_>>()
+            .join("\n")
+    );
+}
+
+// The latex of the fixture is what `sbml4humans.mathml.astnode_to_latex` writes of the same
+// MathML: the output of the two stylesheets of the python implementation, after its ten
+// replacements and its two heuristics. This compares the port of that pipeline against it over
+// every math of the corpus, in the shape of the gate above.
+#[test]
+fn the_latex_of_every_math_of_the_fixture_equals_the_python_one() {
+    let maths = load_maths();
+    assert_eq!(maths.len(), 1832);
+    let mut differences = Vec::new();
+    for entry in &maths {
+        let ast = read_math(&entry.mathml).unwrap_or_else(|e| panic!("{e:?}: {}", entry.mathml));
+        match latex(&ast) {
+            Ok(ours) if ours == entry.latex => {}
+            Ok(ours) => differences.push(format!(
+                "ours {ours:?} but python {:?}, of {}",
+                entry.latex, entry.mathml
+            )),
+            Err(error) => differences.push(format!(
+                "ours {error} but python {:?}, of {}",
+                entry.latex, entry.mathml
+            )),
+        }
+    }
+    assert!(
+        differences.is_empty(),
+        "{} of the {} maths of the fixture write another latex than python:\n{}",
         differences.len(),
         maths.len(),
         differences

@@ -1,9 +1,10 @@
 //! The writers of the math of an element.
 //!
-//! [`formula`] writes the Level 3 formula of a syntax tree, the `formula` field
-//! of the math of the report. Both fields of a math are what the python
-//! implementation writes for the same document, which the gate of
-//! `crates/oracles` compares entry by entry against the whole corpus.
+//! [`formula`] writes the Level 3 formula of a syntax tree and [`latex`] its
+//! latex, the two fields of the math of the report, which [`math`] writes
+//! together. Both fields of a math are what the python implementation writes for
+//! the same document, which the gate of `crates/oracles` compares entry by entry
+//! against the whole corpus.
 //!
 //! A writer reads the `name` of a node for a symbol and for a call of a
 //! function of the model only, and keys everything else off the kind of the
@@ -18,10 +19,27 @@
 //! every other document of the process with it.
 
 mod formula;
+mod latex;
 
 pub use formula::formula;
+pub use latex::latex;
 
-use sbml4humans_model::{AstKind, MAX_AST_DEPTH};
+use crate::types::Math;
+use sbml4humans_model::{Ast, AstKind, MAX_AST_DEPTH};
+
+/// The math of an element: its latex and its Level 3 formula.
+///
+/// # Errors
+///
+/// What [`latex`] and [`formula`] answer: [`MathError::TooDeep`] for a tree
+/// nested deeper than [`MAX_AST_DEPTH`] and [`MathError::UnknownKind`] for one
+/// which holds a node of a kind the libsbml shim does not map.
+pub fn math(ast: &Ast) -> Result<Math, MathError> {
+    Ok(Math {
+        latex: latex(ast)?,
+        formula: formula(ast)?,
+    })
+}
 
 /// Why the math of an element could not be written.
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]

@@ -10,5 +10,5 @@ mod types;
 
 pub use build::build;
 pub use double::Double;
-pub use math::{MathError, formula};
+pub use math::{MathError, formula, latex, math};
 pub use types::*;
