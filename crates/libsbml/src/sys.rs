@@ -61,6 +61,7 @@ unsafe extern "C" {
     pub(crate) fn s4h_document_package(doc: *mut SBMLDocument, n: c_uint) -> Package;
 
     pub(crate) fn s4h_sbase_id(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_sbase_id_attribute(sbase: *mut SBase) -> *const c_char;
     pub(crate) fn s4h_sbase_meta_id(sbase: *mut SBase) -> *const c_char;
     pub(crate) fn s4h_sbase_name(sbase: *mut SBase) -> *const c_char;
     pub(crate) fn s4h_sbase_sbo_term_id(sbase: *mut SBase) -> *mut c_char;
@@ -70,12 +71,32 @@ unsafe extern "C" {
     pub(crate) fn s4h_sbase_line(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_sbase_column(sbase: *mut SBase) -> c_uint;
 
+    pub(crate) fn s4h_model_num_function_definitions(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_model_function_definition(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_model_num_unit_definitions(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_model_unit_definition(sbase: *mut SBase, n: c_uint) -> *mut SBase;
     pub(crate) fn s4h_model_num_compartments(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_model_compartment(sbase: *mut SBase, n: c_uint) -> *mut SBase;
     pub(crate) fn s4h_model_num_species(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_model_species(sbase: *mut SBase, n: c_uint) -> *mut SBase;
     pub(crate) fn s4h_model_num_parameters(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_model_parameter(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_model_num_initial_assignments(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_model_initial_assignment(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_model_num_rules(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_model_rule(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_model_num_constraints(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_model_constraint(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+
+    pub(crate) fn s4h_function_definition_math(sbase: *mut SBase) -> *mut ASTNode;
+
+    pub(crate) fn s4h_unit_definition_num_units(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_unit_definition_unit(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+
+    pub(crate) fn s4h_unit_kind(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_unit_exponent(sbase: *mut SBase, value: *mut c_double) -> c_int;
+    pub(crate) fn s4h_unit_scale(sbase: *mut SBase, value: *mut c_int) -> c_int;
+    pub(crate) fn s4h_unit_multiplier(sbase: *mut SBase, value: *mut c_double) -> c_int;
 
     pub(crate) fn s4h_compartment_spatial_dimensions(
         sbase: *mut SBase,
@@ -102,6 +123,16 @@ unsafe extern "C" {
     pub(crate) fn s4h_parameter_value(sbase: *mut SBase, value: *mut c_double) -> c_int;
     pub(crate) fn s4h_parameter_constant(sbase: *mut SBase, value: *mut c_int) -> c_int;
     pub(crate) fn s4h_parameter_units(sbase: *mut SBase) -> *const c_char;
+
+    pub(crate) fn s4h_initial_assignment_symbol(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_initial_assignment_math(sbase: *mut SBase) -> *mut ASTNode;
+
+    pub(crate) fn s4h_rule_kind(sbase: *mut SBase) -> c_int;
+    pub(crate) fn s4h_rule_variable(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_rule_math(sbase: *mut SBase) -> *mut ASTNode;
+
+    pub(crate) fn s4h_constraint_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_constraint_message(sbase: *mut SBase) -> *mut c_char;
 
     pub(crate) fn s4h_read_math_from_string(xml: *const c_char) -> *mut ASTNode;
     pub(crate) fn s4h_read_formula(formula: *const c_char) -> *mut ASTNode;

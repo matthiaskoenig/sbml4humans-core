@@ -7,8 +7,12 @@
 use std::ffi::{CString, c_double, c_int, c_uint};
 use std::sync::{Mutex, MutexGuard};
 
-use sbml4humans_model::{Compartment, Document, Element, Model, Package, Parameter, Species};
+use sbml4humans_model::{
+    Ast, Compartment, Constraint, Document, Element, FunctionDefinition, InitialAssignment, Model,
+    Package, Parameter, Rule, RuleKind, Species, Unit, UnitDefinition,
+};
 
+use crate::math::ast_of;
 use crate::strings;
 use crate::sys;
 
@@ -35,6 +39,13 @@ pub enum ReadError {
 /// the external model definitions a later slice installs among it, so one read
 /// of the process runs at a time.
 static LIBSBML: Mutex<()> = Mutex::new(());
+
+/// The code `s4h_rule_kind` answers of an assignment rule.
+const RULE_ASSIGNMENT: c_int = 0;
+/// The code `s4h_rule_kind` answers of a rate rule.
+const RULE_RATE: c_int = 1;
+/// The code `s4h_rule_kind` answers of an algebraic rule.
+const RULE_ALGEBRAIC: c_int = 2;
 
 /// Holds the lock of libsbml, also when a reader before it panicked.
 ///
@@ -100,7 +111,7 @@ unsafe fn document(doc: *mut sys::SBMLDocument) -> Result<Document, ReadError> {
             // the serialized XML of the document is the whole source and the
             // one of the model nearly all of it, so neither carries it
             element: element(sys::s4h_document_sbase(doc)),
-            model: Some(model(sbase)),
+            model: Some(model(sbase)?),
         })
     }
 }
@@ -142,58 +153,144 @@ unsafe fn packages(doc: *mut sys::SBMLDocument) -> Vec<Package> {
 
 /// The model of a document with its elements.
 ///
+/// The lists are filled in the order the python implementation builds them, so
+/// that the two can be read side by side.
+///
 /// # Safety
 ///
-/// `sbase` is the model of a document of libsbml which is alive.
-unsafe fn model(sbase: *mut sys::SBase) -> Model {
+/// `sbase` is the model of a document of libsbml which is alive, and the
+/// caller holds the lock of libsbml.
+unsafe fn model(sbase: *mut sys::SBase) -> Result<Model, ReadError> {
     unsafe {
-        Model {
+        Ok(Model {
             element: element(sbase),
+            function_definitions: elements(
+                sbase,
+                sys::s4h_model_num_function_definitions,
+                sys::s4h_model_function_definition,
+                function_definition,
+            )?,
+            unit_definitions: elements(
+                sbase,
+                sys::s4h_model_num_unit_definitions,
+                sys::s4h_model_unit_definition,
+                unit_definition,
+            )?,
             compartments: elements(
                 sbase,
                 sys::s4h_model_num_compartments,
                 sys::s4h_model_compartment,
                 compartment,
-            ),
+            )?,
             species: elements(
                 sbase,
                 sys::s4h_model_num_species,
                 sys::s4h_model_species,
                 species,
-            ),
+            )?,
             parameters: elements(
                 sbase,
                 sys::s4h_model_num_parameters,
                 sys::s4h_model_parameter,
                 parameter,
-            ),
-        }
+            )?,
+            initial_assignments: elements(
+                sbase,
+                sys::s4h_model_num_initial_assignments,
+                sys::s4h_model_initial_assignment,
+                initial_assignment,
+            )?,
+            rules: elements(sbase, sys::s4h_model_num_rules, sys::s4h_model_rule, rule)?,
+            constraints: elements(
+                sbase,
+                sys::s4h_model_num_constraints,
+                sys::s4h_model_constraint,
+                constraint,
+            )?,
+        })
     }
 }
 
-/// The elements of one list of the model, in the order of the document.
+/// The elements of one list of an element, in the order of the document.
 ///
 /// An element libsbml does not answer is left out, so that the number it
 /// states of its list cannot make the filler ask for one which is not there.
+/// A fill which refuses the document, the one of a math which is nested too
+/// deep, ends the read of the whole document.
 ///
 /// # Safety
 ///
-/// `model` is the model of a document of libsbml which is alive, and `count`,
-/// `at` and `fill` belong to one list of the model.
+/// `parent` is an element of a document of libsbml which is alive, the caller
+/// holds the lock of libsbml, and `count`, `at` and `fill` belong to one list
+/// of the class of that element.
 unsafe fn elements<T>(
-    model: *mut sys::SBase,
+    parent: *mut sys::SBase,
     count: unsafe extern "C" fn(*mut sys::SBase) -> c_uint,
     at: unsafe extern "C" fn(*mut sys::SBase, c_uint) -> *mut sys::SBase,
-    fill: unsafe fn(*mut sys::SBase) -> T,
-) -> Vec<T> {
+    fill: unsafe fn(*mut sys::SBase) -> Result<T, ReadError>,
+) -> Result<Vec<T>, ReadError> {
     let mut elements = Vec::new();
-    for n in 0..unsafe { count(model) } {
-        let sbase = unsafe { at(model, n) };
+    for n in 0..unsafe { count(parent) } {
+        let sbase = unsafe { at(parent, n) };
         if !sbase.is_null() {
-            elements.push(unsafe { fill(sbase) });
+            elements.push(unsafe { fill(sbase) }?);
         }
     }
-    elements
+    Ok(elements)
+}
+
+/// A function definition of the model.
+///
+/// # Safety
+///
+/// `sbase` is a function definition of a document of libsbml which is alive,
+/// and the caller holds the lock of libsbml.
+unsafe fn function_definition(sbase: *mut sys::SBase) -> Result<FunctionDefinition, ReadError> {
+    unsafe {
+        Ok(FunctionDefinition {
+            element: element_with_xml(sbase),
+            math: math(sbase, sys::s4h_function_definition_math)?,
+        })
+    }
+}
+
+/// A unit definition of the model with its units.
+///
+/// # Safety
+///
+/// `sbase` is a unit definition of a document of libsbml which is alive, and
+/// the caller holds the lock of libsbml.
+unsafe fn unit_definition(sbase: *mut sys::SBase) -> Result<UnitDefinition, ReadError> {
+    unsafe {
+        Ok(UnitDefinition {
+            element: element_with_xml(sbase),
+            units: elements(
+                sbase,
+                sys::s4h_unit_definition_num_units,
+                sys::s4h_unit_definition_unit,
+                unit,
+            )?,
+        })
+    }
+}
+
+/// One unit of a unit definition.
+///
+/// A unit carries no identifier and nothing refers to it, so it carries none
+/// of the shared fields of an element.
+///
+/// # Safety
+///
+/// `sbase` is a unit of a document of libsbml which is alive.
+unsafe fn unit(sbase: *mut sys::SBase) -> Result<Unit, ReadError> {
+    unsafe {
+        Ok(Unit {
+            kind: strings::borrowed(sys::s4h_unit_kind(sbase)),
+            exponent: number(sbase, sys::s4h_unit_exponent),
+            scale: integer(sbase, sys::s4h_unit_scale),
+            multiplier: number(sbase, sys::s4h_unit_multiplier),
+        })
+    }
 }
 
 /// A compartment of the model.
@@ -201,15 +298,15 @@ unsafe fn elements<T>(
 /// # Safety
 ///
 /// `sbase` is a compartment of a document of libsbml which is alive.
-unsafe fn compartment(sbase: *mut sys::SBase) -> Compartment {
+unsafe fn compartment(sbase: *mut sys::SBase) -> Result<Compartment, ReadError> {
     unsafe {
-        Compartment {
+        Ok(Compartment {
             element: element_with_xml(sbase),
             spatial_dimensions: number(sbase, sys::s4h_compartment_spatial_dimensions),
             size: number(sbase, sys::s4h_compartment_size),
             constant: flag(sbase, sys::s4h_compartment_constant),
             units: strings::borrowed(sys::s4h_compartment_units(sbase)),
-        }
+        })
     }
 }
 
@@ -218,9 +315,9 @@ unsafe fn compartment(sbase: *mut sys::SBase) -> Compartment {
 /// # Safety
 ///
 /// `sbase` is a species of a document of libsbml which is alive.
-unsafe fn species(sbase: *mut sys::SBase) -> Species {
+unsafe fn species(sbase: *mut sys::SBase) -> Result<Species, ReadError> {
     unsafe {
-        Species {
+        Ok(Species {
             element: element_with_xml(sbase),
             compartment: strings::borrowed(sys::s4h_species_compartment(sbase)).unwrap_or_default(),
             initial_amount: number(sbase, sys::s4h_species_initial_amount),
@@ -229,7 +326,7 @@ unsafe fn species(sbase: *mut sys::SBase) -> Species {
             has_only_substance_units: flag(sbase, sys::s4h_species_has_only_substance_units),
             boundary_condition: flag(sbase, sys::s4h_species_boundary_condition),
             constant: flag(sbase, sys::s4h_species_constant),
-        }
+        })
     }
 }
 
@@ -238,14 +335,89 @@ unsafe fn species(sbase: *mut sys::SBase) -> Species {
 /// # Safety
 ///
 /// `sbase` is a parameter of a document of libsbml which is alive.
-unsafe fn parameter(sbase: *mut sys::SBase) -> Parameter {
+unsafe fn parameter(sbase: *mut sys::SBase) -> Result<Parameter, ReadError> {
     unsafe {
-        Parameter {
+        Ok(Parameter {
             element: element_with_xml(sbase),
             value: number(sbase, sys::s4h_parameter_value),
             constant: flag(sbase, sys::s4h_parameter_constant),
             units: strings::borrowed(sys::s4h_parameter_units(sbase)),
-        }
+        })
+    }
+}
+
+/// An initial assignment of the model.
+///
+/// The symbol is read unguarded, as the python implementation reads it: it is
+/// the empty string where the document names nothing.
+///
+/// # Safety
+///
+/// `sbase` is an initial assignment of a document of libsbml which is alive,
+/// and the caller holds the lock of libsbml.
+unsafe fn initial_assignment(sbase: *mut sys::SBase) -> Result<InitialAssignment, ReadError> {
+    unsafe {
+        Ok(InitialAssignment {
+            element: element_with_id_attribute(sbase),
+            symbol: strings::borrowed(sys::s4h_initial_assignment_symbol(sbase))
+                .unwrap_or_default(),
+            math: math(sbase, sys::s4h_initial_assignment_math)?,
+        })
+    }
+}
+
+/// A rule of the model.
+///
+/// A rule of a class which is neither an assignment, a rate nor an algebraic
+/// rule ends the read, as it ends the build of the report of the python
+/// implementation (`sbmlinfo.rule` raises `TypeError`): the three are the
+/// rules of SBML, and a fourth is nothing the filler may guess the kind of.
+///
+/// # Safety
+///
+/// `sbase` is a rule of a document of libsbml which is alive, and the caller
+/// holds the lock of libsbml.
+unsafe fn rule(sbase: *mut sys::SBase) -> Result<Rule, ReadError> {
+    unsafe {
+        let kind = match sys::s4h_rule_kind(sbase) {
+            RULE_ASSIGNMENT => RuleKind::Assignment,
+            RULE_RATE => RuleKind::Rate,
+            RULE_ALGEBRAIC => RuleKind::Algebraic,
+            _ => {
+                return Err(ReadError::Libsbml(
+                    "the model holds a rule which is neither an assignment, a rate nor an \
+                     algebraic rule"
+                        .to_owned(),
+                ));
+            }
+        };
+        Ok(Rule {
+            element: element_with_id_attribute(sbase),
+            kind,
+            // an algebraic rule sets no variable, and libsbml answers the
+            // empty string of one, which says the same
+            variable: match kind {
+                RuleKind::Algebraic => None,
+                _ => strings::borrowed(sys::s4h_rule_variable(sbase)),
+            },
+            math: math(sbase, sys::s4h_rule_math)?,
+        })
+    }
+}
+
+/// A constraint of the model.
+///
+/// # Safety
+///
+/// `sbase` is a constraint of a document of libsbml which is alive, and the
+/// caller holds the lock of libsbml.
+unsafe fn constraint(sbase: *mut sys::SBase) -> Result<Constraint, ReadError> {
+    unsafe {
+        Ok(Constraint {
+            element: element_with_xml(sbase),
+            math: math(sbase, sys::s4h_constraint_math)?,
+            message: strings::handed_over(sys::s4h_constraint_message(sbase)),
+        })
     }
 }
 
@@ -281,6 +453,46 @@ unsafe fn element_with_xml(sbase: *mut sys::SBase) -> Element {
     filled
 }
 
+/// The shared fields of an element whose id libsbml aliases to its target.
+///
+/// libsbml answers `getId()` of an initial assignment, of a rule and of an
+/// event assignment as the attribute which names what they set, so the `id` of
+/// those three is the `id` attribute of the document, which is the id the
+/// python implementation carries of them as well (`sbmlinfo._identifier`).
+///
+/// # Safety
+///
+/// `sbase` is an initial assignment, a rule or an event assignment of a
+/// document of libsbml which is alive.
+unsafe fn element_with_id_attribute(sbase: *mut sys::SBase) -> Element {
+    let mut filled = unsafe { element_with_xml(sbase) };
+    filled.id = unsafe { strings::borrowed(sys::s4h_sbase_id_attribute(sbase)) };
+    filled
+}
+
+/// The syntax tree of the math of an element, `None` when it has none.
+///
+/// The tree belongs to the element and is read, never freed here. A tree which
+/// is nested deeper than [`sbml4humans_model::MAX_AST_DEPTH`] ends the read of
+/// the document, so that the reader of a math stays the one place which
+/// refuses one.
+///
+/// # Safety
+///
+/// `sbase` is an element of a document of libsbml which is alive, the caller
+/// holds the lock of libsbml, and `of` is a function of the shim of the math
+/// of its class.
+unsafe fn math(
+    sbase: *mut sys::SBase,
+    of: unsafe extern "C" fn(*mut sys::SBase) -> *mut sys::ASTNode,
+) -> Result<Option<Ast>, ReadError> {
+    let node = unsafe { of(sbase) };
+    if node.is_null() {
+        return Ok(None);
+    }
+    unsafe { ast_of(node, 1) }.map(Some)
+}
+
 /// A number attribute, `None` when the document does not set it.
 ///
 /// # Safety
@@ -292,6 +504,20 @@ unsafe fn number(
     of: unsafe extern "C" fn(*mut sys::SBase, *mut c_double) -> c_int,
 ) -> Option<f64> {
     let mut value = 0.0;
+    (unsafe { of(sbase, &mut value) } != 0).then_some(value)
+}
+
+/// An integer attribute, `None` when the document does not set it.
+///
+/// # Safety
+///
+/// `sbase` is an element of a document of libsbml which is alive, and `of` is
+/// a function of the shim of an integer attribute of its class.
+unsafe fn integer(
+    sbase: *mut sys::SBase,
+    of: unsafe extern "C" fn(*mut sys::SBase, *mut c_int) -> c_int,
+) -> Option<i32> {
+    let mut value = 0;
     (unsafe { of(sbase, &mut value) } != 0).then_some(value)
 }
 

@@ -8,6 +8,9 @@ mod document;
 mod element;
 mod math;
 
-pub use document::{Compartment, Document, Model, Package, Parameter, Species};
+pub use document::{
+    Compartment, Constraint, Document, FunctionDefinition, InitialAssignment, Model, Package,
+    Parameter, Rule, RuleKind, Species, Unit, UnitDefinition,
+};
 pub use element::Element;
 pub use math::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};

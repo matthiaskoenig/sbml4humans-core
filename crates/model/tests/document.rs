@@ -39,5 +39,7 @@ fn a_document_keeps_its_level_version_packages_and_model() {
 #[test]
 fn every_list_of_a_model_keeps_the_order_of_the_document() {
     let m = Model::default();
+    assert!(m.function_definitions.is_empty() && m.unit_definitions.is_empty());
     assert!(m.compartments.is_empty() && m.species.is_empty() && m.parameters.is_empty());
+    assert!(m.initial_assignments.is_empty() && m.rules.is_empty() && m.constraints.is_empty());
 }
