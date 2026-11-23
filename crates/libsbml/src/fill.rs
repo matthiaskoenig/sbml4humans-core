@@ -28,6 +28,19 @@ pub enum ReadError {
     #[error("libsbml could not read the source: {0}")]
     Libsbml(String),
     /// The syntax tree of a math is nested deeper than [`sbml4humans_model::MAX_AST_DEPTH`].
+    ///
+    /// An ordinary document reaches it, and loses its whole report over it: the
+    /// MathML reader of libsbml nests a flat n-ary application into a binary
+    /// tree of one `apply` per operand after the first, so a flat sum of
+    /// 1,001 terms is a chain of 1,001 levels and is answered with this, while
+    /// the python implementation reports such a document in full and with its
+    /// latex (`writeMathML` unrolls the nesting back into one flat `apply`).
+    /// The two walks which still recurse per level are what keeps the bound
+    /// this low, `ast_of` of this crate and `operands` of
+    /// `crates/report/src/math/latex.rs`; the doc comment of
+    /// [`sbml4humans_model::MAX_AST_DEPTH`] carries the whole account, and the
+    /// slice which makes those two non-recursive is what removes the
+    /// difference.
     #[error(
         "the math is nested deeper than {} levels",
         sbml4humans_model::MAX_AST_DEPTH

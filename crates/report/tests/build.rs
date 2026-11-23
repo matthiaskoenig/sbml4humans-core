@@ -1,7 +1,7 @@
 //! The report builder maps the document model onto the report.
 
-use sbml4humans_libsbml::read;
-use sbml4humans_model::{Compartment, Document, Element, Model};
+use sbml4humans_libsbml::{ReadError, read};
+use sbml4humans_model::{Compartment, Document, Element, MAX_AST_DEPTH, Model};
 use sbml4humans_report::{build, pk};
 
 /// A Level 3 Version 2 document with one element of every type of the core.
@@ -680,5 +680,53 @@ fn a_rule_of_a_document_which_names_no_variable_is_reported_with_an_empty_one() 
     assert_eq!(
         model["listOfInitialAssignments"][0]["pk"],
         "m/InitialAssignment:0"
+    );
+}
+
+/// A Level 3 Version 2 document whose one rule holds a flat sum of `terms` terms.
+fn document_with_a_flat_sum(terms: usize) -> Vec<u8> {
+    let mut body = String::from("<apply><plus/>");
+    for _ in 0..terms {
+        body.push_str("<cn type=\"integer\">1</cn>");
+    }
+    body.push_str("</apply>");
+    format!(
+        r#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="m">
+    <listOfParameters><parameter id="p" constant="false"/></listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">{body}</math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>"#
+    )
+    .into_bytes()
+}
+
+#[test]
+fn a_wide_sum_is_reported_in_full_up_to_the_bound_and_costs_the_whole_report_past_it() {
+    // The MathML reader of libsbml nests a flat n-ary sum into a binary tree of
+    // one apply per term, so a flat sum of `MAX_AST_DEPTH` terms is a tree of
+    // exactly the bound and one term more is past it. The refusal is the reader's
+    // and ends the read of the document, so the blast radius of one wide sum is
+    // the whole report and not the math of the one element which holds it.
+    //
+    // Measured with these two documents: 1,000 terms are reported with a formula
+    // and a latex, 1,001 terms answer `MathTooDeep` and no report at all. The
+    // python implementation reports the second one in full as well, its formula
+    // and its latex both written, which is the parity this port still owes: the
+    // fix is the non-recursive reader of `ast_of`, which the slice before the
+    // wheel owns.
+    let json = report_of(&document_with_a_flat_sum(MAX_AST_DEPTH));
+    let math = &json["models"][0]["listOfRules"][0]["math"];
+    assert!(math["formula"].is_string(), "the formula is written");
+    assert!(math["latex"].is_string(), "and so is the latex");
+    let refused = read(&document_with_a_flat_sum(MAX_AST_DEPTH + 1));
+    assert!(
+        matches!(refused, Err(ReadError::MathTooDeep)),
+        "one term more"
     );
 }

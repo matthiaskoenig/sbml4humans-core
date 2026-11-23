@@ -45,6 +45,31 @@ fn nested(levels: usize) -> String {
     math(&body)
 }
 
+/// A MathML of one flat `apply` of a `plus` over `terms` numbers.
+///
+/// It is the shape a document writes of a wide sum, `1 + 1 + ... + 1` as the
+/// one n-ary application content MathML has for it, and it carries no nesting
+/// at all.
+fn flat_sum(terms: usize) -> String {
+    let mut body = String::from("<apply><plus/>");
+    for _ in 0..terms {
+        body.push_str("<cn type=\"integer\">1</cn>");
+    }
+    body.push_str("</apply>");
+    math(&body)
+}
+
+/// How many levels deep the tree `ast` is, without recursing.
+fn depth_of(ast: &sbml4humans_model::Ast) -> usize {
+    let mut deepest = 0;
+    let mut stack = vec![(ast, 1)];
+    while let Some((node, level)) = stack.pop() {
+        deepest = deepest.max(level);
+        stack.extend(node.children.iter().map(|child| (child, level + 1)));
+    }
+    deepest
+}
+
 /// Every kind a content MathML expresses, as the smallest math which has it.
 ///
 /// Two kinds are not in the table, and each is covered by a test of its own.
@@ -534,6 +559,38 @@ fn the_math_reads_of_many_threads_do_not_race() {
 fn a_tree_deeper_than_the_bound_is_an_error() {
     let deep = nested(MAX_AST_DEPTH);
     assert!(matches!(read_math(&deep), Err(ReadError::MathTooDeep)));
+}
+
+#[test]
+fn the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone() {
+    // The MathML reader of libsbml nests a flat n-ary application into a binary
+    // tree, one `apply` per operand after the first and the nesting on the left
+    // operand, so the tree of a flat sum of `n` terms is `n` levels deep and the
+    // bound of the reader is a bound on the width of a sum of a document as much
+    // as on its nesting. An ordinary document reaches it: a sum of 1,001 terms is
+    // nothing unusual and no adversarial shape.
+    //
+    // Measured here, and the figures the doc comment of `MAX_AST_DEPTH` and of
+    // `ReadError::MathTooDeep` carry: a flat sum of 1,000 terms is read as a tree
+    // of 1,000 levels and one of 1,001 terms is `MathTooDeep`. The python
+    // implementation reports such a document in full and with its latex, because
+    // `writeMathML` unrolls the nesting back into one flat `apply` and the lxml
+    // pipeline it feeds sees a document of three elements.
+    let at_the_bound = read_math(&flat_sum(MAX_AST_DEPTH)).expect("a flat sum of the bound");
+    assert_eq!(depth_of(&at_the_bound), MAX_AST_DEPTH);
+    assert_eq!(at_the_bound.kind, AstKind::Plus);
+    // two operands at every level, the sum of the terms before it and the next
+    // term, which is what makes the depth the number of the terms
+    assert_eq!(at_the_bound.children.len(), 2);
+    assert_eq!(
+        at_the_bound.children[0].kind,
+        AstKind::Plus,
+        "the nesting is on the left operand"
+    );
+    assert!(matches!(
+        read_math(&flat_sum(MAX_AST_DEPTH + 1)),
+        Err(ReadError::MathTooDeep)
+    ));
 }
 
 #[test]
