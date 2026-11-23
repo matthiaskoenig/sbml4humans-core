@@ -64,7 +64,7 @@ fn every_element_carries_the_line_it_starts_on() {
     assert!(m.species[1].element.line > m.species[0].element.line);
 }
 
-/// A Level 3 Version 2 document of the element types of the core which carry a math.
+/// A Level 3 Version 2 document of the element types of the core.
 ///
 /// It holds what the fill of those types has to tell apart: a function
 /// definition whose math is a lambda, a unit definition of two units and one
@@ -72,6 +72,15 @@ fn every_element_carries_the_line_it_starts_on() {
 /// an id and one with an id next to its symbol, an assignment rule, a rate
 /// rule and two algebraic rules, and a constraint with a message next to one
 /// without.
+///
+/// The reactions and the events add the same contrast: a reaction with every
+/// attribute set, two reactants of the same species, a product, a modifier and
+/// a kinetic law of two local parameters, next to one which sets nothing at
+/// all; and an event with a trigger, a priority, a delay and two assignments,
+/// next to one which holds none of them. The four errors libsbml logs of the
+/// document are the required attributes those two empty elements do not carry,
+/// which is what they are there for: a document with a model is reported
+/// however many errors libsbml logged of it.
 const CORE_ELEMENTS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
 <sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
   <model id="core_elements">
@@ -105,6 +114,7 @@ const CORE_ELEMENTS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
       <species id="S1" compartment="c" initialConcentration="1" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="S2" compartment="c" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="S3" compartment="c" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="E" compartment="c" initialConcentration="1" hasOnlySubstanceUnits="false" boundaryCondition="true" constant="true"/>
     </listOfSpecies>
     <listOfParameters>
       <parameter id="k1" value="0.1" constant="true"/>
@@ -157,6 +167,104 @@ const CORE_ELEMENTS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
         </math>
       </constraint>
     </listOfConstraints>
+    <listOfReactions>
+      <reaction id="J0" name="first" reversible="false" compartment="c">
+        <listOfReactants>
+          <speciesReference id="sr_S1" species="S1" stoichiometry="2" constant="true"/>
+          <speciesReference species="S1" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S2" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="E"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply><times/><ci>Vmax</ci><ci>S1</ci></apply>
+              <apply><plus/><ci>Km</ci><ci>S1</ci></apply>
+            </apply>
+          </math>
+          <listOfLocalParameters>
+            <localParameter id="Km" value="0.5" units="mmole_per_litre"/>
+            <localParameter id="Vmax" value="1"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction>
+        <listOfReactants>
+          <speciesReference species="S3"/>
+        </listOfReactants>
+      </reaction>
+    </listOfReactions>
+    <listOfEvents>
+      <event id="E0" useValuesFromTriggerTime="true">
+        <trigger initialValue="false" persistent="true">
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply><gt/><csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time">time</csymbol><cn type="integer">10</cn></apply>
+          </math>
+        </trigger>
+        <priority>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">1</cn></math>
+        </priority>
+        <delay>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">2</cn></math>
+        </delay>
+        <listOfEventAssignments>
+          <eventAssignment variable="S1">
+            <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">0</cn></math>
+          </eventAssignment>
+          <eventAssignment id="ea_k4" variable="k4">
+            <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k1</ci></math>
+          </eventAssignment>
+        </listOfEventAssignments>
+      </event>
+      <event/>
+    </listOfEvents>
+  </model>
+</sbml>"#;
+
+/// A Level 2 Version 4 document whose reaction is written the way Level 2 does.
+///
+/// The kinetic law carries its parameters in a `listOfParameters`, which
+/// libsbml answers as `Parameter` objects of a list of its own, and the one
+/// reactant carries a `stoichiometryMath` rather than a number, which is the
+/// one case in which a reference of Level 1 or Level 2 has no stoichiometry of
+/// its own. `fast` is set, which a document of Level 3 Version 2 cannot do.
+const LEVEL2_REACTIONS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model id="level2_reactions">
+    <listOfCompartments>
+      <compartment id="c" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="c" initialConcentration="1"/>
+      <species id="S2" compartment="c" initialConcentration="0"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="J0" reversible="false" fast="true">
+        <listOfReactants>
+          <speciesReference species="S1">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">2</cn></math>
+            </stoichiometryMath>
+          </speciesReference>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S2"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply><times/><ci>k</ci><ci>S1</ci></apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k" value="0.5" units="second"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
   </model>
 </sbml>"#;
 
@@ -284,6 +392,118 @@ fn the_rules_keep_their_kind_and_their_order() {
 }
 
 #[test]
+fn the_reactions_and_the_events_are_filled_from_the_document() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    assert_eq!(model.reactions.len(), 2);
+    let reaction = &model.reactions[0];
+    assert_eq!(reaction.element.id.as_deref(), Some("J0"));
+    assert_eq!(reaction.element.name.as_deref(), Some("first"));
+    assert_eq!(reaction.reversible, Some(false));
+    assert_eq!(reaction.compartment.as_deref(), Some("c"));
+    assert_eq!(reaction.reactants.len(), 2);
+    assert_eq!(reaction.reactants[0].species, "S1");
+    assert_eq!(reaction.reactants[0].stoichiometry, 2.0);
+    assert!(reaction.reactants[0].stoichiometry_set);
+    assert!(!reaction.reactants[0].stoichiometry_math);
+    assert_eq!(reaction.reactants[0].constant, Some(true));
+    // a species reference carries its own id, which libsbml aliases to nothing
+    assert_eq!(reaction.reactants[0].element.id.as_deref(), Some("sr_S1"));
+    // the two reactants name the same species, which only their place tells apart
+    assert_eq!(reaction.reactants[1].species, "S1");
+    assert_eq!(reaction.reactants[1].element.id, None);
+    assert_eq!(reaction.products.len(), 1);
+    assert_eq!(reaction.products[0].species, "S2");
+    assert_eq!(reaction.modifiers.len(), 1);
+    assert_eq!(reaction.modifiers[0].species, "E");
+    let law = reaction.kinetic_law.as_ref().unwrap();
+    assert_eq!(law.math.as_ref().unwrap().kind, AstKind::Divide);
+    assert_eq!(law.local_parameters.len(), 2);
+    assert_eq!(law.local_parameters[0].element.id.as_deref(), Some("Km"));
+    assert_eq!(law.local_parameters[0].value, Some(0.5));
+    assert_eq!(
+        law.local_parameters[0].units.as_deref(),
+        Some("mmole_per_litre")
+    );
+    assert_eq!(law.local_parameters[1].element.id.as_deref(), Some("Vmax"));
+    assert_eq!(law.local_parameters[1].units, None);
+    let event = &model.events[0];
+    assert_eq!(event.element.id.as_deref(), Some("E0"));
+    assert_eq!(event.use_values_from_trigger_time, Some(true));
+    let trigger = event.trigger.as_ref().unwrap();
+    assert_eq!(trigger.math.as_ref().unwrap().kind, AstKind::RelationalGt);
+    assert_eq!(trigger.initial_value, Some(false));
+    assert_eq!(trigger.persistent, Some(true));
+    assert_eq!(
+        event.priority.as_ref().unwrap().math.as_ref().unwrap().kind,
+        AstKind::Integer
+    );
+    assert_eq!(
+        event.delay.as_ref().unwrap().math.as_ref().unwrap().kind,
+        AstKind::Integer
+    );
+    assert_eq!(event.event_assignments.len(), 2);
+    assert_eq!(event.event_assignments[0].variable, "S1");
+    assert!(event.event_assignments[0].math.is_some());
+    // libsbml aliases getId() of an event assignment to its variable, so the
+    // report carries the id attribute of the document alone
+    assert_eq!(event.event_assignments[0].element.id, None);
+    assert_eq!(event.event_assignments[1].variable, "k4");
+    assert_eq!(
+        event.event_assignments[1].element.id.as_deref(),
+        Some("ea_k4")
+    );
+}
+
+#[test]
+fn a_reaction_and_an_event_which_set_nothing_are_filled_without_it() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    let reaction = &model.reactions[1];
+    assert_eq!(reaction.element.id, None);
+    // nothing is set, so libsbml answers its own defaults and the flags say so:
+    // `getReversible()` is true at every level and the stoichiometry of a
+    // reference of Level 3 is NaN, both of which Task 6 reads from the flags
+    assert_eq!(reaction.reversible, None);
+    assert_eq!(reaction.fast, None);
+    assert_eq!(reaction.compartment, None);
+    assert!(reaction.kinetic_law.is_none());
+    assert!(reaction.products.is_empty());
+    assert!(reaction.modifiers.is_empty());
+    assert!(reaction.reactants[0].stoichiometry.is_nan());
+    assert!(!reaction.reactants[0].stoichiometry_set);
+    assert!(!reaction.reactants[0].stoichiometry_math);
+    assert_eq!(reaction.reactants[0].constant, None);
+    let event = &model.events[1];
+    assert_eq!(event.use_values_from_trigger_time, None);
+    assert!(event.trigger.is_none());
+    assert!(event.priority.is_none());
+    assert!(event.delay.is_none());
+    assert!(event.event_assignments.is_empty());
+}
+
+#[test]
+fn a_level_2_kinetic_law_carries_its_parameters_as_local_parameters() {
+    let model = read(LEVEL2_REACTIONS.as_bytes()).unwrap().model.unwrap();
+    let reaction = &model.reactions[0];
+    assert_eq!(reaction.reversible, Some(false));
+    // `fast` is an attribute of Level 1 and Level 2 alone
+    assert_eq!(reaction.fast, Some(true));
+    let law = reaction.kinetic_law.as_ref().unwrap();
+    assert_eq!(law.local_parameters.len(), 1);
+    assert_eq!(law.local_parameters[0].element.id.as_deref(), Some("k"));
+    assert_eq!(law.local_parameters[0].value, Some(0.5));
+    assert_eq!(law.local_parameters[0].units.as_deref(), Some("second"));
+    // a Level 2 reference with a stoichiometryMath has no stoichiometry of its
+    // own, which the flags tell apart: libsbml answers the default 1 of the
+    // level for both references, and only the one of the product means it
+    assert!(reaction.reactants[0].stoichiometry_math);
+    assert!(!reaction.reactants[0].stoichiometry_set);
+    assert_eq!(reaction.reactants[0].stoichiometry, 1.0);
+    assert!(!reaction.products[0].stoichiometry_math);
+    assert!(!reaction.products[0].stoichiometry_set);
+    assert_eq!(reaction.products[0].stoichiometry, 1.0);
+}
+
+#[test]
 fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
     // the reader of a math is the one place which refuses a math, and it
     // refuses one of a document as it refuses one of a string
@@ -309,6 +529,26 @@ fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
 </sbml>"#
     );
     assert!(matches!(read(sbml.as_bytes()), Err(ReadError::MathTooDeep)));
+}
+
+#[test]
+fn a_math_of_the_document_of_a_type_the_shim_does_not_map_ends_the_read() {
+    // an empty `math` element is a node of `AST_UNKNOWN`, which libsbml reports
+    // as a math the element has, and the one type a document reaches which the
+    // report has no kind of. The reader refuses the tree rather than hand the
+    // writers a node they cannot write.
+    let sbml = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="m">
+    <listOfParameters><parameter id="p" constant="false"/></listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"/>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>"#;
+    assert!(matches!(read(sbml), Err(ReadError::MathUnknownKind)));
 }
 
 #[test]

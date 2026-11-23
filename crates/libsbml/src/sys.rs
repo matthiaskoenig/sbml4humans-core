@@ -87,6 +87,10 @@ unsafe extern "C" {
     pub(crate) fn s4h_model_rule(sbase: *mut SBase, n: c_uint) -> *mut SBase;
     pub(crate) fn s4h_model_num_constraints(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_model_constraint(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_model_num_reactions(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_model_reaction(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_model_num_events(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_model_event(sbase: *mut SBase, n: c_uint) -> *mut SBase;
 
     pub(crate) fn s4h_function_definition_math(sbase: *mut SBase) -> *mut ASTNode;
 
@@ -133,6 +137,52 @@ unsafe extern "C" {
 
     pub(crate) fn s4h_constraint_math(sbase: *mut SBase) -> *mut ASTNode;
     pub(crate) fn s4h_constraint_message(sbase: *mut SBase) -> *mut c_char;
+
+    pub(crate) fn s4h_reaction_reversible(sbase: *mut SBase, value: *mut c_int) -> c_int;
+    pub(crate) fn s4h_reaction_fast(sbase: *mut SBase, value: *mut c_int) -> c_int;
+    pub(crate) fn s4h_reaction_compartment(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_reaction_num_reactants(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_reaction_reactant(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_reaction_num_products(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_reaction_product(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_reaction_num_modifiers(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_reaction_modifier(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+    pub(crate) fn s4h_reaction_kinetic_law(sbase: *mut SBase) -> *mut SBase;
+
+    pub(crate) fn s4h_species_reference_species(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_species_reference_stoichiometry(
+        sbase: *mut SBase,
+        value: *mut c_double,
+    ) -> c_int;
+    pub(crate) fn s4h_species_reference_stoichiometry_set(sbase: *mut SBase) -> c_int;
+    pub(crate) fn s4h_species_reference_stoichiometry_math(sbase: *mut SBase) -> c_int;
+    pub(crate) fn s4h_species_reference_constant(sbase: *mut SBase, value: *mut c_int) -> c_int;
+
+    pub(crate) fn s4h_kinetic_law_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_kinetic_law_num_parameters(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_kinetic_law_parameter(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+
+    pub(crate) fn s4h_local_parameter_value(sbase: *mut SBase, value: *mut c_double) -> c_int;
+    pub(crate) fn s4h_local_parameter_units(sbase: *mut SBase) -> *const c_char;
+
+    pub(crate) fn s4h_event_use_values_from_trigger_time(
+        sbase: *mut SBase,
+        value: *mut c_int,
+    ) -> c_int;
+    pub(crate) fn s4h_event_trigger(sbase: *mut SBase) -> *mut SBase;
+    pub(crate) fn s4h_event_priority(sbase: *mut SBase) -> *mut SBase;
+    pub(crate) fn s4h_event_delay(sbase: *mut SBase) -> *mut SBase;
+    pub(crate) fn s4h_event_num_event_assignments(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_event_event_assignment(sbase: *mut SBase, n: c_uint) -> *mut SBase;
+
+    pub(crate) fn s4h_trigger_math(sbase: *mut SBase) -> *mut ASTNode;
+    pub(crate) fn s4h_trigger_initial_value(sbase: *mut SBase, value: *mut c_int) -> c_int;
+    pub(crate) fn s4h_trigger_persistent(sbase: *mut SBase, value: *mut c_int) -> c_int;
+
+    pub(crate) fn s4h_math_element_math(sbase: *mut SBase) -> *mut ASTNode;
+
+    pub(crate) fn s4h_event_assignment_variable(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_event_assignment_math(sbase: *mut SBase) -> *mut ASTNode;
 
     pub(crate) fn s4h_read_math_from_string(xml: *const c_char) -> *mut ASTNode;
     pub(crate) fn s4h_read_formula(formula: *const c_char) -> *mut ASTNode;

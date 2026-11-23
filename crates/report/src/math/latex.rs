@@ -1640,11 +1640,13 @@ fn wrapper_number_is(node: &Ast, value: f64) -> bool {
 ///
 /// The delay, the rate of change and every distribution of the distrib package
 /// are csymbols, which carry the text the document gave them; the functions of
-/// the extended math of Level 3 Version 2 are elements of their own.
+/// the extended math of Level 3 Version 2 are elements of their own. A csymbol
+/// of a definition URL libsbml does not know is one of its own text as well.
 fn is_csymbol_function(kind: AstKind) -> bool {
     matches!(
         kind,
-        AstKind::FunctionDelay
+        AstKind::CsymbolFunction
+            | AstKind::FunctionDelay
             | AstKind::FunctionRateOf
             | AstKind::DistribBernoulli
             | AstKind::DistribBinomial

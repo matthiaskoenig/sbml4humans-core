@@ -8,8 +8,10 @@ use std::ffi::{CString, c_double, c_int, c_uint};
 use std::sync::{Mutex, MutexGuard};
 
 use sbml4humans_model::{
-    Ast, Compartment, Constraint, Document, Element, FunctionDefinition, InitialAssignment, Model,
-    Package, Parameter, Rule, RuleKind, Species, Unit, UnitDefinition,
+    Ast, Compartment, Constraint, Document, Element, Event, EventAssignment, FunctionDefinition,
+    InitialAssignment, KineticLaw, LocalParameter, MathElement, Model, ModifierSpeciesReference,
+    Package, Parameter, Reaction, Rule, RuleKind, Species, SpeciesReference, Trigger, Unit,
+    UnitDefinition,
 };
 
 use crate::math::ast_of;
@@ -31,6 +33,15 @@ pub enum ReadError {
         sbml4humans_model::MAX_AST_DEPTH
     )]
     MathTooDeep,
+    /// The syntax tree of a math holds a node of a type the report has no kind of.
+    ///
+    /// The shim names every type a document reaches, so this is a type of a
+    /// libsbml which declares one the shim does not, and `AST_UNKNOWN`, the
+    /// type libsbml answers of an empty `math` element. The tree is refused
+    /// here rather than handed to the writers of the report, which would have
+    /// to guess the kind of a node they do not know.
+    #[error("the math holds a node of a type the report has no kind of")]
+    MathUnknownKind,
 }
 
 /// The lock every read of libsbml holds.
@@ -206,6 +217,18 @@ unsafe fn model(sbase: *mut sys::SBase) -> Result<Model, ReadError> {
                 sys::s4h_model_num_constraints,
                 sys::s4h_model_constraint,
                 constraint,
+            )?,
+            reactions: elements(
+                sbase,
+                sys::s4h_model_num_reactions,
+                sys::s4h_model_reaction,
+                reaction,
+            )?,
+            events: elements(
+                sbase,
+                sys::s4h_model_num_events,
+                sys::s4h_model_event,
+                event,
             )?,
         })
     }
@@ -419,6 +442,230 @@ unsafe fn constraint(sbase: *mut sys::SBase) -> Result<Constraint, ReadError> {
             message: strings::handed_over(sys::s4h_constraint_message(sbase)),
         })
     }
+}
+
+/// A reaction of the model with its participants and its kinetic law.
+///
+/// `reversible` and `fast` are what the document sets and not what libsbml
+/// answers of one which sets neither: libsbml answers `true` of the
+/// `reversible` of a reaction of every level, which is the default of Level 1
+/// and Level 2 and no value at all in Level 3, and the report writes the
+/// default of the level itself (`sbmlinfo._reversible`, `sbmlinfo._fast`).
+///
+/// # Safety
+///
+/// `sbase` is a reaction of a document of libsbml which is alive, and the
+/// caller holds the lock of libsbml.
+unsafe fn reaction(sbase: *mut sys::SBase) -> Result<Reaction, ReadError> {
+    unsafe {
+        Ok(Reaction {
+            element: element_with_xml(sbase),
+            reversible: flag(sbase, sys::s4h_reaction_reversible),
+            fast: flag(sbase, sys::s4h_reaction_fast),
+            compartment: strings::borrowed(sys::s4h_reaction_compartment(sbase)),
+            reactants: elements(
+                sbase,
+                sys::s4h_reaction_num_reactants,
+                sys::s4h_reaction_reactant,
+                species_reference,
+            )?,
+            products: elements(
+                sbase,
+                sys::s4h_reaction_num_products,
+                sys::s4h_reaction_product,
+                species_reference,
+            )?,
+            modifiers: elements(
+                sbase,
+                sys::s4h_reaction_num_modifiers,
+                sys::s4h_reaction_modifier,
+                modifier_species_reference,
+            )?,
+            kinetic_law: child(sbase, sys::s4h_reaction_kinetic_law, kinetic_law)?,
+        })
+    }
+}
+
+/// A reactant or a product of a reaction.
+///
+/// The stoichiometry is the raw answer of libsbml with the two predicates of
+/// it, from which the report derives the value it shows: libsbml answers the
+/// default of the level of a reference which sets nothing, so nothing else may
+/// write a stoichiometry of its own (`sbmlinfo._stoichiometry`). The species is
+/// read unguarded, as the python implementation reads it: it is the empty
+/// string where the document names nothing, which the model keeps as one.
+///
+/// # Safety
+///
+/// `sbase` is a reactant or a product of a document of libsbml which is alive.
+unsafe fn species_reference(sbase: *mut sys::SBase) -> Result<SpeciesReference, ReadError> {
+    unsafe {
+        Ok(SpeciesReference {
+            element: element_with_xml(sbase),
+            species: strings::borrowed(sys::s4h_species_reference_species(sbase))
+                .unwrap_or_default(),
+            // the shim writes the stoichiometry of every reference, so the
+            // NaN stands for an element which is no reference at all
+            stoichiometry: number(sbase, sys::s4h_species_reference_stoichiometry)
+                .unwrap_or(f64::NAN),
+            stoichiometry_set: sys::s4h_species_reference_stoichiometry_set(sbase) != 0,
+            stoichiometry_math: sys::s4h_species_reference_stoichiometry_math(sbase) != 0,
+            constant: flag(sbase, sys::s4h_species_reference_constant),
+        })
+    }
+}
+
+/// A modifier of a reaction, which names a species and nothing else.
+///
+/// # Safety
+///
+/// `sbase` is a modifier of a document of libsbml which is alive.
+unsafe fn modifier_species_reference(
+    sbase: *mut sys::SBase,
+) -> Result<ModifierSpeciesReference, ReadError> {
+    unsafe {
+        Ok(ModifierSpeciesReference {
+            element: element_with_xml(sbase),
+            species: strings::borrowed(sys::s4h_species_reference_species(sbase))
+                .unwrap_or_default(),
+        })
+    }
+}
+
+/// The kinetic law of a reaction with its local parameters.
+///
+/// # Safety
+///
+/// `sbase` is a kinetic law of a document of libsbml which is alive, and the
+/// caller holds the lock of libsbml.
+unsafe fn kinetic_law(sbase: *mut sys::SBase) -> Result<KineticLaw, ReadError> {
+    unsafe {
+        Ok(KineticLaw {
+            element: element_with_xml(sbase),
+            math: math(sbase, sys::s4h_kinetic_law_math)?,
+            local_parameters: elements(
+                sbase,
+                sys::s4h_kinetic_law_num_parameters,
+                sys::s4h_kinetic_law_parameter,
+                local_parameter,
+            )?,
+        })
+    }
+}
+
+/// A parameter of a kinetic law, local to its reaction.
+///
+/// The shim answers the class of the level, a `LocalParameter` of Level 3 and a
+/// `Parameter` of Level 1 and Level 2, and the getters read either, so the
+/// model has one type for both (`sbmlinfo._kinetic_law_parameters`).
+///
+/// # Safety
+///
+/// `sbase` is a parameter of a kinetic law of a document of libsbml which is
+/// alive.
+unsafe fn local_parameter(sbase: *mut sys::SBase) -> Result<LocalParameter, ReadError> {
+    unsafe {
+        Ok(LocalParameter {
+            element: element_with_xml(sbase),
+            value: number(sbase, sys::s4h_local_parameter_value),
+            units: strings::borrowed(sys::s4h_local_parameter_units(sbase)),
+        })
+    }
+}
+
+/// An event of the model with its trigger, priority, delay and assignments.
+///
+/// # Safety
+///
+/// `sbase` is an event of a document of libsbml which is alive, and the caller
+/// holds the lock of libsbml.
+unsafe fn event(sbase: *mut sys::SBase) -> Result<Event, ReadError> {
+    unsafe {
+        Ok(Event {
+            element: element_with_xml(sbase),
+            use_values_from_trigger_time: flag(sbase, sys::s4h_event_use_values_from_trigger_time),
+            trigger: child(sbase, sys::s4h_event_trigger, trigger)?,
+            priority: child(sbase, sys::s4h_event_priority, math_element)?,
+            delay: child(sbase, sys::s4h_event_delay, math_element)?,
+            event_assignments: elements(
+                sbase,
+                sys::s4h_event_num_event_assignments,
+                sys::s4h_event_event_assignment,
+                event_assignment,
+            )?,
+        })
+    }
+}
+
+/// The trigger of an event.
+///
+/// # Safety
+///
+/// `sbase` is a trigger of a document of libsbml which is alive, and the caller
+/// holds the lock of libsbml.
+unsafe fn trigger(sbase: *mut sys::SBase) -> Result<Trigger, ReadError> {
+    unsafe {
+        Ok(Trigger {
+            element: element_with_xml(sbase),
+            math: math(sbase, sys::s4h_trigger_math)?,
+            initial_value: flag(sbase, sys::s4h_trigger_initial_value),
+            persistent: flag(sbase, sys::s4h_trigger_persistent),
+        })
+    }
+}
+
+/// The priority or the delay of an event, whose one field is a math.
+///
+/// # Safety
+///
+/// `sbase` is a priority or a delay of a document of libsbml which is alive,
+/// and the caller holds the lock of libsbml.
+unsafe fn math_element(sbase: *mut sys::SBase) -> Result<MathElement, ReadError> {
+    unsafe {
+        Ok(MathElement {
+            element: element_with_xml(sbase),
+            math: math(sbase, sys::s4h_math_element_math)?,
+        })
+    }
+}
+
+/// One assignment of an event.
+///
+/// The variable is read unguarded, as the python implementation reads it: it is
+/// the empty string where the document names nothing.
+///
+/// # Safety
+///
+/// `sbase` is an event assignment of a document of libsbml which is alive, and
+/// the caller holds the lock of libsbml.
+unsafe fn event_assignment(sbase: *mut sys::SBase) -> Result<EventAssignment, ReadError> {
+    unsafe {
+        Ok(EventAssignment {
+            element: element_with_id_attribute(sbase),
+            variable: strings::borrowed(sys::s4h_event_assignment_variable(sbase))
+                .unwrap_or_default(),
+            math: math(sbase, sys::s4h_event_assignment_math)?,
+        })
+    }
+}
+
+/// The one child of an element of a class, `None` when it has none.
+///
+/// # Safety
+///
+/// `parent` is an element of a document of libsbml which is alive, the caller
+/// holds the lock of libsbml, and `of` and `fill` belong to one child of the
+/// class of that element.
+unsafe fn child<T>(
+    parent: *mut sys::SBase,
+    of: unsafe extern "C" fn(*mut sys::SBase) -> *mut sys::SBase,
+    fill: unsafe fn(*mut sys::SBase) -> Result<T, ReadError>,
+) -> Result<Option<T>, ReadError> {
+    let sbase = unsafe { of(parent) };
+    if sbase.is_null() {
+        return Ok(None);
+    }
+    unsafe { fill(sbase) }.map(Some)
 }
 
 /// The fields every element shares, without the element serialized back to XML.

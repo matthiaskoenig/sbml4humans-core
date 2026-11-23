@@ -35,8 +35,9 @@ impl Drop for Parsed {
 ///
 /// The string is the `math` element of a math of SBML with its namespace, the
 /// one libsbml itself writes of a tree. Every string which is no content
-/// MathML, and every tree which is nested deeper than [`MAX_AST_DEPTH`], is an
-/// error; nothing panics, whatever the string holds.
+/// MathML, every tree which is nested deeper than [`MAX_AST_DEPTH`] and every
+/// tree which holds a node of a type the report has no kind of is an error;
+/// nothing panics, whatever the string holds.
 pub fn read_math(mathml: &str) -> Result<Ast, ReadError> {
     read_tree(mathml, "math", sys::s4h_read_math_from_string)
 }
@@ -120,8 +121,16 @@ pub(crate) unsafe fn ast_of(node: *mut sys::ASTNode, depth: usize) -> Result<Ast
                 children.push(ast_of(child, depth + 1)?);
             }
         }
+        // the shim names every type a document reaches, so a node of no kind
+        // is one of a libsbml which declares a type the shim does not and the
+        // `AST_UNKNOWN` of an empty `math` element; the writers of the report
+        // have no kind to write of either, so the tree is refused here
+        let kind = AstKind::from_code(sys::s4h_ast_kind(node));
+        if kind == AstKind::Other {
+            return Err(ReadError::MathUnknownKind);
+        }
         Ok(Ast {
-            kind: AstKind::from_code(sys::s4h_ast_kind(node)),
+            kind,
             name: strings::borrowed(sys::s4h_ast_name(node)),
             number: number(node),
             // the units of libsbml are a string which is set exactly when it

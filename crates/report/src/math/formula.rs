@@ -348,8 +348,9 @@ fn format_function(node: &Ast, out: &mut String) {
         AstKind::FunctionArctan => "atan",
         AstKind::FunctionCeiling => "ceil",
         AstKind::FunctionPower => "pow",
-        // a call of a function of the model is named by the document
-        AstKind::Function => node.name.as_deref().unwrap_or_default(),
+        // a call of a function of the model and a csymbol of a definition URL
+        // libsbml does not know are named by the document
+        AstKind::Function | AstKind::CsymbolFunction => node.name.as_deref().unwrap_or_default(),
         kind => libsbml_name(kind),
     };
     out.push_str(name);
@@ -812,6 +813,7 @@ fn libsbml_name(kind: AstKind) -> &'static str {
         | AstKind::Divide
         | AstKind::Power
         | AstKind::Function
+        | AstKind::CsymbolFunction
         | AstKind::Name => "",
         AstKind::NameTime => "time",
         AstKind::NameAvogadro => "avogadro",

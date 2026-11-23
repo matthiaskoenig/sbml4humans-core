@@ -9,8 +9,10 @@ mod element;
 mod math;
 
 pub use document::{
-    Compartment, Constraint, Document, FunctionDefinition, InitialAssignment, Model, Package,
-    Parameter, Rule, RuleKind, Species, Unit, UnitDefinition,
+    Compartment, Constraint, Document, Event, EventAssignment, FunctionDefinition,
+    InitialAssignment, KineticLaw, LocalParameter, MathElement, Model, ModifierSpeciesReference,
+    Package, Parameter, Reaction, Rule, RuleKind, Species, SpeciesReference, Trigger, Unit,
+    UnitDefinition,
 };
 pub use element::Element;
 pub use math::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};

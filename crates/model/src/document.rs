@@ -142,6 +142,147 @@ pub struct Constraint {
     pub message: Option<String>,
 }
 
+/// A reactant or a product of a reaction.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct SpeciesReference {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The id of the species the reference names.
+    pub species: String,
+    /// The `stoichiometry` as `getStoichiometry()` of libsbml answers it.
+    ///
+    /// It is the raw answer of libsbml, which is the value of the attribute
+    /// where the document sets one and the default of its level where it does
+    /// not: measured against libsbml 5.21.2, a reference of Level 1 or Level 2
+    /// which sets nothing answers `1.0` and one of Level 3 answers `NaN`. The
+    /// value the report shows and the coefficient of the equation follow from
+    /// this number and the two flags below, and no reader may hand on a
+    /// stoichiometry of its own.
+    pub stoichiometry: f64,
+    /// Whether the document sets the `stoichiometry` attribute.
+    pub stoichiometry_set: bool,
+    /// Whether the reference carries a `stoichiometryMath`, which Level 3 dropped.
+    ///
+    /// A reference of Level 1 or Level 2 with a `stoichiometryMath` has no
+    /// stoichiometry of its own, however the default of its level reads.
+    pub stoichiometry_math: bool,
+    /// The `constant` attribute.
+    pub constant: Option<bool>,
+}
+
+/// A modifier of a reaction, which names a species and nothing else.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct ModifierSpeciesReference {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The id of the species the reference names.
+    pub species: String,
+}
+
+/// A parameter of a kinetic law, local to its reaction.
+///
+/// A Level 3 law writes them as `localParameter` and a Level 1 or Level 2 law
+/// as `parameter`; both carry the id, the value and the units the report shows,
+/// so the model has one type for either.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct LocalParameter {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The `value` attribute.
+    pub value: Option<f64>,
+    /// The `units` attribute.
+    pub units: Option<String>,
+}
+
+/// The kinetic law of a reaction.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct KineticLaw {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The syntax tree of the `math` of the law, its rate.
+    pub math: Option<Ast>,
+    /// The local parameters of the law, in the order of the document.
+    pub local_parameters: Vec<LocalParameter>,
+}
+
+/// A reaction of a model.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct Reaction {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The `reversible` attribute, `None` where the document does not set it.
+    ///
+    /// libsbml answers `true` for a reaction which sets it at every level, so
+    /// the default of a level is written where the report is built and never
+    /// read from libsbml.
+    pub reversible: Option<bool>,
+    /// The `fast` attribute, which Level 3 Version 2 dropped.
+    pub fast: Option<bool>,
+    /// The `compartment` attribute, which Level 3 added.
+    pub compartment: Option<String>,
+    /// The reactants, in the order of the document.
+    pub reactants: Vec<SpeciesReference>,
+    /// The products, in the order of the document.
+    pub products: Vec<SpeciesReference>,
+    /// The modifiers, in the order of the document.
+    pub modifiers: Vec<ModifierSpeciesReference>,
+    /// The kinetic law, when the reaction has one.
+    pub kinetic_law: Option<KineticLaw>,
+}
+
+/// An element whose one field is a math, the priority and the delay of an event.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct MathElement {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The syntax tree of the `math` of the element.
+    pub math: Option<Ast>,
+}
+
+/// The trigger of an event.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct Trigger {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The syntax tree of the `math` of the trigger, its condition.
+    pub math: Option<Ast>,
+    /// The `initialValue` attribute, which Level 3 added.
+    pub initial_value: Option<bool>,
+    /// The `persistent` attribute, which Level 3 added.
+    pub persistent: Option<bool>,
+}
+
+/// One assignment an event makes when it fires.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct EventAssignment {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The `variable` attribute, the element the assignment sets.
+    ///
+    /// libsbml aliases the id of an event assignment to this attribute, so
+    /// [`Element::id`] holds the `id` attribute of the document alone.
+    pub variable: String,
+    /// The syntax tree of the `math` of the assignment.
+    pub math: Option<Ast>,
+}
+
+/// An event of a model.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct Event {
+    /// The fields every SBML object shares.
+    pub element: Element,
+    /// The `useValuesFromTriggerTime` attribute.
+    pub use_values_from_trigger_time: Option<bool>,
+    /// The trigger, when the event has one.
+    pub trigger: Option<Trigger>,
+    /// The priority, when the event has one, which Level 3 added.
+    pub priority: Option<MathElement>,
+    /// The delay, when the event has one.
+    pub delay: Option<MathElement>,
+    /// The assignments, in the order of the document.
+    pub event_assignments: Vec<EventAssignment>,
+}
+
 /// The model of a document.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Model {
@@ -163,6 +304,10 @@ pub struct Model {
     pub rules: Vec<Rule>,
     /// The constraints, in the order of the document.
     pub constraints: Vec<Constraint>,
+    /// The reactions, in the order of the document.
+    pub reactions: Vec<Reaction>,
+    /// The events, in the order of the document.
+    pub events: Vec<Event>,
 }
 
 /// An SBML package a document uses.

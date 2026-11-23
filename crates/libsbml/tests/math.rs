@@ -48,13 +48,16 @@ fn nested(levels: usize) -> String {
 /// Every kind a content MathML expresses, as the smallest math which has it.
 ///
 /// Two kinds are not in the table, and each is covered by a test of its own.
-/// `AstKind::Other` is by definition the type the shim does not name, which
-/// `a_type_the_report_has_no_kind_of_is_other` reads. `AstKind::Power` is the
+/// `AstKind::Other` is by definition the type the shim does not name, which no
+/// tree of this crate holds at all, since the reader refuses such a tree
+/// (`a_type_the_report_has_no_kind_of_ends_the_read`). `AstKind::Power` is the
 /// `^` of the `formula` attribute of a Level 1 math, which libsbml parses
 /// outside of MathML, where `<power/>` is `AstKind::FunctionPower`, and which
 /// `the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power`
 /// reads. `AstKind::Function`, a call of a function the model defines, is no
-/// element of its own but an `apply` of a `ci` and is in the table as that.
+/// element of its own but an `apply` of a `ci` and is in the table as that, and
+/// `AstKind::CsymbolFunction` is an `apply` of a csymbol of a definition URL
+/// libsbml does not know.
 const KINDS: &[(&str, AstKind)] = &[
     ("<ci>S1</ci>", AstKind::Name),
     (
@@ -87,6 +90,10 @@ const KINDS: &[(&str, AstKind)] = &[
         AstKind::Divide,
     ),
     ("<apply><ci>f</ci><cn>1</cn></apply>", AstKind::Function),
+    (
+        "<apply><csymbol encoding=\"text\" definitionURL=\"http://example.org/of/nothing\">g</csymbol><cn>1</cn></apply>",
+        AstKind::CsymbolFunction,
+    ),
     ("<apply><abs/><cn>1</cn></apply>", AstKind::FunctionAbs),
     (
         "<apply><arccos/><cn>1</cn></apply>",
@@ -384,17 +391,31 @@ fn a_name_is_the_one_libsbml_answers_of_the_node() {
 }
 
 #[test]
-fn a_type_the_report_has_no_kind_of_is_other() {
-    // a csymbol of a definition URL no package of libsbml registers is
-    // `AST_CSYMBOL_FUNCTION`, the one type a content MathML reaches which the
-    // report has no kind of: the quantifiers and the linear algebra, series,
-    // calculus and set theory types of `ASTNodeType_t` are no math of SBML and
-    // libsbml reads none of them
+fn a_csymbol_of_a_definition_url_libsbml_does_not_know_is_a_csymbol_function() {
+    // `AST_CSYMBOL_FUNCTION` is the type of a csymbol of a definition URL no
+    // package of libsbml registers, which carries the text of the document and
+    // which libsbml and the stylesheet of the latex write as a call of that
+    // text, so the report has a kind of it
     let body =
         "<csymbol encoding=\"text\" definitionURL=\"http://example.org/of/nothing\">x</csymbol>";
     let ast = read_math(&math(body)).expect("it parses");
-    assert_eq!(ast.kind, AstKind::Other);
+    assert_eq!(ast.kind, AstKind::CsymbolFunction);
     assert_eq!(ast.name.as_deref(), Some("x"));
+}
+
+#[test]
+fn a_type_the_report_has_no_kind_of_ends_the_read() {
+    // an empty `math` element is a node of `AST_UNKNOWN`, the one type a
+    // document reaches which the report has no kind of; the quantifier, linear
+    // algebra, series, calculus and set theory types of `ASTNodeType_t` are no
+    // math of SBML and no document reaches them at all. The python
+    // implementation writes the formula `()` and a latex of one space of an
+    // empty math, which no writer here has a kind to reach, so the tree is
+    // refused rather than reported wrongly.
+    assert!(matches!(
+        read_math(&math("")),
+        Err(ReadError::MathUnknownKind)
+    ));
 }
 
 #[test]

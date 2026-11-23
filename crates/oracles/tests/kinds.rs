@@ -1,7 +1,7 @@
 //! Every kind the libsbml shim maps writes the formula and the latex python writes.
 //!
 //! The gate of `tests/math.rs` compares the two writers over the whole math corpus, but the
-//! corpus is a corpus: 39 of the 82 kinds appear in it and 43 do not (42 of them mapped, the 43rd
+//! corpus is a corpus: 39 of the 83 kinds appear in it and 44 do not (43 of them mapped, the 44th
 //! is `Other`), among them 23 of the 24 trigonometric and hyperbolic kinds, every constant, the
 //! rational, the `Power` of a Level 1 formula and the
 //! whole `\sqrt[n]{}` branch. This table covers the rest.
@@ -179,6 +179,15 @@ const CASES: &[(Node, &str, &str)] = &[
         ),
         "f(x, y)",
         " \\mathit{f}\\left(\\mathit{x},\\mathit{y}\\right)",
+    ),
+    (
+        call(
+            AstKind::CsymbolFunction,
+            "myfunc",
+            &[call(AstKind::Name, "x", &[]), call(AstKind::Name, "y", &[])],
+        ),
+        "myfunc(x, y)",
+        " \\mathrm{myfunc}\\left(\\mathit{x},\\mathit{y}\\right)",
     ),
     (
         call(

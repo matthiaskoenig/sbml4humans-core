@@ -71,6 +71,8 @@ ast_kinds! {
     Power = 404,
     /// A call of a user function, whose name is in `name`.
     Function = 500,
+    /// A call of a csymbol of a definition URL libsbml does not know, whose text is in `name`.
+    CsymbolFunction = 501,
     /// The absolute value of its child.
     FunctionAbs = 600,
     /// The inverse cosine of its child.
