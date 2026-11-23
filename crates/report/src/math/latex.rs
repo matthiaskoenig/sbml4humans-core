@@ -72,12 +72,29 @@
 //! The target this constraint exists for is `wasm32-unknown-unknown`, whose
 //! stack is 1 MiB (`stack-size=1048576` in its target spec) and which traps on
 //! an overflow. **1,401 KiB does not fit in 1 MiB**, so a wasm build of these
-//! frame sizes would trap on the deepest tree the bound allows. A release build
-//! has smaller frames than a debug one, by how much nobody has measured, and
-//! nothing in the workspace builds or runs wasm yet. The slice which first
-//! builds wasm has to measure the release frame cost and then either raise the
-//! stack at link time or lower [`MAX_AST_DEPTH`]; the figures above are the
-//! only ones there are and they are not a wasm measurement.
+//! frame sizes would trap on the deepest tree the bound allows **where [`latex`]
+//! is called for it**. `math` of the parent module no longer is: it asks
+//! [`mathml_depth`] first, and the mathml of a chain of a thousand quotients is
+//! a thousand elements, far past [`MAX_MATHML_DEPTH`], so the python
+//! implementation writes no latex for such a tree and neither does this one.
+//! What a tree at the cap costs through `math`, measured the same way, is
+//!
+//! | shape | stack | is a latex written |
+//! | --- | --- | --- |
+//! | 253 quotients over a chain of sums, the deepest mathml the bound allows | 704 KiB | yes |
+//! | a chain of a thousand sums or products, unrolled into one operator | 512 KiB | yes |
+//! | a chain of a thousand quotients, or of differences, at 1,408 KiB through [`latex`] | 384 KiB | no |
+//! | a chain of a thousand of `abs`, of a piecewise or of a lambda | 320 KiB | no |
+//!
+//! so the deepest latex walk which is still reachable fits, with room to spare,
+//! in the megabyte of wasm in a debug build. A release build has smaller frames
+//! than a debug one, by how much nobody has measured, and nothing in the
+//! workspace builds or runs wasm yet, so these are still not wasm
+//! measurements: a slice which raises [`MAX_MATHML_DEPTH`], lets a caller reach
+//! [`latex`] without the depth rule, or runs on a smaller stack has to measure
+//! again. The two tests of the parent module which carry a tree at the cap run
+//! on a thread pinned to that megabyte, so a change which grows a frame of the
+//! walk is a red run and not a surprise on the target.
 //!
 //! # The string value
 //!
@@ -621,24 +638,38 @@ pub(super) fn holds_a_childless_lambda(ast: &Ast) -> bool {
 /// It is the mapping of `ASTNode::write` of libsbml, the elements it writes
 /// above its children and the wrapper each child stands in:
 ///
-/// | kind | elements | the branch below the top element |
-/// | --- | --- | --- |
-/// | [`AstKind::Unknown`] | none at all, nor anything of its children | - |
-/// | a `ci`, a `csymbol` or a constant | the one element | - |
-/// | an `Integer`, and a `Real` whose `"%.15g"` carries no exponent | the `cn` | - |
-/// | a `Rational`, and a `Real` or a `RealE` in exponent form | the `cn` and its `sep` | - |
-/// | a `Real` which is the positive infinity or no number | `infinity`, `notanumber` | - |
-/// | one which is the negative infinity | `apply`, `minus`, `infinity` | - |
-/// | a piecewise | the `piecewise` | every child in a `piece` or an `otherwise` |
-/// | a lambda | the `lambda` | every child but the last in a `bvar` |
-/// | a logarithm or a root of more than one child | the `apply` and its operator | the first child in a `logbase` or a `degree`, the last as the argument |
-/// | every other node libsbml writes as an `apply` | the `apply` and its operator | the operands of [`operands`] |
+/// The last column says how each row is known. **At the bound** is the strongest:
+/// the shape was put at the bound of the pipeline and `sbml4humans.mathml.math_info`
+/// was asked which side of it answers a latex, so the row is python's own answer.
+/// **With lxml** is the depth of the mathml `writeMathMLToString` wrote for the
+/// shape, read with lxml, without python's threshold behind it. Every row was
+/// measured one way or the other against libsbml 5.21.2; nothing here is
+/// reasoning about what libsbml ought to write.
+///
+/// | kind | elements | the branch below the top element | how it is known |
+/// | --- | --- | --- | --- |
+/// | [`AstKind::Unknown`] | none at all, nor anything of its children | - | at the bound |
+/// | a `ci`, a `csymbol` or a constant | the one element | - | at the bound |
+/// | an `Integer`, and a `Real` whose `"%.15g"` carries no exponent | the `cn` | - | at the bound |
+/// | a `Rational`, and a `Real` or a `RealE` in exponent form | the `cn` and its `sep` | - | at the bound |
+/// | a `Real` which is the positive infinity or no number | `infinity`, `notanumber` | - | at the bound |
+/// | one which is the negative infinity | `apply`, `minus`, `infinity` | - | at the bound |
+/// | a piecewise | the `piecewise` | every child in a `piece` or an `otherwise` | at the bound |
+/// | a lambda | the `lambda` | every child but the last in a `bvar` | at the bound |
+/// | a logarithm or a root of more than one child | the `apply` and its operator | the first child in a `logbase` or a `degree`, the last as the argument | at the bound |
+/// | a logarithm of one child | the `apply` and its operator | the child is written as no element at all | with lxml |
+/// | a root of one child | the `apply` and its operator | the child as the argument, without a `degree` | with lxml |
+/// | every other node libsbml writes as an `apply` | the `apply` and its operator | the operands of [`operands`] | at the bound |
+/// | an `apply` none of whose operands writes anything | the `apply` and its operator alone | - | with lxml |
 ///
 /// A wrapper follows the position of a child and not what is written of it, so
-/// an empty `piece`, `bvar`, `logbase` or `degree` is a level of its own; an
-/// `apply` writes its operator element whatever its operands are, so it is two
-/// levels deep even where it has none; and a `piecewise` of no children at all
-/// is one element.
+/// an empty `piece`, `bvar`, `logbase` or `degree` is a level of its own, each
+/// of which was measured with lxml and not at the bound; an `apply` writes its
+/// operator element whatever its operands are, so it is two levels deep even
+/// where it has none; and a `piecewise` of no children at all is one element.
+/// The three rows which were not measured at the bound, and those three
+/// wrappers around nothing, all need a node of the kind [`AstKind::Unknown`] or
+/// a shape no valid document holds, and each is worth one level at most.
 ///
 /// Measured against libsbml 5.21.2 and the python implementation at the bound,
 /// shape by shape, in `tests::the_mathml_depth_of_a_shape_is_the_one_libsbml_writes`
@@ -655,8 +686,20 @@ pub(super) fn holds_a_childless_lambda(ast: &Ast) -> bool {
 /// # Errors
 ///
 /// [`MathError::TooDeep`] for a tree nested deeper than [`MAX_AST_DEPTH`],
-/// which is the bound of every walk of this crate. The walk keeps its own
-/// stack, so no tree costs it more than the frames of [`operands`].
+/// which is the bound of every walk of this crate.
+///
+/// # The stack
+///
+/// The walk keeps its own stack on the heap, so a tree costs it no call frame
+/// per level. The one recursion it reaches is the unrolling of [`operands`],
+/// which follows a chain of sums or of products one frame per level and is
+/// bounded by [`MAX_AST_DEPTH`] like every other walk here; the latex writer
+/// makes the same call, so this adds no frame the writer did not already need.
+/// Measured in a debug build, `math` of a chain of a thousand sums needs
+/// 512 KiB and one of a thousand quotients 384 KiB, inside the megabyte
+/// `wasm32-unknown-unknown` passes
+/// (`tests::the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm`
+/// of the parent module, which runs on a thread pinned to that megabyte).
 pub(super) fn mathml_depth(ast: &Ast) -> Result<usize, MathError> {
     let mut stack = vec![frame(0, ast, 1)?];
     // the depth of the elements of the node whose frame was last finished,

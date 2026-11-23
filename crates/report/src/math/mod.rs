@@ -130,6 +130,16 @@ mod tests {
         number(AstKind::Real, AstNumber::Real(value))
     }
 
+    /// A chain of `levels` levels of `kind`, its tail the right child of each
+    /// node and a `ci` at the bottom.
+    fn chain(kind: AstKind, levels: usize) -> Ast {
+        let mut ast = name("x");
+        for _ in 1..levels {
+            ast = node(kind, vec![name("a"), ast]);
+        }
+        ast
+    }
+
     /// A chain of `n` nested quotients over a `ci`.
     ///
     /// libsbml writes one `apply` per quotient and one `ci` for the leaf, so the
@@ -138,11 +148,26 @@ mod tests {
     /// the python implementation: a chain of 254 is written with its latex and
     /// one of 255 without it.
     fn nested_applies(n: usize) -> Ast {
-        let mut ast = name("x");
-        for _ in 0..n {
-            ast = node(AstKind::Divide, vec![name("a"), ast]);
-        }
-        ast
+        chain(AstKind::Divide, n + 1)
+    }
+
+    /// The stack `wasm32-unknown-unknown` passes, its `stack-size=1048576`.
+    ///
+    /// The tests which walk a tree at the cap of the model run on a thread of
+    /// exactly this size, so that what they measure is the budget of the target
+    /// this crate is built for and not the two megabytes a test thread is
+    /// given. A stack which runs out aborts the process rather than failing the
+    /// test, so such a test goes red by taking the whole run down with it.
+    const WASM_STACK: usize = 1024 * 1024;
+
+    /// Runs `work` on a thread of exactly [`WASM_STACK`].
+    fn on_a_wasm_stack(work: impl FnOnce() + Send + 'static) {
+        std::thread::Builder::new()
+            .stack_size(WASM_STACK)
+            .spawn(work)
+            .expect("a thread of the pinned stack starts")
+            .join()
+            .expect("the walk of the tree did not panic");
     }
 
     /// The deepest chain of [`nested_applies`] whose mathml lxml still parses.
@@ -169,6 +194,44 @@ mod tests {
         assert!(!math.formula.is_empty());
     }
 
+    // The guard walks the whole tree, so the shape takes the latex of the math
+    // it is in wherever it stands. The formula is the one python writes for the
+    // same tree, which is the point of the rule: the math is still reported.
+    #[test]
+    fn a_childless_lambda_deep_in_a_tree_takes_the_latex_of_the_whole_math() {
+        let mut ast = node(AstKind::Lambda, Vec::new());
+        for _ in 0..8 {
+            ast = node(AstKind::Times, vec![name("a"), ast]);
+        }
+        let math = math(&ast).unwrap();
+        assert_eq!(math.latex, None);
+        assert_eq!(
+            math.formula,
+            "a * (a * (a * (a * (a * (a * (a * (a * lambda())))))))"
+        );
+    }
+
+    // A lambda is the math of every function definition, so the rule has to fire
+    // on the childless shape alone: the latex is the one python writes for this
+    // tree, `\lambda(` and `) =` the replacements of `cmathml_to_latex`.
+    #[test]
+    fn a_lambda_which_has_children_keeps_its_latex() {
+        let ast = node(
+            AstKind::Lambda,
+            vec![
+                name("x"),
+                name("y"),
+                node(AstKind::Plus, vec![name("x"), name("y")]),
+            ],
+        );
+        let math = math(&ast).unwrap();
+        assert_eq!(
+            math.latex.as_deref(),
+            Some(" \\lambda(\\mathit{x}, \\mathit{y}) =\\left(\\mathit{x}+\\mathit{y}\\right)")
+        );
+        assert_eq!(math.formula, "lambda(x, y, x + y)");
+    }
+
     #[test]
     fn a_math_whose_mathml_is_too_deep_for_the_stylesheet_is_written_without_its_latex() {
         assert_eq!(math(&nested_applies(ABOVE_THE_BOUND)).unwrap().latex, None);
@@ -190,6 +253,74 @@ mod tests {
         };
         assert!(math(&inside(252)).unwrap().latex.is_some());
         assert_eq!(math(&inside(253)).unwrap().latex, None);
+    }
+
+    // A chain at the cap of the model is the deepest tree a document can hold
+    // and the shape most likely to run a stack out, and a stack which runs out
+    // traps a WebAssembly instance. The three kinds are the ones the walks treat
+    // differently: libsbml writes one element per level of a chain of quotients,
+    // and it unrolls a chain of sums or of products into one apply, which
+    // `operands` does by recursing per level of the chain it unrolls and which
+    // is the deepest call stack `math` reaches.
+    //
+    // Measured on this thread in a debug build: a chain of quotients needs
+    // 384 KiB and the two which unroll 512 KiB, both far inside the megabyte.
+    #[test]
+    fn the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm() {
+        on_a_wasm_stack(|| {
+            for kind in [AstKind::Divide, AstKind::Plus, AstKind::Times] {
+                let written = math(&chain(kind, MAX_AST_DEPTH)).expect("a tree of the cap");
+                assert!(!written.formula.is_empty(), "{kind:?}");
+                // the mathml of a chain of quotients is one element per level
+                // and so a thousand deep, far past the bound of the stylesheet
+                // pipeline, while the mathml of a chain which unrolls is three
+                // elements whatever its length
+                assert_eq!(written.latex.is_some(), kind != AstKind::Divide, "{kind:?}");
+                assert_eq!(
+                    math(&chain(kind, MAX_AST_DEPTH + 1)).err(),
+                    Some(MathError::TooDeep),
+                    "{kind:?}"
+                );
+            }
+        });
+    }
+
+    // The deepest latex walk the depth rule leaves reachable, and so the most
+    // stack `math` can be made to use: a tree whose mathml is exactly as deep as
+    // the bound allows, so the latex is written, and whose levels past that are a
+    // chain of sums which libsbml unrolls into one apply. A tree whose mathml is
+    // one element deeper than this never reaches the latex writer at all, which
+    // is why the walk of a bare chain of a thousand quotients, the 1,408 KiB
+    // `latex` alone needs for it in a debug build and the one figure of this
+    // crate which does not fit in the stack of wasm, is now unreachable through
+    // `math`. This shape needs 704 KiB on this thread in a debug build.
+    #[test]
+    fn the_deepest_latex_the_bound_allows_is_written_within_the_stack_of_wasm() {
+        // a chain of sums is two elements, the `apply` and its operands, so
+        // three with the `<math>` root: this many quotients above one make the
+        // document exactly as deep as the bound allows
+        let quotients = MAX_MATHML_DEPTH - 3;
+        let mut ast = chain(AstKind::Plus, MAX_AST_DEPTH - quotients);
+        for _ in 0..quotients {
+            ast = node(AstKind::Divide, vec![name("a"), ast]);
+        }
+        // the shape stops being the worst case if either number drifts
+        assert_eq!(mathml_depth(&ast).unwrap(), MAX_MATHML_DEPTH);
+        assert_eq!(depth_of(&ast), MAX_AST_DEPTH);
+        on_a_wasm_stack(move || {
+            assert!(math(&ast).expect("a tree of the cap").latex.is_some());
+        });
+    }
+
+    /// How many levels deep the syntax tree `ast` is, without recursing.
+    fn depth_of(ast: &Ast) -> usize {
+        let mut deepest = 0;
+        let mut stack = vec![(ast, 1)];
+        while let Some((node, level)) = stack.pop() {
+            deepest = deepest.max(level);
+            stack.extend(node.children.iter().map(|child| (child, level + 1)));
+        }
+        deepest
     }
 
     // Every depth of this table is the depth of the mathml
