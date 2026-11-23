@@ -345,6 +345,10 @@ unsafe fn compartment(sbase: *mut sys::SBase) -> Result<Compartment, ReadError> 
 
 /// A species of the model.
 ///
+/// The `compartment` is a required attribute of a species, so it is a plain string and the empty
+/// one where libsbml answers nothing, which is the value python reports for such a species as
+/// well; the field of `ReportSpecies` says so with the line of `model.py` which requires it.
+///
 /// # Safety
 ///
 /// `sbase` is a species of a document of libsbml which is alive.
