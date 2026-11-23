@@ -49,16 +49,25 @@ fn nested(levels: usize) -> String {
 ///
 /// Two kinds are not in the table, and each is covered by a test of its own.
 /// `AstKind::Other` is by definition the type the shim does not name, which no
-/// tree of this crate holds at all, since the reader refuses such a tree
-/// (`a_type_the_report_has_no_kind_of_ends_the_read`). `AstKind::Power` is the
-/// `^` of the `formula` attribute of a Level 1 math, which libsbml parses
-/// outside of MathML, where `<power/>` is `AstKind::FunctionPower`, and which
+/// document of libsbml 5.21.2 reaches, so there is no math which has it; the
+/// reader refuses a tree which holds one, which nothing but a libsbml that
+/// declares a further type can produce. `AstKind::Power` is the `^` of the
+/// `formula` attribute of a Level 1 math, which libsbml parses outside of
+/// MathML, where `<power/>` is `AstKind::FunctionPower`, and which
 /// `the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power`
-/// reads. `AstKind::Function`, a call of a function the model defines, is no
-/// element of its own but an `apply` of a `ci` and is in the table as that, and
-/// `AstKind::CsymbolFunction` is an `apply` of a csymbol of a definition URL
-/// libsbml does not know.
+/// reads.
+///
+/// Three kinds are in the table as something other than an element of their own:
+/// `AstKind::Function`, a call of a function the model defines, is an `apply` of
+/// a `ci`; `AstKind::CsymbolFunction` is an `apply` of a csymbol of a definition
+/// URL libsbml does not know; and `AstKind::Unknown` is the node libsbml answers
+/// of a math it could not read, of which an empty `math` element is the one a
+/// string reaches. A content MathML libsbml does not know reaches it as well,
+/// with the children of the `apply` below it, but only through the reader of a
+/// document: `readMathMLFromString` answers nothing at all of such a string, so
+/// `crates/libsbml/tests/read.rs` covers that shape.
 const KINDS: &[(&str, AstKind)] = &[
+    ("", AstKind::Unknown),
     ("<ci>S1</ci>", AstKind::Name),
     (
         "<csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\">time</csymbol>",
@@ -404,18 +413,16 @@ fn a_csymbol_of_a_definition_url_libsbml_does_not_know_is_a_csymbol_function() {
 }
 
 #[test]
-fn a_type_the_report_has_no_kind_of_ends_the_read() {
-    // an empty `math` element is a node of `AST_UNKNOWN`, the one type a
-    // document reaches which the report has no kind of; the quantifier, linear
-    // algebra, series, calculus and set theory types of `ASTNodeType_t` are no
-    // math of SBML and no document reaches them at all. The python
-    // implementation writes the formula `()` and a latex of one space of an
-    // empty math, which no writer here has a kind to reach, so the tree is
-    // refused rather than reported wrongly.
-    assert!(matches!(
-        read_math(&math("")),
-        Err(ReadError::MathUnknownKind)
-    ));
+fn an_empty_math_is_the_unknown_node_libsbml_answers_of_it() {
+    // `AST_UNKNOWN` is the node libsbml answers of a math it could not read, of
+    // which an empty `math` element is the one a string reaches: libsbml answers
+    // it with no child and reports the element as having a math. The python
+    // implementation reports such a document, with the formula `()` and a latex
+    // of one space, so the report has a kind of it and refuses nothing.
+    let ast = read_math(&math("")).expect("an empty math reads");
+    assert_eq!(ast.kind, AstKind::Unknown);
+    assert_eq!(ast.name, None);
+    assert!(ast.children.is_empty());
 }
 
 #[test]
@@ -456,13 +463,26 @@ fn the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power() {
     let source = include_str!("../testdata/level1_power.xml");
     let document = read(source.as_bytes()).expect("libsbml answers a report of the document");
     assert_eq!((document.level, document.version), (1, 2));
-    let ast = read_formula(level1_formula()).expect("the formula parses");
+    // the tree of the kinetic law of the document itself, so that this is the
+    // one check that the path through the shim fills the `formula` as a math
+    let model = document.model.expect("the document holds a model");
+    let law = model.reactions[0]
+        .kinetic_law
+        .as_ref()
+        .expect("the reaction holds a kinetic law");
+    let ast = law.math.as_ref().expect("the law holds a math");
     assert_eq!(ast.kind, AstKind::Times);
     assert_eq!(ast.children[0].name.as_deref(), Some("k1"));
     let power = &ast.children[1];
     assert_eq!(power.kind, AstKind::Power);
     assert_eq!(power.children[0].name.as_deref(), Some("S1"));
     assert_eq!(power.children[1].number, Some(AstNumber::Integer(2)));
+    // and the same tree read from the formula string beside it, which is the
+    // very call `KineticLaw::getMath` makes of it
+    assert_eq!(
+        read_formula(level1_formula()).expect("the formula parses"),
+        *ast
+    );
 }
 
 #[test]

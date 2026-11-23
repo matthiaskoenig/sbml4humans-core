@@ -503,8 +503,8 @@ fn is_function(node: &Ast) -> bool {
         | AstKind::ConstantPi
         | AstKind::ConstantTrue => false,
         // every function of the core, every function of a package, a lambda, an
-        // exclusive or, and the unmapped kind, which libsbml writes as a call of
-        // no name
+        // exclusive or, and the node of a math libsbml could not read, which it
+        // writes as a call of no name
         _ => true,
     }
 }
@@ -802,7 +802,10 @@ fn right_child(node: &Ast) -> Option<&Ast> {
 /// and for a number, which it appends nothing of.
 fn libsbml_name(kind: AstKind) -> &'static str {
     match kind {
+        // libsbml names a node it could not read nothing, so it writes its
+        // children as a parenthesised list of no name at all
         AstKind::Other
+        | AstKind::Unknown
         | AstKind::Integer
         | AstKind::Real
         | AstKind::RealE

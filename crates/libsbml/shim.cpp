@@ -1098,32 +1098,33 @@ void s4h_ast_free(ASTNode* node) {
 /// The kind of a node as the code of the `AstKind` of the report.
 ///
 /// The codes are the contract with `sbml4humans_model::AstKind`, whose name is
-/// the comment of every case. A type which is named by no case is 0, the kind
-/// `Other`, which the reader of a math refuses: the kind of a type the report
-/// does not know is never guessed to be a near one. A null node is `Other` as
-/// well, so that a node the shim does not answer cannot end the process here:
-/// every getter of a node answers its empty value for null rather than
-/// dereferencing it.
+/// the comment of every case. Every type a document of libsbml 5.21.2 reaches
+/// is named by a case, and a type which is named by none is 0, the kind `Other`,
+/// which the reader of a math refuses: the kind of a type the report does not
+/// know is never guessed to be a near one. Only a libsbml which declares a
+/// further type answers one, so `Other` is the guard against the next version
+/// of libsbml and no document reaches it. A null node is `Other` as well, so
+/// that a node the shim does not answer is refused by the reader rather than
+/// dereferenced here: every getter of a node answers its empty value for null.
 ///
-/// Three groups of `ASTNodeType_t` stand outside the math of SBML, measured
-/// against 5.21.2. `AST_CSYMBOL_FUNCTION` is a case: it is a csymbol of a
-/// definition URL no package of libsbml registers, which carries the text of
-/// the document and which libsbml and the stylesheet of the latex write as a
-/// call of that text, so the report has a kind of it. `AST_UNKNOWN`, which
-/// libsbml answers of an empty `math` element, is `Other`: the python
-/// implementation writes the formula `()` and a latex of one space for it,
-/// which no writer here has a kind to reach, so a document which holds one is
-/// refused rather than reported wrongly. The quantifier, linear algebra,
-/// statistics, series, algebra, relation, calculus, set theory, constant and
-/// basic content types are `Other` and no document reaches them at all:
-/// `readMathMLFromString` answers none of them and `writeMathMLToString` writes
-/// no MathML of one, so the python implementation raises rather than writing a
-/// formula or a latex which this could be faithful to.
+/// Two of the cases are no construct of the math of SBML.
+/// `AST_CSYMBOL_FUNCTION` is a csymbol of a definition URL no package of libsbml
+/// registers, which carries the text of the document and which libsbml and the
+/// stylesheet of the latex write as a call of that text. `AST_UNKNOWN` is what
+/// libsbml answers of a math it could not read at all, an empty `math` element
+/// and every content MathML construct which is no math of SBML, the quantifier,
+/// linear algebra, statistics, series, algebra, relation, calculus, set theory,
+/// constant and basic content elements among them: libsbml logs an error of the
+/// element, drops the element itself, keeps the children of its `apply` below
+/// the node and writes no mathml element of the node at all. The python
+/// implementation reports such a document in full, so the report has a kind of
+/// it and the writers write what python writes of it.
 int s4h_ast_kind(const ASTNode* node) {
     if (node == nullptr) {
         return 0;  // Other
     }
     switch (node->getType()) {
+        case AST_UNKNOWN: return 1;                      // Unknown
         case AST_NAME: return 100;                       // Name
         case AST_NAME_TIME: return 101;                  // NameTime
         case AST_NAME_AVOGADRO: return 102;              // NameAvogadro

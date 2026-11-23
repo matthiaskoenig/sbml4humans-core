@@ -410,6 +410,27 @@ fn without_trailing_zeros(formatted: &str) -> &str {
 /// all, and a root of one writes it without a degree. Every other node is
 /// written with all its children.
 ///
+/// A child of the kind [`AstKind::Unknown`] is written as no element at all, so
+/// it is no operand, and the construct above it writes the shape of one operand
+/// fewer: a quotient of a known and an unknown child is `\frac{a}{}` whichever
+/// of the two is unknown, a difference of them is a negation, and an absolute
+/// value of one is a pair of bars around nothing. It is dropped after the
+/// positions are read, since libsbml picks the left and the right child of an
+/// operator by their place in the tree and not by what they are.
+///
+/// The logarithm and the root are the two constructs this is not faithful to,
+/// and both only for a tree which holds an unknown node, which no valid
+/// document does. libsbml writes the first child of either in a `logbase` or a
+/// `degree` element which it writes whether or not that child writes anything,
+/// so the operand is not gone there but empty, and the stylesheets then write
+/// what they write of an element they did not expect: measured against 5.21.2
+/// and the python implementation, `log(unknown, a)` is
+/// ` {\mathrm{log}}_{}, \mathit{a}`, `log(3, unknown)` writes the base twice as
+/// ` {\mathrm{log}}_{3}3`, `root(unknown, a)` is ` \sqrt[]{\mathit{a}}` and
+/// `root(3, unknown)` is the literal ` \text{exception 25:}` of the error branch
+/// of `ctopff.xsl`. Reaching those four needs the two wrappers in the model of
+/// this writer, and the fourth of them is python writing no math at all.
+///
 /// # Errors
 ///
 /// [`MathError::TooDeep`] where the unrolling would follow a chain of sums or
@@ -419,7 +440,7 @@ fn operands(node: &Ast, depth: usize) -> Result<Vec<&Ast>, MathError> {
         return Err(MathError::TooDeep);
     }
     let children = &node.children;
-    match node.kind {
+    let written = match node.kind {
         AstKind::Plus | AstKind::Times if children.len() <= 2 => {
             let mut out = Vec::new();
             for child in children {
@@ -429,14 +450,18 @@ fn operands(node: &Ast, depth: usize) -> Result<Vec<&Ast>, MathError> {
                     out.push(child);
                 }
             }
-            Ok(out)
+            out
         }
         AstKind::Minus | AstKind::Divide | AstKind::Power | AstKind::FunctionRoot => {
-            Ok(first_and_last(children, true))
+            first_and_last(children, true)
         }
-        AstKind::FunctionLog => Ok(first_and_last(children, false)),
-        _ => Ok(children.iter().collect()),
-    }
+        AstKind::FunctionLog => first_and_last(children, false),
+        _ => children.iter().collect(),
+    };
+    Ok(written
+        .into_iter()
+        .filter(|child| child.kind != AstKind::Unknown)
+        .collect())
 }
 
 /// The first and the last of `children`, the first alone where there is one and
@@ -686,11 +711,14 @@ impl<'a> StringValue<'a> {
                 | AstKind::ConstantFalse
                 | AstKind::ConstantPi
                 | AstKind::ConstantTrue => {}
+                // a math libsbml could not read is no element, so it carries no
+                // text and no indentation of its own either
+                AstKind::Unknown => {}
                 AstKind::FunctionPiecewise => {
                     // each case of a piecewise stands in a piece or an otherwise
                     for case in node.children.chunks(2) {
                         steps.push(Step::Indent(level + 1));
-                        for child in case {
+                        for child in case.iter().filter(|c| c.kind != AstKind::Unknown) {
                             steps.push(Step::Indent(level + 2));
                             steps.push(Step::Node(child, level + 2, depth + 1));
                         }
@@ -802,6 +830,13 @@ fn emit(
     }
     if node.kind == AstKind::Other {
         return Err(MathError::UnknownKind(node.kind));
+    }
+    // libsbml writes no mathml element of a math it could not read, so the
+    // stylesheets see a tree without that node and write nothing of it. Every
+    // construct which counts its operands sees one operand fewer, which
+    // `operands` is where that happens.
+    if node.kind == AstKind::Unknown {
+        return Ok(());
     }
     if let Some(special) = special_real(node) {
         emit_special_real(special, p, out);
@@ -1463,15 +1498,27 @@ fn emit_piecewise(node: &Ast, depth: usize, out: &mut String) -> Result<(), Math
         if n > 0 {
             out.push_str("\\\\ ");
         }
-        if let Some(value) = case.first() {
-            emit(value, 0, Some(node), 2 * n, depth + 1, out)?;
+        // libsbml writes a pair of children as a piece and a trailing single
+        // child as the otherwise, whatever either of them is, so the row is the
+        // raw pair; a child of a math it could not read is written as no element
+        // at all, so the children of the row which are written fill its slots
+        // from the first, and the slot left over stays empty
+        let written: Vec<(usize, &Ast)> = case
+            .iter()
+            .enumerate()
+            .filter(|(_, child)| child.kind != AstKind::Unknown)
+            .map(|(at, child)| (2 * n + at, child))
+            .collect();
+        if let Some((index, value)) = written.first() {
+            emit(value, 0, Some(node), *index, depth + 1, out)?;
         }
-        match case.get(1) {
-            Some(condition) => {
-                out.push_str("& \\text{\u{a0} if \u{a0}}\\hfill & ");
-                emit(condition, 0, Some(node), 2 * n + 1, depth + 1, out)?;
+        if case.len() > 1 {
+            out.push_str("& \\text{\u{a0} if \u{a0}}\\hfill & ");
+            if let Some((index, condition)) = written.get(1) {
+                emit(condition, 0, Some(node), *index, depth + 1, out)?;
             }
-            None => out.push_str("& \\multicolumn{2}{c}{\\text{\u{a0} otherwise}}"),
+        } else {
+            out.push_str("& \\multicolumn{2}{c}{\\text{\u{a0} otherwise}}");
         }
     }
     out.push_str("\\end{array}");

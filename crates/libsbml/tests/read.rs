@@ -601,6 +601,42 @@ fn a_level_2_kinetic_law_carries_its_parameters_as_local_parameters() {
     assert_eq!(reaction.products[0].stoichiometry, 1.0);
 }
 
+/// A document whose rules carry a math libsbml could not read.
+///
+/// The first is an empty `math` element, the second a content MathML construct
+/// which is no math of SBML, and the third a sum one of whose operands is such a
+/// construct. libsbml logs an error of each of the last two and answers
+/// `AST_UNKNOWN` for the node, with the children of the `apply` below it.
+const UNKNOWN_MATHS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="unknown_maths">
+    <listOfParameters>
+      <parameter id="p" constant="false"/>
+      <parameter id="q" constant="false"/>
+      <parameter id="r" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"/>
+      </assignmentRule>
+      <assignmentRule variable="q">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply><union/><ci>x</ci><ci>y</ci></apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="r">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci>a</ci>
+            <apply><union/><ci>x</ci><ci>y</ci></apply>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>"#;
+
 #[test]
 fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
     // the reader of a math is the one place which refuses a math, and it
@@ -630,23 +666,33 @@ fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
 }
 
 #[test]
-fn a_math_of_the_document_of_a_type_the_shim_does_not_map_ends_the_read() {
-    // an empty `math` element is a node of `AST_UNKNOWN`, which libsbml reports
-    // as a math the element has, and the one type a document reaches which the
-    // report has no kind of. The reader refuses the tree rather than hand the
-    // writers a node they cannot write.
-    let sbml = br#"<?xml version="1.0" encoding="UTF-8"?>
-<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
-  <model id="m">
-    <listOfParameters><parameter id="p" constant="false"/></listOfParameters>
-    <listOfRules>
-      <assignmentRule variable="p">
-        <math xmlns="http://www.w3.org/1998/Math/MathML"/>
-      </assignmentRule>
-    </listOfRules>
-  </model>
-</sbml>"#;
-    assert!(matches!(read(sbml), Err(ReadError::MathUnknownKind)));
+fn a_math_of_the_document_libsbml_could_not_read_is_filled_as_an_unknown_node() {
+    // libsbml answers `AST_UNKNOWN` of a math it could not read, and reports the
+    // element as having one: an empty `math` element with no child, and a
+    // content MathML of its own namespace which is no math of SBML with the
+    // children of the `apply` below it. The python implementation reports such a
+    // document in full, so the read answers the tree rather than refusing it.
+    let model = read(UNKNOWN_MATHS.as_bytes())
+        .expect("a document whose math libsbml could not read is still read")
+        .model
+        .expect("the document holds a model");
+    assert_eq!(model.rules.len(), 3);
+    let empty = model.rules[0].math.as_ref().expect("the rule has a math");
+    assert_eq!(empty.kind, AstKind::Unknown);
+    assert!(empty.children.is_empty());
+    // the children of the `apply` stand below the unknown node, and the element
+    // which named it is gone, so nothing says which construct it was
+    let union = model.rules[1].math.as_ref().expect("the rule has a math");
+    assert_eq!(union.kind, AstKind::Unknown);
+    assert_eq!(union.children.len(), 2);
+    assert_eq!(union.children[0].kind, AstKind::Name);
+    assert_eq!(union.children[0].name.as_deref(), Some("x"));
+    assert_eq!(union.children[1].name.as_deref(), Some("y"));
+    // and an unknown node stands below a known one as any other child does
+    let sum = model.rules[2].math.as_ref().expect("the rule has a math");
+    assert_eq!(sum.kind, AstKind::Plus);
+    assert_eq!(sum.children[1].kind, AstKind::Unknown);
+    assert_eq!(sum.children[1].children.len(), 2);
 }
 
 #[test]

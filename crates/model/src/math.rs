@@ -37,6 +37,12 @@ ast_kinds! {
     /// A type the shim does not name, which the writers refuse.
     #[default]
     Other = 0,
+    /// The node libsbml answers of a math it could not read, with whatever stood below it.
+    ///
+    /// libsbml writes no mathml element of such a node, so the latex of a tree
+    /// which holds one is the latex of the tree without it, while the formula
+    /// writes it as its children between one pair of parentheses.
+    Unknown = 1,
     /// A reference to a symbol by id, a species, parameter, compartment or local name.
     Name = 100,
     /// The csymbol time, the simulation time, which libsbml reports as a name.

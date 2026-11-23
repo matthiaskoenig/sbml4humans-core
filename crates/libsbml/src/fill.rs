@@ -44,11 +44,12 @@ pub enum ReadError {
     ElementUnknownKind(String),
     /// The syntax tree of a math holds a node of a type the report has no kind of.
     ///
-    /// The shim names every type a document reaches, so this is a type of a
-    /// libsbml which declares one the shim does not, and `AST_UNKNOWN`, the
-    /// type libsbml answers of an empty `math` element. The tree is refused
-    /// here rather than handed to the writers of the report, which would have
-    /// to guess the kind of a node they do not know.
+    /// No document of libsbml 5.21.2 reaches this: the shim names every type of
+    /// `ASTNodeType_t` a document can carry, the `AST_UNKNOWN` of a math it
+    /// could not read included. It is the guard against a libsbml which
+    /// declares a type the shim does not name, whose node is refused here rather
+    /// than handed to the writers of the report, which would have to guess the
+    /// kind of a node they do not know.
     #[error("the math holds a node of a type the report has no kind of")]
     MathUnknownKind,
 }

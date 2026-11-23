@@ -121,10 +121,10 @@ pub(crate) unsafe fn ast_of(node: *const sys::ASTNode, depth: usize) -> Result<A
                 children.push(ast_of(child, depth + 1)?);
             }
         }
-        // the shim names every type a document reaches, so a node of no kind
-        // is one of a libsbml which declares a type the shim does not and the
-        // `AST_UNKNOWN` of an empty `math` element; the writers of the report
-        // have no kind to write of either, so the tree is refused here
+        // the shim names every type a document of libsbml 5.21.2 reaches, the
+        // `AST_UNKNOWN` of a math it could not read included, so a node of no
+        // kind is one of a libsbml which declares a type the shim does not; the
+        // writers of the report have no kind to write of it, so it is refused
         let kind = AstKind::from_code(sys::s4h_ast_kind(node));
         if kind == AstKind::Other {
             return Err(ReadError::MathUnknownKind);
