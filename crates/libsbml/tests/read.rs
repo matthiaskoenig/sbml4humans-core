@@ -66,6 +66,10 @@ fn every_element_carries_the_line_it_starts_on() {
 
 /// A Level 3 Version 2 document of the element types of the core.
 ///
+/// It is `testdata/core_elements.xml`, the document of the oracle gate, read
+/// from the workspace root so that the document these tests read is the
+/// document the gate compares against the python report.
+///
 /// It holds what the fill of those types has to tell apart: a function
 /// definition whose math is a lambda, a unit definition of two units and one
 /// of a single unit with a fractional exponent, an initial assignment without
@@ -75,206 +79,26 @@ fn every_element_carries_the_line_it_starts_on() {
 ///
 /// The reactions and the events add the same contrast: a reaction with every
 /// attribute set, two reactants of the same species, a product, a modifier and
-/// a kinetic law of two local parameters, next to one which sets nothing at
+/// a kinetic law of two local parameters, next to ones which set nothing at
 /// all; and an event with a trigger, a priority, a delay and two assignments,
-/// next to one which holds none of them. The four errors libsbml logs of the
-/// document are the required attributes those two empty elements do not carry,
+/// next to one which holds none of them. The errors libsbml logs of the
+/// document are the required attributes those empty elements do not carry,
 /// which is what they are there for: a document with a model is reported
 /// however many errors libsbml logged of it.
-const CORE_ELEMENTS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
-<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
-  <model id="core_elements">
-    <listOfFunctionDefinitions>
-      <functionDefinition id="f" name="twice">
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <lambda>
-            <bvar><ci>x</ci></bvar>
-            <apply><times/><cn type="integer">2</cn><ci>x</ci></apply>
-          </lambda>
-        </math>
-      </functionDefinition>
-    </listOfFunctionDefinitions>
-    <listOfUnitDefinitions>
-      <unitDefinition id="mmole_per_litre">
-        <listOfUnits>
-          <unit kind="mole" exponent="1" scale="-3" multiplier="1"/>
-          <unit kind="litre" exponent="-1" scale="0" multiplier="1"/>
-        </listOfUnits>
-      </unitDefinition>
-      <unitDefinition id="root_metre">
-        <listOfUnits>
-          <unit kind="metre" exponent="0.5" scale="-2" multiplier="2.5"/>
-        </listOfUnits>
-      </unitDefinition>
-      <unitDefinition id="bare_mole">
-        <listOfUnits>
-          <unit kind="mole"/>
-        </listOfUnits>
-      </unitDefinition>
-      <unitDefinition id="no_unit">
-        <listOfUnits/>
-      </unitDefinition>
-    </listOfUnitDefinitions>
-    <listOfCompartments>
-      <compartment id="c" spatialDimensions="3" size="1" constant="true"/>
-    </listOfCompartments>
-    <listOfSpecies>
-      <species id="S1" compartment="c" initialConcentration="1" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="S2" compartment="c" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="S3" compartment="c" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="E" compartment="c" initialConcentration="1" hasOnlySubstanceUnits="false" boundaryCondition="true" constant="true"/>
-    </listOfSpecies>
-    <listOfParameters>
-      <parameter id="k1" value="0.1" constant="true"/>
-      <parameter id="k2" constant="false"/>
-      <parameter id="k3" value="0" constant="false"/>
-      <parameter id="k4" constant="false"/>
-    </listOfParameters>
-    <listOfInitialAssignments>
-      <initialAssignment symbol="S2">
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <apply><times/><ci>k1</ci><cn type="integer">2</cn></apply>
-        </math>
-      </initialAssignment>
-      <initialAssignment id="ia_S3" symbol="S3">
-        <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k1</ci></math>
-      </initialAssignment>
-    </listOfInitialAssignments>
-    <listOfRules>
-      <assignmentRule variable="k2">
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <apply><times/><cn type="integer">2</cn><ci>k1</ci></apply>
-        </math>
-      </assignmentRule>
-      <rateRule variable="k3">
-        <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k1</ci></math>
-      </rateRule>
-      <algebraicRule>
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <apply><minus/><ci>k4</ci><ci>k1</ci></apply>
-        </math>
-      </algebraicRule>
-      <algebraicRule metaid="meta_algebraic">
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <apply><minus/><ci>S1</ci><ci>k1</ci></apply>
-        </math>
-      </algebraicRule>
-    </listOfRules>
-    <listOfConstraints>
-      <constraint>
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <apply><gt/><ci>S1</ci><cn type="integer">0</cn></apply>
-        </math>
-        <message>
-          <p xmlns="http://www.w3.org/1999/xhtml">S1 has to stay positive</p>
-        </message>
-      </constraint>
-      <constraint>
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <apply><lt/><ci>S2</ci><cn type="integer">10</cn></apply>
-        </math>
-      </constraint>
-    </listOfConstraints>
-    <listOfReactions>
-      <reaction id="J0" name="first" reversible="false" compartment="c">
-        <listOfReactants>
-          <speciesReference id="sr_S1" species="S1" stoichiometry="2" constant="true"/>
-          <speciesReference species="S1" stoichiometry="1" constant="true"/>
-        </listOfReactants>
-        <listOfProducts>
-          <speciesReference species="S2" stoichiometry="1" constant="true"/>
-        </listOfProducts>
-        <listOfModifiers>
-          <modifierSpeciesReference species="E"/>
-        </listOfModifiers>
-        <kineticLaw>
-          <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <apply>
-              <divide/>
-              <apply><times/><ci>Vmax</ci><ci>S1</ci></apply>
-              <apply><plus/><ci>Km</ci><ci>S1</ci></apply>
-            </apply>
-          </math>
-          <listOfLocalParameters>
-            <localParameter id="Km" value="0.5" units="mmole_per_litre"/>
-            <localParameter id="Vmax" value="1"/>
-          </listOfLocalParameters>
-        </kineticLaw>
-      </reaction>
-      <reaction>
-        <listOfReactants>
-          <speciesReference species="S3"/>
-        </listOfReactants>
-      </reaction>
-    </listOfReactions>
-    <listOfEvents>
-      <event id="E0" useValuesFromTriggerTime="true">
-        <trigger initialValue="false" persistent="true">
-          <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <apply><gt/><csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time">time</csymbol><cn type="integer">10</cn></apply>
-          </math>
-        </trigger>
-        <priority>
-          <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">1</cn></math>
-        </priority>
-        <delay>
-          <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">2</cn></math>
-        </delay>
-        <listOfEventAssignments>
-          <eventAssignment variable="S1">
-            <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">0</cn></math>
-          </eventAssignment>
-          <eventAssignment id="ea_k4" variable="k4">
-            <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k1</ci></math>
-          </eventAssignment>
-        </listOfEventAssignments>
-      </event>
-      <event/>
-    </listOfEvents>
-  </model>
-</sbml>"#;
+const CORE_ELEMENTS: &str = include_str!("../../../testdata/core_elements.xml");
 
 /// A Level 2 Version 4 document whose reaction is written the way Level 2 does.
 ///
+/// It is `testdata/level2_reactions.xml`, the Level 2 document of the oracle
+/// gate, read from the workspace root like [`CORE_ELEMENTS`] above.
+///
 /// The kinetic law carries its parameters in a `listOfParameters`, which
 /// libsbml answers as `Parameter` objects of a list of its own, and the one
-/// reactant carries a `stoichiometryMath` rather than a number, which is the
-/// one case in which a reference of Level 1 or Level 2 has no stoichiometry of
-/// its own. `fast` is set, which a document of Level 3 Version 2 cannot do.
-const LEVEL2_REACTIONS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
-<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
-  <model id="level2_reactions">
-    <listOfCompartments>
-      <compartment id="c" size="1"/>
-    </listOfCompartments>
-    <listOfSpecies>
-      <species id="S1" compartment="c" initialConcentration="1"/>
-      <species id="S2" compartment="c" initialConcentration="0"/>
-    </listOfSpecies>
-    <listOfReactions>
-      <reaction id="J0" reversible="false" fast="true">
-        <listOfReactants>
-          <speciesReference species="S1">
-            <stoichiometryMath>
-              <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">2</cn></math>
-            </stoichiometryMath>
-          </speciesReference>
-        </listOfReactants>
-        <listOfProducts>
-          <speciesReference species="S2"/>
-        </listOfProducts>
-        <kineticLaw>
-          <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <apply><times/><ci>k</ci><ci>S1</ci></apply>
-          </math>
-          <listOfParameters>
-            <parameter id="k" value="0.5" units="second"/>
-          </listOfParameters>
-        </kineticLaw>
-      </reaction>
-    </listOfReactions>
-  </model>
-</sbml>"#;
+/// reactant of `J0` carries a `stoichiometryMath` rather than a number, which
+/// is the one case in which a reference of Level 1 or Level 2 has no
+/// stoichiometry of its own. `fast` is set, which a document of Level 3
+/// Version 2 cannot do.
+const LEVEL2_REACTIONS: &str = include_str!("../../../testdata/level2_reactions.xml");
 
 /// A Level 1 Version 2 document whose rules are written the way Level 1 does.
 ///
@@ -492,7 +316,7 @@ fn a_level_1_rule_whose_formula_does_not_parse_is_filled_without_a_math() {
 #[test]
 fn the_reactions_and_the_events_are_filled_from_the_document() {
     let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
-    assert_eq!(model.reactions.len(), 2);
+    assert_eq!(model.reactions.len(), 5);
     let reaction = &model.reactions[0];
     assert_eq!(reaction.element.id.as_deref(), Some("J0"));
     assert_eq!(reaction.element.name.as_deref(), Some("first"));

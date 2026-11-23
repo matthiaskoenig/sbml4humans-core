@@ -5,7 +5,10 @@ use sbml4humans_model::{Compartment, Document, Element, Model};
 use sbml4humans_report::{build, pk};
 
 /// A Level 3 Version 2 document with one element of every type of the core.
-const CORE_ELEMENTS: &[u8] = include_bytes!("../testdata/core_elements.xml");
+///
+/// It is the document of the oracle gate, read from the workspace root so that the document these
+/// tests assert the report of is the document the gate compares against the python report.
+const CORE_ELEMENTS: &[u8] = include_bytes!("../../../testdata/core_elements.xml");
 
 /// A document whose every element of a type which carries a math carries none.
 const NO_MATHS: &[u8] = include_bytes!("../testdata/no_maths.xml");

@@ -129,6 +129,10 @@ fn divisions(entry: &MathFixture) -> usize {
 // libsbml and has no entry of the corpus anywhere near the bound to answer for it. These two are
 // that answer, and they come from python like every other entry: a port which measured the depth
 // one element short, or one too far, fails here and in the gate of the latex above.
+//
+// Reading the mathml of the entry at the bound needs a libsbml built with expat, which
+// `scripts/build-libsbml.sh` and the CI do: libxml2 enforces the same 256 element limit lxml does,
+// so a libsbml built against it would answer no latex one level earlier than python.
 #[test]
 fn the_fixture_holds_the_two_maths_at_the_bound_of_the_latex_pipeline() {
     let maths = load_maths();
