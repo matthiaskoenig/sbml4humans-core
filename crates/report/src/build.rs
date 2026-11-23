@@ -1,6 +1,9 @@
 //! Maps the document model onto the report.
 
-use sbml4humans_model::{Ast, Document, Element, Model, RuleKind, Unit};
+use sbml4humans_model::{
+    Ast, Compartment, Constraint, Document, Element, FunctionDefinition, InitialAssignment, Model,
+    Parameter, Rule, RuleKind, Species, Unit, UnitDefinition,
+};
 
 use crate::{
     Double, LinkGraph, Math, Package, Report, ReportCompartment, ReportConstraint, ReportDocument,
@@ -110,6 +113,182 @@ pub enum BuildError {
     },
 }
 
+/// A compartment of a model.
+fn compartment(scope: &str, index: usize, c: &Compartment) -> ReportCompartment {
+    ReportCompartment {
+        sbase: sbase(
+            scope,
+            "Compartment",
+            &c.element,
+            &key_in_list(&c.element, index),
+        ),
+        spatial_dimensions: c.spatial_dimensions.map(Double),
+        size: c.size.map(Double),
+        constant: c.constant,
+        units: c.units.clone(),
+        units_latex: None,
+        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+    }
+}
+
+/// A species of a model.
+fn species(scope: &str, index: usize, s: &Species) -> ReportSpecies {
+    ReportSpecies {
+        sbase: sbase(
+            scope,
+            "Species",
+            &s.element,
+            &key_in_list(&s.element, index),
+        ),
+        compartment: s.compartment.clone(),
+        initial_amount: s.initial_amount.map(Double),
+        initial_concentration: s.initial_concentration.map(Double),
+        substance_units: s.substance_units.clone(),
+        has_only_substance_units: s.has_only_substance_units,
+        boundary_condition: s.boundary_condition,
+        constant: s.constant,
+        units_latex: None,
+        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        conversion_factor: None,
+        fbc: None,
+    }
+}
+
+/// A global parameter of a model.
+fn parameter(scope: &str, index: usize, p: &Parameter) -> ReportParameter {
+    ReportParameter {
+        sbase: sbase(
+            scope,
+            "Parameter",
+            &p.element,
+            &key_in_list(&p.element, index),
+        ),
+        value: p.value.map(Double),
+        constant: p.constant,
+        units: p.units.clone(),
+        units_latex: None,
+        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+    }
+}
+
+/// A function definition with its lambda.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the definition.
+fn function_definition(
+    scope: &str,
+    index: usize,
+    fd: &FunctionDefinition,
+) -> Result<ReportFunctionDefinition, BuildError> {
+    let sbase = sbase(
+        scope,
+        "FunctionDefinition",
+        &fd.element,
+        &key_in_list(&fd.element, index),
+    );
+    let math = math_of(fd.math.as_ref(), &sbase.pk)?;
+    Ok(ReportFunctionDefinition { sbase, math })
+}
+
+/// A unit definition with its factors.
+fn unit_definition(scope: &str, index: usize, ud: &UnitDefinition) -> ReportUnitDefinition {
+    ReportUnitDefinition {
+        sbase: sbase(
+            scope,
+            "UnitDefinition",
+            &ud.element,
+            &key_in_list(&ud.element, index),
+        ),
+        units_latex: None,
+        list_of_units: ud.units.iter().map(unit).collect(),
+    }
+}
+
+/// An initial assignment of a symbol.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the assignment.
+fn initial_assignment(
+    scope: &str,
+    index: usize,
+    ia: &InitialAssignment,
+) -> Result<ReportInitialAssignment, BuildError> {
+    // the symbol is a required attribute, so the empty string is a document which names none
+    let symbol = (!ia.symbol.is_empty()).then_some(ia.symbol.as_str());
+    let key = key_of_target(&ia.element, symbol, || index.to_string());
+    let sbase = sbase(scope, "InitialAssignment", &ia.element, &key);
+    let math = math_of(ia.math.as_ref(), &sbase.pk)?;
+    Ok(ReportInitialAssignment {
+        sbase,
+        symbol: ia.symbol.clone(),
+        math,
+        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+    })
+}
+
+/// A rule of one of the three rule classes of SBML.
+///
+/// `algebraic` is the number of algebraic rules of the model before this one, which keys an
+/// algebraic rule that carries no identifier of its own.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the rule.
+fn rule(
+    scope: &str,
+    index: usize,
+    algebraic: usize,
+    rule: &Rule,
+) -> Result<ReportRule, BuildError> {
+    let sbml_type = match rule.kind {
+        RuleKind::Assignment => "AssignmentRule",
+        RuleKind::Rate => "RateRule",
+        RuleKind::Algebraic => "AlgebraicRule",
+    };
+    let key = key_of_target(&rule.element, rule.variable.as_deref(), || {
+        match rule.kind {
+            RuleKind::Algebraic => format!("algebraicRule.{algebraic}"),
+            RuleKind::Assignment | RuleKind::Rate => index.to_string(),
+        }
+    });
+    let sbase = sbase(scope, sbml_type, &rule.element, &key);
+    let math = math_of(rule.math.as_ref(), &sbase.pk)?;
+    Ok(ReportRule {
+        sbase,
+        // the class of the algebraic rule declares no variable, so its object carries no such
+        // key; the two others declare a required string, which python writes as the empty
+        // string for a document which names none
+        variable: match rule.kind {
+            RuleKind::Algebraic => None,
+            RuleKind::Assignment | RuleKind::Rate => {
+                Some(rule.variable.clone().unwrap_or_default())
+            }
+        },
+        math,
+        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+    })
+}
+
+/// A constraint with its message.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the constraint.
+fn constraint(scope: &str, index: usize, c: &Constraint) -> Result<ReportConstraint, BuildError> {
+    // a constraint carries nothing which names it, so one without an identifier is keyed by
+    // its place in the list of the constraints (`sbmlinfo.py:870`)
+    let key = pk::key(&c.element, || format!("constraint.{index}"));
+    let sbase = sbase(scope, "Constraint", &c.element, &key);
+    let math = math_of(c.math.as_ref(), &sbase.pk)?;
+    Ok(ReportConstraint {
+        sbase,
+        math,
+        message: c.message.clone(),
+    })
+}
+
 /// The report of one model, every element of it keyed in the scope of that model.
 ///
 /// # Errors
@@ -118,143 +297,17 @@ pub enum BuildError {
 fn model(model: &Model) -> Result<ReportModel, BuildError> {
     // the key of the model is the scope of every element below it
     let scope = pk::key(&model.element, || MAIN_MODEL_KEY.to_owned());
-    let compartments = model
-        .compartments
-        .iter()
-        .enumerate()
-        .map(|(i, c)| ReportCompartment {
-            sbase: sbase(
-                &scope,
-                "Compartment",
-                &c.element,
-                &key_in_list(&c.element, i),
-            ),
-            spatial_dimensions: c.spatial_dimensions.map(Double),
-            size: c.size.map(Double),
-            constant: c.constant,
-            units: c.units.clone(),
-            units_latex: None,
-            derived_units: Some(NO_DERIVED_UNITS.to_owned()),
-        });
-    let species = model
-        .species
-        .iter()
-        .enumerate()
-        .map(|(i, s)| ReportSpecies {
-            sbase: sbase(&scope, "Species", &s.element, &key_in_list(&s.element, i)),
-            compartment: s.compartment.clone(),
-            initial_amount: s.initial_amount.map(Double),
-            initial_concentration: s.initial_concentration.map(Double),
-            substance_units: s.substance_units.clone(),
-            has_only_substance_units: s.has_only_substance_units,
-            boundary_condition: s.boundary_condition,
-            constant: s.constant,
-            units_latex: None,
-            derived_units: Some(NO_DERIVED_UNITS.to_owned()),
-            conversion_factor: None,
-            fbc: None,
-        });
-    let parameters = model
-        .parameters
-        .iter()
-        .enumerate()
-        .map(|(i, p)| ReportParameter {
-            sbase: sbase(&scope, "Parameter", &p.element, &key_in_list(&p.element, i)),
-            value: p.value.map(Double),
-            constant: p.constant,
-            units: p.units.clone(),
-            units_latex: None,
-            derived_units: Some(NO_DERIVED_UNITS.to_owned()),
-        });
-    let mut function_definitions = Vec::with_capacity(model.function_definitions.len());
-    for (i, fd) in model.function_definitions.iter().enumerate() {
-        let sbase = sbase(
-            &scope,
-            "FunctionDefinition",
-            &fd.element,
-            &key_in_list(&fd.element, i),
-        );
-        let math = math_of(fd.math.as_ref(), &sbase.pk)?;
-        function_definitions.push(ReportFunctionDefinition { sbase, math });
-    }
-    let mut unit_definitions = Vec::with_capacity(model.unit_definitions.len());
-    for (i, ud) in model.unit_definitions.iter().enumerate() {
-        unit_definitions.push(ReportUnitDefinition {
-            sbase: sbase(
-                &scope,
-                "UnitDefinition",
-                &ud.element,
-                &key_in_list(&ud.element, i),
-            ),
-            units_latex: None,
-            list_of_units: ud.units.iter().map(unit).collect(),
-        });
-    }
-    let mut initial_assignments = Vec::with_capacity(model.initial_assignments.len());
-    for (i, ia) in model.initial_assignments.iter().enumerate() {
-        // the symbol is a required attribute, so the empty string is a document which names none
-        let symbol = (!ia.symbol.is_empty()).then_some(ia.symbol.as_str());
-        let key = key_of_target(&ia.element, symbol, || i.to_string());
-        let sbase = sbase(&scope, "InitialAssignment", &ia.element, &key);
-        let math = math_of(ia.math.as_ref(), &sbase.pk)?;
-        initial_assignments.push(ReportInitialAssignment {
-            sbase,
-            symbol: ia.symbol.clone(),
-            math,
-            derived_units: Some(NO_DERIVED_UNITS.to_owned()),
-        });
-    }
     // an algebraic rule sets no variable, so one which carries no identifier is keyed by its place
     // among the algebraic rules alone, which an edit of another rule does not move; the place is
     // counted for every algebraic rule, as `rules` of `sbmlinfo.py:1031-1049` counts it, so that
     // one which is keyed by an identifier of its own does not move the key of a later one
     let mut algebraic: usize = 0;
     let mut rules = Vec::with_capacity(model.rules.len());
-    for (i, rule) in model.rules.iter().enumerate() {
-        let sbml_type = match rule.kind {
-            RuleKind::Assignment => "AssignmentRule",
-            RuleKind::Rate => "RateRule",
-            RuleKind::Algebraic => "AlgebraicRule",
-        };
-        let place = if matches!(rule.kind, RuleKind::Algebraic) {
-            let place = format!("algebraicRule.{algebraic}");
+    for (i, r) in model.rules.iter().enumerate() {
+        rules.push(rule(&scope, i, algebraic, r)?);
+        if matches!(r.kind, RuleKind::Algebraic) {
             algebraic += 1;
-            Some(place)
-        } else {
-            None
-        };
-        let key = key_of_target(&rule.element, rule.variable.as_deref(), || {
-            place.unwrap_or_else(|| i.to_string())
-        });
-        let sbase = sbase(&scope, sbml_type, &rule.element, &key);
-        let math = math_of(rule.math.as_ref(), &sbase.pk)?;
-        rules.push(ReportRule {
-            sbase,
-            // the class of the algebraic rule declares no variable, so its object carries no such
-            // key; the two others declare a required string, which python writes as the empty
-            // string for a document which names none
-            variable: match rule.kind {
-                RuleKind::Algebraic => None,
-                RuleKind::Assignment | RuleKind::Rate => {
-                    Some(rule.variable.clone().unwrap_or_default())
-                }
-            },
-            math,
-            derived_units: Some(NO_DERIVED_UNITS.to_owned()),
-        });
-    }
-    let mut constraints = Vec::with_capacity(model.constraints.len());
-    for (i, c) in model.constraints.iter().enumerate() {
-        // a constraint carries nothing which names it, so one without an identifier is keyed by
-        // its place in the list of the constraints (`sbmlinfo.py:870`)
-        let key = pk::key(&c.element, || format!("constraint.{i}"));
-        let sbase = sbase(&scope, "Constraint", &c.element, &key);
-        let math = math_of(c.math.as_ref(), &sbase.pk)?;
-        constraints.push(ReportConstraint {
-            sbase,
-            math,
-            message: c.message.clone(),
-        });
+        }
     }
     Ok(ReportModel {
         // the model is keyed by the key which is its own scope, python writes `<key>/Model:<key>`
@@ -274,14 +327,49 @@ fn model(model: &Model) -> Result<ReportModel, BuildError> {
         extent_units: None,
         extent_units_latex: None,
         conversion_factor: None,
-        list_of_function_definitions: function_definitions,
-        list_of_unit_definitions: unit_definitions,
-        list_of_compartments: compartments.collect(),
-        list_of_species: species.collect(),
-        list_of_parameters: parameters.collect(),
-        list_of_initial_assignments: initial_assignments,
+        list_of_function_definitions: model
+            .function_definitions
+            .iter()
+            .enumerate()
+            .map(|(i, fd)| function_definition(&scope, i, fd))
+            .collect::<Result<Vec<_>, BuildError>>()?,
+        list_of_unit_definitions: model
+            .unit_definitions
+            .iter()
+            .enumerate()
+            .map(|(i, ud)| unit_definition(&scope, i, ud))
+            .collect(),
+        list_of_compartments: model
+            .compartments
+            .iter()
+            .enumerate()
+            .map(|(i, c)| compartment(&scope, i, c))
+            .collect(),
+        list_of_species: model
+            .species
+            .iter()
+            .enumerate()
+            .map(|(i, s)| species(&scope, i, s))
+            .collect(),
+        list_of_parameters: model
+            .parameters
+            .iter()
+            .enumerate()
+            .map(|(i, p)| parameter(&scope, i, p))
+            .collect(),
+        list_of_initial_assignments: model
+            .initial_assignments
+            .iter()
+            .enumerate()
+            .map(|(i, ia)| initial_assignment(&scope, i, ia))
+            .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_rules: rules,
-        list_of_constraints: constraints,
+        list_of_constraints: model
+            .constraints
+            .iter()
+            .enumerate()
+            .map(|(i, c)| constraint(&scope, i, c))
+            .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_reactions: vec![],
         list_of_events: vec![],
         list_of_submodels: vec![],
