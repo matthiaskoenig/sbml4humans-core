@@ -13,8 +13,10 @@ publish = false
 workspace = true
 
 [dependencies]
+serde.workspace = true
 serde_json.workspace = true
 
 [dev-dependencies]
 sbml4humans-libsbml = { path = "../libsbml" }
 sbml4humans-report = { path = "../report" }
+sbml4humans-model = { path = "../model" }

@@ -83,7 +83,9 @@ name = "sbml4humans-oracles"
 version = "0.1.0"
 dependencies = [
  "sbml4humans-libsbml",
+ "sbml4humans-model",
  "sbml4humans-report",
+ "serde",
  "serde_json",
 ]
 
