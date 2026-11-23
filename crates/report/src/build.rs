@@ -1,14 +1,18 @@
 //! Maps the document model onto the report.
 
 use sbml4humans_model::{
-    Ast, Compartment, Constraint, Document, Element, FunctionDefinition, InitialAssignment, Model,
-    Parameter, Rule, RuleKind, Species, Unit, UnitDefinition,
+    Ast, Compartment, Constraint, Document, Element, Event, EventAssignment, FunctionDefinition,
+    InitialAssignment, KineticLaw, LocalParameter, MathElement, Model, ModifierSpeciesReference,
+    Parameter, Reaction, Rule, RuleKind, Species, SpeciesReference, Trigger, Unit, UnitDefinition,
 };
 
 use crate::{
-    Double, LinkGraph, Math, Package, Report, ReportCompartment, ReportConstraint, ReportDocument,
-    ReportFunctionDefinition, ReportInitialAssignment, ReportModel, ReportParameter, ReportRule,
-    ReportSpecies, ReportUnit, ReportUnitDefinition, SBase, pk,
+    Double, LinkGraph, Math, Package, Report, ReportCompartment, ReportConstraint, ReportDelay,
+    ReportDocument, ReportEvent, ReportEventAssignment, ReportFunctionDefinition,
+    ReportInitialAssignment, ReportKineticLaw, ReportLocalParameter, ReportModel,
+    ReportModifierSpeciesReference, ReportParameter, ReportPriority, ReportReaction, ReportRule,
+    ReportSpecies, ReportSpeciesReference, ReportTrigger, ReportUnit, ReportUnitDefinition, SBase,
+    pk,
 };
 
 /// The derived units python writes when no unit is derived, deriving a unit belongs to a later slice.
@@ -289,12 +293,322 @@ fn constraint(scope: &str, index: usize, c: &Constraint) -> Result<ReportConstra
     })
 }
 
+/// Whether a reaction is reversible, with the default of Level 1 and Level 2.
+///
+/// A port of `_reversible` (`sbmlinfo.py:1137-1147`). Level 1 and every version of Level 2 make a
+/// reaction reversible unless it says otherwise (L2V4 §4.13.1); Level 3 requires the attribute and
+/// has no default, so a reaction of Level 3 which states nothing states nothing in the report.
+fn reversible(r: &Reaction, level: u32) -> Option<bool> {
+    r.reversible.or_else(|| (level < 3).then_some(true))
+}
+
+/// Whether a reaction is fast, with the default of its level and version.
+///
+/// A port of `_fast` (`sbmlinfo.py:1150-1162`). Level 1 and Level 2 from Version 2 on make a
+/// reaction slow unless it says otherwise (L2V4 §4.13.1). Level 2 Version 1 defined no default,
+/// Level 3 Version 1 requires the attribute and Level 3 Version 2 dropped it.
+fn fast(r: &Reaction, level: u32, version: u32) -> Option<bool> {
+    r.fast
+        .or_else(|| (level == 1 || (level == 2 && version >= 2)).then_some(false))
+}
+
+/// The stoichiometry of a reference, with the default of Level 1 and Level 2.
+///
+/// A port of `_stoichiometry` (`sbmlinfo.py:1165-1176`). Level 1 and Level 2 define the default 1
+/// for a reference which writes neither a number nor a `stoichiometryMath` (L2V4 §4.13.2), which
+/// is the raw answer of libsbml the model carries. Level 3 has no default: an unset stoichiometry
+/// is set by a rule or an initial assignment which names the id of the reference, or is unknown.
+fn stoichiometry(sr: &SpeciesReference, level: u32) -> Option<Double> {
+    if sr.stoichiometry_set || (level < 3 && !sr.stoichiometry_math) {
+        return Some(Double(sr.stoichiometry));
+    }
+    None
+}
+
+/// The reactants or the products of one reaction, in the order of the document.
+///
+/// `side` is `reactant` or `product`, the word python keys a reference by together with the species
+/// it is about; a reference which carries an id or a metaId is keyed by it instead, and a key which
+/// two references of one side share is numbered by its occurrence, which is why the keys of the
+/// whole list are derived at once (`pk::derived`).
+fn species_references(
+    scope: &str,
+    reaction_key: &str,
+    side: &str,
+    list: &[SpeciesReference],
+    level: u32,
+) -> Vec<ReportSpeciesReference> {
+    let keys = pk::derived(
+        list,
+        |sr| &sr.element,
+        |sr| format!("{reaction_key}.{side}.{}", sr.species),
+    );
+    list.iter()
+        .zip(keys)
+        .map(|(sr, key)| ReportSpeciesReference {
+            sbase: sbase(scope, "SpeciesReference", &sr.element, &key),
+            species: sr.species.clone(),
+            stoichiometry: stoichiometry(sr, level),
+            constant: sr.constant,
+        })
+        .collect()
+}
+
+/// The modifiers of one reaction, in the order of the document.
+///
+/// They are keyed like the reactants and the products of [`species_references`], by the word
+/// `modifier` and the species the modifier is about.
+fn modifier_species_references(
+    scope: &str,
+    reaction_key: &str,
+    list: &[ModifierSpeciesReference],
+) -> Vec<ReportModifierSpeciesReference> {
+    let keys = pk::derived(
+        list,
+        |m| &m.element,
+        |m| format!("{reaction_key}.modifier.{}", m.species),
+    );
+    list.iter()
+        .zip(keys)
+        .map(|(m, key)| ReportModifierSpeciesReference {
+            sbase: sbase(scope, "ModifierSpeciesReference", &m.element, &key),
+            species: m.species.clone(),
+        })
+        .collect()
+}
+
+/// A local parameter of a kinetic law, the one element whose own id never keys it.
+///
+/// Python passes `use_id=False` (`sbmlinfo.py:1186-1203`): the id of a local parameter is a genuine
+/// id, required by SBML, but scoped to its own kinetic law and not to the model, since two laws may
+/// each hold a parameter of the same id, so the key carries the law instead. Its metaId, which is
+/// unique within the document, still wins over that key (`_key`, `sbmlinfo.py:447-452`), which is
+/// why this key is built here and reaches for neither [`pk::key`] nor [`pk::derived`]. The `id`
+/// field of the report object carries the id of the parameter all the same.
+///
+/// `law_key` is the key the reaction derived for its law and not the key the law is reported under,
+/// which is what python builds the key of a local parameter from: a law with a metaId of its own is
+/// keyed by it and its parameters stay keyed by the reaction.
+fn local_parameter(scope: &str, law_key: &str, lp: &LocalParameter) -> ReportLocalParameter {
+    let key = lp.element.meta_id.clone().unwrap_or_else(|| {
+        // python reads the id of the parameter unguarded, so a parameter of an invalid document
+        // which carries none is keyed by the law and the empty string, as python keys it
+        format!("{law_key}.{}", lp.element.id.as_deref().unwrap_or_default())
+    });
+    ReportLocalParameter {
+        sbase: sbase(scope, "LocalParameter", &lp.element, &key),
+        value: lp.value.map(Double),
+        units: lp.units.clone(),
+        units_latex: None,
+        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+    }
+}
+
+/// The kinetic law of a reaction with its local parameters.
+///
+/// A law carries nothing which names it, so one without an identifier of its own is keyed
+/// `<reaction key>.kineticLaw`.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the law, its rate.
+fn kinetic_law(
+    scope: &str,
+    reaction_key: &str,
+    law: &KineticLaw,
+) -> Result<ReportKineticLaw, BuildError> {
+    let derived = format!("{reaction_key}.kineticLaw");
+    let sbase = sbase(
+        scope,
+        "KineticLaw",
+        &law.element,
+        &pk::key(&law.element, || derived.clone()),
+    );
+    let math = math_of(law.math.as_ref(), &sbase.pk)?;
+    Ok(ReportKineticLaw {
+        sbase,
+        math,
+        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        list_of_local_parameters: law
+            .local_parameters
+            .iter()
+            .map(|lp| local_parameter(scope, &derived, lp))
+            .collect(),
+    })
+}
+
+/// A reaction with its participants, its kinetic law and its readable equation.
+///
+/// `level` and `version` are the ones of the document, which decide what the report states of a
+/// `reversible`, a `fast` and a stoichiometry the document itself does not state.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the kinetic law of the reaction.
+fn reaction(
+    scope: &str,
+    index: usize,
+    level: u32,
+    version: u32,
+    r: &Reaction,
+) -> Result<ReportReaction, BuildError> {
+    let key = key_in_list(&r.element, index);
+    let law = r
+        .kinetic_law
+        .as_ref()
+        .map(|law| kinetic_law(scope, &key, law))
+        .transpose()?;
+    Ok(ReportReaction {
+        sbase: sbase(scope, "Reaction", &r.element, &key),
+        reversible: reversible(r, level),
+        fast: fast(r, level, version),
+        compartment: r.compartment.clone(),
+        list_of_reactants: species_references(scope, &key, "reactant", &r.reactants, level),
+        list_of_products: species_references(scope, &key, "product", &r.products, level),
+        list_of_modifiers: modifier_species_references(scope, &key, &r.modifiers),
+        kinetic_law: law,
+        equation: crate::equation::equation(r),
+        fbc: None,
+    })
+}
+
+/// The trigger of an event: the condition which fires it.
+///
+/// A trigger carries nothing which names it, so one without an identifier of its own is keyed
+/// `<event key>.trigger`.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the trigger.
+fn trigger(scope: &str, event_key: &str, t: &Trigger) -> Result<ReportTrigger, BuildError> {
+    let key = pk::key(&t.element, || format!("{event_key}.trigger"));
+    let sbase = sbase(scope, "Trigger", &t.element, &key);
+    let math = math_of(t.math.as_ref(), &sbase.pk)?;
+    Ok(ReportTrigger {
+        sbase,
+        math,
+        initial_value: t.initial_value,
+        persistent: t.persistent,
+    })
+}
+
+/// The shared fields of the priority and the delay of an event, which carry a math and nothing else.
+///
+/// `name` is the word python keys the element by below its event, which is the name it has in the
+/// file, and the element is keyed by an identifier of its own where it carries one.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the element.
+fn math_element(
+    scope: &str,
+    sbml_type: &'static str,
+    event_key: &str,
+    name: &str,
+    element: &MathElement,
+) -> Result<(SBase, Option<Math>), BuildError> {
+    let key = pk::key(&element.element, || format!("{event_key}.{name}"));
+    let sbase = sbase(scope, sbml_type, &element.element, &key);
+    let math = math_of(element.math.as_ref(), &sbase.pk)?;
+    Ok((sbase, math))
+}
+
+/// The priority of an event: the order of the events of one moment, which Level 3 added.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the priority.
+fn priority(scope: &str, event_key: &str, p: &MathElement) -> Result<ReportPriority, BuildError> {
+    let (sbase, math) = math_element(scope, "Priority", event_key, "priority", p)?;
+    Ok(ReportPriority { sbase, math })
+}
+
+/// The delay of an event: the time between the trigger and the execution.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the delay.
+fn delay(scope: &str, event_key: &str, d: &MathElement) -> Result<ReportDelay, BuildError> {
+    let (sbase, math) = math_element(scope, "Delay", event_key, "delay", d)?;
+    Ok(ReportDelay { sbase, math })
+}
+
+/// The assignments of one event, in the order of the document.
+///
+/// An assignment is keyed by the variable it sets, which an event sets at most once, and the keys
+/// of the whole list are derived at once so that an assignment of an invalid document which repeats
+/// a variable is told apart from the first by its occurrence. libsbml aliases the id of an
+/// assignment to its variable, so the id of the model is the `id` attribute of the document alone
+/// (`ALIASED_ID_CLASSES`, `sbmlinfo.py:119-123`) and keys the assignment where the document writes
+/// one.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the first assignment whose math no writer writes.
+fn event_assignments(
+    scope: &str,
+    event_key: &str,
+    list: &[EventAssignment],
+) -> Result<Vec<ReportEventAssignment>, BuildError> {
+    let keys = pk::derived(
+        list,
+        |ea| &ea.element,
+        |ea| format!("{event_key}.{}", ea.variable),
+    );
+    let mut assignments = Vec::with_capacity(list.len());
+    for (ea, key) in list.iter().zip(keys) {
+        let sbase = sbase(scope, "EventAssignment", &ea.element, &key);
+        let math = math_of(ea.math.as_ref(), &sbase.pk)?;
+        assignments.push(ReportEventAssignment {
+            sbase,
+            variable: ea.variable.clone(),
+            math,
+        });
+    }
+    Ok(assignments)
+}
+
+/// An event with its trigger, its priority, its delay and its assignments.
+///
+/// # Errors
+///
+/// What [`math_of`] answers for the math of the first element of the event whose math no writer
+/// writes.
+fn event(scope: &str, index: usize, e: &Event) -> Result<ReportEvent, BuildError> {
+    // an event carries nothing which names it, so one without an identifier is keyed by its place
+    // in the list of the events (`sbmlinfo.py:876-879`)
+    let key = pk::key(&e.element, || format!("event.{index}"));
+    Ok(ReportEvent {
+        sbase: sbase(scope, "Event", &e.element, &key),
+        use_values_from_trigger_time: e.use_values_from_trigger_time,
+        trigger: e
+            .trigger
+            .as_ref()
+            .map(|t| trigger(scope, &key, t))
+            .transpose()?,
+        priority: e
+            .priority
+            .as_ref()
+            .map(|p| priority(scope, &key, p))
+            .transpose()?,
+        delay: e
+            .delay
+            .as_ref()
+            .map(|d| delay(scope, &key, d))
+            .transpose()?,
+        list_of_event_assignments: event_assignments(scope, &key, &e.event_assignments)?,
+    })
+}
+
 /// The report of one model, every element of it keyed in the scope of that model.
 ///
 /// # Errors
 ///
 /// What [`math_of`] answers, for the first element of the model whose math no writer writes.
-fn model(model: &Model) -> Result<ReportModel, BuildError> {
+///
+/// `level` and `version` are the ones of the document, which a reaction of the model is reported
+/// with the defaults of.
+fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildError> {
     // the key of the model is the scope of every element below it
     let scope = pk::key(&model.element, || MAIN_MODEL_KEY.to_owned());
     // an algebraic rule sets no variable, so one which carries no identifier is keyed by its place
@@ -370,8 +684,18 @@ fn model(model: &Model) -> Result<ReportModel, BuildError> {
             .enumerate()
             .map(|(i, c)| constraint(&scope, i, c))
             .collect::<Result<Vec<_>, BuildError>>()?,
-        list_of_reactions: vec![],
-        list_of_events: vec![],
+        list_of_reactions: model
+            .reactions
+            .iter()
+            .enumerate()
+            .map(|(i, r)| reaction(&scope, i, level, version, r))
+            .collect::<Result<Vec<_>, BuildError>>()?,
+        list_of_events: model
+            .events
+            .iter()
+            .enumerate()
+            .map(|(i, e)| event(&scope, i, e))
+            .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_submodels: vec![],
         list_of_ports: vec![],
         list_of_gene_products: vec![],
@@ -417,7 +741,7 @@ pub fn build(document: &Document) -> Result<Report, BuildError> {
         models: document
             .model
             .iter()
-            .map(model)
+            .map(|m| model(m, document.level, document.version))
             .collect::<Result<Vec<_>, BuildError>>()?,
         external_model_definitions: vec![],
         link_graph: LinkGraph::default(),

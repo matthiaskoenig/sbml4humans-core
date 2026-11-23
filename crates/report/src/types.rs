@@ -339,6 +339,167 @@ pub struct ReportParameter {
     pub derived_units: Option<String>,
 }
 
+/// A reactant or a product of a reaction.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportSpeciesReference {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The id of the species the reference names.
+    pub species: String,
+    /// The `stoichiometry`, `null` when neither the document nor its level sets it.
+    pub stoichiometry: Option<Double>,
+    /// The `constant`, a Level 3 attribute, `null` when the document does not set it.
+    pub constant: Option<bool>,
+}
+
+/// A modifier of a reaction, which names a species and nothing else.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportModifierSpeciesReference {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The id of the species the reference names.
+    pub species: String,
+}
+
+/// A parameter of a kinetic law, local to its reaction.
+///
+/// A Level 3 law writes them as `localParameter` and a Level 1 or Level 2 law as `parameter`, where
+/// libsbml answers a `Parameter`; both carry the id, the value and the units the report shows, so
+/// python has one class for either and types both a `LocalParameter`.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportLocalParameter {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `value`, `null` when the document does not set it.
+    pub value: Option<Double>,
+    /// The `units`, `null` when the document does not set it.
+    pub units: Option<String>,
+    /// The `units_latex`, `null` when the document does not set it.
+    pub units_latex: Option<String>,
+    /// The `derived_units`, `null` when the document does not set it.
+    pub derived_units: Option<String>,
+}
+
+/// The kinetic law of a reaction with its local parameters.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportKineticLaw {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+    /// The `derived_units`, `null` when the document does not set it.
+    pub derived_units: Option<String>,
+    /// The `list_of_local_parameters`, in the order of the document.
+    pub list_of_local_parameters: Vec<ReportLocalParameter>,
+}
+
+/// A reaction with its participants, its kinetic law and its readable equation.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportReaction {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `reversible`, `null` when neither the document nor its level sets it.
+    pub reversible: Option<bool>,
+    /// The `fast`, `null` when neither the document nor its level and version sets it.
+    pub fast: Option<bool>,
+    /// The `compartment`, a Level 3 attribute, `null` when the document does not set it.
+    pub compartment: Option<String>,
+    /// The `list_of_reactants`, in the order of the document.
+    pub list_of_reactants: Vec<ReportSpeciesReference>,
+    /// The `list_of_products`, in the order of the document.
+    pub list_of_products: Vec<ReportSpeciesReference>,
+    /// The `list_of_modifiers`, in the order of the document.
+    pub list_of_modifiers: Vec<ReportModifierSpeciesReference>,
+    /// The `kinetic_law`, `null` when the reaction has none.
+    pub kinetic_law: Option<ReportKineticLaw>,
+    /// The readable equation, the two half equations of the reaction and a plain unicode arrow.
+    pub equation: String,
+    /// The `fbc`, `null` when the document does not set it.
+    pub fbc: Option<serde_json::Value>,
+}
+
+/// The trigger of an event: the condition which fires it.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportTrigger {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+    /// The `initial_value`, a Level 3 attribute, `null` when the document does not set it.
+    pub initial_value: Option<bool>,
+    /// The `persistent`, a Level 3 attribute, `null` when the document does not set it.
+    pub persistent: Option<bool>,
+}
+
+/// The priority of an event: the order of the events of one moment.
+///
+/// It carries a math and nothing else, as the delay below does, and is a type of its own because
+/// python has a class per element type and the frontend reads the `sbmlType` of either.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportPriority {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+}
+
+/// The delay of an event: the time between the trigger and the execution.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportDelay {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+}
+
+/// One assignment an event makes when it fires.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportEventAssignment {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The id of the element the assignment sets.
+    pub variable: String,
+    /// The `math`, `null` when the document does not set it.
+    pub math: Option<Math>,
+}
+
+/// An event with its trigger, its priority, its delay and its assignments.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportEvent {
+    /// The attributes every SBML object shares.
+    #[serde(flatten)]
+    pub sbase: SBase,
+    /// The `use_values_from_trigger_time`, `null` when the document does not set it.
+    pub use_values_from_trigger_time: Option<bool>,
+    /// The `trigger`, `null` when the event has none.
+    pub trigger: Option<ReportTrigger>,
+    /// The `priority`, a Level 3 element, `null` when the event has none.
+    pub priority: Option<ReportPriority>,
+    /// The `delay`, `null` when the event has none.
+    pub delay: Option<ReportDelay>,
+    /// The `list_of_event_assignments`, in the order of the document.
+    pub list_of_event_assignments: Vec<ReportEventAssignment>,
+}
+
 /// A model or comp model definition with the lists of its elements.
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -393,9 +554,9 @@ pub struct ReportModel {
     /// The `list_of_constraints`, in the order of `sbmlinfo.py`.
     pub list_of_constraints: Vec<ReportConstraint>,
     /// The `list_of_reactions`, in the order of `sbmlinfo.py`.
-    pub list_of_reactions: Vec<serde_json::Value>,
+    pub list_of_reactions: Vec<ReportReaction>,
     /// The `list_of_events`, in the order of `sbmlinfo.py`.
-    pub list_of_events: Vec<serde_json::Value>,
+    pub list_of_events: Vec<ReportEvent>,
     /// The `list_of_submodels`, in the order of `sbmlinfo.py`.
     pub list_of_submodels: Vec<serde_json::Value>,
     /// The `list_of_ports`, in the order of `sbmlinfo.py`.

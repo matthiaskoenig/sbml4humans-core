@@ -18,10 +18,6 @@
 /// rounds it to even. It takes a step of the double wide enough to leave both of them round tripping, so of
 /// a magnitude of about 1e15 and seventeen significant digits, which no stoichiometry of a model carries,
 /// and writing the digits here instead would cost an arbitrary precision decimal of every double.
-// Nothing calls it yet: the species reference whose stoichiometry it writes lands later in this slice.
-// The expectation is unfulfilled as soon as a caller arrives, so the attribute reports itself as stale;
-// it is set for the library alone, since the test below is a caller of its own.
-#[cfg_attr(not(test), expect(dead_code))]
 pub(crate) fn python_float(value: f64) -> String {
     if value.is_nan() {
         return "nan".to_owned();
