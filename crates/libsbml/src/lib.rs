@@ -7,15 +7,18 @@
 //! the library: it reaches libsbml through `shim.cpp`, a C layer over the C++
 //! API which exposes what the filler reads and nothing else.
 //!
-//! [`read`] answers a [`ReadError`] for every source which is no document, and
-//! holds one lock of the process while it reads, since libsbml keeps global
-//! state. It never panics, whatever the source holds.
+//! [`read`] answers a [`ReadError`] for every source which is no document and
+//! [`read_math`] one for every string which is no content MathML, and both
+//! hold one lock of the process while they read, since libsbml keeps global
+//! state. Neither panics, whatever the source holds.
 
 mod fill;
+mod math;
 mod strings;
 mod sys;
 
 pub use fill::{ReadError, read};
+pub use math::read_math;
 
 /// The names of the packages the linked libsbml registers, sorted.
 ///
