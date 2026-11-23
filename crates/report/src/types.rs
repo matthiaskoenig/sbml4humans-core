@@ -5,6 +5,19 @@ use serde_json::Value;
 
 use crate::Double;
 
+/// The math of an element, as latex and as a Level 3 formula string.
+///
+/// Both fields are what the python implementation writes for the same syntax
+/// tree, which `crate::math` ports: `math` of that module writes one.
+#[derive(Debug, Default, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Math {
+    /// The `latex`.
+    pub latex: String,
+    /// The `formula`.
+    pub formula: String,
+}
+
 /// An annotation: a qualifier with its resources (`CVTerm`).
 #[derive(Debug, Default, Serialize)]
 #[serde(rename_all = "camelCase")]

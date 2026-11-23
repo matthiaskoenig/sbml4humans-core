@@ -29,6 +29,7 @@
 #include <sbml/SBMLTypes.h>
 #include <sbml/SBMLNamespaces.h>
 #include <sbml/extension/SBasePlugin.h>
+#include <sbml/extension/SBMLExtensionRegistry.h>
 
 LIBSBML_CPP_NAMESPACE_USE
 
@@ -430,6 +431,227 @@ const char* s4h_parameter_units(SBase* sbase) {
         return nullptr;
     }
     return borrowed(parameter->isSetUnits(), parameter->getUnits());
+}
+
+/* ------------------------------------------------------------- syntax tree */
+
+/// Reads the syntax tree of the content MathML of a nul terminated string.
+///
+/// The caller owns the tree and frees it with `s4h_ast_free`. Null says that
+/// the string is no content MathML: `readMathMLFromString` logs the errors of
+/// the read on a log of its own, deletes the tree it had built and answers
+/// null, so there is nothing to free of a failure and no log to read.
+ASTNode* s4h_read_math_from_string(const char* xml) {
+    try {
+        return readMathMLFromString(xml);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+/// Reads the syntax tree of a `formula`, the math as Level 1 writes it.
+///
+/// The caller owns the tree and frees it with `s4h_ast_free`: this is the very
+/// call `KineticLaw::getMath` makes of the `formula` of a kinetic law of a
+/// Level 1 document, which keeps the tree in a member its destructor deletes
+/// (KineticLaw.cpp), and the examples of libsbml free the tree of it with
+/// `ASTNode_free` (examples/c++/translateMath.cpp). Null says that the string
+/// is no formula.
+ASTNode* s4h_read_formula(const char* formula) {
+    try {
+        return SBML_parseFormula(formula);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+/// Frees a syntax tree of `s4h_read_math_from_string` or `s4h_read_formula`
+/// with its children.
+void s4h_ast_free(ASTNode* node) {
+    delete node;
+}
+
+/// The kind of a node as the code of the `AstKind` of the report.
+///
+/// The codes are the contract with `sbml4humans_model::AstKind`, whose name is
+/// the comment of every case. A type which is named by no case, the types of
+/// the packages and of the MathML of the extended math which the report has no
+/// kind of among them, is 0, the kind `Other`, which the writers refuse: the
+/// kind of a type the report does not know is never guessed to be a near one.
+int s4h_ast_kind(ASTNode* node) {
+    switch (node->getType()) {
+        case AST_NAME: return 100;                       // Name
+        case AST_NAME_TIME: return 101;                  // NameTime
+        case AST_NAME_AVOGADRO: return 102;              // NameAvogadro
+        case AST_INTEGER: return 200;                    // Integer
+        case AST_REAL: return 201;                       // Real
+        case AST_REAL_E: return 202;                     // RealE
+        case AST_RATIONAL: return 203;                   // Rational
+        case AST_CONSTANT_E: return 300;                 // ConstantE
+        case AST_CONSTANT_FALSE: return 301;             // ConstantFalse
+        case AST_CONSTANT_PI: return 302;                // ConstantPi
+        case AST_CONSTANT_TRUE: return 303;              // ConstantTrue
+        case AST_PLUS: return 400;                       // Plus
+        case AST_MINUS: return 401;                      // Minus
+        case AST_TIMES: return 402;                      // Times
+        case AST_DIVIDE: return 403;                     // Divide
+        case AST_POWER: return 404;                      // Power
+        case AST_FUNCTION: return 500;                   // Function
+        case AST_FUNCTION_ABS: return 600;               // FunctionAbs
+        case AST_FUNCTION_ARCCOS: return 601;            // FunctionArccos
+        case AST_FUNCTION_ARCCOSH: return 602;           // FunctionArccosh
+        case AST_FUNCTION_ARCCOT: return 603;            // FunctionArccot
+        case AST_FUNCTION_ARCCOTH: return 604;           // FunctionArccoth
+        case AST_FUNCTION_ARCCSC: return 605;            // FunctionArccsc
+        case AST_FUNCTION_ARCCSCH: return 606;           // FunctionArccsch
+        case AST_FUNCTION_ARCSEC: return 607;            // FunctionArcsec
+        case AST_FUNCTION_ARCSECH: return 608;           // FunctionArcsech
+        case AST_FUNCTION_ARCSIN: return 609;            // FunctionArcsin
+        case AST_FUNCTION_ARCSINH: return 610;           // FunctionArcsinh
+        case AST_FUNCTION_ARCTAN: return 611;            // FunctionArctan
+        case AST_FUNCTION_ARCTANH: return 612;           // FunctionArctanh
+        case AST_FUNCTION_CEILING: return 613;           // FunctionCeiling
+        case AST_FUNCTION_COS: return 614;               // FunctionCos
+        case AST_FUNCTION_COSH: return 615;              // FunctionCosh
+        case AST_FUNCTION_COT: return 616;               // FunctionCot
+        case AST_FUNCTION_COTH: return 617;              // FunctionCoth
+        case AST_FUNCTION_CSC: return 618;               // FunctionCsc
+        case AST_FUNCTION_CSCH: return 619;              // FunctionCsch
+        case AST_FUNCTION_DELAY: return 620;             // FunctionDelay
+        case AST_FUNCTION_EXP: return 621;               // FunctionExp
+        case AST_FUNCTION_FACTORIAL: return 622;         // FunctionFactorial
+        case AST_FUNCTION_FLOOR: return 623;             // FunctionFloor
+        case AST_FUNCTION_LN: return 624;                // FunctionLn
+        case AST_FUNCTION_LOG: return 625;               // FunctionLog
+        case AST_FUNCTION_MAX: return 626;               // FunctionMax
+        case AST_FUNCTION_MIN: return 627;               // FunctionMin
+        case AST_FUNCTION_PIECEWISE: return 628;         // FunctionPiecewise
+        case AST_FUNCTION_POWER: return 629;             // FunctionPower
+        case AST_FUNCTION_QUOTIENT: return 630;          // FunctionQuotient
+        case AST_FUNCTION_RATE_OF: return 631;           // FunctionRateOf
+        case AST_FUNCTION_REM: return 632;               // FunctionRem
+        case AST_FUNCTION_ROOT: return 633;              // FunctionRoot
+        case AST_FUNCTION_SEC: return 634;               // FunctionSec
+        case AST_FUNCTION_SECH: return 635;              // FunctionSech
+        case AST_FUNCTION_SIN: return 636;               // FunctionSin
+        case AST_FUNCTION_SINH: return 637;              // FunctionSinh
+        case AST_FUNCTION_TAN: return 638;               // FunctionTan
+        case AST_FUNCTION_TANH: return 639;              // FunctionTanh
+        case AST_LAMBDA: return 700;                     // Lambda
+        case AST_RELATIONAL_EQ: return 800;              // RelationalEq
+        case AST_RELATIONAL_GEQ: return 801;             // RelationalGeq
+        case AST_RELATIONAL_GT: return 802;              // RelationalGt
+        case AST_RELATIONAL_LEQ: return 803;             // RelationalLeq
+        case AST_RELATIONAL_LT: return 804;              // RelationalLt
+        case AST_RELATIONAL_NEQ: return 805;             // RelationalNeq
+        case AST_LOGICAL_AND: return 900;                // LogicalAnd
+        case AST_LOGICAL_NOT: return 901;                // LogicalNot
+        case AST_LOGICAL_OR: return 902;                 // LogicalOr
+        case AST_LOGICAL_XOR: return 903;                // LogicalXor
+        case AST_LOGICAL_IMPLIES: return 904;            // LogicalImplies
+        case AST_DISTRIB_FUNCTION_BERNOULLI: return 1000;    // DistribBernoulli
+        case AST_DISTRIB_FUNCTION_BINOMIAL: return 1001;     // DistribBinomial
+        case AST_DISTRIB_FUNCTION_CAUCHY: return 1002;       // DistribCauchy
+        case AST_DISTRIB_FUNCTION_CHISQUARE: return 1003;    // DistribChisquare
+        case AST_DISTRIB_FUNCTION_EXPONENTIAL: return 1004;  // DistribExponential
+        case AST_DISTRIB_FUNCTION_GAMMA: return 1005;        // DistribGamma
+        case AST_DISTRIB_FUNCTION_LAPLACE: return 1006;      // DistribLaplace
+        case AST_DISTRIB_FUNCTION_LOGNORMAL: return 1007;    // DistribLognormal
+        case AST_DISTRIB_FUNCTION_NORMAL: return 1008;       // DistribNormal
+        case AST_DISTRIB_FUNCTION_POISSON: return 1009;      // DistribPoisson
+        case AST_DISTRIB_FUNCTION_RAYLEIGH: return 1010;     // DistribRayleigh
+        case AST_DISTRIB_FUNCTION_UNIFORM: return 1011;      // DistribUniform
+        default: return 0;                               // Other
+    }
+}
+
+/// The number of children of a node.
+unsigned int s4h_ast_num_children(ASTNode* node) {
+    return node->getNumChildren();
+}
+
+/// Child `n` of a node, null when there is none.
+///
+/// The child is owned by its parent and is freed with the tree.
+ASTNode* s4h_ast_child(ASTNode* node, unsigned int n) {
+    return node->getChild(n);
+}
+
+/// The name of a node, borrowed, null when it has none.
+///
+/// `ASTNode::getName()` answers a `const char*` (math/ASTNode.h), which is the
+/// name the node holds itself or a string of a static table of libsbml, so it
+/// is borrowed and no copy. It is the identifier of a `ci`, the text of a
+/// csymbol, the name of a call of a function of the model, and otherwise the
+/// name libsbml gives a built-in function, constant or lambda of its own; it is
+/// null for an operator and for a number.
+const char* s4h_ast_name(ASTNode* node) {
+    return node->getName();
+}
+
+/// The number of a node, 0 when the node is no number.
+///
+/// What it answers says which of its out parameters it wrote: 1 the `integer`,
+/// 2 the `real`, 3 the `real` and the `exponent` of a number in e-notation,
+/// and 4 the `integer` and the `denominator` of a rational, whose numerator
+/// libsbml answers as its integer. The parts of a number in e-notation and of
+/// a rational stay apart, since `ASTNode::getValue` and `ASTNode::getReal`
+/// multiply or divide them out and lose the form the document wrote.
+int s4h_ast_number(ASTNode* node, long long* integer, double* real, long long* exponent,
+                   long long* denominator) {
+    switch (node->getType()) {
+        case AST_INTEGER:
+            *integer = static_cast<long long>(node->getInteger());
+            return 1;
+        case AST_REAL:
+            *real = node->getReal();
+            return 2;
+        case AST_REAL_E:
+            *real = node->getMantissa();
+            *exponent = static_cast<long long>(node->getExponent());
+            return 3;
+        case AST_RATIONAL:
+            *integer = static_cast<long long>(node->getNumerator());
+            *denominator = static_cast<long long>(node->getDenominator());
+            return 4;
+        default:
+            return 0;
+    }
+}
+
+/// The `sbml:units` of a number node, handed over, null when they are not set.
+///
+/// `ASTNode::getUnits()` answers a `std::string` by value (math/ASTNode.h), a
+/// temporary which dies at the end of this expression, so the units are copied
+/// out with `handed_over` and never borrowed. `ASTNode::isSetUnits()` is that
+/// the string is not empty, so the null of this says the same and the shim
+/// needs no predicate of its own.
+char* s4h_ast_units(ASTNode* node) {
+    try {
+        return node->isSetUnits() ? handed_over(node->getUnits()) : nullptr;
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+/* ---------------------------------------------------------------- registry */
+
+/// The number of packages the registry of libsbml knows.
+unsigned int s4h_registry_num_packages() {
+    return SBMLExtensionRegistry::getNumRegisteredPackages();
+}
+
+/// The name of registered package `n`, handed over, null when there is none.
+///
+/// `SBMLExtensionRegistry::getRegisteredPackageName(unsigned int)` answers a
+/// `std::string` by value (SBMLExtensionRegistry.h), so it is copied out with
+/// `handed_over` and never borrowed.
+char* s4h_registry_package_name(unsigned int n) {
+    try {
+        return handed_over(SBMLExtensionRegistry::getRegisteredPackageName(n));
+    } catch (...) {
+        return nullptr;
+    }
 }
 
 }  // extern "C"

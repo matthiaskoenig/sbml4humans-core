@@ -13,6 +13,9 @@ publish = false
 sbml4humans-model = { path = "../model" }
 thiserror.workspace = true
 
+[dev-dependencies]
+serde_json.workspace = true
+
 [build-dependencies]
 cc.workspace = true
 

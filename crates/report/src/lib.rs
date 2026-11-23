@@ -4,9 +4,11 @@
 
 mod build;
 mod double;
+pub mod math;
 pub mod pk;
 mod types;
 
 pub use build::build;
 pub use double::Double;
+pub use math::{MathError, formula, latex, math};
 pub use types::*;

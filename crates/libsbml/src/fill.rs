@@ -12,7 +12,7 @@ use sbml4humans_model::{Compartment, Document, Element, Model, Package, Paramete
 use crate::strings;
 use crate::sys;
 
-/// Why a source is no document the report can be built of.
+/// Why a source is no document, or no math, the report can be built of.
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum ReadError {
     /// A document which libsbml read without errors holds no model, with the log of the read.
@@ -21,6 +21,12 @@ pub enum ReadError {
     /// libsbml could not read the source.
     #[error("libsbml could not read the source: {0}")]
     Libsbml(String),
+    /// The syntax tree of a math is nested deeper than [`sbml4humans_model::MAX_AST_DEPTH`].
+    #[error(
+        "the math is nested deeper than {} levels",
+        sbml4humans_model::MAX_AST_DEPTH
+    )]
+    MathTooDeep,
 }
 
 /// The lock every read of libsbml holds.
@@ -34,7 +40,7 @@ static LIBSBML: Mutex<()> = Mutex::new(());
 ///
 /// A poisoned lock says that a read ended in a panic, which says nothing about
 /// the document of the next one, so the lock is taken over rather than an error.
-fn locked() -> MutexGuard<'static, ()> {
+pub(crate) fn locked() -> MutexGuard<'static, ()> {
     LIBSBML
         .lock()
         .unwrap_or_else(|poisoned| poisoned.into_inner())

@@ -122,3 +122,25 @@ fn walk(pointer: &str, ours: &Value, theirs: &Value, excluded: &[&str], out: &mu
         }
     }
 }
+
+/// One math of the corpus with the answers of the python implementation.
+#[derive(Debug, Clone, serde::Deserialize)]
+pub struct MathFixture {
+    /// The MathML python feeds its latex pipeline, byte for byte.
+    pub mathml: String,
+    /// The Level 3 formula of libsbml.
+    pub formula: String,
+    /// The latex python writes.
+    pub latex: String,
+}
+
+/// The maths of the corpus fixture `testdata/oracles/maths.json`, sorted by `mathml`.
+pub fn load_maths() -> Vec<MathFixture> {
+    #[derive(serde::Deserialize)]
+    struct File {
+        maths: Vec<MathFixture>,
+    }
+    let file: File = serde_json::from_str(include_str!("../../../testdata/oracles/maths.json"))
+        .expect("maths.json parses");
+    file.maths
+}

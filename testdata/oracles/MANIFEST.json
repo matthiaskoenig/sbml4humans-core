@@ -18,15 +18,16 @@
   "rust_libsbml": {
     "version": "5.21.2",
     "packages": [
-      "arrays",
       "comp",
       "distrib",
       "fbc",
       "groups",
       "l3v2extendedmath",
       "layout",
+      "multi",
       "qual",
-      "render"
+      "render",
+      "spatial"
     ]
   },
   "files": [

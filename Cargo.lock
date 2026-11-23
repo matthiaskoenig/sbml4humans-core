@@ -70,6 +70,7 @@ version = "0.1.0"
 dependencies = [
  "cc",
  "sbml4humans-model",
+ "serde_json",
  "thiserror",
 ]
 
@@ -82,7 +83,9 @@ name = "sbml4humans-oracles"
 version = "0.1.0"
 dependencies = [
  "sbml4humans-libsbml",
+ "sbml4humans-model",
  "sbml4humans-report",
+ "serde",
  "serde_json",
 ]
 
@@ -93,6 +96,7 @@ dependencies = [
  "sbml4humans-model",
  "serde",
  "serde_json",
+ "thiserror",
 ]
 
 [[package]]
