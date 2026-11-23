@@ -5,8 +5,22 @@
 <sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
   <model id="no_maths">
     <listOfFunctionDefinitions><functionDefinition id="f"/></listOfFunctionDefinitions>
+    <listOfParameters><parameter id="p" constant="false"/></listOfParameters>
     <listOfInitialAssignments><initialAssignment/></listOfInitialAssignments>
     <listOfRules><algebraicRule/></listOfRules>
     <listOfConstraints><constraint/></listOfConstraints>
+    <listOfReactions>
+      <reaction id="J0" reversible="false">
+        <kineticLaw/>
+      </reaction>
+    </listOfReactions>
+    <listOfEvents>
+      <event id="E0" useValuesFromTriggerTime="true">
+        <trigger initialValue="false" persistent="true"/>
+        <priority/>
+        <delay/>
+        <listOfEventAssignments><eventAssignment variable="p"/></listOfEventAssignments>
+      </event>
+    </listOfEvents>
   </model>
 </sbml>

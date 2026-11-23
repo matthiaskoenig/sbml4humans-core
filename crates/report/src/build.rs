@@ -17,10 +17,10 @@ use crate::{
 
 /// The derived units python writes when no unit is derived, deriving a unit belongs to a later slice.
 ///
-/// The builder writes it for every element whose class of `model.py` declares the field, the
-/// compartment, the species, the parameter, the initial assignment and the three rules, which is
-/// wrong for a document which sets units at all. It is the one value of the report this slice
-/// fabricates, and the oracle gate declares it as such.
+/// The builder writes it for every element whose class of `model.py` declares a `derived_units`,
+/// and for no other, which is wrong for a document which sets units at all: python derives the
+/// unit of such an element and writes `-` only where nothing derives. It is the one value of the
+/// report this slice fabricates, and the oracle gate declares it as such.
 const NO_DERIVED_UNITS: &str = "-";
 
 /// The scope and the key python gives the document, the one element keyed by a fixed name.
@@ -241,35 +241,26 @@ fn initial_assignment(
 /// # Errors
 ///
 /// What [`math_of`] answers for the math of the rule.
-fn rule(
-    scope: &str,
-    index: usize,
-    algebraic: usize,
-    rule: &Rule,
-) -> Result<ReportRule, BuildError> {
-    let sbml_type = match rule.kind {
+fn rule(scope: &str, index: usize, algebraic: usize, r: &Rule) -> Result<ReportRule, BuildError> {
+    let sbml_type = match r.kind {
         RuleKind::Assignment => "AssignmentRule",
         RuleKind::Rate => "RateRule",
         RuleKind::Algebraic => "AlgebraicRule",
     };
-    let key = key_of_target(&rule.element, rule.variable.as_deref(), || {
-        match rule.kind {
-            RuleKind::Algebraic => format!("algebraicRule.{algebraic}"),
-            RuleKind::Assignment | RuleKind::Rate => index.to_string(),
-        }
+    let key = key_of_target(&r.element, r.variable.as_deref(), || match r.kind {
+        RuleKind::Algebraic => format!("algebraicRule.{algebraic}"),
+        RuleKind::Assignment | RuleKind::Rate => index.to_string(),
     });
-    let sbase = sbase(scope, sbml_type, &rule.element, &key);
-    let math = math_of(rule.math.as_ref(), &sbase.pk)?;
+    let sbase = sbase(scope, sbml_type, &r.element, &key);
+    let math = math_of(r.math.as_ref(), &sbase.pk)?;
     Ok(ReportRule {
         sbase,
         // the class of the algebraic rule declares no variable, so its object carries no such
         // key; the two others declare a required string, which python writes as the empty
         // string for a document which names none
-        variable: match rule.kind {
+        variable: match r.kind {
             RuleKind::Algebraic => None,
-            RuleKind::Assignment | RuleKind::Rate => {
-                Some(rule.variable.clone().unwrap_or_default())
-            }
+            RuleKind::Assignment | RuleKind::Rate => Some(r.variable.clone().unwrap_or_default()),
         },
         math,
         derived_units: Some(NO_DERIVED_UNITS.to_owned()),
