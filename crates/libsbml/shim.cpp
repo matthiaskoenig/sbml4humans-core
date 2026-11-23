@@ -531,6 +531,7 @@ int s4h_ast_kind(ASTNode* node) {
         case AST_LOGICAL_NOT: return 901;                // LogicalNot
         case AST_LOGICAL_OR: return 902;                 // LogicalOr
         case AST_LOGICAL_XOR: return 903;                // LogicalXor
+        case AST_LOGICAL_IMPLIES: return 904;            // LogicalImplies
         case AST_DISTRIB_FUNCTION_BERNOULLI: return 1000;    // DistribBernoulli
         case AST_DISTRIB_FUNCTION_BINOMIAL: return 1001;     // DistribBinomial
         case AST_DISTRIB_FUNCTION_CAUCHY: return 1002;       // DistribCauchy

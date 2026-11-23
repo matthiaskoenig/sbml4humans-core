@@ -36,7 +36,7 @@ fn every_kind_round_trips_through_its_code_and_an_unknown_one_is_other() {
 
 #[test]
 fn all_holds_every_kind_exactly_once() {
-    assert_eq!(AstKind::ALL.len(), 81);
+    assert_eq!(AstKind::ALL.len(), 82);
     for (i, a) in AstKind::ALL.iter().enumerate() {
         for b in AstKind::ALL.iter().skip(i + 1) {
             assert_ne!(a, b);

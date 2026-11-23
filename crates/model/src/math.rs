@@ -173,6 +173,8 @@ ast_kinds! {
     LogicalOr = 902,
     /// True when an odd number of its children are true.
     LogicalXor = 903,
+    /// The logical implication of the math of Level 3 Version 2, whose first child implies its second.
+    LogicalImplies = 904,
     /// A draw from the bernoulli distribution of the distrib package.
     DistribBernoulli = 1000,
     /// A draw from the binomial distribution of the distrib package.

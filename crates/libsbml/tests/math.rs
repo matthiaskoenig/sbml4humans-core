@@ -214,6 +214,10 @@ const KINDS: &[(&str, AstKind)] = &[
     ("<apply><or/><true/><false/></apply>", AstKind::LogicalOr),
     ("<apply><xor/><true/><false/></apply>", AstKind::LogicalXor),
     (
+        "<apply><implies/><true/><false/></apply>",
+        AstKind::LogicalImplies,
+    ),
+    (
         "<apply><csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/bernoulli\">bernoulli</csymbol><cn>0.5</cn></apply>",
         AstKind::DistribBernoulli,
     ),
@@ -366,16 +370,16 @@ fn a_name_is_the_one_libsbml_answers_of_the_node() {
 
 #[test]
 fn a_type_the_report_has_no_kind_of_is_other() {
-    // `implies` of the extended math of Level 3 Version 2 is a type of
-    // libsbml, `AST_LOGICAL_IMPLIES`, which the report has no kind of, and a
-    // csymbol of a definition URL nothing registers is `AST_CSYMBOL_FUNCTION`
-    for body in [
-        "<apply><implies/><true/><false/></apply>",
-        "<csymbol encoding=\"text\" definitionURL=\"http://example.org/of/nothing\">x</csymbol>",
-    ] {
-        let ast = read_math(&math(body)).expect("it parses");
-        assert_eq!(ast.kind, AstKind::Other, "{body}");
-    }
+    // a csymbol of a definition URL no package of libsbml registers is
+    // `AST_CSYMBOL_FUNCTION`, the one type a content MathML reaches which the
+    // report has no kind of: the quantifiers and the linear algebra, series,
+    // calculus and set theory types of `ASTNodeType_t` are no math of SBML and
+    // libsbml reads none of them
+    let body =
+        "<csymbol encoding=\"text\" definitionURL=\"http://example.org/of/nothing\">x</csymbol>";
+    let ast = read_math(&math(body)).expect("it parses");
+    assert_eq!(ast.kind, AstKind::Other);
+    assert_eq!(ast.name.as_deref(), Some("x"));
 }
 
 #[test]

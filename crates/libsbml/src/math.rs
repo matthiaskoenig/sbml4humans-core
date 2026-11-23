@@ -89,6 +89,9 @@ pub(crate) unsafe fn ast_of(node: *mut sys::ASTNode, depth: usize) -> Result<Ast
             kind: AstKind::from_code(sys::s4h_ast_kind(node)),
             name: strings::borrowed(sys::s4h_ast_name(node)),
             number: number(node),
+            // the units of libsbml are a string which is set exactly when it
+            // is not empty, so the null of the shim is `isSetUnits` and the
+            // shim has no predicate of the units of its own
             units: strings::handed_over(sys::s4h_ast_units(node)),
             children,
         })
