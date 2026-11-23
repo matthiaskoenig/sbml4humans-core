@@ -1,7 +1,6 @@
 //! Every math of the corpus fixture parses to a tree and writes the formula python writes.
 
 use sbml4humans_libsbml::read_math;
-use sbml4humans_model::AstKind;
 use sbml4humans_oracles::{MathFixture, load_maths};
 use sbml4humans_report::{formula, math};
 
@@ -16,18 +15,16 @@ const ENTRIES: usize = 1834;
 // the python report renders too. A change which narrows the enumeration to the lists of the main
 // model gives fewer and fails this count with that reason. The other two entries are the pair the
 // generator builds at the bound of the latex pipeline, which no model of the corpus comes near.
+//
+// The read itself is the whole assertion: `read_math` answers `ReadError::MathUnknownKind` for a
+// node of a type the libsbml shim does not map, so a tree of the kind `AstKind::Other` never
+// reaches this loop and an entry which holds one fails here with that error and its mathml.
 #[test]
 fn every_math_of_the_fixture_parses_to_a_tree() {
     let maths = load_maths();
     assert_eq!(maths.len(), ENTRIES);
     for entry in &maths {
-        let ast = read_math(&entry.mathml).unwrap_or_else(|e| panic!("{e:?}: {}", entry.mathml));
-        assert_ne!(
-            ast.kind,
-            AstKind::Other,
-            "an unmapped kind in {}",
-            entry.mathml
-        );
+        read_math(&entry.mathml).unwrap_or_else(|e| panic!("{e:?}: {}", entry.mathml));
     }
 }
 

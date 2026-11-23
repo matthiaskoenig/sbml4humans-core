@@ -81,12 +81,19 @@
 //!
 //! | shape | stack | is a latex written |
 //! | --- | --- | --- |
-//! | 253 quotients over a chain of sums, the deepest mathml the bound allows | 704 KiB | yes |
+//! | 253 quotients, or differences whose operands are compared, over a chain of sums | 704 KiB | yes |
 //! | a chain of a thousand sums or products, unrolled into one operator | 512 KiB | yes |
 //! | a chain of a thousand quotients, or of differences, at 1,408 KiB through [`latex`] | 384 KiB | no |
-//! | a chain of a thousand of `abs`, of a piecewise or of a lambda | 320 KiB | no |
+//! | a chain of a thousand `abs`, of a piecewise or of a lambda | 320 KiB | no |
 //!
-//! so the deepest latex walk which is still reachable fits, with room to spare,
+//! The first row is the deepest mathml the bound allows, and every figure is the
+//! deepest **measured** walk of its shape and no proof of the deepest possible
+//! one: a shape nobody has built may cost more per level. The two shapes of the
+//! first row are the two which were measured there, the plain walk and the one
+//! which compares a string value at every level, and the test of the parent
+//! module carries both.
+//!
+//! So the deepest latex walk which is still reachable fits, with room to spare,
 //! in the megabyte of wasm in a debug build. A release build has smaller frames
 //! than a debug one, by how much nobody has measured, and nothing in the
 //! workspace builds or runs wasm yet, so these are still not wasm
@@ -103,9 +110,9 @@
 //! the mathml of all 1,832 maths of the corpus in the fixture while this was
 //! written: 0 differed. That check is not committed, and of the committed tests
 //! the gate of `crates/oracles/tests/math.rs` covers it only in part: 11 of
-//! those 1,832 hold a difference whose right operand asks for the comparison and in
-//! all 11 the two values differ, so **no entry of the corpus covers the case
-//! where they are equal**. That case is covered by
+//! those 1,832 hold a difference whose right operand asks for the comparison
+//! and in all 11 the two values differ, so **no entry of the corpus covers the
+//! case where they are equal**. That case is covered by
 //! `the_right_operand_of_a_difference_is_parenthesised_by_its_text` of
 //! `crates/report/tests/latex.rs` alone, whose two expectations were probed
 //! against python.

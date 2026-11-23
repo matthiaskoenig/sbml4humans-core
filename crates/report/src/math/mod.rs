@@ -285,31 +285,66 @@ mod tests {
         });
     }
 
-    // The deepest latex walk the depth rule leaves reachable, and so the most
-    // stack `math` can be made to use: a tree whose mathml is exactly as deep as
-    // the bound allows, so the latex is written, and whose levels past that are a
-    // chain of sums which libsbml unrolls into one apply. A tree whose mathml is
-    // one element deeper than this never reaches the latex writer at all, which
-    // is why the walk of a bare chain of a thousand quotients, the 1,408 KiB
-    // `latex` alone needs for it in a debug build and the one figure of this
-    // crate which does not fit in the stack of wasm, is now unreachable through
-    // `math`. This shape needs 704 KiB on this thread in a debug build.
-    #[test]
-    fn the_deepest_latex_the_bound_allows_is_written_within_the_stack_of_wasm() {
-        // a chain of sums is two elements, the `apply` and its operands, so
-        // three with the `<math>` root: this many quotients above one make the
-        // document exactly as deep as the bound allows
-        let quotients = MAX_MATHML_DEPTH - 3;
-        let mut ast = chain(AstKind::Plus, MAX_AST_DEPTH - quotients);
-        for _ in 0..quotients {
-            ast = node(AstKind::Divide, vec![name("a"), ast]);
+    /// The deepest tree the depth rule leaves the latex writer, `level` building
+    /// one level of it over the tail it is handed.
+    ///
+    /// Its mathml is exactly as deep as the bound allows, so the latex is
+    /// written, and its levels past that are a chain of sums which libsbml
+    /// unrolls into one apply. A chain of sums is two elements, the `apply` and
+    /// its operands, so three with the `<math>` root: this many levels above one
+    /// make the document exactly as deep as the bound allows.
+    fn deepest_latex_shape(level: impl Fn(Ast) -> Ast) -> Ast {
+        let levels = MAX_MATHML_DEPTH - 3;
+        let mut ast = chain(AstKind::Plus, MAX_AST_DEPTH - levels);
+        for _ in 0..levels {
+            ast = level(ast);
         }
         // the shape stops being the worst case if either number drifts
         assert_eq!(mathml_depth(&ast).unwrap(), MAX_MATHML_DEPTH);
         assert_eq!(depth_of(&ast), MAX_AST_DEPTH);
-        on_a_wasm_stack(move || {
-            assert!(math(&ast).expect("a tree of the cap").latex.is_some());
-        });
+        ast
+    }
+
+    /// One level of a chain of quotients, the tail its divisor.
+    fn quotient_over(tail: Ast) -> Ast {
+        node(AstKind::Divide, vec![name("a"), tail])
+    }
+
+    /// One level of a chain of differences whose two operands are compared.
+    ///
+    /// The right operand is an apply, so the template which tells the operands
+    /// of a difference apart by their string values fires at every level, and
+    /// the value it is compared against is the whole chain below. That makes it
+    /// the costliest level of the walk: `tests/latex.rs` measures this shape
+    /// through [`latex`] alone, where a chain of a thousand of it needs
+    /// 1,401 KiB, more than the stack of wasm.
+    fn difference_over(tail: Ast) -> Ast {
+        node(
+            AstKind::Minus,
+            vec![tail, node(AstKind::Plus, vec![name("a"), name("b")])],
+        )
+    }
+
+    // The deepest latex walk the depth rule leaves reachable, and so the most
+    // stack `math` can be made to use, in both of the shapes which reach it: a
+    // chain of quotients, which is the plain walk, and a chain of differences,
+    // which compares a string value at every level and costs more per level for
+    // it. A tree whose mathml is one element deeper than these never reaches the
+    // latex writer at all, which is why the walk of a bare chain of a thousand
+    // quotients or differences, the 1,408 KiB `latex` alone needs for it in a
+    // debug build and the one figure of this crate which does not fit in the
+    // stack of wasm, is now unreachable through `math`. Both shapes need at most
+    // 704 KiB on this thread in a debug build, the differences the more of it.
+    #[test]
+    fn the_deepest_latex_the_bound_allows_is_written_within_the_stack_of_wasm() {
+        for shape in [
+            deepest_latex_shape(quotient_over),
+            deepest_latex_shape(difference_over),
+        ] {
+            on_a_wasm_stack(move || {
+                assert!(math(&shape).expect("a tree of the cap").latex.is_some());
+            });
+        }
     }
 
     /// How many levels deep the syntax tree `ast` is, without recursing.
