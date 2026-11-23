@@ -1,6 +1,7 @@
-//! The syntax tree libsbml fills of a content MathML, and what it refuses.
+//! The syntax tree libsbml fills of a content MathML and of the formula of a
+//! Level 1 math, and what it refuses.
 
-use sbml4humans_libsbml::{ReadError, read_math};
+use sbml4humans_libsbml::{ReadError, read, read_formula, read_math};
 use sbml4humans_model::{AstKind, AstNumber, MAX_AST_DEPTH};
 
 /// A MathML document of a body, the envelope every math of a test is read in.
@@ -14,6 +15,18 @@ fn kinetic_law_math() -> &'static str {
     let start = document.find("<math").expect("the document holds a math");
     let end = document.find("</math>").expect("the math ends") + "</math>".len();
     &document[start..end]
+}
+
+/// The `formula` of the kinetic law of the one reaction of the Level 1 document.
+fn level1_formula() -> &'static str {
+    let document = include_str!("../testdata/level1_power.xml");
+    let opening = "<kineticLaw formula=\"";
+    let start = document
+        .find(opening)
+        .expect("the document holds a kinetic law")
+        + opening.len();
+    let formula = &document[start..];
+    &formula[..formula.find('"').expect("the formula ends")]
 }
 
 /// A MathML of `1 + (1 + (1 + ...))`, `levels` applications deep.
@@ -34,12 +47,14 @@ fn nested(levels: usize) -> String {
 
 /// Every kind a content MathML expresses, as the smallest math which has it.
 ///
-/// Two kinds are not in the table: `AstKind::Other` is by definition the type
-/// the shim does not name, and `AstKind::Power` is the `^` of a Level 1 or
-/// Level 2 `formula` attribute, which libsbml parses outside of MathML, where
-/// `<power/>` is `AstKind::FunctionPower`. `AstKind::Function`, a call of a
-/// function the model defines, is no element of its own but an `apply` of a
-/// `ci` and is in the table as that.
+/// Two kinds are not in the table, and each is covered by a test of its own.
+/// `AstKind::Other` is by definition the type the shim does not name, which
+/// `a_type_the_report_has_no_kind_of_is_other` reads. `AstKind::Power` is the
+/// `^` of a Level 1 or Level 2 `formula` attribute, which libsbml parses
+/// outside of MathML, where `<power/>` is `AstKind::FunctionPower`, and which
+/// `the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power`
+/// reads. `AstKind::Function`, a call of a function the model defines, is no
+/// element of its own but an `apply` of a `ci` and is in the table as that.
 const KINDS: &[(&str, AstKind)] = &[
     ("<ci>S1</ci>", AstKind::Name),
     (
@@ -402,15 +417,44 @@ fn the_kinds_of_the_table_are_every_kind_but_other_and_power() {
         .filter(|kind| !KINDS.iter().any(|(_, mapped)| mapped == kind))
         .collect();
     assert_eq!(missing, vec![AstKind::Other, AstKind::Power]);
+    // `dedup` drops only neighbours, so the sort is what makes this the check
+    // its message states
     let mut kinds: Vec<i32> = KINDS.iter().map(|(_, kind)| *kind as i32).collect();
+    kinds.sort_unstable();
     kinds.dedup();
     assert_eq!(kinds.len(), KINDS.len(), "a kind is in the table twice");
+}
+
+#[test]
+fn the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power() {
+    // `Power` is the one kind no content MathML yields, where `<power/>` is
+    // `FunctionPower`. It is the `^` of the `formula` a Level 1 document
+    // writes its math as, which `KineticLaw::getMath` parses with the very
+    // call `read_formula` makes, `SBML_parseFormula` of the formula of the
+    // kinetic law (`KineticLaw.cpp`)
+    let source = include_str!("../testdata/level1_power.xml");
+    let document = read(source.as_bytes()).expect("libsbml reads the document without an error");
+    assert_eq!((document.level, document.version), (1, 2));
+    let ast = read_formula(level1_formula()).expect("the formula parses");
+    assert_eq!(ast.kind, AstKind::Times);
+    assert_eq!(ast.children[0].name.as_deref(), Some("k1"));
+    let power = &ast.children[1];
+    assert_eq!(power.kind, AstKind::Power);
+    assert_eq!(power.children[0].name.as_deref(), Some("S1"));
+    assert_eq!(power.children[1].number, Some(AstNumber::Integer(2)));
 }
 
 #[test]
 fn a_string_which_is_no_mathml_is_an_error_and_never_a_panic() {
     for s in ["", "<math", "<html></html>", "not xml at all", "a\0b"] {
         assert!(read_math(s).is_err(), "{s} must not parse");
+    }
+}
+
+#[test]
+fn a_string_which_is_no_formula_is_an_error_and_never_a_panic() {
+    for s in ["", "k1 *", "(", "1 +", "<html></html>", "a\0b"] {
+        assert!(read_formula(s).is_err(), "{s} must not parse");
     }
 }
 

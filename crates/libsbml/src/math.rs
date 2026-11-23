@@ -5,7 +5,7 @@
 //! following it, since the stack a deeper one would need is no error but an
 //! abort of the process and, in WebAssembly, the end of the instance.
 
-use std::ffi::{CString, c_double, c_int, c_longlong};
+use std::ffi::{CString, c_char, c_double, c_int, c_longlong};
 
 use sbml4humans_model::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};
 
@@ -38,17 +38,45 @@ impl Drop for Parsed {
 /// MathML, and every tree which is nested deeper than [`MAX_AST_DEPTH`], is an
 /// error; nothing panics, whatever the string holds.
 pub fn read_math(mathml: &str) -> Result<Ast, ReadError> {
-    let xml = CString::new(mathml).map_err(|_| {
-        ReadError::Libsbml("the math holds a nul byte, which no XML document holds".to_owned())
+    read_tree(mathml, "math", sys::s4h_read_math_from_string)
+}
+
+/// The syntax tree of a math written as a `formula`, as Level 1 writes it.
+///
+/// A Level 1 document writes the math of a kinetic law and of a rule as the
+/// attribute `formula` rather than as MathML, and libsbml parses it with the
+/// parser of Level 1, whose `^` of a power is the kind [`AstKind::Power`], a
+/// kind no content MathML yields. It is the very call a kinetic law of
+/// libsbml makes of its own formula (`SBML_parseFormula` in
+/// `KineticLaw::getMath`), so the tree of the formula of a document is the
+/// tree libsbml answers of that kinetic law.
+pub fn read_formula(formula: &str) -> Result<Ast, ReadError> {
+    read_tree(formula, "formula", sys::s4h_read_formula)
+}
+
+/// The syntax tree a reader of libsbml reads of a string.
+///
+/// The tree libsbml hands back is owned here and freed on every path out,
+/// the error ones included.
+fn read_tree(
+    source: &str,
+    what: &str,
+    read: unsafe extern "C" fn(*const c_char) -> *mut sys::ASTNode,
+) -> Result<Ast, ReadError> {
+    let text = CString::new(source).map_err(|_| {
+        ReadError::Libsbml(format!(
+            "the {what} holds a nul byte, which no text of a document holds"
+        ))
     })?;
     // libsbml keeps global state, the registry of the definition URLs of the
-    // csymbols of its packages, which the read of a MathML fills, among it
+    // csymbols of its packages, which the read of a MathML fills, among it, so
+    // every reader of the crate holds the one lock of libsbml
     let _lock = locked();
-    let parsed = Parsed(unsafe { sys::s4h_read_math_from_string(xml.as_ptr()) });
+    let parsed = Parsed(unsafe { read(text.as_ptr()) });
     if parsed.0.is_null() {
-        return Err(ReadError::Libsbml(
-            "libsbml read no math of the string".to_owned(),
-        ));
+        return Err(ReadError::Libsbml(format!(
+            "libsbml read no {what} of the string"
+        )));
     }
     unsafe { ast_of(parsed.0, 1) }
 }

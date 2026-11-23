@@ -449,7 +449,24 @@ ASTNode* s4h_read_math_from_string(const char* xml) {
     }
 }
 
-/// Frees a syntax tree of `s4h_read_math_from_string` with its children.
+/// Reads the syntax tree of a `formula`, the math as Level 1 writes it.
+///
+/// The caller owns the tree and frees it with `s4h_ast_free`: this is the very
+/// call `KineticLaw::getMath` makes of the `formula` of a kinetic law of a
+/// Level 1 document, which keeps the tree in a member its destructor deletes
+/// (KineticLaw.cpp), and the examples of libsbml free the tree of it with
+/// `ASTNode_free` (examples/c++/translateMath.cpp). Null says that the string
+/// is no formula.
+ASTNode* s4h_read_formula(const char* formula) {
+    try {
+        return SBML_parseFormula(formula);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+/// Frees a syntax tree of `s4h_read_math_from_string` or `s4h_read_formula`
+/// with its children.
 void s4h_ast_free(ASTNode* node) {
     delete node;
 }

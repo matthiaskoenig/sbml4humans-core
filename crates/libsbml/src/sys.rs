@@ -104,6 +104,7 @@ unsafe extern "C" {
     pub(crate) fn s4h_parameter_units(sbase: *mut SBase) -> *const c_char;
 
     pub(crate) fn s4h_read_math_from_string(xml: *const c_char) -> *mut ASTNode;
+    pub(crate) fn s4h_read_formula(formula: *const c_char) -> *mut ASTNode;
     pub(crate) fn s4h_ast_free(node: *mut ASTNode);
     pub(crate) fn s4h_ast_kind(node: *mut ASTNode) -> c_int;
     pub(crate) fn s4h_ast_num_children(node: *mut ASTNode) -> c_uint;
