@@ -535,8 +535,9 @@ fn real_value(node: &Ast) -> Option<f64> {
             numerator,
             denominator,
         }) => numerator as f64 / denominator as f64,
-        // libsbml holds the value of a number node which was never given one,
-        // and of one whose value does not match its kind, as the real it holds
+        // The shim tags the number by the AST type, so these two arms are
+        // unreachable from it and defensive only: an integer answers itself
+        // as a real, and a node with no number answers 0.0.
         Some(AstNumber::Integer(integer)) => integer as f64,
         None => 0.0,
     })

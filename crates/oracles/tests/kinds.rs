@@ -1,8 +1,9 @@
 //! Every kind the libsbml shim maps writes the formula and the latex python writes.
 //!
 //! The gate of `tests/math.rs` compares the two writers over the whole math corpus, but the
-//! corpus is a corpus: 38 of the 82 kinds appear in it and 44 do not, among them 23 of the 25
-//! trigonometric kinds, every constant, the rational, the `Power` of a Level 1 formula and the
+//! corpus is a corpus: 39 of the 82 kinds appear in it and 43 do not (42 of them mapped, the 43rd
+//! is `Other`), among them 23 of the 24 trigonometric and hyperbolic kinds, every constant, the
+//! rational, the `Power` of a Level 1 formula and the
 //! whole `\sqrt[n]{}` branch. This table covers the rest.
 //!
 //! Each row is a tree built by hand, the formula `libsbml.formulaToL3String` writes of it and the
