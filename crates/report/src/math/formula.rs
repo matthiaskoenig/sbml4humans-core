@@ -584,10 +584,19 @@ fn is_integer(node: &Ast, value: i64) -> bool {
 /// writes as `x % y`.
 ///
 /// Where libsbml compares the two operands by the formulas they write, this
-/// compares them as trees. The two agree wherever the pattern arises, since
-/// every one of the four copies of `x` and the three of `y` is a copy of one
-/// subtree; and writing a subtree once per comparison would cost a formula
-/// which doubles in length with every nested modulo.
+/// compares them as trees, since writing a subtree once per comparison would
+/// cost a formula whose work doubles with every nested modulo, which a crafted
+/// document could drive to a denial of service.
+///
+/// The two agree wherever libsbml's own writer produced the pattern, since
+/// every one of the four copies of `x` and the three of `y` is then a copy of
+/// one subtree. They do not agree on every document: a tree comparison is the
+/// stricter of the two, so a pattern whose copies are an `Integer(2)` in one
+/// place and a `Real(2.0)` in another, or a csymbol whose text differs between
+/// two copies, writes a `piecewise` here where libsbml writes `%`. A pattern
+/// whose operand holds a NaN does too, for a reason which is this comparison
+/// and not the document: the equality of [`Ast`] compares its `f64` as IEEE
+/// 754 asks, and a NaN is equal to nothing, itself included.
 fn is_translated_modulo(node: &Ast) -> bool {
     // the children of `node` when it is of `kind` and carries `count` of them
     fn children_of(node: Option<&Ast>, kind: AstKind, count: usize) -> Option<&[Ast]> {

@@ -35,6 +35,10 @@ fn every_math_of_the_fixture_parses_to_a_tree() {
 #[test]
 fn the_formula_of_every_math_of_the_fixture_equals_the_python_one() {
     let maths = load_maths();
+    // the count is asserted here as well as in the test above, so that a
+    // fixture which lost its entries fails this gate rather than passing it
+    // over nothing
+    assert_eq!(maths.len(), 1832);
     let mut differences = Vec::new();
     for entry in &maths {
         let ast = read_math(&entry.mathml).unwrap_or_else(|e| panic!("{e:?}: {}", entry.mathml));

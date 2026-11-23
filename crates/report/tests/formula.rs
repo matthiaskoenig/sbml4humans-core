@@ -40,9 +40,14 @@ fn name(id: &str) -> Ast {
 
 /// The csymbol time, which libsbml answers the name `time` for.
 fn time() -> Ast {
+    csymbol(AstKind::NameTime, "time")
+}
+
+/// A csymbol of `kind` whose text the document wrote, which may be any text.
+fn csymbol(kind: AstKind, text: &str) -> Ast {
     Ast {
-        kind: AstKind::NameTime,
-        name: Some("time".to_owned()),
+        kind,
+        name: Some(text.to_owned()),
         ..Ast::default()
     }
 }
@@ -150,12 +155,17 @@ fn a_number_with_units_prints_them() {
 }
 
 // the same tree, with the name libsbml gives every built-in node of its own on
-// it: `sin` on the sine, `times` on the product and `time` on the csymbol. A
-// writer which falls back to the name of a node rather than keying off its kind
-// looks right on these and is wrong wherever libsbml gives another name, so the
-// misleading names of this tree have to make no difference.
+// it, and with the time csymbol named `t` rather than `time`, which is what
+// libsbml answers for a document which writes
+//
+//     <csymbol definitionURL="http://www.sbml.org/sbml/symbols/time"> t </csymbol>
+//
+// and which libsbml still writes as `time`. A writer which fell back to the
+// name of a node would look right on the names libsbml gives a built-in node of
+// its own and would write `t` here, so the name of every node of this tree
+// misleads and none of them may make a difference.
 #[test]
-fn a_built_in_node_is_written_from_its_kind_and_not_from_the_name_libsbml_gives_it() {
+fn a_built_in_node_is_written_from_its_kind_and_not_from_the_name_of_the_document() {
     let ast = named(
         AstKind::Plus,
         "plus",
@@ -172,7 +182,10 @@ fn a_built_in_node_is_written_from_its_kind_and_not_from_the_name_libsbml_gives_
                         vec![named(
                             AstKind::Divide,
                             "divide",
-                            vec![time(), with_units(integer(1), "hr")],
+                            vec![
+                                csymbol(AstKind::NameTime, "t"),
+                                with_units(integer(1), "hr"),
+                            ],
                         )],
                     ),
                 ],
@@ -180,6 +193,19 @@ fn a_built_in_node_is_written_from_its_kind_and_not_from_the_name_libsbml_gives_
         ],
     );
     assert_eq!(written(&ast), "10 mg + 2 mg * sin(time / 1 hr)");
+    // the three other csymbols a document may name as it likes, read from
+    // libsbml for the same definitionURL with the text beside each:
+    //
+    //   NA  -> avogadro * x        lag -> delay(b, c)        dt -> rateOf(S)
+    let avogadro = node(
+        AstKind::Times,
+        vec![csymbol(AstKind::NameAvogadro, "NA"), name("x")],
+    );
+    assert_eq!(written(&avogadro), "avogadro * x");
+    let delay = named(AstKind::FunctionDelay, "lag", vec![name("b"), name("c")]);
+    assert_eq!(written(&delay), "delay(b, c)");
+    let rate_of = named(AstKind::FunctionRateOf, "dt", vec![name("S")]);
+    assert_eq!(written(&rate_of), "rateOf(S)");
 }
 
 // the otherwise branch of piecewise(1.55, C < 3100, 0.2, C > 100000, C * -1.35e-5 + 1.55)
@@ -616,6 +642,20 @@ fn a_number_prints_the_fifteen_significant_digits_of_the_float_format_of_libsbml
     assert_eq!(written(&real(-0.0)), "-0");
     assert_eq!(written(&real(-2.38558290553944e-305)), "-0");
     assert_eq!(written(&real(-2.5e-300)), "-2.5e-300");
+    // INF, -INF, NaN: the three branches libsbml takes before it formats a
+    // value at all, read with formulaToL3String(parseL3Formula("INF")) and so on
+    assert_eq!(written(&real(f64::INFINITY)), "INF");
+    assert_eq!(written(&real(f64::NEG_INFINITY)), "-INF");
+    assert_eq!(written(&real(f64::NAN)), "NaN");
+    // a * INF and a + NaN: they are written the same below an operator
+    assert_eq!(
+        written(&node(AstKind::Times, vec![name("a"), real(f64::INFINITY)])),
+        "a * INF"
+    );
+    assert_eq!(
+        written(&node(AstKind::Plus, vec![name("a"), real(f64::NAN)])),
+        "a + NaN"
+    );
 }
 
 #[test]
