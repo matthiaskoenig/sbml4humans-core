@@ -26,7 +26,9 @@ use serde_json::Value;
 ///   slash is `~1` in the entry, a key which holds a tilde is `~0`.
 /// - A trailing segment, written `**/derivedUnits`, which silences every pointer whose last
 ///   segment is exactly that segment, and everything below those. It is the form for a field
-///   which sits on every element, where one exact pointer per element would be unreadable.
+///   which sits on every element, where one exact pointer per element would be unreadable. The
+///   `**/` carries one segment and not a path: what follows it is compared with the last segment
+///   of the pointer, which never holds a slash, so `**/listOfRules/math` names nothing.
 ///
 /// An empty entry, or the bare `**/`, names nothing and is skipped rather than silencing the
 /// whole report.
@@ -34,6 +36,40 @@ pub fn compare(ours: &Value, theirs: &Value, excluded: &[&str]) -> Vec<String> {
     let mut differences = Vec::new();
     walk("", ours, theirs, excluded, &mut differences);
     differences
+}
+
+/// Whether `entry` matches a pointer of `value`, in either of the two forms of an entry.
+///
+/// It is the measure of whether an entry of an exclusion list is spelled to match the report at
+/// all, which the liveness of that entry does not say: an entry whose pointer both sides of the
+/// gate agree on silences no difference, and so does an entry which names nothing at all because
+/// it is misspelled or carries a form the matcher does not have. The segment match is exact, so
+/// `**/unitsLatex` does not match `substanceUnitsLatex`, and this answers that it does not.
+///
+/// The pointers are the ones [`compare`] walks, the object and the array among them, so an entry
+/// which names a list the report writes empty is matched as well.
+pub fn names_a_pointer(entry: &str, value: &Value) -> bool {
+    let mut stack = vec![(String::new(), value)];
+    while let Some((pointer, value)) = stack.pop() {
+        if is_excluded(&pointer, &[entry]) {
+            return true;
+        }
+        match value {
+            Value::Object(fields) => stack.extend(
+                fields
+                    .iter()
+                    .map(|(key, value)| (format!("{pointer}/{}", escape(key)), value)),
+            ),
+            Value::Array(items) => stack.extend(
+                items
+                    .iter()
+                    .enumerate()
+                    .map(|(index, value)| (format!("{pointer}/{index}"), value)),
+            ),
+            _ => {}
+        }
+    }
+    false
 }
 
 /// The last segment of a pointer, `None` for the pointer of the root, which has none.
@@ -130,8 +166,13 @@ pub struct MathFixture {
     pub mathml: String,
     /// The Level 3 formula of libsbml.
     pub formula: String,
-    /// The latex python writes.
-    pub latex: String,
+    /// The latex python writes, `None` for a math it cannot typeset.
+    ///
+    /// The generator writes what `math_info` of `mathml.py` answers, which is the `null` of the
+    /// report for the two maths the python implementation cannot typeset. One entry of the fixture
+    /// is such a math, the deeper of the two chains of divides the generator adds at the bound of
+    /// the latex pipeline; no math of the model corpus is one.
+    pub latex: Option<String>,
 }
 
 /// The maths of the corpus fixture `testdata/oracles/maths.json`, sorted by `mathml`.

@@ -35,8 +35,9 @@ impl Drop for Parsed {
 ///
 /// The string is the `math` element of a math of SBML with its namespace, the
 /// one libsbml itself writes of a tree. Every string which is no content
-/// MathML, and every tree which is nested deeper than [`MAX_AST_DEPTH`], is an
-/// error; nothing panics, whatever the string holds.
+/// MathML, every tree which is nested deeper than [`MAX_AST_DEPTH`] and every
+/// tree which holds a node of a type the report has no kind of is an error;
+/// nothing panics, whatever the string holds.
 pub fn read_math(mathml: &str) -> Result<Ast, ReadError> {
     read_tree(mathml, "math", sys::s4h_read_math_from_string)
 }
@@ -101,11 +102,29 @@ fn read_tree(
 /// `number` and `units` are the value and the `sbml:units` of a number node,
 /// and `None` of every other node.
 ///
+/// # The bound
+///
+/// This is the one place which answers [`ReadError::MathTooDeep`], and it is
+/// also one of the two walks which force the bound to stay as low as it is: it
+/// recurses once per level of the tree, as `operands` of
+/// `crates/report/src/math/latex.rs` does per level of a chain it unrolls.
+/// What the bound costs is no theoretical shape. libsbml nests a flat n-ary
+/// application into a binary tree to the left, one `apply` per operand after
+/// the first, so a flat sum of [`MAX_AST_DEPTH`] + 1 terms, an ordinary wide
+/// sum of a
+/// model, is a chain of that many levels and is refused here, and the whole
+/// document with it; the python implementation reports the same document in
+/// full and with its latex, since `writeMathML` unrolls the nesting back into
+/// one flat `apply`. The doc comment of [`MAX_AST_DEPTH`] carries the whole
+/// account. Removing the difference means making this walk and `operands`
+/// non-recursive, which is the business of the slice before the wheel and not
+/// of a higher bound.
+///
 /// # Safety
 ///
 /// `node` is a node of a syntax tree of libsbml which is alive, and the caller
 /// holds the lock of libsbml.
-pub(crate) unsafe fn ast_of(node: *mut sys::ASTNode, depth: usize) -> Result<Ast, ReadError> {
+pub(crate) unsafe fn ast_of(node: *const sys::ASTNode, depth: usize) -> Result<Ast, ReadError> {
     if depth > MAX_AST_DEPTH {
         return Err(ReadError::MathTooDeep);
     }
@@ -120,8 +139,16 @@ pub(crate) unsafe fn ast_of(node: *mut sys::ASTNode, depth: usize) -> Result<Ast
                 children.push(ast_of(child, depth + 1)?);
             }
         }
+        // the shim names every type a document of libsbml 5.21.2 reaches, the
+        // `AST_UNKNOWN` of a math it could not read included, so a node of no
+        // kind is one of a libsbml which declares a type the shim does not; the
+        // writers of the report have no kind to write of it, so it is refused
+        let kind = AstKind::from_code(sys::s4h_ast_kind(node));
+        if kind == AstKind::Other {
+            return Err(ReadError::MathUnknownKind);
+        }
         Ok(Ast {
-            kind: AstKind::from_code(sys::s4h_ast_kind(node)),
+            kind,
             name: strings::borrowed(sys::s4h_ast_name(node)),
             number: number(node),
             // the units of libsbml are a string which is set exactly when it
@@ -138,7 +165,7 @@ pub(crate) unsafe fn ast_of(node: *mut sys::ASTNode, depth: usize) -> Result<Ast
 /// # Safety
 ///
 /// `node` is a node of a syntax tree of libsbml which is alive.
-unsafe fn number(node: *mut sys::ASTNode) -> Option<AstNumber> {
+unsafe fn number(node: *const sys::ASTNode) -> Option<AstNumber> {
     let mut integer: c_longlong = 0;
     let mut real: c_double = 0.0;
     let mut exponent: c_longlong = 0;

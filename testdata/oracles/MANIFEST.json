@@ -1,5 +1,5 @@
 {
-  "sbml4humans_commit": "c89f3b1a7b45f23d4d18e30d1e1ea34c9c9bd4e2",
+  "sbml4humans_commit": "e8eab09776f523457a5fe87010a948adebd8dad5",
   "python_libsbml": {
     "version": "5.21.2",
     "packages": [
@@ -38,6 +38,14 @@
     {
       "source": "level2_model.xml",
       "fixture": "level2_model.json"
+    },
+    {
+      "source": "core_elements.xml",
+      "fixture": "core_elements.json"
+    },
+    {
+      "source": "level2_reactions.xml",
+      "fixture": "level2_reactions.json"
     }
   ]
 }

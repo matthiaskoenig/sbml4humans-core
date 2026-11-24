@@ -2,7 +2,7 @@
 //!
 //! Every expected string of this file is what the python implementation writes:
 //! the ones which name an entry come from the math fixture
-//! `testdata/oracles/maths.json`, whose 1,832 entries the gate of
+//! `testdata/oracles/maths.json`, whose 1,834 entries the gate of
 //! `crates/oracles/tests/math.rs` compares, and the others are what
 //! `sbml4humans.mathml.astnode_to_latex` answered for the tree built here, for
 //! constructs the corpus holds none of. The trees are built by hand, since
@@ -370,7 +370,7 @@ fn a_child_a_node_lacks_is_written_as_nothing() {
 fn the_math_of_a_tree_carries_both_fields() {
     let ast = node(AstKind::Times, vec![name("a"), integer(2)]);
     let both = math(&ast).expect("the tree is written");
-    assert_eq!(both.latex, " \\mathit{a}\\cdot 2");
+    assert_eq!(both.latex.as_deref(), Some(" \\mathit{a}\\cdot 2"));
     assert_eq!(both.formula, "a * 2");
 }
 

@@ -45,17 +45,54 @@ fn nested(levels: usize) -> String {
     math(&body)
 }
 
+/// A MathML of one flat `apply` of a `plus` over `terms` numbers.
+///
+/// It is the shape a document writes of a wide sum, `1 + 1 + ... + 1` as the
+/// one n-ary application content MathML has for it, and it carries no nesting
+/// at all.
+fn flat_sum(terms: usize) -> String {
+    let mut body = String::from("<apply><plus/>");
+    for _ in 0..terms {
+        body.push_str("<cn type=\"integer\">1</cn>");
+    }
+    body.push_str("</apply>");
+    math(&body)
+}
+
+/// How many levels deep the tree `ast` is, without recursing.
+fn depth_of(ast: &sbml4humans_model::Ast) -> usize {
+    let mut deepest = 0;
+    let mut stack = vec![(ast, 1)];
+    while let Some((node, level)) = stack.pop() {
+        deepest = deepest.max(level);
+        stack.extend(node.children.iter().map(|child| (child, level + 1)));
+    }
+    deepest
+}
+
 /// Every kind a content MathML expresses, as the smallest math which has it.
 ///
 /// Two kinds are not in the table, and each is covered by a test of its own.
-/// `AstKind::Other` is by definition the type the shim does not name, which
-/// `a_type_the_report_has_no_kind_of_is_other` reads. `AstKind::Power` is the
-/// `^` of the `formula` attribute of a Level 1 math, which libsbml parses
-/// outside of MathML, where `<power/>` is `AstKind::FunctionPower`, and which
+/// `AstKind::Other` is by definition the type the shim does not name, which no
+/// document of libsbml 5.21.2 reaches, so there is no math which has it; the
+/// reader refuses a tree which holds one, which nothing but a libsbml that
+/// declares a further type can produce. `AstKind::Power` is the `^` of the
+/// `formula` attribute of a Level 1 math, which libsbml parses outside of
+/// MathML, where `<power/>` is `AstKind::FunctionPower`, and which
 /// `the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power`
-/// reads. `AstKind::Function`, a call of a function the model defines, is no
-/// element of its own but an `apply` of a `ci` and is in the table as that.
+/// reads.
+///
+/// Three kinds are in the table as something other than an element of their own:
+/// `AstKind::Function`, a call of a function the model defines, is an `apply` of
+/// a `ci`; `AstKind::CsymbolFunction` is an `apply` of a csymbol of a definition
+/// URL libsbml does not know; and `AstKind::Unknown` is the node libsbml answers
+/// of a math it could not read, of which an empty `math` element is the one a
+/// string reaches. A content MathML libsbml does not know reaches it as well,
+/// with the children of the `apply` below it, but only through the reader of a
+/// document: `readMathMLFromString` answers nothing at all of such a string, so
+/// `crates/libsbml/tests/read.rs` covers that shape.
 const KINDS: &[(&str, AstKind)] = &[
+    ("", AstKind::Unknown),
     ("<ci>S1</ci>", AstKind::Name),
     (
         "<csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\">time</csymbol>",
@@ -87,6 +124,10 @@ const KINDS: &[(&str, AstKind)] = &[
         AstKind::Divide,
     ),
     ("<apply><ci>f</ci><cn>1</cn></apply>", AstKind::Function),
+    (
+        "<apply><csymbol encoding=\"text\" definitionURL=\"http://example.org/of/nothing\">g</csymbol><cn>1</cn></apply>",
+        AstKind::CsymbolFunction,
+    ),
     ("<apply><abs/><cn>1</cn></apply>", AstKind::FunctionAbs),
     (
         "<apply><arccos/><cn>1</cn></apply>",
@@ -384,17 +425,29 @@ fn a_name_is_the_one_libsbml_answers_of_the_node() {
 }
 
 #[test]
-fn a_type_the_report_has_no_kind_of_is_other() {
-    // a csymbol of a definition URL no package of libsbml registers is
-    // `AST_CSYMBOL_FUNCTION`, the one type a content MathML reaches which the
-    // report has no kind of: the quantifiers and the linear algebra, series,
-    // calculus and set theory types of `ASTNodeType_t` are no math of SBML and
-    // libsbml reads none of them
+fn a_csymbol_of_a_definition_url_libsbml_does_not_know_is_a_csymbol_function() {
+    // `AST_CSYMBOL_FUNCTION` is the type of a csymbol of a definition URL no
+    // package of libsbml registers, which carries the text of the document and
+    // which libsbml and the stylesheet of the latex write as a call of that
+    // text, so the report has a kind of it
     let body =
         "<csymbol encoding=\"text\" definitionURL=\"http://example.org/of/nothing\">x</csymbol>";
     let ast = read_math(&math(body)).expect("it parses");
-    assert_eq!(ast.kind, AstKind::Other);
+    assert_eq!(ast.kind, AstKind::CsymbolFunction);
     assert_eq!(ast.name.as_deref(), Some("x"));
+}
+
+#[test]
+fn an_empty_math_is_the_unknown_node_libsbml_answers_of_it() {
+    // `AST_UNKNOWN` is the node libsbml answers of a math it could not read, of
+    // which an empty `math` element is the one a string reaches: libsbml answers
+    // it with no child and reports the element as having a math. The python
+    // implementation reports such a document, with the formula `()` and a latex
+    // of one space, so the report has a kind of it and refuses nothing.
+    let ast = read_math(&math("")).expect("an empty math reads");
+    assert_eq!(ast.kind, AstKind::Unknown);
+    assert_eq!(ast.name, None);
+    assert!(ast.children.is_empty());
 }
 
 #[test]
@@ -435,13 +488,26 @@ fn the_power_of_the_formula_of_a_level_1_kinetic_law_is_filled_as_a_power() {
     let source = include_str!("../testdata/level1_power.xml");
     let document = read(source.as_bytes()).expect("libsbml answers a report of the document");
     assert_eq!((document.level, document.version), (1, 2));
-    let ast = read_formula(level1_formula()).expect("the formula parses");
+    // the tree of the kinetic law of the document itself, so that this is the
+    // one check that the path through the shim fills the `formula` as a math
+    let model = document.model.expect("the document holds a model");
+    let law = model.reactions[0]
+        .kinetic_law
+        .as_ref()
+        .expect("the reaction holds a kinetic law");
+    let ast = law.math.as_ref().expect("the law holds a math");
     assert_eq!(ast.kind, AstKind::Times);
     assert_eq!(ast.children[0].name.as_deref(), Some("k1"));
     let power = &ast.children[1];
     assert_eq!(power.kind, AstKind::Power);
     assert_eq!(power.children[0].name.as_deref(), Some("S1"));
     assert_eq!(power.children[1].number, Some(AstNumber::Integer(2)));
+    // and the same tree read from the formula string beside it, which is the
+    // very call `KineticLaw::getMath` makes of it
+    assert_eq!(
+        read_formula(level1_formula()).expect("the formula parses"),
+        *ast
+    );
 }
 
 #[test]
@@ -493,6 +559,38 @@ fn the_math_reads_of_many_threads_do_not_race() {
 fn a_tree_deeper_than_the_bound_is_an_error() {
     let deep = nested(MAX_AST_DEPTH);
     assert!(matches!(read_math(&deep), Err(ReadError::MathTooDeep)));
+}
+
+#[test]
+fn the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone() {
+    // The MathML reader of libsbml nests a flat n-ary application into a binary
+    // tree, one `apply` per operand after the first and the nesting on the left
+    // operand, so the tree of a flat sum of `n` terms is `n` levels deep and the
+    // bound of the reader is a bound on the width of a sum of a document as much
+    // as on its nesting. An ordinary document reaches it: a sum of 1,001 terms is
+    // nothing unusual and no adversarial shape.
+    //
+    // Measured here, and the figures the doc comment of `MAX_AST_DEPTH` and of
+    // `ReadError::MathTooDeep` carry: a flat sum of 1,000 terms is read as a tree
+    // of 1,000 levels and one of 1,001 terms is `MathTooDeep`. The python
+    // implementation reports such a document in full and with its latex, because
+    // `writeMathML` unrolls the nesting back into one flat `apply` and the lxml
+    // pipeline it feeds sees a document of three elements.
+    let at_the_bound = read_math(&flat_sum(MAX_AST_DEPTH)).expect("a flat sum of the bound");
+    assert_eq!(depth_of(&at_the_bound), MAX_AST_DEPTH);
+    assert_eq!(at_the_bound.kind, AstKind::Plus);
+    // two operands at every level, the sum of the terms before it and the next
+    // term, which is what makes the depth the number of the terms
+    assert_eq!(at_the_bound.children.len(), 2);
+    assert_eq!(
+        at_the_bound.children[0].kind,
+        AstKind::Plus,
+        "the nesting is on the left operand"
+    );
+    assert!(matches!(
+        read_math(&flat_sum(MAX_AST_DEPTH + 1)),
+        Err(ReadError::MathTooDeep)
+    ));
 }
 
 #[test]

@@ -17,9 +17,19 @@
  *    value when the document sets the attribute, and 0 without touching the
  *    value when it does not. An attribute which is not set has no value, never
  *    the default of its type.
+ *  - A node of a syntax tree is a `const ASTNode*` where it belongs to a
+ *    document or to the parent it was read from, which is every node the
+ *    filler reads, and an `ASTNode*` where the caller owns the tree and frees
+ *    it with `s4h_ast_free`, which is the root of a tree of
+ *    `s4h_read_math_from_string` and of `s4h_read_formula` alone. Every getter
+ *    of a node therefore takes a `const ASTNode*`, so that the type says which
+ *    of the two a pointer is and a node of a document cannot be freed.
  *  - An exception must not cross into Rust, which would end the process, so
  *    every function which allocates catches everything and answers its empty
- *    value. The plain getters of a number or of a reference cannot throw.
+ *    value. The plain getters of a number or of a reference cannot throw. The
+ *    `getMath` of a rule and of a kinetic law is no plain getter: it parses
+ *    the `formula` attribute of a Level 1 document on the first call
+ *    (Rule.cpp, KineticLaw.cpp), so those two catch as well.
  */
 
 #include <cstdlib>
@@ -189,12 +199,24 @@ S4hPackage s4h_document_package(SBMLDocument* doc, unsigned int n) {
 
 /// The `id` of an element, null when it is not set.
 ///
-/// `getId` is the `id` attribute of every class the filler reads. The classes
-/// which alias it to another attribute, the initial assignment, the rule and
-/// the event assignment, carry theirs in `getIdAttribute` instead and will
-/// need a function of their own.
+/// `getId` is the `id` attribute of every class the filler reads apart from
+/// the three which alias it to another attribute, the initial assignment, the
+/// rule and the event assignment; those read `s4h_sbase_id_attribute`.
 const char* s4h_sbase_id(SBase* sbase) {
     return borrowed(sbase->isSetId(), sbase->getId());
+}
+
+/// The `id` attribute of an element, null when it is not set.
+///
+/// libsbml aliases `getId()` of the initial assignment, of the rule and of the
+/// event assignment to the attribute which names what they set, the `symbol`
+/// or the `variable`, for compatibility with the levels in which those classes
+/// carried no id. Their `id` attribute is this one, which is the id the report
+/// of the python implementation carries of them (`sbmlinfo._identifier`).
+/// `getIdAttribute` answers a `const std::string&` of the element, so it is
+/// borrowed.
+const char* s4h_sbase_id_attribute(SBase* sbase) {
+    return borrowed(sbase->isSetIdAttribute(), sbase->getIdAttribute());
 }
 
 /// The `metaid` of an element, null when it is not set.
@@ -235,6 +257,17 @@ char* s4h_sbase_annotation(SBase* sbase) {
 }
 
 /// The element serialized back to XML, handed over, null on failure.
+///
+/// `SBase::toSBML()` is the second writer of libsbml which dies on a lambda
+/// without children, the shape `writeLambda` reads one child too few of and
+/// dereferences a null for, so that the process ends with SIGSEGV
+/// (sbmlteam/libsbml#521). No `catch` saves that, as it saves nothing of the
+/// mathml writer either. It is unreachable today, and for the same reason the
+/// python implementation records at `mathml.unwritable_mathml`: the shape is
+/// invalid SBML which only the Level 1 parser of a `formula` attribute builds,
+/// and a Level 1 document writes that attribute back and never a math. Should
+/// a level conversion ever be added to the port, this writer needs the guard
+/// of `holds_a_childless_lambda` in front of it, as the latex writer has it.
 char* s4h_sbase_xml(SBase* sbase) {
     try {
         return sbase->toSBML();
@@ -254,6 +287,30 @@ unsigned int s4h_sbase_column(SBase* sbase) {
 }
 
 /* ------------------------------------------------------------------- model */
+
+/// The number of function definitions of a model.
+unsigned int s4h_model_num_function_definitions(SBase* sbase) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? 0 : model->getNumFunctionDefinitions();
+}
+
+/// Function definition `n` of a model, null when there is none.
+SBase* s4h_model_function_definition(SBase* sbase, unsigned int n) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? nullptr : model->getFunctionDefinition(n);
+}
+
+/// The number of unit definitions of a model.
+unsigned int s4h_model_num_unit_definitions(SBase* sbase) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? 0 : model->getNumUnitDefinitions();
+}
+
+/// Unit definition `n` of a model, null when there is none.
+SBase* s4h_model_unit_definition(SBase* sbase, unsigned int n) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? nullptr : model->getUnitDefinition(n);
+}
 
 /// The number of compartments of a model.
 unsigned int s4h_model_num_compartments(SBase* sbase) {
@@ -289,6 +346,143 @@ unsigned int s4h_model_num_parameters(SBase* sbase) {
 SBase* s4h_model_parameter(SBase* sbase, unsigned int n) {
     Model* model = dynamic_cast<Model*>(sbase);
     return model == nullptr ? nullptr : model->getParameter(n);
+}
+
+/// The number of initial assignments of a model.
+unsigned int s4h_model_num_initial_assignments(SBase* sbase) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? 0 : model->getNumInitialAssignments();
+}
+
+/// Initial assignment `n` of a model, null when there is none.
+SBase* s4h_model_initial_assignment(SBase* sbase, unsigned int n) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? nullptr : model->getInitialAssignment(n);
+}
+
+/// The number of rules of a model.
+unsigned int s4h_model_num_rules(SBase* sbase) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? 0 : model->getNumRules();
+}
+
+/// Rule `n` of a model, null when there is none.
+SBase* s4h_model_rule(SBase* sbase, unsigned int n) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? nullptr : model->getRule(n);
+}
+
+/// The number of constraints of a model.
+unsigned int s4h_model_num_constraints(SBase* sbase) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? 0 : model->getNumConstraints();
+}
+
+/// Constraint `n` of a model, null when there is none.
+SBase* s4h_model_constraint(SBase* sbase, unsigned int n) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? nullptr : model->getConstraint(n);
+}
+
+/// The number of reactions of a model.
+unsigned int s4h_model_num_reactions(SBase* sbase) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? 0 : model->getNumReactions();
+}
+
+/// Reaction `n` of a model, null when there is none.
+SBase* s4h_model_reaction(SBase* sbase, unsigned int n) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? nullptr : model->getReaction(n);
+}
+
+/// The number of events of a model.
+unsigned int s4h_model_num_events(SBase* sbase) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? 0 : model->getNumEvents();
+}
+
+/// Event `n` of a model, null when there is none.
+SBase* s4h_model_event(SBase* sbase, unsigned int n) {
+    Model* model = dynamic_cast<Model*>(sbase);
+    return model == nullptr ? nullptr : model->getEvent(n);
+}
+
+/* ----------------------------------------------------- function definition */
+
+/// The `math` of a function definition, borrowed, null when it has none.
+///
+/// The tree belongs to the element and is freed with the document, which is
+/// what the `const` of every math of an element says: it is never handed to
+/// `s4h_ast_free`.
+const ASTNode* s4h_function_definition_math(SBase* sbase) {
+    FunctionDefinition* definition = dynamic_cast<FunctionDefinition*>(sbase);
+    if (definition == nullptr || !definition->isSetMath()) {
+        return nullptr;
+    }
+    return definition->getMath();
+}
+
+/* --------------------------------------------------------- unit definition */
+
+/// The number of units of a unit definition.
+unsigned int s4h_unit_definition_num_units(SBase* sbase) {
+    UnitDefinition* definition = dynamic_cast<UnitDefinition*>(sbase);
+    return definition == nullptr ? 0 : definition->getNumUnits();
+}
+
+/// Unit `n` of a unit definition, null when there is none.
+SBase* s4h_unit_definition_unit(SBase* sbase, unsigned int n) {
+    UnitDefinition* definition = dynamic_cast<UnitDefinition*>(sbase);
+    return definition == nullptr ? nullptr : definition->getUnit(n);
+}
+
+/* -------------------------------------------------------------------- unit */
+
+/// The `kind` of a unit as the name of the base unit, null when it is not set.
+///
+/// libsbml answers the kind as the integer of its constant, and
+/// `UnitKind_toString` answers the name of that constant as a static string of
+/// libsbml (UnitKind.h), which outlives every document and is borrowed.
+const char* s4h_unit_kind(SBase* sbase) {
+    Unit* unit = dynamic_cast<Unit*>(sbase);
+    if (unit == nullptr || !unit->isSetKind()) {
+        return nullptr;
+    }
+    return UnitKind_toString(unit->getKind());
+}
+
+/// The `exponent` of a unit.
+///
+/// It is read as a double because Level 3 allows a fractional exponent (core
+/// §4.4.2), which the integer getter of libsbml truncates.
+int s4h_unit_exponent(SBase* sbase, double* value) {
+    Unit* unit = dynamic_cast<Unit*>(sbase);
+    if (unit == nullptr || !unit->isSetExponent()) {
+        return 0;
+    }
+    *value = unit->getExponentAsDouble();
+    return 1;
+}
+
+/// The `scale` of a unit.
+int s4h_unit_scale(SBase* sbase, int* value) {
+    Unit* unit = dynamic_cast<Unit*>(sbase);
+    if (unit == nullptr || !unit->isSetScale()) {
+        return 0;
+    }
+    *value = unit->getScale();
+    return 1;
+}
+
+/// The `multiplier` of a unit.
+int s4h_unit_multiplier(SBase* sbase, double* value) {
+    Unit* unit = dynamic_cast<Unit*>(sbase);
+    if (unit == nullptr || !unit->isSetMultiplier()) {
+        return 0;
+    }
+    *value = unit->getMultiplier();
+    return 1;
 }
 
 /* ------------------------------------------------------------- compartment */
@@ -433,6 +627,443 @@ const char* s4h_parameter_units(SBase* sbase) {
     return borrowed(parameter->isSetUnits(), parameter->getUnits());
 }
 
+/* ------------------------------------------------------ initial assignment */
+
+/// The `symbol` of an initial assignment, the element it sets, borrowed.
+///
+/// It is read unguarded, as the python implementation reads it
+/// (`sbmlinfo.initial_assignment`): libsbml answers the empty string where the
+/// document names nothing, which the Rust side reads as nothing.
+const char* s4h_initial_assignment_symbol(SBase* sbase) {
+    InitialAssignment* assignment = dynamic_cast<InitialAssignment*>(sbase);
+    return assignment == nullptr ? nullptr : assignment->getSymbol().c_str();
+}
+
+/// The `math` of an initial assignment, borrowed, null when it has none.
+const ASTNode* s4h_initial_assignment_math(SBase* sbase) {
+    InitialAssignment* assignment = dynamic_cast<InitialAssignment*>(sbase);
+    if (assignment == nullptr || !assignment->isSetMath()) {
+        return nullptr;
+    }
+    return assignment->getMath();
+}
+
+/* -------------------------------------------------------------------- rule */
+
+/// Which of the three rule classes a rule is.
+///
+/// 0 is an assignment rule, 1 a rate rule and 2 an algebraic rule, which is
+/// the one of the three which sets no variable. -1 is an element which is no
+/// rule and a rule of a class which is none of the three, which the python
+/// implementation refuses the report of (`sbmlinfo.rule` raises `TypeError`).
+/// A Level 1 rule carries its class in its `type` attribute, which the
+/// predicates of libsbml read as well.
+int s4h_rule_kind(SBase* sbase) {
+    Rule* rule = dynamic_cast<Rule*>(sbase);
+    if (rule == nullptr) {
+        return -1;
+    }
+    if (rule->isAssignment()) {
+        return 0;
+    }
+    if (rule->isRate()) {
+        return 1;
+    }
+    if (rule->isAlgebraic()) {
+        return 2;
+    }
+    return -1;
+}
+
+/// The `variable` of a rule, the element it sets, borrowed.
+///
+/// It is read unguarded, as the python implementation reads it
+/// (`sbmlinfo.rule`): libsbml answers the empty string for an algebraic rule,
+/// which sets no variable, and for a document which names none.
+const char* s4h_rule_variable(SBase* sbase) {
+    Rule* rule = dynamic_cast<Rule*>(sbase);
+    return rule == nullptr ? nullptr : rule->getVariable().c_str();
+}
+
+/// The `math` of a rule, borrowed, null when it has none.
+///
+/// A Level 1 rule writes its math as the attribute `formula`, which
+/// `Rule::getMath` parses with `SBML_parseFormula` on the first call and keeps
+/// in the element (Rule.cpp), so the tree is owned by the element in every
+/// level and is never freed here. `Rule::isSetMath` asks `getMath` itself, to
+/// answer false for a formula which does not parse, so both calls allocate and
+/// the whole function catches: a `std::bad_alloc` which crossed into Rust
+/// would end the process. A formula which does not parse answers null here,
+/// which is what `_attribute(rule, "math")` of the python implementation
+/// answers of it as well.
+const ASTNode* s4h_rule_math(SBase* sbase) {
+    try {
+        Rule* rule = dynamic_cast<Rule*>(sbase);
+        if (rule == nullptr || !rule->isSetMath()) {
+            return nullptr;
+        }
+        return rule->getMath();
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+/* -------------------------------------------------------------- constraint */
+
+/// The `math` of a constraint, borrowed, null when it has none.
+const ASTNode* s4h_constraint_math(SBase* sbase) {
+    Constraint* constraint = dynamic_cast<Constraint*>(sbase);
+    if (constraint == nullptr || !constraint->isSetMath()) {
+        return nullptr;
+    }
+    return constraint->getMath();
+}
+
+/// The `message` of a constraint as XML, handed over, null when it has none.
+///
+/// `Constraint::getMessageString` answers a `std::string` by value
+/// (Constraint.h), so the message is copied out and never borrowed.
+char* s4h_constraint_message(SBase* sbase) {
+    try {
+        Constraint* constraint = dynamic_cast<Constraint*>(sbase);
+        if (constraint == nullptr || !constraint->isSetMessage()) {
+            return nullptr;
+        }
+        return handed_over(constraint->getMessageString());
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+/* ---------------------------------------------------------------- reaction */
+
+/// The `reversible` of a reaction.
+///
+/// libsbml answers `getReversible()` as true for a reaction of every level
+/// which does not set the attribute, which is the default of Level 1 and
+/// Level 2 and no value at all in Level 3, so the shim answers whether the
+/// document sets it and the report writes the default of the level itself.
+int s4h_reaction_reversible(SBase* sbase, int* value) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    if (reaction == nullptr || !reaction->isSetReversible()) {
+        return 0;
+    }
+    *value = reaction->getReversible() ? 1 : 0;
+    return 1;
+}
+
+/// The `fast` of a reaction, the attribute Level 3 Version 2 dropped.
+int s4h_reaction_fast(SBase* sbase, int* value) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    if (reaction == nullptr || !reaction->isSetFast()) {
+        return 0;
+    }
+    *value = reaction->getFast() ? 1 : 0;
+    return 1;
+}
+
+/// The `compartment` of a reaction, null when it is not set.
+const char* s4h_reaction_compartment(SBase* sbase) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    if (reaction == nullptr) {
+        return nullptr;
+    }
+    return borrowed(reaction->isSetCompartment(), reaction->getCompartment());
+}
+
+/// The number of reactants of a reaction.
+unsigned int s4h_reaction_num_reactants(SBase* sbase) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    return reaction == nullptr ? 0 : reaction->getNumReactants();
+}
+
+/// Reactant `n` of a reaction, null when there is none.
+SBase* s4h_reaction_reactant(SBase* sbase, unsigned int n) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    return reaction == nullptr ? nullptr : reaction->getReactant(n);
+}
+
+/// The number of products of a reaction.
+unsigned int s4h_reaction_num_products(SBase* sbase) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    return reaction == nullptr ? 0 : reaction->getNumProducts();
+}
+
+/// Product `n` of a reaction, null when there is none.
+SBase* s4h_reaction_product(SBase* sbase, unsigned int n) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    return reaction == nullptr ? nullptr : reaction->getProduct(n);
+}
+
+/// The number of modifiers of a reaction.
+unsigned int s4h_reaction_num_modifiers(SBase* sbase) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    return reaction == nullptr ? 0 : reaction->getNumModifiers();
+}
+
+/// Modifier `n` of a reaction, null when there is none.
+SBase* s4h_reaction_modifier(SBase* sbase, unsigned int n) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    return reaction == nullptr ? nullptr : reaction->getModifier(n);
+}
+
+/// The kinetic law of a reaction, null when it has none.
+SBase* s4h_reaction_kinetic_law(SBase* sbase) {
+    Reaction* reaction = dynamic_cast<Reaction*>(sbase);
+    if (reaction == nullptr || !reaction->isSetKineticLaw()) {
+        return nullptr;
+    }
+    return reaction->getKineticLaw();
+}
+
+/* ------------------------------------------------------- species reference */
+
+/// The `species` of a reference, borrowed.
+///
+/// It reads a reactant, a product and a modifier alike, since the attribute is
+/// the one of `SimpleSpeciesReference`, the base class of the three (core
+/// §4.13.2). It is read unguarded, as the python implementation reads it
+/// (`sbmlinfo.species_reference`): libsbml answers the empty string where the
+/// document names nothing, which the Rust side reads as nothing.
+const char* s4h_species_reference_species(SBase* sbase) {
+    SimpleSpeciesReference* reference = dynamic_cast<SimpleSpeciesReference*>(sbase);
+    return reference == nullptr ? nullptr : reference->getSpecies().c_str();
+}
+
+/// The `stoichiometry` of a reference as libsbml answers it, whatever that is.
+///
+/// Unlike every other number of the shim this is no optional attribute: the
+/// value is written for every reference, set or not, and
+/// `s4h_species_reference_stoichiometry_set` says whether the document wrote
+/// it. libsbml answers the default of the level of a reference which sets
+/// nothing, `1.0` in Level 1 and Level 2 and `NaN` in Level 3, and the report
+/// is built from the number and the two predicates together
+/// (`sbmlinfo._stoichiometry`). 0 is an element which is no reactant and no
+/// product, a modifier among them, which carries no stoichiometry at all.
+int s4h_species_reference_stoichiometry(SBase* sbase, double* value) {
+    SpeciesReference* reference = dynamic_cast<SpeciesReference*>(sbase);
+    if (reference == nullptr) {
+        return 0;
+    }
+    *value = reference->getStoichiometry();
+    return 1;
+}
+
+/// Whether the document sets the `stoichiometry` of a reference.
+int s4h_species_reference_stoichiometry_set(SBase* sbase) {
+    SpeciesReference* reference = dynamic_cast<SpeciesReference*>(sbase);
+    return reference != nullptr && reference->isSetStoichiometry() ? 1 : 0;
+}
+
+/// Whether a reference carries a `stoichiometryMath`, which Level 3 dropped.
+int s4h_species_reference_stoichiometry_math(SBase* sbase) {
+    SpeciesReference* reference = dynamic_cast<SpeciesReference*>(sbase);
+    return reference != nullptr && reference->isSetStoichiometryMath() ? 1 : 0;
+}
+
+/// The `constant` of a reference.
+int s4h_species_reference_constant(SBase* sbase, int* value) {
+    SpeciesReference* reference = dynamic_cast<SpeciesReference*>(sbase);
+    if (reference == nullptr || !reference->isSetConstant()) {
+        return 0;
+    }
+    *value = reference->getConstant() ? 1 : 0;
+    return 1;
+}
+
+/* ------------------------------------------------------------- kinetic law */
+
+/// The `math` of a kinetic law, borrowed, null when it has none.
+///
+/// A Level 1 law writes its math as the attribute `formula`, which
+/// `KineticLaw::getMath` parses with `SBML_parseFormula` on the first call and
+/// keeps in the element (KineticLaw.cpp), so the tree is owned by the element
+/// in every level and is never freed here. `KineticLaw::isSetMath` asks
+/// `getMath` itself, so both calls allocate and the whole function catches,
+/// exactly as `s4h_rule_math` does.
+const ASTNode* s4h_kinetic_law_math(SBase* sbase) {
+    try {
+        KineticLaw* law = dynamic_cast<KineticLaw*>(sbase);
+        if (law == nullptr || !law->isSetMath()) {
+            return nullptr;
+        }
+        return law->getMath();
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+/// The number of parameters of a kinetic law, of a document of any level.
+///
+/// Level 3 writes them as `localParameter` in a `listOfLocalParameters` and
+/// libsbml answers them from `getNumLocalParameters`; Level 1 and Level 2 write
+/// them as `parameter` in a `listOfParameters`, where libsbml keeps them as
+/// `Parameter` objects of `getNumParameters` and leaves the list of the local
+/// parameters empty (core §4.11.5, §4.11.6, `sbmlinfo._kinetic_law_list`).
+unsigned int s4h_kinetic_law_num_parameters(SBase* sbase) {
+    KineticLaw* law = dynamic_cast<KineticLaw*>(sbase);
+    if (law == nullptr) {
+        return 0;
+    }
+    return law->getLevel() >= 3 ? law->getNumLocalParameters() : law->getNumParameters();
+}
+
+/// Parameter `n` of a kinetic law, of a document of any level, null when there
+/// is none.
+///
+/// It answers the class of the level, a `LocalParameter` of Level 3 and a
+/// `Parameter` of Level 1 and Level 2, which the getters of a local parameter
+/// read alike.
+SBase* s4h_kinetic_law_parameter(SBase* sbase, unsigned int n) {
+    KineticLaw* law = dynamic_cast<KineticLaw*>(sbase);
+    if (law == nullptr) {
+        return nullptr;
+    }
+    if (law->getLevel() >= 3) {
+        return law->getLocalParameter(n);
+    }
+    return law->getParameter(n);
+}
+
+/* --------------------------------------------------------- local parameter */
+
+/// The `value` of a parameter of a kinetic law.
+///
+/// `LocalParameter` derives from `Parameter` (LocalParameter.h), so the getter
+/// of a parameter reads the `LocalParameter` of a Level 3 law and the
+/// `Parameter` of a Level 1 or Level 2 law alike; this is that getter under the
+/// name of the one class the report has of either.
+int s4h_local_parameter_value(SBase* sbase, double* value) {
+    return s4h_parameter_value(sbase, value);
+}
+
+/// The `units` of a parameter of a kinetic law, null when they are not set.
+const char* s4h_local_parameter_units(SBase* sbase) {
+    return s4h_parameter_units(sbase);
+}
+
+/* ------------------------------------------------------------------- event */
+
+/// The `useValuesFromTriggerTime` of an event.
+int s4h_event_use_values_from_trigger_time(SBase* sbase, int* value) {
+    Event* event = dynamic_cast<Event*>(sbase);
+    if (event == nullptr || !event->isSetUseValuesFromTriggerTime()) {
+        return 0;
+    }
+    *value = event->getUseValuesFromTriggerTime() ? 1 : 0;
+    return 1;
+}
+
+/// The trigger of an event, null when it has none.
+SBase* s4h_event_trigger(SBase* sbase) {
+    Event* event = dynamic_cast<Event*>(sbase);
+    if (event == nullptr || !event->isSetTrigger()) {
+        return nullptr;
+    }
+    return event->getTrigger();
+}
+
+/// The priority of an event, null when it has none.
+SBase* s4h_event_priority(SBase* sbase) {
+    Event* event = dynamic_cast<Event*>(sbase);
+    if (event == nullptr || !event->isSetPriority()) {
+        return nullptr;
+    }
+    return event->getPriority();
+}
+
+/// The delay of an event, null when it has none.
+SBase* s4h_event_delay(SBase* sbase) {
+    Event* event = dynamic_cast<Event*>(sbase);
+    if (event == nullptr || !event->isSetDelay()) {
+        return nullptr;
+    }
+    return event->getDelay();
+}
+
+/// The number of assignments of an event.
+unsigned int s4h_event_num_event_assignments(SBase* sbase) {
+    Event* event = dynamic_cast<Event*>(sbase);
+    return event == nullptr ? 0 : event->getNumEventAssignments();
+}
+
+/// Assignment `n` of an event, null when there is none.
+SBase* s4h_event_event_assignment(SBase* sbase, unsigned int n) {
+    Event* event = dynamic_cast<Event*>(sbase);
+    return event == nullptr ? nullptr : event->getEventAssignment(n);
+}
+
+/* ----------------------------------------------------------------- trigger */
+
+/// The `math` of a trigger, borrowed, null when it has none.
+const ASTNode* s4h_trigger_math(SBase* sbase) {
+    Trigger* trigger = dynamic_cast<Trigger*>(sbase);
+    if (trigger == nullptr || !trigger->isSetMath()) {
+        return nullptr;
+    }
+    return trigger->getMath();
+}
+
+/// The `initialValue` of a trigger.
+int s4h_trigger_initial_value(SBase* sbase, int* value) {
+    Trigger* trigger = dynamic_cast<Trigger*>(sbase);
+    if (trigger == nullptr || !trigger->isSetInitialValue()) {
+        return 0;
+    }
+    *value = trigger->getInitialValue() ? 1 : 0;
+    return 1;
+}
+
+/// The `persistent` of a trigger.
+int s4h_trigger_persistent(SBase* sbase, int* value) {
+    Trigger* trigger = dynamic_cast<Trigger*>(sbase);
+    if (trigger == nullptr || !trigger->isSetPersistent()) {
+        return 0;
+    }
+    *value = trigger->getPersistent() ? 1 : 0;
+    return 1;
+}
+
+/* ------------------------------------------------------------ math element */
+
+/// The `math` of a priority or of a delay, borrowed, null when it has none.
+///
+/// Both classes derive from `SBase` directly and neither shares a base which
+/// declares `getMath`, so the one function the filler of the two asks tries
+/// each of them.
+const ASTNode* s4h_math_element_math(SBase* sbase) {
+    Priority* priority = dynamic_cast<Priority*>(sbase);
+    if (priority != nullptr) {
+        return priority->isSetMath() ? priority->getMath() : nullptr;
+    }
+    Delay* delay = dynamic_cast<Delay*>(sbase);
+    if (delay != nullptr) {
+        return delay->isSetMath() ? delay->getMath() : nullptr;
+    }
+    return nullptr;
+}
+
+/* -------------------------------------------------------- event assignment */
+
+/// The `variable` of an event assignment, the element it sets, borrowed.
+///
+/// It is read unguarded, as the python implementation reads it
+/// (`sbmlinfo.event`): libsbml answers the empty string where the document
+/// names nothing, which the Rust side reads as nothing.
+const char* s4h_event_assignment_variable(SBase* sbase) {
+    EventAssignment* assignment = dynamic_cast<EventAssignment*>(sbase);
+    return assignment == nullptr ? nullptr : assignment->getVariable().c_str();
+}
+
+/// The `math` of an event assignment, borrowed, null when it has none.
+const ASTNode* s4h_event_assignment_math(SBase* sbase) {
+    EventAssignment* assignment = dynamic_cast<EventAssignment*>(sbase);
+    if (assignment == nullptr || !assignment->isSetMath()) {
+        return nullptr;
+    }
+    return assignment->getMath();
+}
+
 /* ------------------------------------------------------------- syntax tree */
 
 /// Reads the syntax tree of the content MathML of a nul terminated string.
@@ -467,6 +1098,10 @@ ASTNode* s4h_read_formula(const char* formula) {
 
 /// Frees a syntax tree of `s4h_read_math_from_string` or `s4h_read_formula`
 /// with its children.
+///
+/// It is the one function of a node which takes a mutable `ASTNode*`, which is
+/// the tree its caller owns. A node of a document is a `const ASTNode*` and
+/// reaches no free.
 void s4h_ast_free(ASTNode* node) {
     delete node;
 }
@@ -474,12 +1109,33 @@ void s4h_ast_free(ASTNode* node) {
 /// The kind of a node as the code of the `AstKind` of the report.
 ///
 /// The codes are the contract with `sbml4humans_model::AstKind`, whose name is
-/// the comment of every case. A type which is named by no case, the types of
-/// the packages and of the MathML of the extended math which the report has no
-/// kind of among them, is 0, the kind `Other`, which the writers refuse: the
-/// kind of a type the report does not know is never guessed to be a near one.
-int s4h_ast_kind(ASTNode* node) {
+/// the comment of every case. Every type a document of libsbml 5.21.2 reaches
+/// is named by a case, and a type which is named by none is 0, the kind `Other`,
+/// which the reader of a math refuses: the kind of a type the report does not
+/// know is never guessed to be a near one. Only a libsbml which declares a
+/// further type answers one, so `Other` is the guard against the next version
+/// of libsbml and no document reaches it. A null node is `Other` as well, so
+/// that a node the shim does not answer is refused by the reader rather than
+/// dereferenced here: every getter of a node answers its empty value for null.
+///
+/// Two of the cases are no construct of the math of SBML.
+/// `AST_CSYMBOL_FUNCTION` is a csymbol of a definition URL no package of libsbml
+/// registers, which carries the text of the document and which libsbml and the
+/// stylesheet of the latex write as a call of that text. `AST_UNKNOWN` is what
+/// libsbml answers of a math it could not read at all, an empty `math` element
+/// and every content MathML construct which is no math of SBML, the quantifier,
+/// linear algebra, statistics, series, algebra, relation, calculus, set theory,
+/// constant and basic content elements among them: libsbml logs an error of the
+/// element, drops the element itself, keeps the children of its `apply` below
+/// the node and writes no mathml element of the node at all. The python
+/// implementation reports such a document in full, so the report has a kind of
+/// it and the writers write what python writes of it.
+int s4h_ast_kind(const ASTNode* node) {
+    if (node == nullptr) {
+        return 0;  // Other
+    }
     switch (node->getType()) {
+        case AST_UNKNOWN: return 1;                      // Unknown
         case AST_NAME: return 100;                       // Name
         case AST_NAME_TIME: return 101;                  // NameTime
         case AST_NAME_AVOGADRO: return 102;              // NameAvogadro
@@ -497,6 +1153,7 @@ int s4h_ast_kind(ASTNode* node) {
         case AST_DIVIDE: return 403;                     // Divide
         case AST_POWER: return 404;                      // Power
         case AST_FUNCTION: return 500;                   // Function
+        case AST_CSYMBOL_FUNCTION: return 501;           // CsymbolFunction
         case AST_FUNCTION_ABS: return 600;               // FunctionAbs
         case AST_FUNCTION_ARCCOS: return 601;            // FunctionArccos
         case AST_FUNCTION_ARCCOSH: return 602;           // FunctionArccosh
@@ -565,16 +1222,16 @@ int s4h_ast_kind(ASTNode* node) {
     }
 }
 
-/// The number of children of a node.
-unsigned int s4h_ast_num_children(ASTNode* node) {
-    return node->getNumChildren();
+/// The number of children of a node, 0 for a null node.
+unsigned int s4h_ast_num_children(const ASTNode* node) {
+    return node == nullptr ? 0 : node->getNumChildren();
 }
 
-/// Child `n` of a node, null when there is none.
+/// Child `n` of a node, null when there is none and for a null node.
 ///
 /// The child is owned by its parent and is freed with the tree.
-ASTNode* s4h_ast_child(ASTNode* node, unsigned int n) {
-    return node->getChild(n);
+const ASTNode* s4h_ast_child(const ASTNode* node, unsigned int n) {
+    return node == nullptr ? nullptr : node->getChild(n);
 }
 
 /// The name of a node, borrowed, null when it has none.
@@ -584,12 +1241,12 @@ ASTNode* s4h_ast_child(ASTNode* node, unsigned int n) {
 /// is borrowed and no copy. It is the identifier of a `ci`, the text of a
 /// csymbol, the name of a call of a function of the model, and otherwise the
 /// name libsbml gives a built-in function, constant or lambda of its own; it is
-/// null for an operator and for a number.
-const char* s4h_ast_name(ASTNode* node) {
-    return node->getName();
+/// null for an operator, for a number and for a null node.
+const char* s4h_ast_name(const ASTNode* node) {
+    return node == nullptr ? nullptr : node->getName();
 }
 
-/// The number of a node, 0 when the node is no number.
+/// The number of a node, 0 when the node is no number and for a null node.
 ///
 /// What it answers says which of its out parameters it wrote: 1 the `integer`,
 /// 2 the `real`, 3 the `real` and the `exponent` of a number in e-notation,
@@ -597,8 +1254,11 @@ const char* s4h_ast_name(ASTNode* node) {
 /// libsbml answers as its integer. The parts of a number in e-notation and of
 /// a rational stay apart, since `ASTNode::getValue` and `ASTNode::getReal`
 /// multiply or divide them out and lose the form the document wrote.
-int s4h_ast_number(ASTNode* node, long long* integer, double* real, long long* exponent,
+int s4h_ast_number(const ASTNode* node, long long* integer, double* real, long long* exponent,
                    long long* denominator) {
+    if (node == nullptr) {
+        return 0;
+    }
     switch (node->getType()) {
         case AST_INTEGER:
             *integer = static_cast<long long>(node->getInteger());
@@ -619,15 +1279,19 @@ int s4h_ast_number(ASTNode* node, long long* integer, double* real, long long* e
     }
 }
 
-/// The `sbml:units` of a number node, handed over, null when they are not set.
+/// The `sbml:units` of a number node, handed over, null when they are not set
+/// and for a null node.
 ///
 /// `ASTNode::getUnits()` answers a `std::string` by value (math/ASTNode.h), a
 /// temporary which dies at the end of this expression, so the units are copied
 /// out with `handed_over` and never borrowed. `ASTNode::isSetUnits()` is that
 /// the string is not empty, so the null of this says the same and the shim
 /// needs no predicate of its own.
-char* s4h_ast_units(ASTNode* node) {
+char* s4h_ast_units(const ASTNode* node) {
     try {
+        if (node == nullptr) {
+            return nullptr;
+        }
         return node->isSetUnits() ? handed_over(node->getUnits()) : nullptr;
     } catch (...) {
         return nullptr;

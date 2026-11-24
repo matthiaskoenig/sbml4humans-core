@@ -1,6 +1,33 @@
 //! The syntax tree of the math of an element.
 
 /// The deepest nesting of a syntax tree which a reader or a writer follows.
+///
+/// # What the bound costs
+///
+/// It is reached by the **width** of a math and not by its nesting alone: the
+/// MathML reader of libsbml nests a flat n-ary application into a binary tree
+/// to the left, one `apply` per operand after the first and each of them
+/// holding the sum of the terms before it and the next term, so a flat sum of
+/// a thousand terms is a tree of exactly a thousand levels and a flat sum of
+/// one term more is refused.
+/// A wide sum is ordinary in a model and no adversarial shape, and the python
+/// implementation reports such a document in full and with its latex, because
+/// `writeMathML` unrolls the nesting back into one flat `apply`, so the lxml
+/// pipeline it feeds sees a document of three elements. The bound is therefore
+/// a difference from the python implementation and not only a guard, and the
+/// refusal of one math ends the read of the whole document:
+/// `the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone`
+/// of `crates/libsbml/tests/math.rs` pins both answers at 1,000 and 1,001
+/// terms, and `a_wide_sum_is_reported_in_full_up_to_the_bound_and_costs_the_whole_report_past_it`
+/// of `crates/report/tests/build.rs` pins what one term more costs a report.
+///
+/// What keeps the bound this low is that two walks of a tree still recurse per
+/// level: `ast_of` of `crates/libsbml/src/math.rs`, which fills a tree, and
+/// `operands` of `crates/report/src/math/latex.rs`, which unrolls a chain of
+/// sums or of products. A stack which runs out is no error but an abort of the
+/// process, and in WebAssembly the end of the instance, so neither may follow
+/// a tree of any depth. Raising the bound belongs to the slice which makes
+/// those two walks non-recursive, which the port owes before the wheel ships.
 pub const MAX_AST_DEPTH: usize = 1000;
 
 /// Declares [`AstKind`] with its codes, [`AstKind::ALL`] and [`AstKind::from_code`]
@@ -37,6 +64,12 @@ ast_kinds! {
     /// A type the shim does not name, which the writers refuse.
     #[default]
     Other = 0,
+    /// The node libsbml answers of a math it could not read, with whatever stood below it.
+    ///
+    /// libsbml writes no mathml element of such a node, so the latex of a tree
+    /// which holds one is the latex of the tree without it, while the formula
+    /// writes it as its children between one pair of parentheses.
+    Unknown = 1,
     /// A reference to a symbol by id, a species, parameter, compartment or local name.
     Name = 100,
     /// The csymbol time, the simulation time, which libsbml reports as a name.
@@ -71,6 +104,8 @@ ast_kinds! {
     Power = 404,
     /// A call of a user function, whose name is in `name`.
     Function = 500,
+    /// A call of a csymbol of a definition URL libsbml does not know, whose text is in `name`.
+    CsymbolFunction = 501,
     /// The absolute value of its child.
     FunctionAbs = 600,
     /// The inverse cosine of its child.

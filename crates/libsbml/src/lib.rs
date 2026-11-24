@@ -7,8 +7,10 @@
 //! the library: it reaches libsbml through `shim.cpp`, a C layer over the C++
 //! API which exposes what the filler reads and nothing else.
 //!
-//! [`read`] answers a [`ReadError`] for every source which is no document,
-//! [`read_math`] one for every string which is no content MathML and
+//! [`read`] answers a [`ReadError`] for every source which is no document and
+//! for every document which holds a math nested deeper than
+//! [`sbml4humans_model::MAX_AST_DEPTH`], [`read_math`] one for every string
+//! which is no content MathML and
 //! [`read_formula`] one for every string which is no formula of a Level 1 math
 //! (Level 2 dropped the `formula` attribute), and all three hold one lock of
 //! the process while they read,

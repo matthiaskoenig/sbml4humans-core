@@ -1,7 +1,7 @@
 //! Every kind the libsbml shim maps writes the formula and the latex python writes.
 //!
 //! The gate of `tests/math.rs` compares the two writers over the whole math corpus, but the
-//! corpus is a corpus: 39 of the 82 kinds appear in it and 43 do not (42 of them mapped, the 43rd
+//! corpus is a corpus: 39 of the 84 kinds appear in it and 45 do not (44 of them mapped, the 45th
 //! is `Other`), among them 23 of the 24 trigonometric and hyperbolic kinds, every constant, the
 //! rational, the `Power` of a Level 1 formula and the
 //! whole `\sqrt[n]{}` branch. This table covers the rest.
@@ -13,9 +13,18 @@
 //! all and so says nothing about the fill side, which `crates/libsbml/tests/math.rs` covers with a
 //! kind table of its own.
 //!
-//! The table holds one row per mapped kind and five rows more, for the shapes of a construct whose
-//! branch depends on them: a difference of one operand, a logarithm of the base ten and of one
-//! child, and a root of the degree two and of one child.
+//! The table holds one row per mapped kind and thirty-five rows more, for the shapes of a construct
+//! whose branch depends on them: a difference of one operand, a logarithm of the base ten and of
+//! one child, a root of the degree two and of one child, a call of no argument and of one, and the
+//! twenty-six of `AstKind::Unknown`, the node libsbml answers of a math it could not read. That
+//! kind earns twenty-six rows because libsbml writes no mathml element of it at all, so the latex
+//! of a tree which holds one is the latex of the tree without it, and every construct which counts
+//! its operands writes a different shape for the operand that is gone. The logarithm and the root
+//! are the two constructs that are no row of it, and `latex.rs` says why.
+//!
+//! The non-breaking spaces of the cases environment are written as `\u{a0}` in the rows which were
+//! added with the unknown node, as `latex.rs` writes them, rather than as the literal characters of
+//! the rows before them, so that a reader can see them.
 
 use sbml4humans_model::{Ast, AstKind, AstNumber};
 use sbml4humans_report::{formula, latex};
@@ -73,8 +82,197 @@ fn to_ast(node: &Node) -> Ast {
     }
 }
 
+/// The two children every unknown node of the table carries, `x` and `y`.
+const UNKNOWN_CHILDREN: &[Node] = &[call(AstKind::Name, "x", &[]), call(AstKind::Name, "y", &[])];
+
+/// The unknown node of two children which stands in the rows of that kind.
+const UNKNOWN: Node = over(AstKind::Unknown, UNKNOWN_CHILDREN);
+
+/// The name `a`, the known operand beside the unknown one in those rows.
+const A: Node = call(AstKind::Name, "a", &[]);
+
+/// The condition `a > 0` of the piece of the two piecewise rows of the unknown node.
+const PIECEWISE_CONDITION: Node = call(
+    AstKind::RelationalGt,
+    "gt",
+    &[
+        call(AstKind::Name, "a", &[]),
+        number(AstKind::Integer, AstNumber::Integer(0)),
+    ],
+);
+
 /// One tree per kind, with the formula and the latex python writes of it.
 const CASES: &[(Node, &str, &str)] = &[
+    // the unknown node alone: libsbml writes its children as a parenthesised list in a
+    // formula and writes no mathml element of it at all, so its latex is the one space
+    // every latex of the report begins with and nothing else
+    (over(AstKind::Unknown, &[]), "()", " "),
+    (
+        over(AstKind::Unknown, &[call(AstKind::Name, "x", &[])]),
+        "(x)",
+        " ",
+    ),
+    (UNKNOWN, "(x, y)", " "),
+    (
+        over(AstKind::Unknown, &[UNKNOWN, call(AstKind::Name, "z", &[])]),
+        "((x, y), z)",
+        " ",
+    ),
+    // the unknown node as an operand: the formula writes it, the latex is the latex of the
+    // construct without that operand, which is a different shape for every one of them
+    (
+        over(
+            AstKind::Plus,
+            &[
+                over(AstKind::Plus, &[call(AstKind::Name, "a", &[]), UNKNOWN]),
+                call(AstKind::Name, "b", &[]),
+            ],
+        ),
+        "a + (x, y) + b",
+        " \\mathit{a}+\\mathit{b}",
+    ),
+    (
+        over(AstKind::Divide, &[UNKNOWN, call(AstKind::Name, "z", &[])]),
+        "(x, y) / z",
+        " \\frac{\\mathit{z}}{}",
+    ),
+    (
+        call(
+            AstKind::FunctionPower,
+            "power",
+            &[UNKNOWN, call(AstKind::Name, "z", &[])],
+        ),
+        "(x, y)^z",
+        " {\\mathit{z}}^{}",
+    ),
+    (
+        call(AstKind::FunctionAbs, "abs", &[UNKNOWN]),
+        "abs((x, y))",
+        " \\left|\\right|",
+    ),
+    (
+        call(AstKind::Function, "f", &[UNKNOWN]),
+        "f((x, y))",
+        " \\mathit{f}\\left(\\right)",
+    ),
+    // the left operand of the difference is a sum of one written operand and the right one a
+    // sum of two, so the string values of the two differ and the right one is parenthesised
+    (
+        over(
+            AstKind::Minus,
+            &[
+                over(AstKind::Plus, &[call(AstKind::Name, "a", &[]), UNKNOWN]),
+                over(
+                    AstKind::Plus,
+                    &[call(AstKind::Name, "a", &[]), call(AstKind::Name, "b", &[])],
+                ),
+            ],
+        ),
+        "a + (x, y) - (a + b)",
+        " \\mathit{a}-(\\mathit{a}+\\mathit{b})",
+    ),
+    // a pair of children of a piecewise is a piece and a trailing single child is the
+    // otherwise, whatever the two are, so an unknown node leaves its slot empty and the
+    // children of its piece which are written move up into the slots before it
+    (
+        call(
+            AstKind::FunctionPiecewise,
+            "piecewise",
+            &[UNKNOWN, PIECEWISE_CONDITION, call(AstKind::Name, "b", &[])],
+        ),
+        "piecewise((x, y), a > 0, b)",
+        " \\begin{cases} \\mathit{a}>0& \\text{\u{a0} if \u{a0}} & \\\\ \\mathit{b}& \
+         {\\text{\u{a0} otherwise}}\\end{cases}",
+    ),
+    (
+        call(
+            AstKind::FunctionPiecewise,
+            "piecewise",
+            &[call(AstKind::Name, "a", &[]), PIECEWISE_CONDITION, UNKNOWN],
+        ),
+        "piecewise(a, a > 0, (x, y))",
+        " \\begin{cases} \\mathit{a}& \\text{\u{a0} if \u{a0}} & \\mathit{a}>0\\\\ & \
+         {\\text{\u{a0} otherwise}}\\end{cases}",
+    ),
+    // one row per further branch of the latex writer which an operand that is gone reaches,
+    // and the slot the unknown node stands in decides nothing: a quotient and a power are
+    // the same whichever of their two operands it is
+    (
+        call(AstKind::FunctionSin, "sin", &[UNKNOWN]),
+        "sin((x, y))",
+        " \\mathrm{sin}",
+    ),
+    (
+        call(AstKind::FunctionLn, "ln", &[UNKNOWN]),
+        "ln((x, y))",
+        " \\mathrm{ln}",
+    ),
+    (
+        call(AstKind::FunctionFloor, "floor", &[UNKNOWN]),
+        "floor((x, y))",
+        " \\lfloor \\rfloor ",
+    ),
+    (
+        call(AstKind::FunctionExp, "exp", &[UNKNOWN]),
+        "exp((x, y))",
+        " {e}^{}",
+    ),
+    (
+        call(AstKind::FunctionMax, "max", &[UNKNOWN, A]),
+        "max((x, y), a)",
+        " \\mathrm{max}\\left(\\mathit{a}\\right)",
+    ),
+    (
+        call(AstKind::LogicalAnd, "and", &[UNKNOWN, A]),
+        "(x, y) && a",
+        " \\mathit{a}",
+    ),
+    (
+        call(AstKind::LogicalNot, "not", &[UNKNOWN]),
+        "!(x, y)",
+        " \\neg ",
+    ),
+    (
+        call(AstKind::LogicalImplies, "implies", &[UNKNOWN, A]),
+        "implies((x, y), a)",
+        " \\mathit{a}\\Rightarrow ",
+    ),
+    (
+        call(AstKind::FunctionDelay, "delay", &[UNKNOWN, A]),
+        "delay((x, y), a)",
+        " \\mathrm{delay}\\left(\\mathit{a}\\right)",
+    ),
+    (
+        call(AstKind::FunctionRateOf, "rateOf", &[UNKNOWN]),
+        "rateOf((x, y))",
+        " \\mathrm{rateOf}\\left(\\right)",
+    ),
+    (
+        over(AstKind::Times, &[A, UNKNOWN]),
+        "a * (x, y)",
+        " \\mathit{a}",
+    ),
+    (
+        over(AstKind::Minus, &[A, UNKNOWN]),
+        "a - (x, y)",
+        " -\\mathit{a}",
+    ),
+    // a difference of no written operand at all, which ctopff writes as a call of its name
+    (
+        over(AstKind::Minus, &[UNKNOWN]),
+        "-(x, y)",
+        " \\mathrm{minus}\\left(\\right)",
+    ),
+    (
+        call(AstKind::FunctionPower, "power", &[A, UNKNOWN]),
+        "a^(x, y)",
+        " {\\mathit{a}}^{}",
+    ),
+    (
+        over(AstKind::Divide, &[A, UNKNOWN]),
+        "a / (x, y)",
+        " \\frac{\\mathit{a}}{}",
+    ),
     (call(AstKind::Name, "x", &[]), "x", " \\mathit{x}"),
     (
         call(AstKind::NameTime, "time", &[]),
@@ -179,6 +377,48 @@ const CASES: &[(Node, &str, &str)] = &[
         ),
         "f(x, y)",
         " \\mathit{f}\\left(\\mathit{x},\\mathit{y}\\right)",
+    ),
+    (
+        call(AstKind::Function, "f", &[]),
+        "f()",
+        " \\mathit{f}\\left(\\right)",
+    ),
+    (
+        call(
+            AstKind::CsymbolFunction,
+            "myfunc",
+            &[call(AstKind::Name, "x", &[]), call(AstKind::Name, "y", &[])],
+        ),
+        "myfunc(x, y)",
+        " \\mathrm{myfunc}\\left(\\mathit{x},\\mathit{y}\\right)",
+    ),
+    // a name of one character stands in an `mi` which the stylesheet writes as it is, where
+    // a longer one is wrapped in a `\mathrm`, and the arity decides nothing of its own
+    (
+        call(AstKind::CsymbolFunction, "f", &[]),
+        "f()",
+        " f\\left(\\right)",
+    ),
+    (
+        call(
+            AstKind::CsymbolFunction,
+            "f",
+            &[call(AstKind::Name, "x0", &[])],
+        ),
+        "f(x0)",
+        " f\\left(\\mathit{x0}\\right)",
+    ),
+    (
+        call(
+            AstKind::CsymbolFunction,
+            "f",
+            &[
+                call(AstKind::Name, "x0", &[]),
+                call(AstKind::Name, "x1", &[]),
+            ],
+        ),
+        "f(x0, x1)",
+        " f\\left(\\mathit{x0},\\mathit{x1}\\right)",
     ),
     (
         call(

@@ -1,7 +1,22 @@
 //! The report builder maps the document model onto the report.
 
-use sbml4humans_model::{Compartment, Document, Element, Model};
+use sbml4humans_libsbml::{ReadError, read};
+use sbml4humans_model::{Compartment, Document, Element, MAX_AST_DEPTH, Model};
 use sbml4humans_report::{build, pk};
+
+/// A Level 3 Version 2 document with one element of every type of the core.
+///
+/// It is the document of the oracle gate, read from the workspace root so that the document these
+/// tests assert the report of is the document the gate compares against the python report.
+const CORE_ELEMENTS: &[u8] = include_bytes!("../../../testdata/core_elements.xml");
+
+/// A document whose every element of a type which carries a math carries none.
+const NO_MATHS: &[u8] = include_bytes!("../testdata/no_maths.xml");
+
+/// The report of a document, as the JSON the frontend reads.
+fn report_of(source: &[u8]) -> serde_json::Value {
+    serde_json::to_value(build(&read(source).unwrap()).unwrap()).unwrap()
+}
 
 fn doc_with(model: Model) -> Document {
     Document {
@@ -11,6 +26,110 @@ fn doc_with(model: Model) -> Document {
         element: Element::default(),
         model: Some(model),
     }
+}
+
+/// Every key of every object of `value`, the nested ones included, without recursing.
+fn keys_of(value: &serde_json::Value) -> Vec<String> {
+    let mut keys = Vec::new();
+    let mut stack = vec![value];
+    while let Some(value) = stack.pop() {
+        match value {
+            serde_json::Value::Object(fields) => {
+                for (key, value) in fields {
+                    keys.push(key.clone());
+                    stack.push(value);
+                }
+            }
+            serde_json::Value::Array(items) => stack.extend(items),
+            _ => {}
+        }
+    }
+    keys
+}
+
+// The JSON of a whole report, which is the contract the frontend reads: the six keys of the report
+// of one document, which the python report writes the same six of, and the camelCase of every key
+// below them. The key set is asserted whole, so a field added to the report without a line of the
+// frontend which reads it fails here.
+#[test]
+fn the_json_of_a_whole_report_holds_the_keys_of_the_contract() {
+    let json = report_of(CORE_ELEMENTS);
+    let mut keys: Vec<&str> = json
+        .as_object()
+        .unwrap()
+        .keys()
+        .map(String::as_str)
+        .collect();
+    keys.sort_unstable();
+    assert_eq!(
+        keys,
+        [
+            "document",
+            "externalModelDefinitions",
+            "linkGraph",
+            "models",
+            "odeError",
+            "odeSystem",
+        ]
+    );
+    assert_eq!(json["document"]["sbmlType"], "SBMLDocument");
+    assert_eq!(json["models"].as_array().unwrap().len(), 1);
+    assert_eq!(json["externalModelDefinitions"], serde_json::json!([]));
+    // the three the later slices fill, each the empty value python writes where it has nothing
+    assert_eq!(
+        json["linkGraph"],
+        serde_json::json!({"nodes": {}, "edges": []})
+    );
+    assert_eq!(json["odeSystem"], serde_json::Value::Null);
+    assert_eq!(json["odeError"], serde_json::Value::Null);
+    // no key of the report holds an underscore: a type whose `rename_all` was forgotten would
+    // write `sbml_type` and `list_of_species`, which no component of the frontend reads
+    let snake: Vec<String> = keys_of(&json)
+        .into_iter()
+        .filter(|key| key.contains('_'))
+        .collect();
+    assert!(snake.is_empty(), "{snake:?}");
+}
+
+/// A Level 3 document whose references set the three doubles JSON has no literal for.
+const NON_FINITE_STOICHIOMETRY: &[u8] = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="nan_stoich">
+    <listOfCompartments><compartment id="c" constant="true"/></listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="S2" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="S3" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="J0" reversible="false">
+        <listOfReactants>
+          <speciesReference species="S1" stoichiometry="NaN" constant="true"/>
+          <speciesReference species="S2" stoichiometry="INF" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S3" stoichiometry="-INF" constant="true"/>
+        </listOfProducts>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>"#;
+
+// A double of SBML may be infinite or not a number (core §3.1.5), which JSON has no literal for:
+// python writes the three as the strings `"Infinity"`, `"-Infinity"` and `"NaN"`
+// (`ser_json_inf_nan="strings"`, `model.py:32-34`), and a `null` instead would read as an
+// attribute the document does not set at all. The three values and the equation below were
+// generated by the python implementation from this very document.
+#[test]
+fn a_stoichiometry_which_is_not_finite_is_the_string_the_contract_names() {
+    let json = report_of(NON_FINITE_STOICHIOMETRY);
+    let reaction = &json["models"][0]["listOfReactions"][0];
+    assert_eq!(reaction["listOfReactants"][0]["stoichiometry"], "NaN");
+    assert_eq!(reaction["listOfReactants"][1]["stoichiometry"], "Infinity");
+    assert_eq!(reaction["listOfProducts"][0]["stoichiometry"], "-Infinity");
+    // the half equation writes `?` for a coefficient which is not a number and the `str()` of the
+    // float for an infinite one
+    assert_eq!(reaction["equation"], "? S1 + inf S2 ➞ -inf S3");
 }
 
 #[test]
@@ -41,7 +160,7 @@ fn the_document_is_keyed_in_the_document_scope_and_an_element_in_the_scope_of_it
         }],
         ..Model::default()
     };
-    let report = build(&doc_with(model));
+    let report = build(&doc_with(model)).unwrap();
     assert_eq!(report.document.sbase.pk, "document/SBMLDocument:document");
     assert_eq!(
         report.models[0].sbase.pk,
@@ -79,7 +198,7 @@ fn an_element_without_an_id_is_keyed_by_its_meta_id_and_siblings_without_either_
         ],
         ..Model::default()
     };
-    let report = build(&doc_with(model));
+    let report = build(&doc_with(model)).unwrap();
     let pks: Vec<_> = report.models[0]
         .list_of_compartments
         .iter()
@@ -102,10 +221,512 @@ fn a_model_without_an_id_or_a_meta_id_is_keyed_model_in_the_scope_model() {
         }],
         ..Model::default()
     };
-    let report = build(&doc_with(model));
+    let report = build(&doc_with(model)).unwrap();
     assert_eq!(report.models[0].sbase.pk, "model/Model:model");
     assert_eq!(
         report.models[0].list_of_compartments[0].sbase.pk,
         "model/Compartment:cell"
+    );
+}
+
+#[test]
+fn the_report_carries_the_elements_which_hold_a_math() {
+    let json = report_of(CORE_ELEMENTS);
+    let model = &json["models"][0];
+    assert_eq!(
+        model["listOfFunctionDefinitions"][0]["pk"],
+        "core_elements/FunctionDefinition:f"
+    );
+    assert_eq!(
+        model["listOfFunctionDefinitions"][0]["sbmlType"],
+        "FunctionDefinition"
+    );
+    assert!(model["listOfFunctionDefinitions"][0]["math"]["formula"].is_string());
+    assert_eq!(
+        model["listOfUnitDefinitions"][0]["listOfUnits"][0]["kind"],
+        "mole"
+    );
+    assert_eq!(
+        model["listOfUnitDefinitions"][0]["listOfUnits"][0]["scale"],
+        -3
+    );
+    assert_eq!(
+        model["listOfInitialAssignments"][0]["pk"],
+        "core_elements/InitialAssignment:S2"
+    );
+    assert_eq!(model["listOfInitialAssignments"][0]["symbol"], "S2");
+    assert_eq!(model["listOfRules"][0]["sbmlType"], "AssignmentRule");
+    assert_eq!(model["listOfRules"][0]["variable"], "k2");
+    assert_eq!(
+        model["listOfRules"][2]["pk"],
+        "core_elements/AlgebraicRule:algebraicRule.0"
+    );
+    // AlgebraicRule declares no variable, so the key is absent and not null
+    assert!(model["listOfRules"][2].get("variable").is_none());
+    assert_eq!(
+        model["listOfConstraints"][1]["pk"],
+        "core_elements/Constraint:constraint.1"
+    );
+    assert_eq!(
+        model["listOfConstraints"][1]["message"],
+        serde_json::Value::Null
+    );
+}
+
+// Every element type of the report which carries a math, with the math of each one absent. The
+// nulls and the keys below were generated by the python implementation from this very document.
+#[test]
+fn an_element_whose_math_is_unset_is_reported_with_a_null_math() {
+    let json = report_of(NO_MATHS);
+    let model = &json["models"][0];
+    let null = serde_json::Value::Null;
+    for list in [
+        "listOfFunctionDefinitions",
+        "listOfInitialAssignments",
+        "listOfRules",
+        "listOfConstraints",
+    ] {
+        assert_eq!(model[list][0]["math"], null, "{list}");
+    }
+    let law = &model["listOfReactions"][0]["kineticLaw"];
+    assert_eq!(law["pk"], "no_maths/KineticLaw:J0.kineticLaw");
+    assert_eq!(law["math"], null);
+    let event = &model["listOfEvents"][0];
+    for element in ["trigger", "priority", "delay"] {
+        assert_eq!(event[element]["math"], null, "{element}");
+    }
+    let assignment = &event["listOfEventAssignments"][0];
+    assert_eq!(assignment["pk"], "no_maths/EventAssignment:E0.p");
+    assert_eq!(assignment["math"], null);
+}
+
+#[test]
+fn every_element_which_carries_a_math_is_keyed_and_typed_as_python_keys_and_types_it() {
+    let json = report_of(CORE_ELEMENTS);
+    let model = &json["models"][0];
+    let pks = |list: &str| -> Vec<String> {
+        model[list]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|e| e["pk"].as_str().unwrap().to_owned())
+            .collect()
+    };
+    assert_eq!(
+        pks("listOfUnitDefinitions"),
+        [
+            "core_elements/UnitDefinition:mmole_per_litre",
+            "core_elements/UnitDefinition:root_metre",
+            "core_elements/UnitDefinition:bare_mole",
+            "core_elements/UnitDefinition:no_unit",
+        ]
+    );
+    // the id attribute of an assignment wins over the symbol libsbml aliases to its id
+    assert_eq!(
+        pks("listOfInitialAssignments"),
+        [
+            "core_elements/InitialAssignment:S2",
+            "core_elements/InitialAssignment:ia_S3",
+        ]
+    );
+    // an assignment and a rate rule are keyed by the variable they set, an algebraic rule by its
+    // place among the algebraic rules, and a metaId wins over that place
+    assert_eq!(
+        pks("listOfRules"),
+        [
+            "core_elements/AssignmentRule:k2",
+            "core_elements/RateRule:k3",
+            "core_elements/AlgebraicRule:algebraicRule.0",
+            "core_elements/AlgebraicRule:meta_algebraic",
+        ]
+    );
+    assert_eq!(
+        pks("listOfConstraints"),
+        [
+            "core_elements/Constraint:constraint.0",
+            "core_elements/Constraint:constraint.1",
+        ]
+    );
+    let types: Vec<&str> = model["listOfRules"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|r| r["sbmlType"].as_str().unwrap())
+        .collect();
+    assert_eq!(
+        types,
+        [
+            "AssignmentRule",
+            "RateRule",
+            "AlgebraicRule",
+            "AlgebraicRule"
+        ]
+    );
+}
+
+#[test]
+fn a_unit_carries_its_four_attributes_and_no_key_of_an_element() {
+    let json = report_of(CORE_ELEMENTS);
+    let definitions = &json["models"][0]["listOfUnitDefinitions"];
+    assert_eq!(
+        definitions[0]["listOfUnits"][1],
+        serde_json::json!({"kind": "litre", "exponent": -1.0, "scale": 0, "multiplier": 1.0})
+    );
+    // Level 3 allows a fractional exponent, which the report writes as the double it is
+    assert_eq!(
+        definitions[1]["listOfUnits"][0],
+        serde_json::json!({"kind": "metre", "exponent": 0.5, "scale": -2, "multiplier": 2.5})
+    );
+    // a unit which states nothing but its kind writes the three others as null
+    assert_eq!(
+        definitions[2]["listOfUnits"][0],
+        serde_json::json!({
+            "kind": "mole", "exponent": null, "scale": null, "multiplier": null
+        })
+    );
+    assert_eq!(definitions[3]["listOfUnits"], serde_json::json!([]));
+}
+
+#[test]
+fn only_the_types_whose_python_class_declares_a_field_write_that_field() {
+    let json = report_of(CORE_ELEMENTS);
+    let model = &json["models"][0];
+    // python derives the units of an assignment and of a rule and of neither of the three others
+    for list in ["listOfInitialAssignments", "listOfRules"] {
+        for element in model[list].as_array().unwrap() {
+            assert!(element.get("derivedUnits").is_some(), "{list}");
+        }
+    }
+    for list in [
+        "listOfFunctionDefinitions",
+        "listOfUnitDefinitions",
+        "listOfConstraints",
+    ] {
+        for element in model[list].as_array().unwrap() {
+            assert!(element.get("derivedUnits").is_none(), "{list}");
+            assert!(element.get("variable").is_none(), "{list}");
+        }
+    }
+    // the unit definition is the one of the five which carries a latex of its units
+    assert!(
+        model["listOfUnitDefinitions"][0]
+            .get("unitsLatex")
+            .is_some()
+    );
+    let message = model["listOfConstraints"][0]["message"].as_str().unwrap();
+    assert!(message.starts_with("<message>"), "{message}");
+    assert!(message.contains("S1 has to stay positive"), "{message}");
+}
+
+#[test]
+fn the_report_carries_the_reactions_and_the_events() {
+    let json = report_of(CORE_ELEMENTS);
+    let reaction = &json["models"][0]["listOfReactions"][0];
+    assert_eq!(reaction["pk"], "core_elements/Reaction:J0");
+    // the first reactant carries an id of its own and is keyed by it and takes no part in the
+    // numbering, so the second, which is about the same species, is keyed without a suffix
+    assert_eq!(
+        reaction["listOfReactants"][0]["pk"],
+        "core_elements/SpeciesReference:sr_S1"
+    );
+    assert_eq!(
+        reaction["listOfReactants"][1]["pk"],
+        "core_elements/SpeciesReference:J0.reactant.S1"
+    );
+    assert_eq!(
+        reaction["listOfProducts"][0]["pk"],
+        "core_elements/SpeciesReference:J0.product.S2"
+    );
+    assert_eq!(
+        reaction["listOfModifiers"][0]["pk"],
+        "core_elements/ModifierSpeciesReference:J0.modifier.E"
+    );
+    assert_eq!(
+        reaction["listOfModifiers"][0]["sbmlType"],
+        "ModifierSpeciesReference"
+    );
+    assert_eq!(
+        reaction["kineticLaw"]["pk"],
+        "core_elements/KineticLaw:J0.kineticLaw"
+    );
+    assert!(reaction["kineticLaw"]["math"]["formula"].is_string());
+    let parameter = &reaction["kineticLaw"]["listOfLocalParameters"][0];
+    assert_eq!(
+        parameter["pk"],
+        "core_elements/LocalParameter:J0.kineticLaw.Km"
+    );
+    assert_eq!(parameter["sbmlType"], "LocalParameter");
+    // the id of a local parameter is scoped to its kinetic law and keys it never, and the object
+    // of the report carries it all the same
+    assert_eq!(parameter["id"], "Km");
+    assert_eq!(parameter["value"], 0.5);
+    assert_eq!(parameter["units"], "mmole_per_litre");
+    // the reaction writes `reversible="false"`, so the arrow is the irreversible one
+    assert_eq!(reaction["equation"], "2.0 S1 + S1 ➞ S2");
+    let event = &json["models"][0]["listOfEvents"][0];
+    assert_eq!(event["pk"], "core_elements/Event:E0");
+    assert_eq!(event["trigger"]["pk"], "core_elements/Trigger:E0.trigger");
+    assert_eq!(event["trigger"]["initialValue"], false);
+    assert_eq!(event["trigger"]["persistent"], true);
+    assert_eq!(
+        event["priority"]["pk"],
+        "core_elements/Priority:E0.priority"
+    );
+    assert_eq!(event["delay"]["pk"], "core_elements/Delay:E0.delay");
+    assert_eq!(event["useValuesFromTriggerTime"], true);
+    assert_eq!(
+        event["listOfEventAssignments"][0]["pk"],
+        "core_elements/EventAssignment:E0.S1"
+    );
+    // libsbml aliases the id of an event assignment to the variable it sets, so the `id` attribute
+    // of the document keys the assignment and the variable stays a field of its own
+    assert_eq!(
+        event["listOfEventAssignments"][1]["pk"],
+        "core_elements/EventAssignment:ea_k4"
+    );
+    assert_eq!(event["listOfEventAssignments"][1]["id"], "ea_k4");
+    assert_eq!(event["listOfEventAssignments"][1]["variable"], "k4");
+    // nothing of the second reaction is set, Level 3 reports no default
+    let bare = &json["models"][0]["listOfReactions"][1];
+    assert_eq!(bare["reversible"], serde_json::Value::Null);
+    assert_eq!(bare["fast"], serde_json::Value::Null);
+    assert_eq!(bare["kineticLaw"], serde_json::Value::Null);
+    assert_eq!(
+        bare["listOfReactants"][0]["stoichiometry"],
+        serde_json::Value::Null
+    );
+    // the raw stoichiometry of libsbml is a NaN for such a reference, which python names by the id
+    // of the reference and by a `?` where it carries none, and the arrow of an unset `reversible`
+    // is the reversible one although the report writes no `reversible` at all
+    assert_eq!(bare["equation"], "? S3 ⇆ ");
+    // the reaction carries no identifier of any kind, so the key is its place in the list, which
+    // is the fallback of `pk::key` and not the digest of the xml python falls back to
+    assert_eq!(bare["pk"], "core_elements/Reaction:1");
+    // the second event carries nothing, not even a trigger, and is keyed by its place
+    let bare_event = &json["models"][0]["listOfEvents"][1];
+    assert_eq!(bare_event["pk"], "core_elements/Event:event.1");
+    assert_eq!(bare_event["trigger"], serde_json::Value::Null);
+    assert_eq!(bare_event["priority"], serde_json::Value::Null);
+    assert_eq!(bare_event["delay"], serde_json::Value::Null);
+    assert_eq!(bare_event["listOfEventAssignments"], serde_json::json!([]));
+}
+
+/// A document of three algebraic rules, the second of them keyed by a metaId of its own.
+const ALGEBRAIC_RULES: &[u8] = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="algebraic">
+    <listOfParameters>
+      <parameter id="k1" value="1" constant="true"/>
+      <parameter id="k2" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><apply><minus/><ci>k2</ci><ci>k1</ci></apply></math>
+      </algebraicRule>
+      <algebraicRule metaid="meta_algebraic">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><apply><minus/><ci>k1</ci><ci>k2</ci></apply></math>
+      </algebraicRule>
+      <algebraicRule>
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><ci>k1</ci><ci>k2</ci></apply></math>
+      </algebraicRule>
+    </listOfRules>
+  </model>
+</sbml>"#;
+
+// The place which keys an algebraic rule without an identifier of its own counts every algebraic
+// rule of the model, as `rules` of `sbmlinfo.py:1031-1049` counts it: a rule which carries a metaId
+// is keyed by that metaId and takes its place in the count all the same, so the rule after it is
+// `algebraicRule.2` and not `algebraicRule.1`. A counter of the rules without an identifier would
+// pass every other test of the report, since no other document of the suite holds a third algebraic
+// rule. The three keys were generated by the python implementation from this very document.
+#[test]
+fn an_algebraic_rule_is_keyed_by_its_place_among_every_algebraic_rule() {
+    let json = report_of(ALGEBRAIC_RULES);
+    let pks: Vec<&str> = json["models"][0]["listOfRules"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|r| r["pk"].as_str().unwrap())
+        .collect();
+    assert_eq!(
+        pks,
+        [
+            "algebraic/AlgebraicRule:algebraicRule.0",
+            "algebraic/AlgebraicRule:meta_algebraic",
+            "algebraic/AlgebraicRule:algebraicRule.2",
+        ]
+    );
+}
+
+/// A Level 2 Version 4 document whose reaction states none of the attributes its level defaults.
+///
+/// Its third reactant carries a `stoichiometryMath`, the one case in which a reference of Level 1
+/// or Level 2 has no stoichiometry of its own although the level defines a default.
+const LEVEL2_REACTION: &[u8] = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model id="m">
+    <listOfCompartments><compartment id="c"/></listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="c"/>
+      <species id="S2" compartment="c"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="R1">
+        <listOfReactants>
+          <speciesReference species="S1"/>
+          <speciesReference species="S1"/>
+          <speciesReference species="S2">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">3</cn></math>
+            </stoichiometryMath>
+          </speciesReference>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="S2" stoichiometry="2"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k</ci></math>
+          <listOfParameters><parameter id="k" value="1"/></listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>"#;
+
+#[test]
+fn a_reaction_of_a_level_2_document_is_reported_with_the_defaults_of_its_level() {
+    let json = report_of(LEVEL2_REACTION);
+    let reaction = &json["models"][0]["listOfReactions"][0];
+    // Level 1 and Level 2 make a reaction reversible and slow unless it says otherwise, and give a
+    // reference which writes neither a number nor a `stoichiometryMath` the stoichiometry 1
+    assert_eq!(reaction["reversible"], true);
+    assert_eq!(reaction["fast"], false);
+    assert_eq!(reaction["listOfReactants"][0]["stoichiometry"], 1.0);
+    assert_eq!(reaction["listOfProducts"][0]["stoichiometry"], 2.0);
+    // the third reactant writes a `stoichiometryMath`, which is a stoichiometry of its own: the
+    // default of the level is not the value of such a reference, so the report states none, and the
+    // half equation names the species without a coefficient
+    assert_eq!(
+        reaction["listOfReactants"][2]["pk"],
+        "m/SpeciesReference:R1.reactant.S2"
+    );
+    assert_eq!(
+        reaction["listOfReactants"][2]["stoichiometry"],
+        serde_json::Value::Null
+    );
+    // the `constant` of a species reference is a Level 3 attribute
+    assert_eq!(
+        reaction["listOfReactants"][0]["constant"],
+        serde_json::Value::Null
+    );
+    assert_eq!(reaction["equation"], "S1 + S1 + S2 ⇆ 2.0 S2");
+    // two references about the same species and neither with an id: the repetition is numbered
+    assert_eq!(
+        reaction["listOfReactants"][0]["pk"],
+        "m/SpeciesReference:R1.reactant.S1"
+    );
+    assert_eq!(
+        reaction["listOfReactants"][1]["pk"],
+        "m/SpeciesReference:R1.reactant.S1.1"
+    );
+    // a Level 2 law writes its parameters as `parameter` and libsbml answers a `Parameter` of
+    // them, which the report types a `LocalParameter` like the one of Level 3
+    let parameter = &reaction["kineticLaw"]["listOfLocalParameters"][0];
+    assert_eq!(parameter["sbmlType"], "LocalParameter");
+    assert_eq!(parameter["pk"], "m/LocalParameter:R1.kineticLaw.k");
+    assert_eq!(parameter["value"], 1.0);
+}
+
+#[test]
+fn a_reaction_of_level_2_version_1_is_reported_without_a_fast() {
+    // Level 2 Version 1 defined no default for `fast`, which Level 2 Version 2 added, so the
+    // report of a reaction of such a document states nothing about it
+    let sbml = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model id="m">
+    <listOfCompartments><compartment id="c"/></listOfCompartments>
+    <listOfSpecies><species id="S1" compartment="c"/></listOfSpecies>
+    <listOfReactions>
+      <reaction id="R1">
+        <listOfReactants><speciesReference species="S1"/></listOfReactants>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>"#;
+    let json = report_of(sbml);
+    let reaction = &json["models"][0]["listOfReactions"][0];
+    assert_eq!(reaction["reversible"], true);
+    assert_eq!(reaction["fast"], serde_json::Value::Null);
+}
+
+#[test]
+fn a_rule_of_a_document_which_names_no_variable_is_reported_with_an_empty_one() {
+    // the variable is required of an assignment rule, so no valid document reaches this; the
+    // report of an invalid one writes the empty string python writes and refuses nothing
+    let sbml = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="m">
+    <listOfRules><assignmentRule/></listOfRules>
+    <listOfInitialAssignments><initialAssignment/></listOfInitialAssignments>
+  </model>
+</sbml>"#;
+    let json = report_of(sbml);
+    let model = &json["models"][0];
+    assert_eq!(model["listOfRules"][0]["variable"], "");
+    assert_eq!(model["listOfInitialAssignments"][0]["symbol"], "");
+    // neither carries an identifier of any kind, so the key is the place in its list, which is
+    // the fallback of `pk::key` and not the digest of the xml python falls back to
+    assert_eq!(model["listOfRules"][0]["pk"], "m/AssignmentRule:0");
+    assert_eq!(
+        model["listOfInitialAssignments"][0]["pk"],
+        "m/InitialAssignment:0"
+    );
+}
+
+/// A Level 3 Version 2 document whose one rule holds a flat sum of `terms` terms.
+fn document_with_a_flat_sum(terms: usize) -> Vec<u8> {
+    let mut body = String::from("<apply><plus/>");
+    for _ in 0..terms {
+        body.push_str("<cn type=\"integer\">1</cn>");
+    }
+    body.push_str("</apply>");
+    format!(
+        r#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="m">
+    <listOfParameters><parameter id="p" constant="false"/></listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">{body}</math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>"#
+    )
+    .into_bytes()
+}
+
+#[test]
+fn a_wide_sum_is_reported_in_full_up_to_the_bound_and_costs_the_whole_report_past_it() {
+    // The MathML reader of libsbml nests a flat n-ary sum into a binary tree to
+    // the left, one apply per term, so a flat sum of `MAX_AST_DEPTH` terms is a
+    // tree of exactly the bound and one term more is past it. The refusal is the reader's
+    // and ends the read of the document, so the blast radius of one wide sum is
+    // the whole report and not the math of the one element which holds it.
+    //
+    // Measured with these two documents: 1,000 terms are reported with a formula
+    // and a latex, 1,001 terms answer `MathTooDeep` and no report at all. The
+    // python implementation reports the second one in full as well, its formula
+    // and its latex both written, which is the parity this port still owes: the
+    // fix is the non-recursive reader of `ast_of`, which the slice before the
+    // wheel owns.
+    let json = report_of(&document_with_a_flat_sum(MAX_AST_DEPTH));
+    let math = &json["models"][0]["listOfRules"][0]["math"];
+    assert!(math["formula"].is_string(), "the formula is written");
+    assert!(math["latex"].is_string(), "and so is the latex");
+    let refused = read(&document_with_a_flat_sum(MAX_AST_DEPTH + 1));
+    assert!(
+        matches!(refused, Err(ReadError::MathTooDeep)),
+        "one term more"
     );
 }

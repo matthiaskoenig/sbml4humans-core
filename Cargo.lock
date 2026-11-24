@@ -93,6 +93,7 @@ dependencies = [
 name = "sbml4humans-report"
 version = "0.1.0"
 dependencies = [
+ "sbml4humans-libsbml",
  "sbml4humans-model",
  "serde",
  "serde_json",

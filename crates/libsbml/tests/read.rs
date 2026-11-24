@@ -1,6 +1,7 @@
 //! What libsbml reads of a document, against the minimal model of sbml4humans.
 
 use sbml4humans_libsbml::{ReadError, read};
+use sbml4humans_model::{AstKind, MAX_AST_DEPTH, RuleKind};
 
 fn minimal() -> Vec<u8> {
     std::fs::read("../../testdata/minimal_model.xml").unwrap()
@@ -61,6 +62,484 @@ fn every_element_carries_the_line_it_starts_on() {
     let m = read(&minimal()).unwrap().model.unwrap();
     assert!(m.compartments[0].element.line > 0);
     assert!(m.species[1].element.line > m.species[0].element.line);
+}
+
+/// A Level 3 Version 2 document of the element types of the core.
+///
+/// It is `testdata/core_elements.xml`, the document of the oracle gate, read
+/// from the workspace root so that the document these tests read is the
+/// document the gate compares against the python report.
+///
+/// It holds what the fill of those types has to tell apart: a function
+/// definition whose math is a lambda, a unit definition of two units and one
+/// of a single unit with a fractional exponent, an initial assignment without
+/// an id and one with an id next to its symbol, an assignment rule, a rate
+/// rule and two algebraic rules, and a constraint with a message next to one
+/// without.
+///
+/// The reactions and the events add the same contrast: a reaction with every
+/// attribute set, two reactants of the same species, a product, a modifier and
+/// a kinetic law of two local parameters, next to ones which set nothing at
+/// all; and an event with a trigger, a priority, a delay and two assignments,
+/// next to one which holds none of them. The errors libsbml logs of the
+/// document are the required attributes those empty elements do not carry,
+/// which is what they are there for: a document with a model is reported
+/// however many errors libsbml logged of it.
+const CORE_ELEMENTS: &str = include_str!("../../../testdata/core_elements.xml");
+
+/// A Level 2 Version 4 document whose reaction is written the way Level 2 does.
+///
+/// It is `testdata/level2_reactions.xml`, the Level 2 document of the oracle
+/// gate, read from the workspace root like [`CORE_ELEMENTS`] above.
+///
+/// The kinetic law carries its parameters in a `listOfParameters`, which
+/// libsbml answers as `Parameter` objects of a list of its own, and the one
+/// reactant of `J0` carries a `stoichiometryMath` rather than a number, which
+/// is the one case in which a reference of Level 1 or Level 2 has no
+/// stoichiometry of its own. `fast` is set, which a document of Level 3
+/// Version 2 cannot do.
+const LEVEL2_REACTIONS: &str = include_str!("../../../testdata/level2_reactions.xml");
+
+/// A Level 1 Version 2 document whose rules are written the way Level 1 does.
+///
+/// Level 1 has no MathML and no `variable`: a rule writes its math as the
+/// attribute `formula`, which `Rule::getMath` of libsbml parses with the
+/// parser of Level 1 on the first call, and it names what it sets by its class
+/// and the attribute of that class. The class of a rule is its `type`
+/// attribute, which defaults to `scalar`, an assignment rule.
+const LEVEL1_RULES: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model name="level1_rules">
+    <listOfCompartments>
+      <compartment name="cell" volume="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species name="S1" compartment="cell" initialAmount="10"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter name="k1" value="0.1"/>
+    </listOfParameters>
+    <listOfRules>
+      <parameterRule name="k1" formula="2 ^ 3"/>
+      <speciesConcentrationRule species="S1" formula="k1 * S1" type="rate"/>
+    </listOfRules>
+  </model>
+</sbml>"#;
+
+#[test]
+fn the_elements_which_carry_a_math_are_filled_from_the_document() {
+    let document = read(CORE_ELEMENTS.as_bytes()).unwrap();
+    let model = document.model.unwrap();
+    assert_eq!(model.function_definitions.len(), 1);
+    assert_eq!(
+        model.function_definitions[0].element.id.as_deref(),
+        Some("f")
+    );
+    assert!(model.function_definitions[0].math.is_some());
+    assert_eq!(
+        model.unit_definitions[0].units[0].kind.as_deref(),
+        Some("mole")
+    );
+    assert_eq!(model.unit_definitions[0].units[0].scale, Some(-3));
+    assert_eq!(model.unit_definitions[1].units[0].exponent, Some(0.5));
+    assert_eq!(model.initial_assignments[0].symbol, "S2");
+    // libsbml aliases getId() to the symbol, the report carries the id attribute alone
+    assert_eq!(model.initial_assignments[0].element.id, None);
+    assert_eq!(model.rules[0].kind, RuleKind::Assignment);
+    assert_eq!(model.rules[0].variable.as_deref(), Some("k2"));
+    assert_eq!(model.rules[2].kind, RuleKind::Algebraic);
+    assert_eq!(model.rules[2].variable, None);
+    assert_eq!(model.constraints.len(), 2);
+    assert!(
+        model.constraints[0]
+            .message
+            .as_ref()
+            .unwrap()
+            .starts_with("<message>")
+    );
+    assert_eq!(model.constraints[1].message, None);
+}
+
+#[test]
+fn the_math_of_an_element_is_the_tree_of_the_document_and_the_shared_fields_are_filled() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    let f = &model.function_definitions[0];
+    assert_eq!(f.element.name.as_deref(), Some("twice"));
+    assert!(
+        f.element
+            .xml
+            .as_deref()
+            .unwrap()
+            .starts_with("<functionDefinition")
+    );
+    assert!(f.element.line > 0);
+    let lambda = f.math.as_ref().unwrap();
+    assert_eq!(lambda.kind, AstKind::Lambda);
+    // the bound variable and the body of the lambda
+    assert_eq!(lambda.children.len(), 2);
+    assert_eq!(lambda.children[1].kind, AstKind::Times);
+    assert_eq!(
+        model.initial_assignments[1].math.as_ref().unwrap().kind,
+        AstKind::Name
+    );
+    assert_eq!(model.rules[1].math.as_ref().unwrap().kind, AstKind::Name);
+    assert_eq!(
+        model.constraints[0].math.as_ref().unwrap().kind,
+        AstKind::RelationalGt
+    );
+}
+
+#[test]
+fn a_unit_definition_keeps_its_units_in_the_order_of_the_document() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    let ids: Vec<_> = model
+        .unit_definitions
+        .iter()
+        .map(|u| u.element.id.as_deref().unwrap())
+        .collect();
+    assert_eq!(
+        ids,
+        vec!["mmole_per_litre", "root_metre", "bare_mole", "no_unit"]
+    );
+    let kinds: Vec<_> = model.unit_definitions[0]
+        .units
+        .iter()
+        .map(|u| u.kind.as_deref().unwrap())
+        .collect();
+    assert_eq!(kinds, vec!["mole", "litre"]);
+    assert_eq!(model.unit_definitions[0].units[0].exponent, Some(1.0));
+    assert_eq!(model.unit_definitions[0].units[0].multiplier, Some(1.0));
+    assert_eq!(model.unit_definitions[0].units[1].exponent, Some(-1.0));
+    let root = &model.unit_definitions[1].units[0];
+    assert_eq!(root.kind.as_deref(), Some("metre"));
+    assert_eq!(root.scale, Some(-2));
+    assert_eq!(root.multiplier, Some(2.5));
+}
+
+#[test]
+fn a_unit_which_states_nothing_but_its_kind_carries_nothing_else() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    // every attribute of a unit is optional to libsbml, which reports the
+    // three the document leaves out as not set rather than as their default
+    let bare = &model.unit_definitions[2].units[0];
+    assert_eq!(bare.kind.as_deref(), Some("mole"));
+    assert_eq!(bare.exponent, None);
+    assert_eq!(bare.scale, None);
+    assert_eq!(bare.multiplier, None);
+    // a definition whose `listOfUnits` is empty holds no unit at all
+    assert_eq!(
+        model.unit_definitions[3].element.id.as_deref(),
+        Some("no_unit")
+    );
+    assert!(model.unit_definitions[3].units.is_empty());
+}
+
+#[test]
+fn an_initial_assignment_and_a_rule_carry_the_id_attribute_rather_than_their_target() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    assert_eq!(model.initial_assignments.len(), 2);
+    assert_eq!(
+        model.initial_assignments[1].element.id.as_deref(),
+        Some("ia_S3")
+    );
+    assert_eq!(model.initial_assignments[1].symbol, "S3");
+    // every rule of the document sets its target in `variable`, none an id
+    for rule in &model.rules {
+        assert_eq!(rule.element.id, None, "{rule:?}");
+    }
+    assert_eq!(
+        model.rules[3].element.meta_id.as_deref(),
+        Some("meta_algebraic")
+    );
+}
+
+#[test]
+fn the_rules_keep_their_kind_and_their_order() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    let kinds: Vec<_> = model.rules.iter().map(|r| r.kind).collect();
+    assert_eq!(
+        kinds,
+        vec![
+            RuleKind::Assignment,
+            RuleKind::Rate,
+            RuleKind::Algebraic,
+            RuleKind::Algebraic,
+        ]
+    );
+    assert_eq!(model.rules[1].variable.as_deref(), Some("k3"));
+    assert_eq!(model.rules[3].variable, None);
+}
+
+#[test]
+fn a_level_1_rule_carries_the_kind_of_its_type_and_the_math_of_its_formula() {
+    let model = read(LEVEL1_RULES.as_bytes()).unwrap().model.unwrap();
+    assert_eq!(model.rules.len(), 2);
+    // the `type` attribute defaults to `scalar`, which libsbml reads as an
+    // assignment rule, and the class of the rule names the variable it sets
+    assert_eq!(model.rules[0].kind, RuleKind::Assignment);
+    assert_eq!(model.rules[0].variable.as_deref(), Some("k1"));
+    // the math is the one `Rule::getMath` parses of the `formula` attribute
+    // with the parser of Level 1, whose `^` is the kind `Power`, a kind no
+    // content MathML yields
+    let power = model.rules[0].math.as_ref().expect("the formula parses");
+    assert_eq!(power.kind, AstKind::Power);
+    assert_eq!(power.children.len(), 2);
+    assert_eq!(model.rules[1].kind, RuleKind::Rate);
+    assert_eq!(model.rules[1].variable.as_deref(), Some("S1"));
+    assert_eq!(
+        model.rules[1].math.as_ref().map(|math| math.kind),
+        Some(AstKind::Times)
+    );
+    // Level 1 has no id and no metaid, so a rule of it carries neither
+    assert_eq!(model.rules[0].element.id, None);
+    assert_eq!(model.rules[0].element.meta_id, None);
+}
+
+#[test]
+fn a_level_1_rule_whose_formula_does_not_parse_is_filled_without_a_math() {
+    // `Rule::isSetMath` asks `getMath`, which answers null for a formula the
+    // parser of Level 1 refuses, so the rule is reported without its math
+    // rather than refused, which is what the python implementation does of it
+    let sbml = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="2">
+  <model name="broken_formula">
+    <listOfParameters><parameter name="k1" value="1"/></listOfParameters>
+    <listOfRules><parameterRule name="k1" formula="2 +"/></listOfRules>
+  </model>
+</sbml>"#;
+    let model = read(sbml).unwrap().model.unwrap();
+    assert_eq!(model.rules.len(), 1);
+    assert_eq!(model.rules[0].kind, RuleKind::Assignment);
+    assert_eq!(model.rules[0].math, None);
+}
+
+#[test]
+fn the_reactions_and_the_events_are_filled_from_the_document() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    assert_eq!(model.reactions.len(), 5);
+    let reaction = &model.reactions[0];
+    assert_eq!(reaction.element.id.as_deref(), Some("J0"));
+    assert_eq!(reaction.element.name.as_deref(), Some("first"));
+    assert_eq!(reaction.reversible, Some(false));
+    assert_eq!(reaction.compartment.as_deref(), Some("c"));
+    assert_eq!(reaction.reactants.len(), 2);
+    assert_eq!(reaction.reactants[0].species, "S1");
+    assert_eq!(reaction.reactants[0].stoichiometry, 2.0);
+    assert!(reaction.reactants[0].stoichiometry_set);
+    assert!(!reaction.reactants[0].stoichiometry_math);
+    assert_eq!(reaction.reactants[0].constant, Some(true));
+    // a species reference carries its own id, which libsbml aliases to nothing
+    assert_eq!(reaction.reactants[0].element.id.as_deref(), Some("sr_S1"));
+    // the two reactants name the same species, which only their place tells apart
+    assert_eq!(reaction.reactants[1].species, "S1");
+    assert_eq!(reaction.reactants[1].element.id, None);
+    assert_eq!(reaction.products.len(), 1);
+    assert_eq!(reaction.products[0].species, "S2");
+    assert_eq!(reaction.modifiers.len(), 1);
+    assert_eq!(reaction.modifiers[0].species, "E");
+    let law = reaction.kinetic_law.as_ref().unwrap();
+    assert_eq!(law.math.as_ref().unwrap().kind, AstKind::Divide);
+    assert_eq!(law.local_parameters.len(), 2);
+    assert_eq!(law.local_parameters[0].element.id.as_deref(), Some("Km"));
+    assert_eq!(law.local_parameters[0].value, Some(0.5));
+    assert_eq!(
+        law.local_parameters[0].units.as_deref(),
+        Some("mmole_per_litre")
+    );
+    assert_eq!(law.local_parameters[1].element.id.as_deref(), Some("Vmax"));
+    assert_eq!(law.local_parameters[1].units, None);
+    let event = &model.events[0];
+    assert_eq!(event.element.id.as_deref(), Some("E0"));
+    assert_eq!(event.use_values_from_trigger_time, Some(true));
+    let trigger = event.trigger.as_ref().unwrap();
+    assert_eq!(trigger.math.as_ref().unwrap().kind, AstKind::RelationalGt);
+    assert_eq!(trigger.initial_value, Some(false));
+    assert_eq!(trigger.persistent, Some(true));
+    assert_eq!(
+        event.priority.as_ref().unwrap().math.as_ref().unwrap().kind,
+        AstKind::Integer
+    );
+    assert_eq!(
+        event.delay.as_ref().unwrap().math.as_ref().unwrap().kind,
+        AstKind::Integer
+    );
+    assert_eq!(event.event_assignments.len(), 2);
+    assert_eq!(event.event_assignments[0].variable, "S1");
+    assert!(event.event_assignments[0].math.is_some());
+    // libsbml aliases getId() of an event assignment to its variable, so the
+    // report carries the id attribute of the document alone
+    assert_eq!(event.event_assignments[0].element.id, None);
+    assert_eq!(event.event_assignments[1].variable, "k4");
+    assert_eq!(
+        event.event_assignments[1].element.id.as_deref(),
+        Some("ea_k4")
+    );
+}
+
+#[test]
+fn a_reaction_and_an_event_which_set_nothing_are_filled_without_it() {
+    let model = read(CORE_ELEMENTS.as_bytes()).unwrap().model.unwrap();
+    let reaction = &model.reactions[1];
+    assert_eq!(reaction.element.id, None);
+    // nothing is set, so libsbml answers its own defaults and the flags say so:
+    // `getReversible()` is true at every level and the stoichiometry of a
+    // reference of Level 3 is NaN, both of which Task 6 reads from the flags
+    assert_eq!(reaction.reversible, None);
+    assert_eq!(reaction.fast, None);
+    assert_eq!(reaction.compartment, None);
+    assert!(reaction.kinetic_law.is_none());
+    assert!(reaction.products.is_empty());
+    assert!(reaction.modifiers.is_empty());
+    assert!(reaction.reactants[0].stoichiometry.is_nan());
+    assert!(!reaction.reactants[0].stoichiometry_set);
+    assert!(!reaction.reactants[0].stoichiometry_math);
+    assert_eq!(reaction.reactants[0].constant, None);
+    let event = &model.events[1];
+    assert_eq!(event.use_values_from_trigger_time, None);
+    assert!(event.trigger.is_none());
+    assert!(event.priority.is_none());
+    assert!(event.delay.is_none());
+    assert!(event.event_assignments.is_empty());
+}
+
+#[test]
+fn a_level_2_kinetic_law_carries_its_parameters_as_local_parameters() {
+    let model = read(LEVEL2_REACTIONS.as_bytes()).unwrap().model.unwrap();
+    let reaction = &model.reactions[0];
+    assert_eq!(reaction.reversible, Some(false));
+    // `fast` is an attribute of Level 1 and Level 2 alone
+    assert_eq!(reaction.fast, Some(true));
+    let law = reaction.kinetic_law.as_ref().unwrap();
+    assert_eq!(law.local_parameters.len(), 1);
+    assert_eq!(law.local_parameters[0].element.id.as_deref(), Some("k"));
+    assert_eq!(law.local_parameters[0].value, Some(0.5));
+    assert_eq!(law.local_parameters[0].units.as_deref(), Some("second"));
+    // a Level 2 reference with a stoichiometryMath has no stoichiometry of its
+    // own, which the flags tell apart: libsbml answers the default 1 of the
+    // level for both references, and only the one of the product means it
+    assert!(reaction.reactants[0].stoichiometry_math);
+    assert!(!reaction.reactants[0].stoichiometry_set);
+    assert_eq!(reaction.reactants[0].stoichiometry, 1.0);
+    assert!(!reaction.products[0].stoichiometry_math);
+    assert!(!reaction.products[0].stoichiometry_set);
+    assert_eq!(reaction.products[0].stoichiometry, 1.0);
+}
+
+/// A document whose rules carry a math libsbml could not read.
+///
+/// The first is an empty `math` element, the second a content MathML construct
+/// which is no math of SBML, and the third a sum one of whose operands is such a
+/// construct. libsbml logs an error of each of the last two and answers
+/// `AST_UNKNOWN` for the node, with the children of the `apply` below it.
+const UNKNOWN_MATHS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="unknown_maths">
+    <listOfParameters>
+      <parameter id="p" constant="false"/>
+      <parameter id="q" constant="false"/>
+      <parameter id="r" constant="false"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"/>
+      </assignmentRule>
+      <assignmentRule variable="q">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply><union/><ci>x</ci><ci>y</ci></apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="r">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <plus/>
+            <ci>a</ci>
+            <apply><union/><ci>x</ci><ci>y</ci></apply>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>"#;
+
+#[test]
+fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
+    // the reader of a math is the one place which refuses a math, and it
+    // refuses one of a document as it refuses one of a string
+    let mut body = String::new();
+    for _ in 0..MAX_AST_DEPTH {
+        body.push_str("<apply><plus/><cn type=\"integer\">1</cn>");
+    }
+    body.push_str("<cn type=\"integer\">1</cn>");
+    for _ in 0..MAX_AST_DEPTH {
+        body.push_str("</apply>");
+    }
+    let sbml = format!(
+        r#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="m">
+    <listOfParameters><parameter id="p" constant="false"/></listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="p">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">{body}</math>
+      </assignmentRule>
+    </listOfRules>
+  </model>
+</sbml>"#
+    );
+    assert!(matches!(read(sbml.as_bytes()), Err(ReadError::MathTooDeep)));
+}
+
+#[test]
+fn a_math_of_the_document_libsbml_could_not_read_is_filled_as_an_unknown_node() {
+    // libsbml answers `AST_UNKNOWN` of a math it could not read, and reports the
+    // element as having one: an empty `math` element with no child, and a
+    // content MathML of its own namespace which is no math of SBML with the
+    // children of the `apply` below it. The python implementation reports such a
+    // document in full, so the read answers the tree rather than refusing it.
+    let model = read(UNKNOWN_MATHS.as_bytes())
+        .expect("a document whose math libsbml could not read is still read")
+        .model
+        .expect("the document holds a model");
+    assert_eq!(model.rules.len(), 3);
+    let empty = model.rules[0].math.as_ref().expect("the rule has a math");
+    assert_eq!(empty.kind, AstKind::Unknown);
+    assert!(empty.children.is_empty());
+    // the children of the `apply` stand below the unknown node, and the element
+    // which named it is gone, so nothing says which construct it was
+    let union = model.rules[1].math.as_ref().expect("the rule has a math");
+    assert_eq!(union.kind, AstKind::Unknown);
+    assert_eq!(union.children.len(), 2);
+    assert_eq!(union.children[0].kind, AstKind::Name);
+    assert_eq!(union.children[0].name.as_deref(), Some("x"));
+    assert_eq!(union.children[1].name.as_deref(), Some("y"));
+    // and an unknown node stands below a known one as any other child does
+    let sum = model.rules[2].math.as_ref().expect("the rule has a math");
+    assert_eq!(sum.kind, AstKind::Plus);
+    assert_eq!(sum.children[1].kind, AstKind::Unknown);
+    assert_eq!(sum.children[1].children.len(), 2);
+}
+
+#[test]
+fn an_element_without_a_math_is_filled_without_one() {
+    // the math is optional in Level 3 Version 2, every one of these elements is empty
+    let sbml = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="m">
+    <listOfFunctionDefinitions><functionDefinition id="f"/></listOfFunctionDefinitions>
+    <listOfInitialAssignments><initialAssignment/></listOfInitialAssignments>
+    <listOfRules><algebraicRule/></listOfRules>
+    <listOfConstraints><constraint/></listOfConstraints>
+  </model>
+</sbml>"#;
+    let model = read(sbml).unwrap().model.unwrap();
+    assert_eq!(model.function_definitions[0].math, None);
+    assert_eq!(model.initial_assignments[0].math, None);
+    assert_eq!(model.rules[0].math, None);
+    assert_eq!(model.constraints[0].math, None);
+    // the symbol and the variable are read unguarded, as python reads them, and
+    // the empty string libsbml answers of a document which names none is nothing
+    assert_eq!(model.initial_assignments[0].symbol, "");
+    assert_eq!(model.rules[0].variable, None);
 }
 
 #[test]

@@ -63,7 +63,7 @@ fn report(path: &OsString, pretty: bool) -> Result<(), String> {
     let source =
         std::fs::read(path).map_err(|e| format!("cannot read {}: {e}", path.to_string_lossy()))?;
     let document = sbml4humans_libsbml::read(&source).map_err(|e| e.to_string())?;
-    let report = sbml4humans_report::build(&document);
+    let report = sbml4humans_report::build(&document).map_err(|e| e.to_string())?;
     let mut out = BufWriter::new(std::io::stdout().lock());
     let written = if pretty {
         serde_json::to_writer_pretty(&mut out, &report)
