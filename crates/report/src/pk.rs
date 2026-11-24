@@ -28,8 +28,9 @@ fn own_key(element: &Element) -> Option<&str> {
 /// specification is the `sbmlType` of the report object of every element this port builds, so the
 /// type the report states is what this is given. The one element for which the two differ is a comp
 /// model definition, whose type is `Model` while the name of its element is `modelDefinition`, and
-/// which the slice that reads comp brings.
-pub fn element_name(sbml_type: &str) -> String {
+/// which the slice that reads comp brings. It is private: [`indexed`] is the one caller, and a
+/// caller outside this module would be one which keys an element without going through it.
+fn element_name(sbml_type: &str) -> String {
     let mut characters = sbml_type.chars();
     characters.next().map_or_else(String::new, |first| {
         first.to_lowercase().chain(characters).collect()
