@@ -16,7 +16,9 @@ fn node(kind: AstKind, children: Vec<Ast>) -> Ast {
     Ast {
         kind,
         children,
-        ..Ast::default()
+        name: None,
+        number: None,
+        units: None,
     }
 }
 
@@ -30,7 +32,8 @@ fn named(kind: AstKind, libsbml_name: &str, children: Vec<Ast>) -> Ast {
         kind,
         name: Some(libsbml_name.to_owned()),
         children,
-        ..Ast::default()
+        number: None,
+        units: None,
     }
 }
 
@@ -39,7 +42,9 @@ fn name(id: &str) -> Ast {
     Ast {
         kind: AstKind::Name,
         name: Some(id.to_owned()),
-        ..Ast::default()
+        number: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
@@ -48,7 +53,9 @@ fn csymbol(kind: AstKind, text: &str) -> Ast {
     Ast {
         kind,
         name: Some(text.to_owned()),
-        ..Ast::default()
+        number: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
@@ -57,16 +64,17 @@ fn integer(value: i64) -> Ast {
     Ast {
         kind: AstKind::Integer,
         number: Some(AstNumber::Integer(value)),
-        ..Ast::default()
+        name: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
 /// A `cn` which carries the units of the document, which no latex renders.
 fn integer_with_units(value: i64, units: &str) -> Ast {
-    Ast {
-        units: Some(units.to_owned()),
-        ..integer(value)
-    }
+    let mut node = integer(value);
+    node.units = Some(units.to_owned());
+    node
 }
 
 /// A `cn`, which libsbml writes with a `sep` where its `"%.15g"` carries an exponent.
@@ -74,7 +82,9 @@ fn real(value: f64) -> Ast {
     Ast {
         kind: AstKind::Real,
         number: Some(AstNumber::Real(value)),
-        ..Ast::default()
+        name: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
@@ -86,7 +96,9 @@ fn rational(numerator: i64, denominator: i64) -> Ast {
             numerator,
             denominator,
         }),
-        ..Ast::default()
+        name: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
@@ -95,7 +107,9 @@ fn real_e(mantissa: f64, exponent: i64) -> Ast {
     Ast {
         kind: AstKind::RealE,
         number: Some(AstNumber::RealE { mantissa, exponent }),
-        ..Ast::default()
+        name: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 

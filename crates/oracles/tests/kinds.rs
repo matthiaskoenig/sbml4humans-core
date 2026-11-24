@@ -78,7 +78,7 @@ fn to_ast(node: &Node) -> Ast {
         name: node.name.map(str::to_owned),
         number: node.number.clone(),
         children: node.children.iter().map(to_ast).collect(),
-        ..Ast::default()
+        units: None,
     }
 }
 

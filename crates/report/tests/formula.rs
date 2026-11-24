@@ -15,7 +15,9 @@ fn node(kind: AstKind, children: Vec<Ast>) -> Ast {
     Ast {
         kind,
         children,
-        ..Ast::default()
+        name: None,
+        number: None,
+        units: None,
     }
 }
 
@@ -25,7 +27,8 @@ fn named(kind: AstKind, libsbml_name: &str, children: Vec<Ast>) -> Ast {
         kind,
         name: Some(libsbml_name.to_owned()),
         children,
-        ..Ast::default()
+        number: None,
+        units: None,
     }
 }
 
@@ -34,7 +37,9 @@ fn name(id: &str) -> Ast {
     Ast {
         kind: AstKind::Name,
         name: Some(id.to_owned()),
-        ..Ast::default()
+        number: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
@@ -48,7 +53,9 @@ fn csymbol(kind: AstKind, text: &str) -> Ast {
     Ast {
         kind,
         name: Some(text.to_owned()),
-        ..Ast::default()
+        number: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
@@ -57,7 +64,9 @@ fn integer(value: i64) -> Ast {
     Ast {
         kind: AstKind::Integer,
         number: Some(AstNumber::Integer(value)),
-        ..Ast::default()
+        name: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
@@ -66,7 +75,9 @@ fn real(value: f64) -> Ast {
     Ast {
         kind: AstKind::Real,
         number: Some(AstNumber::Real(value)),
-        ..Ast::default()
+        name: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
@@ -75,16 +86,17 @@ fn real_e(mantissa: f64, exponent: i64) -> Ast {
     Ast {
         kind: AstKind::RealE,
         number: Some(AstNumber::RealE { mantissa, exponent }),
-        ..Ast::default()
+        name: None,
+        units: None,
+        children: Vec::new(),
     }
 }
 
 /// `number` with the `sbml:units` `units`.
 fn with_units(number: Ast, units: &str) -> Ast {
-    Ast {
-        units: Some(units.to_owned()),
-        ..number
-    }
+    let mut node = number;
+    node.units = Some(units.to_owned());
+    node
 }
 
 /// The formula of `ast`, which every test of this file expects to be written.
@@ -515,7 +527,9 @@ fn a_rational_prints_as_a_quotient_within_parentheses() {
             numerator,
             denominator,
         }),
-        ..Ast::default()
+        name: None,
+        units: None,
+        children: Vec::new(),
     };
     assert_eq!(written(&with_units(rational(3, 4), "mg")), "(3/4) mg");
     // (-3/4)
@@ -560,7 +574,8 @@ fn a_node_of_the_wrong_number_of_children_prints_as_a_call_of_its_name() {
             kind: AstKind::Function,
             name: Some("f".to_owned()),
             children: vec![name("x"), name("y")],
-            ..Ast::default()
+            number: None,
+            units: None,
         }),
         "f(x, y)"
     );

@@ -98,7 +98,9 @@ mod tests {
         Ast {
             kind,
             children,
-            ..Ast::default()
+            name: None,
+            number: None,
+            units: None,
         }
     }
 
@@ -107,7 +109,9 @@ mod tests {
         Ast {
             kind: AstKind::Name,
             name: Some(id.to_owned()),
-            ..Ast::default()
+            number: None,
+            units: None,
+            children: Vec::new(),
         }
     }
 
@@ -116,7 +120,9 @@ mod tests {
         Ast {
             kind,
             number: Some(number),
-            ..Ast::default()
+            name: None,
+            units: None,
+            children: Vec::new(),
         }
     }
 

@@ -1,5 +1,7 @@
 //! The syntax tree of the math of an element.
 
+use std::fmt;
+
 /// The deepest nesting of a syntax tree which a reader or a writer follows.
 ///
 /// # What the bound costs
@@ -260,7 +262,18 @@ pub enum AstNumber {
 }
 
 /// A node of the syntax tree of a math.
-#[derive(Debug, Clone, PartialEq, Default)]
+///
+/// A tree may be deeper than a call stack holds one frame per level of, so
+/// [`Drop`], [`Clone`], [`PartialEq`] and [`fmt::Debug`] are written here
+/// rather than derived: the glue a derive writes follows the children on the
+/// call stack, and a stack which runs out is no error but an abort of the
+/// process and, in WebAssembly, the end of the instance. Each of the four
+/// walks the tree on a stack of its own on the heap, so what a tree costs any
+/// of them is memory and never a frame, whatever [`MAX_AST_DEPTH`] is.
+///
+/// Writing [`Drop`] is what makes the type one no field can be moved out of, so
+/// a node is built by naming all of its fields and not with `..Ast::default()`.
+#[derive(Default)]
 pub struct Ast {
     /// The kind of the node.
     pub kind: AstKind,
@@ -272,4 +285,121 @@ pub struct Ast {
     pub units: Option<String>,
     /// The children, in the order of the document.
     pub children: Vec<Ast>,
+}
+
+impl Ast {
+    /// The node with its payload and without its children.
+    fn without_children(&self) -> Ast {
+        Ast {
+            kind: self.kind,
+            name: self.name.clone(),
+            number: self.number.clone(),
+            units: self.units.clone(),
+            children: Vec::with_capacity(self.children.len()),
+        }
+    }
+}
+
+impl Drop for Ast {
+    /// Drops the tree below the node without a call frame per level.
+    ///
+    /// The children of the node are taken and emptied one after the other on a
+    /// stack of their own: a node whose children were taken drops with nothing
+    /// below it, so the glue the compiler writes for this type never reaches a
+    /// second level. The stack holds the children of one node at a time, which
+    /// for a chain is one node.
+    fn drop(&mut self) {
+        let mut rest = std::mem::take(&mut self.children);
+        while let Some(mut node) = rest.pop() {
+            rest.append(&mut node.children);
+        }
+    }
+}
+
+impl Clone for Ast {
+    /// Clones the tree below the node without a call frame per level.
+    fn clone(&self) -> Self {
+        // the node being cloned, how many of its children are done, and what
+        // is built of its clone so far
+        let mut stack: Vec<(&Ast, usize, Ast)> = vec![(self, 0, self.without_children())];
+        loop {
+            let (source, next, _) = stack.last_mut().expect("the frame of the root");
+            if let Some(child) = source.children.get(*next) {
+                *next += 1;
+                stack.push((child, 0, child.without_children()));
+                continue;
+            }
+            let (_, _, built) = stack.pop().expect("the frame which is done");
+            match stack.last_mut() {
+                Some((_, _, parent)) => parent.children.push(built),
+                None => return built,
+            }
+        }
+    }
+}
+
+impl PartialEq for Ast {
+    /// Compares the two trees without a call frame per level.
+    ///
+    /// The pairs still to compare are kept on a stack of their own, so the
+    /// answer is the one a derived comparison gives: two nodes are equal when
+    /// their payloads are and their children are equal pairwise and in order.
+    fn eq(&self, other: &Self) -> bool {
+        let mut pairs = vec![(self, other)];
+        while let Some((ours, theirs)) = pairs.pop() {
+            if ours.kind != theirs.kind
+                || ours.name != theirs.name
+                || ours.number != theirs.number
+                || ours.units != theirs.units
+                || ours.children.len() != theirs.children.len()
+            {
+                return false;
+            }
+            pairs.extend(ours.children.iter().zip(theirs.children.iter()));
+        }
+        true
+    }
+}
+
+/// One piece of the text [`fmt::Debug`] of an [`Ast`] writes.
+enum DebugPiece<'a> {
+    /// A node, written with its payload and its children.
+    Node(&'a Ast),
+    /// Literal text.
+    Text(&'static str),
+}
+
+impl fmt::Debug for Ast {
+    /// Writes the tree without a call frame per level.
+    ///
+    /// The text is the one a derived [`fmt::Debug`] writes of the plain form,
+    /// `{:?}`. The alternate form `{:#?}` writes that same text rather than the
+    /// indented one a derive writes, since the indentation of a tree of a
+    /// million levels is a million levels of indentation and nothing reads it:
+    /// what this form is for is a tree a test prints when it fails.
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut pieces = vec![DebugPiece::Node(self)];
+        while let Some(piece) = pieces.pop() {
+            let node = match piece {
+                DebugPiece::Text(text) => {
+                    f.write_str(text)?;
+                    continue;
+                }
+                DebugPiece::Node(node) => node,
+            };
+            write!(
+                f,
+                "Ast {{ kind: {:?}, name: {:?}, number: {:?}, units: {:?}, children: [",
+                node.kind, node.name, node.number, node.units
+            )?;
+            pieces.push(DebugPiece::Text("] }"));
+            for (n, child) in node.children.iter().enumerate().rev() {
+                pieces.push(DebugPiece::Node(child));
+                if n > 0 {
+                    pieces.push(DebugPiece::Text(", "));
+                }
+            }
+        }
+        Ok(())
+    }
 }
