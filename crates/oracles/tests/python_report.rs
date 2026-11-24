@@ -258,8 +258,20 @@ fn compared_leaves(
 // an entry which silences an agreeing value of another document leaves that document green and the
 // gate says nothing; what the liveness test measures is the other half, that the entry is live on
 // the document it is the entry of.
+//
+// What the green of this test says today is less than what it is written for, and a reader should
+// not take more from it: the one scoped entry left is the `/models/0/listOfParameters/0/cvterms/0`
+// of `MINIMAL_MODEL_ONLY`, and the other three documents hold no parameter at that place which
+// carries a cvterm at all, so the equality holds because the pointer reaches nothing of them and
+// not because a comparison was kept. It is a guard for the entries a later slice scopes, not a
+// measure of this one. The assertion above the loop is there so that the day every `only` empties,
+// the loop says it rather than comparing a number with itself four times and passing.
 #[test]
 fn an_entry_which_is_owed_on_one_document_silences_no_pointer_of_another() {
+    assert!(
+        GATED.iter().any(|document| !document.only.is_empty()),
+        "no document of the gate scopes an entry, so this test measures nothing",
+    );
     for document in GATED {
         let (ours, theirs) = reports(document.name);
         let excluded = excluded_for(document);
