@@ -257,8 +257,8 @@ fn initial_assignment(
 
 /// A rule of one of the three rule classes of SBML.
 ///
-/// `place` is the key the list of the rules derived for this one, which names it by its place among
-/// the rules of its class.
+/// `place` is the key the list of the rules gave this one, its place among the rules of its class
+/// or an identifier it carries of its own, which the variable it sets still wins over.
 ///
 /// # Errors
 ///
@@ -282,6 +282,9 @@ fn rule(scope: &str, place: &str, r: &Rule) -> Result<ReportRule, BuildError> {
 }
 
 /// A constraint with its message.
+///
+/// A constraint carries nothing which names it, so `key`, the key the list of the constraints gave
+/// it, is its place in that list wherever it carries no identifier of its own.
 ///
 /// # Errors
 ///
@@ -593,6 +596,10 @@ fn event_assignments(
 }
 
 /// An event with its trigger, its priority, its delay and its assignments.
+///
+/// An event carries nothing which names it, so `key`, the key the list of the events gave it, is
+/// its place in that list wherever it carries no identifier of its own, and everything below the
+/// event is keyed after that key.
 ///
 /// # Errors
 ///
