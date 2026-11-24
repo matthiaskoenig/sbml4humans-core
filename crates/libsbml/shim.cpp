@@ -35,6 +35,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <vector>
 
 #include <sbml/SBMLTypes.h>
 #include <sbml/SBMLNamespaces.h>
@@ -1102,8 +1103,40 @@ ASTNode* s4h_read_formula(const char* formula) {
 /// It is the one function of a node which takes a mutable `ASTNode*`, which is
 /// the tree its caller owns. A node of a document is a `const ASTNode*` and
 /// reaches no free.
+///
+/// The tree is taken apart on a stack of its own before anything is deleted,
+/// because `~ASTNode` deletes the children of a node itself and so follows a
+/// tree on the call stack, one frame per level: a plain `delete` of a long
+/// chain of nodes, which a flat sum of that many terms is, ends the process
+/// with SIGSEGV, at 49 bytes of stack a level measured, so at 21,452 levels on
+/// a stack of one megabyte and at about 171,600 on the eight of a main thread.
+/// The doc comment of `MAX_AST_DEPTH` holds that measurement next to the one
+/// of the writer which recurses as well. `removeChild` hands a child over
+/// without deleting it (ASTNode.cpp), so a node whose children were all
+/// detached reaches `delete` with nothing below it, and a child which was not
+/// detached, because libsbml refused the index or because the slot is null,
+/// stays with its parent and is freed by that one destructor rather than
+/// going on the stack and being freed a second time.
 void s4h_ast_free(ASTNode* node) {
-    delete node;
+    if (node == nullptr) {
+        return;
+    }
+    std::vector<ASTNode*> stack;
+    stack.push_back(node);
+    while (!stack.empty()) {
+        ASTNode* top = stack.back();
+        stack.pop_back();
+        for (unsigned int n = top->getNumChildren(); n > 0; --n) {
+            ASTNode* child = top->getChild(n - 1);
+            // a child is pushed only once it is detached, so that nothing on
+            // the stack is deleted a second time by the destructor of its
+            // parent should `removeChild` ever refuse an index
+            if (child != nullptr && top->removeChild(n - 1) == LIBSBML_OPERATION_SUCCESS) {
+                stack.push_back(child);
+            }
+        }
+        delete top;
+    }
 }
 
 /// The kind of a node as the code of the `AstKind` of the report.

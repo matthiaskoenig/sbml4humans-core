@@ -98,7 +98,9 @@ mod tests {
         Ast {
             kind,
             children,
-            ..Ast::default()
+            name: None,
+            number: None,
+            units: None,
         }
     }
 
@@ -107,7 +109,9 @@ mod tests {
         Ast {
             kind: AstKind::Name,
             name: Some(id.to_owned()),
-            ..Ast::default()
+            number: None,
+            units: None,
+            children: Vec::new(),
         }
     }
 
@@ -116,7 +120,9 @@ mod tests {
         Ast {
             kind,
             number: Some(number),
-            ..Ast::default()
+            name: None,
+            units: None,
+            children: Vec::new(),
         }
     }
 
@@ -260,12 +266,13 @@ mod tests {
     // traps a WebAssembly instance. The three kinds are the ones the walks treat
     // differently: libsbml writes one element per level of a chain of quotients,
     // and it unrolls a chain of sums or of products into one apply, which
-    // `operands` does by recursing per level of the chain it unrolls and which
-    // is the deepest call stack `math` reaches.
+    // `operands` does on a stack of its own.
     //
-    // Measured on this thread in a debug build, bisected to 1 KiB: a chain of
-    // quotients needs 352 KiB and the two which unroll 463 KiB, both far inside
-    // the megabyte. The table of `latex.rs` says what the figures are.
+    // Measured on this thread in a debug build, bisected in steps of 1 KiB:
+    // all three run within 16 KiB, which is the floor of the method and not a
+    // figure of the walk, where the recursive walks of the slice before needed
+    // 352 KiB and 463 KiB for the same shapes at a tenth of this depth. The
+    // table of `latex.rs` carries the before and the after.
     #[test]
     fn the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm() {
         on_a_wasm_stack(|| {
@@ -273,9 +280,9 @@ mod tests {
                 let written = math(&chain(kind, MAX_AST_DEPTH)).expect("a tree of the cap");
                 assert!(!written.formula.is_empty(), "{kind:?}");
                 // the mathml of a chain of quotients is one element per level
-                // and so a thousand deep, far past the bound of the stylesheet
-                // pipeline, while the mathml of a chain which unrolls is three
-                // elements whatever its length
+                // and so as deep as the chain, far past the bound of the
+                // stylesheet pipeline, while the mathml of a chain which
+                // unrolls is three elements whatever its length
                 assert_eq!(written.latex.is_some(), kind != AstKind::Divide, "{kind:?}");
                 assert_eq!(
                     math(&chain(kind, MAX_AST_DEPTH + 1)).err(),
@@ -315,10 +322,11 @@ mod tests {
     ///
     /// The right operand is an apply, so the template which tells the operands
     /// of a difference apart by their string values fires at every level, and
-    /// the value it is compared against is the whole chain below. That makes it
-    /// the costliest level of the walk: `tests/latex.rs` measures this shape
-    /// through [`latex`] alone, where a chain of a thousand of it needs
-    /// 1,401 KiB, more than the stack of wasm.
+    /// the value it is compared against is the whole chain below. That made it
+    /// the costliest level of the walk while the walk recursed: a chain of a
+    /// thousand of it needed 1,401 KiB through [`latex`] alone, more than the
+    /// stack of wasm, where a chain of this shape at the bound now costs no
+    /// call frame at all.
     fn difference_over(tail: Ast) -> Ast {
         node(
             AstKind::Minus,
@@ -326,23 +334,20 @@ mod tests {
         )
     }
 
-    // The deepest latex walk the depth rule leaves reachable, and so the most
-    // stack `math` can be made to use, in both of the shapes which reach it: a
-    // chain of quotients, which is the plain walk, and a chain of differences,
-    // which compares a string value at every level and costs more per level for
-    // it. A tree whose mathml is one element deeper than these never reaches the
-    // latex writer at all, which is why the walk of a bare chain of a thousand
-    // quotients or differences, the 1,335 KiB and 1,401 KiB `latex` alone needs
-    // for them in a debug build and the figures of this crate which do not fit
-    // in the stack of wasm, is now unreachable through `math`.
+    // The deepest latex walk the depth rule leaves reachable, in both of the
+    // shapes which reach it: a chain of quotients, which is the plain walk, and
+    // a chain of differences, which compares a string value at every level and
+    // did cost more per level for it. Each of the two is 253 wrappers over a
+    // chain of sums at the bound, so the tree below the wrappers is
+    // `MAX_AST_DEPTH` levels deep.
     //
-    // Measured on this thread in a debug build, bisected to 1 KiB: the quotients
-    // need 684 KiB and the differences 704 KiB, which is the worst walk still
-    // reachable through `math` and the figure the table of `latex.rs` says a
-    // later slice must not lose. It is not the worst this crate has measured:
-    // the same two shapes as a bare chain of a thousand cost 1,335 KiB and
-    // 1,401 KiB through `latex` alone, and those are the walks the depth rule
-    // keeps a report away from.
+    // Measured on this thread in a debug build, bisected in steps of 1 KiB:
+    // both run within 16 KiB, the floor of the method. The same two shapes cost
+    // 684 KiB and 704 KiB when the walk recursed per level, and a bare chain of
+    // a thousand quotients or differences cost 1,335 KiB and 1,401 KiB through
+    // `latex` alone, which did not fit in the megabyte of wasm at all. Nothing
+    // of this crate follows a tree on the call stack any more, so neither
+    // figure has an heir.
     #[test]
     fn the_deepest_latex_the_bound_allows_is_written_within_the_stack_of_wasm() {
         for shape in [

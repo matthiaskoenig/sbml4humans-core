@@ -463,16 +463,24 @@ const UNKNOWN_MATHS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
 
 #[test]
 fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
-    // the reader of a math is the one place which refuses a math, and it
-    // refuses one of a document as it refuses one of a string
-    let mut body = String::new();
-    for _ in 0..MAX_AST_DEPTH {
-        body.push_str("<apply><plus/><cn type=\"integer\">1</cn>");
+    // The reader of a math is the one place which refuses a math, and it
+    // refuses one of a document as it refuses one of a string. The shape is a
+    // flat sum, which libsbml reads as a tree of one level per term and is the
+    // one shape of a document which reaches the bound: a nesting of that many
+    // `apply` elements is one the MathML reader of libsbml dies on long before
+    // (1,272 levels on the stack of this very thread, measured against 5.21.2).
+    //
+    // This runs on the ordinary thread of a test, two megabytes, like the
+    // tests of `crates/report` which read a document at the bound. The `xml`
+    // of the rule below is written by `SBase::toSBML()` of libsbml before the
+    // math is read, and that writer follows the tree on its call stack, so the
+    // test only answers an error at all because the bound stands at half of
+    // what it survives on such a stack.
+    let mut body = String::from("<apply><plus/>");
+    for _ in 0..=MAX_AST_DEPTH {
+        body.push_str("<cn type=\"integer\">1</cn>");
     }
-    body.push_str("<cn type=\"integer\">1</cn>");
-    for _ in 0..MAX_AST_DEPTH {
-        body.push_str("</apply>");
-    }
+    body.push_str("</apply>");
     let sbml = format!(
         r#"<?xml version="1.0" encoding="UTF-8"?>
 <sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
@@ -486,7 +494,8 @@ fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
   </model>
 </sbml>"#
     );
-    assert!(matches!(read(sbml.as_bytes()), Err(ReadError::MathTooDeep)));
+    let refused = read(sbml.as_bytes());
+    assert!(matches!(refused, Err(ReadError::MathTooDeep)));
 }
 
 #[test]

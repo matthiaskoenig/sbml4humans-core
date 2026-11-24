@@ -29,18 +29,21 @@ pub enum ReadError {
     Libsbml(String),
     /// The syntax tree of a math is nested deeper than [`sbml4humans_model::MAX_AST_DEPTH`].
     ///
-    /// An ordinary document reaches it, and loses its whole report over it: the
-    /// MathML reader of libsbml nests a flat n-ary application into a binary
-    /// tree to the left, one `apply` per operand after the first, so a flat sum
-    /// of 1,001 terms is a chain of 1,001 levels and is answered with this, while
-    /// the python implementation reports such a document in full and with its
-    /// latex (`writeMathML` unrolls the nesting back into one flat `apply`).
-    /// The two walks which still recurse per level are what keeps the bound
-    /// this low, `ast_of` of this crate and `operands` of
-    /// `crates/report/src/math/latex.rs`; the doc comment of
-    /// [`sbml4humans_model::MAX_AST_DEPTH`] carries the whole account, and the
-    /// slice which makes those two non-recursive is what removes the
-    /// difference.
+    /// It ends the read of the whole document, since the reader of a math is
+    /// the one place which refuses one, so the bound it answers for may only
+    /// stand where no document of a user reaches it. The bound is reached by
+    /// the **width** of a math as much as by its nesting: the MathML reader of
+    /// libsbml nests a flat n-ary application into a binary tree to the left,
+    /// one `apply` per operand after the first, so a flat sum of n terms is a
+    /// chain of n levels, and a sum of a thousand terms is ordinary where a
+    /// nesting of a thousand is not. No walk of the port follows such a chain
+    /// on the call stack; what keeps the bound at ten thousand levels, a sum of
+    /// about 250 KB of MathML in one element, is libsbml, which follows the
+    /// tree of a math on the call stack in `SBase::toSBML()` and dies on a
+    /// deeper one before this error can be answered. The bound is half of what
+    /// that writer survives on the smallest stack a path of the port runs on,
+    /// and the measurement behind it is the doc comment of
+    /// [`sbml4humans_model::MAX_AST_DEPTH`].
     #[error(
         "the math is nested deeper than {} levels",
         sbml4humans_model::MAX_AST_DEPTH

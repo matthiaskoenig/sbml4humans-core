@@ -1,34 +1,91 @@
 //! The syntax tree of the math of an element.
 
+use std::fmt;
+
 /// The deepest nesting of a syntax tree which a reader or a writer follows.
 ///
-/// # What the bound costs
+/// # Whose stack this is a bound on
+///
+/// Not the stack of this workspace. Every walk of a tree here keeps its own
+/// stack on the heap, the drop glue of [`Ast`] included, so a tree costs a walk
+/// of the port no call frame per level and the deepest tree the bound allows is
+/// walked within a few kilobytes: measured at 16 KiB, which is the floor of the
+/// measurement and no figure of the walk
+/// (`the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm` and
+/// `the_deepest_latex_the_bound_allows_is_written_within_the_stack_of_wasm` of
+/// `crates/report/src/math/mod.rs`, both on a thread pinned to the megabyte of
+/// `wasm32-unknown-unknown`). A chain of 2,000,000 levels, two hundred times
+/// this bound, is walked within that same 16 KiB.
+///
+/// What the bound stands below is the recursion of **libsbml**, which the port
+/// calls and does not own. `SBase::toSBML()` writes the `xml` of every element
+/// of a report (`element_with_xml` of `crates/libsbml/src/fill.rs`) and follows
+/// the syntax tree of the math of that element on the call stack. It is reached
+/// before any bound of this crate can answer an error, since the xml of an
+/// element is written before its math is read, and a stack which runs out is no
+/// error but SIGSEGV, and in WebAssembly the end of the instance. A bound which
+/// admits a document that then ends the process is no bound at all, so this one
+/// is set at half of what libsbml survives on the smallest stack a path of the
+/// port runs on.
+///
+/// | what of libsbml recurses per level | bytes a level | 1 MiB | 2 MiB | 8 MiB |
+/// | --- | --- | --- | --- | --- |
+/// | `SBase::toSBML()`, the xml of an element | 80 | 12,969 | 26,093 | 104,531 |
+/// | `~ASTNode`, the `delete` of a document by libsbml | 49 | 21,452 | 42,900 | 171,600 |
+///
+/// The second row is the destructor chain of libsbml itself, which frees the
+/// math of every element when a document is deleted and which the shim never
+/// touches: the iterative `s4h_ast_free` of the shim frees the tree of a
+/// string it was asked to read and nothing of a document. It does not bind,
+/// standing above the writer on every stack, and it is here because it is the
+/// second thing of libsbml which follows a tree on the call stack.
+///
+/// Measured by bisecting the width of a flat sum, one process per probe, each
+/// operation run on a thread of exactly that size
+/// (`pthread_attr_setstacksize`); the two figures which are not measured
+/// directly follow the bytes a level, which the three measured sizes agree on
+/// to within one percent.
+///
+/// The smallest stack a path which reaches libsbml runs on is two megabytes:
+/// the cli reads a document on the eight megabytes of a main thread, no crate
+/// of the port creates a thread of its own for a read, and a test of the
+/// workspace runs on the two megabytes the harness of cargo gives a test thread
+/// (measured from `/proc/self/maps`). The lowest cliff of that stack is 26,093
+/// levels, half of it is 13,046, and the bound is the largest round number
+/// below that.
+///
+/// # What the bound refuses
 ///
 /// It is reached by the **width** of a math and not by its nesting alone: the
-/// MathML reader of libsbml nests a flat n-ary application into a binary tree
-/// to the left, one `apply` per operand after the first and each of them
-/// holding the sum of the terms before it and the next term, so a flat sum of
-/// a thousand terms is a tree of exactly a thousand levels and a flat sum of
-/// one term more is refused.
-/// A wide sum is ordinary in a model and no adversarial shape, and the python
-/// implementation reports such a document in full and with its latex, because
-/// `writeMathML` unrolls the nesting back into one flat `apply`, so the lxml
-/// pipeline it feeds sees a document of three elements. The bound is therefore
-/// a difference from the python implementation and not only a guard, and the
-/// refusal of one math ends the read of the whole document:
-/// `the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone`
-/// of `crates/libsbml/tests/math.rs` pins both answers at 1,000 and 1,001
-/// terms, and `a_wide_sum_is_reported_in_full_up_to_the_bound_and_costs_the_whole_report_past_it`
-/// of `crates/report/tests/build.rs` pins what one term more costs a report.
+/// MathML reader of libsbml nests a flat n-ary application into a binary tree to
+/// the left, one `apply` per operand after the first and each of them holding
+/// the sum of the terms before it and the next term, so a flat sum of n terms is
+/// a tree of exactly n levels. What a document has to hold to be refused is
+/// therefore a flat sum of more than ten thousand terms, about 250 KB of MathML
+/// in one element, which the python implementation reports in full and with its
+/// latex. No model of a user writes one, and a document which does gets no
+/// report at all rather than ending the process of whoever asked for it.
 ///
-/// What keeps the bound this low is that two walks of a tree still recurse per
-/// level: `ast_of` of `crates/libsbml/src/math.rs`, which fills a tree, and
-/// `operands` of `crates/report/src/math/latex.rs`, which unrolls a chain of
-/// sums or of products. A stack which runs out is no error but an abort of the
-/// process, and in WebAssembly the end of the instance, so neither may follow
-/// a tree of any depth. Raising the bound belongs to the slice which makes
-/// those two walks non-recursive, which the port owes before the wheel ships.
-pub const MAX_AST_DEPTH: usize = 1000;
+/// A tree at the bound costs about 2.5 MB here, an [`Ast`] being 104 bytes and
+/// a level of such a chain 256 bytes measured, and about 12 MB in libsbml, at
+/// 1.2 KB a node measured.
+///
+/// One cliff of libsbml is left which no bound of the port can guard, since it
+/// ends the process before the port holds a tree of any kind: the MathML reader
+/// of libsbml follows nested `apply` elements on the call stack, at 1.6 KB a
+/// level, and dies inside the read of the document at 1,272 of them on a stack
+/// of two megabytes and at 5,087 on one of eight. That is the nesting of the
+/// source and not the width a flat sum is read as, so no document which reaches
+/// this bound comes near it; it goes with `crates/libsbml` when the reader of
+/// step 2 replaces that crate, and until then only a larger stack hides it.
+///
+/// A tree past the bound is refused by the reader of a math, which ends the
+/// read of the whole document, and by every writer of `crates/report`:
+/// `a_tree_as_deep_as_the_bound_is_filled_and_one_level_deeper_is_refused` of
+/// `crates/libsbml/tests/math.rs` pins both answers of the reader, and
+/// `a_wide_sum_at_the_bound_is_reported_in_full` of
+/// `crates/report/tests/build.rs` pins the report of a document which holds one.
+pub const MAX_AST_DEPTH: usize = 10_000;
 
 /// Declares [`AstKind`] with its codes, [`AstKind::ALL`] and [`AstKind::from_code`]
 /// from one list, so the three cannot disagree.
@@ -260,7 +317,18 @@ pub enum AstNumber {
 }
 
 /// A node of the syntax tree of a math.
-#[derive(Debug, Clone, PartialEq, Default)]
+///
+/// A tree may be deeper than a call stack holds one frame per level of, so
+/// [`Drop`], [`Clone`], [`PartialEq`] and [`fmt::Debug`] are written here
+/// rather than derived: the glue a derive writes follows the children on the
+/// call stack, and a stack which runs out is no error but an abort of the
+/// process and, in WebAssembly, the end of the instance. Each of the four
+/// walks the tree on a stack of its own on the heap, so what a tree costs any
+/// of them is memory and never a frame, whatever [`MAX_AST_DEPTH`] is.
+///
+/// Writing [`Drop`] is what makes the type one no field can be moved out of, so
+/// a node is built by naming all of its fields and not with `..Ast::default()`.
+#[derive(Default)]
 pub struct Ast {
     /// The kind of the node.
     pub kind: AstKind,
@@ -272,4 +340,121 @@ pub struct Ast {
     pub units: Option<String>,
     /// The children, in the order of the document.
     pub children: Vec<Ast>,
+}
+
+impl Ast {
+    /// The node with its payload and without its children.
+    fn without_children(&self) -> Ast {
+        Ast {
+            kind: self.kind,
+            name: self.name.clone(),
+            number: self.number.clone(),
+            units: self.units.clone(),
+            children: Vec::with_capacity(self.children.len()),
+        }
+    }
+}
+
+impl Drop for Ast {
+    /// Drops the tree below the node without a call frame per level.
+    ///
+    /// The children of the node are taken and emptied one after the other on a
+    /// stack of their own: a node whose children were taken drops with nothing
+    /// below it, so the glue the compiler writes for this type never reaches a
+    /// second level. The stack holds the children of one node at a time, which
+    /// for a chain is one node.
+    fn drop(&mut self) {
+        let mut rest = std::mem::take(&mut self.children);
+        while let Some(mut node) = rest.pop() {
+            rest.append(&mut node.children);
+        }
+    }
+}
+
+impl Clone for Ast {
+    /// Clones the tree below the node without a call frame per level.
+    fn clone(&self) -> Self {
+        // the node being cloned, how many of its children are done, and what
+        // is built of its clone so far
+        let mut stack: Vec<(&Ast, usize, Ast)> = vec![(self, 0, self.without_children())];
+        loop {
+            let (source, next, _) = stack.last_mut().expect("the frame of the root");
+            if let Some(child) = source.children.get(*next) {
+                *next += 1;
+                stack.push((child, 0, child.without_children()));
+                continue;
+            }
+            let (_, _, built) = stack.pop().expect("the frame which is done");
+            match stack.last_mut() {
+                Some((_, _, parent)) => parent.children.push(built),
+                None => return built,
+            }
+        }
+    }
+}
+
+impl PartialEq for Ast {
+    /// Compares the two trees without a call frame per level.
+    ///
+    /// The pairs still to compare are kept on a stack of their own, so the
+    /// answer is the one a derived comparison gives: two nodes are equal when
+    /// their payloads are and their children are equal pairwise and in order.
+    fn eq(&self, other: &Self) -> bool {
+        let mut pairs = vec![(self, other)];
+        while let Some((ours, theirs)) = pairs.pop() {
+            if ours.kind != theirs.kind
+                || ours.name != theirs.name
+                || ours.number != theirs.number
+                || ours.units != theirs.units
+                || ours.children.len() != theirs.children.len()
+            {
+                return false;
+            }
+            pairs.extend(ours.children.iter().zip(theirs.children.iter()));
+        }
+        true
+    }
+}
+
+/// One piece of the text [`fmt::Debug`] of an [`Ast`] writes.
+enum DebugPiece<'a> {
+    /// A node, written with its payload and its children.
+    Node(&'a Ast),
+    /// Literal text.
+    Text(&'static str),
+}
+
+impl fmt::Debug for Ast {
+    /// Writes the tree without a call frame per level.
+    ///
+    /// The text is the one a derived [`fmt::Debug`] writes of the plain form,
+    /// `{:?}`. The alternate form `{:#?}` writes that same text rather than the
+    /// indented one a derive writes, since the indentation of a tree of a
+    /// million levels is a million levels of indentation and nothing reads it:
+    /// what this form is for is a tree a test prints when it fails.
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut pieces = vec![DebugPiece::Node(self)];
+        while let Some(piece) = pieces.pop() {
+            let node = match piece {
+                DebugPiece::Text(text) => {
+                    f.write_str(text)?;
+                    continue;
+                }
+                DebugPiece::Node(node) => node,
+            };
+            write!(
+                f,
+                "Ast {{ kind: {:?}, name: {:?}, number: {:?}, units: {:?}, children: [",
+                node.kind, node.name, node.number, node.units
+            )?;
+            pieces.push(DebugPiece::Text("] }"));
+            for (n, child) in node.children.iter().enumerate().rev() {
+                pieces.push(DebugPiece::Node(child));
+                if n > 0 {
+                    pieces.push(DebugPiece::Text(", "));
+                }
+            }
+        }
+        Ok(())
+    }
 }

@@ -707,26 +707,42 @@ fn document_with_a_flat_sum(terms: usize) -> Vec<u8> {
 }
 
 #[test]
-fn a_wide_sum_is_reported_in_full_up_to_the_bound_and_costs_the_whole_report_past_it() {
+fn a_wide_sum_at_the_bound_is_reported_in_full() {
     // The MathML reader of libsbml nests a flat n-ary sum into a binary tree to
     // the left, one apply per term, so a flat sum of `MAX_AST_DEPTH` terms is a
-    // tree of exactly the bound and one term more is past it. The refusal is the reader's
-    // and ends the read of the document, so the blast radius of one wide sum is
-    // the whole report and not the math of the one element which holds it.
+    // tree of exactly that many levels and the whole report of the document
+    // rests on every walk of such a tree costing no call frame per level. The
+    // bound of 1,000 this port had before this slice refused a sum of 1,001
+    // terms and the document with it, where the python implementation reports
+    // it in full.
     //
-    // Measured with these two documents: 1,000 terms are reported with a formula
-    // and a latex, 1,001 terms answer `MathTooDeep` and no report at all. The
-    // python implementation reports the second one in full as well, its formula
-    // and its latex both written, which is the parity this port still owes: the
-    // fix is the non-recursive reader of `ast_of`, which the slice before the
-    // wheel owns.
+    // This runs on the ordinary thread of a test, which cargo gives two
+    // megabytes, and that is the point of it: the bound stands at half of what
+    // `SBase::toSBML()` of libsbml survives on such a stack, so a document at
+    // the bound has to be read and reported within it. A run which dies here
+    // rather than failing says the bound is too high; the doc comment of
+    // `MAX_AST_DEPTH` carries the measurement.
     let json = report_of(&document_with_a_flat_sum(MAX_AST_DEPTH));
     let math = &json["models"][0]["listOfRules"][0]["math"];
-    assert!(math["formula"].is_string(), "the formula is written");
-    assert!(math["latex"].is_string(), "and so is the latex");
+    let formula = math["formula"].as_str().expect("the formula is written");
+    assert_eq!(formula.matches(" + ").count(), MAX_AST_DEPTH - 1);
+    let latex = math["latex"].as_str().expect("and so is the latex");
+    assert_eq!(latex.matches('+').count(), MAX_AST_DEPTH - 1);
+    // the leading space is where the `$` of the inline math of `mmltex.xsl`
+    // stood, which every latex of the report carries
+    assert!(latex.starts_with(" 1+1+1"), "{}", &latex[..16]);
+}
+
+#[test]
+fn a_sum_one_term_wider_than_the_bound_costs_the_whole_report() {
+    // The refusal is the reader's and ends the read of the document, so the
+    // blast radius of a math past the bound is the whole report and not the
+    // math of the one element which holds it. What the bound stands at, and
+    // why a document which reaches it is one no model holds, is the doc
+    // comment of `MAX_AST_DEPTH`.
     let refused = read(&document_with_a_flat_sum(MAX_AST_DEPTH + 1));
     assert!(
         matches!(refused, Err(ReadError::MathTooDeep)),
-        "one term more"
+        "one term past the bound"
     );
 }

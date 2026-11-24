@@ -54,80 +54,54 @@
 //!
 //! # The stack
 //!
-//! A math may be nested to that bound and the walk follows it on the stack, so
-//! every function of the walk writes into one string rather than building its
-//! own and hands each construct to a function of its own, and the string value
-//! of an element is produced with a stack of its own ([`StringValue`]) rather
-//! than by a second recursion. The two chain tests of `tests/latex.rs` carry the
-//! deepest tree the bound allows; the stack a chain of a thousand levels needs,
-//! measured by bisecting the size of the thread it is written on, is
+//! No walk of this module follows a tree on the call stack. [`emit`] and the
+//! template it hands a construct to write what stands before the first operand
+//! of that construct and leave its operands, and what stands between and after
+//! them, on the stack of the walk ([`Piece`]); the unrolling of [`operands`]
+//! keeps its own stack; and so do [`mathml_depth`],
+//! [`holds_a_childless_lambda`] and the production of a string value
+//! ([`StringValue`]). What a tree of any depth costs a walk is memory and
+//! never a call frame, which is what lets [`MAX_AST_DEPTH`] stand where it
+//! does.
+//!
+//! Measured the way every figure of this file was, by bisecting in steps of
+//! 1 KiB the size of the thread the walk runs on, in a debug build: the
+//! deepest trees the bound allows are written within 16 KiB, which is the
+//! floor of the method on glibc (`PTHREAD_STACK_MIN`, below which a thread
+//! cannot be asked for less) and no figure of the walk itself. A chain of
+//! 2,000,000 levels, two hundred times the bound, is written within that same
+//! 16 KiB, which is the measurement that says the depth of a tree no longer
+//! shows in the stack at all. The shapes taken were the two the bound allows
+//! through `math`, a chain of quotients and a chain of sums at
+//! [`MAX_AST_DEPTH`], and the two whose latex is written, 253 quotients and
+//! 253 differences over such a chain of sums, which are the costliest shapes
+//! the earlier slice found.
+//!
+//! What those four cost before this, when [`emit`] and `operands` recursed per
+//! level and the bound was 1,000, is the table below. Every row is a tree of
+//! a thousand levels, or of 253 wrappers over one, on a native thread in a
+//! debug build:
 //!
 //! | shape | stack |
 //! | --- | --- |
-//! | `minus(chain, plus(a, b))`, which compares the string values at every level | 1,401 KiB |
-//! | a chain of `abs`, which is the plain walk | 1,369 KiB |
-//! | a chain of `plus`, which is unrolled into one operator | 415 KiB |
+//! | 253 differences over a chain of sums, their operands compared at every level | 704 KiB |
+//! | 253 quotients over a chain of sums | 684 KiB |
+//! | a chain of a thousand sums or products, unrolled into one operator | 463 KiB |
+//! | a chain of a thousand quotients, or of differences | 352 KiB |
+//! | a chain of a thousand `abs`, of a piecewise or of a lambda | 305 KiB |
+//! | a chain of a thousand differences through [`latex`] alone | 1,401 KiB |
 //!
-//! **Those are a debug native build on the 2 MiB stack a test thread gets.**
-//! The target this constraint exists for is `wasm32-unknown-unknown`, whose
-//! stack is 1 MiB (`stack-size=1048576` in its target spec) and which traps on
-//! an overflow. **1,401 KiB does not fit in 1 MiB**, so a wasm build of these
-//! frame sizes would trap on the deepest tree the bound allows **where [`latex`]
-//! is called for it**. `math` of the parent module no longer is: it asks
-//! [`mathml_depth`] first, and the mathml of a chain of a thousand quotients is
-//! a thousand elements, far past [`MAX_MATHML_DEPTH`], so the python
-//! implementation writes no latex for such a tree and neither does this one.
-//! What a tree at the cap costs through `math`, measured the same way, is
+//! The last row is the one which did not fit in the megabyte a wasm instance
+//! has (`stack-size=1048576` in the spec of `wasm32-unknown-unknown`, which
+//! traps on an overflow), and what kept such a tree away from a report was the
+//! depth rule of `math` and not the walk. Nothing of that is left: the depth
+//! rule stands for the one thing it is for, writing the latex exactly where
+//! the python implementation writes one, and no shape of any depth costs the
+//! stack anything.
 //!
-//! | shape | stack | is a latex written |
-//! | --- | --- | --- |
-//! | 253 quotients over a chain of sums, the deepest mathml the bound allows | 684 KiB | yes |
-//! | 253 differences over that same chain, their operands compared at every level | 704 KiB | yes |
-//! | a chain of a thousand sums or products, unrolled into one operator | 463 KiB | yes |
-//! | a chain of a thousand quotients, or of differences | 352 KiB | no |
-//! | a chain of a thousand `abs`, of a piecewise or of a lambda | 305 KiB | no |
-//!
-//! Every figure here is the smallest stack on which the walk still completes,
-//! bisected over the size of the thread it runs on in steps of 1 KiB, and it
-//! drifts by about a step between runs: read each one as plus or minus 1 KiB.
-//! The same five were taken on a grid of 64 KiB before and read 704, 704, 512,
-//! 384 and 320 KiB, each the figure next to it rounded up, so a later
-//! measurement on a coarser grid writes a larger number for the same walk and
-//! no regression.
-//!
-//! They are the deepest **measured** walks and no proof of the deepest possible
-//! one: a shape nobody has built may cost more per level. The two shapes of the
-//! first two rows are the two which were measured at the bound, the plain walk
-//! and the one which compares a string value at every level, and the
-//! differences are the worse of them. **Their 704 KiB is the one figure of this
-//! file a later slice must not lose**: it is what the 64 KiB grid read for the
-//! quotients alone before the shape was measured, so the row it stood in held
-//! no slack at all, and what it leaves of the megabyte of wasm is the 320 KiB
-//! of a debug build and nothing a measurement of the target has confirmed. The
-//! test of the parent module carries both shapes.
-//!
-//! The two chains of a thousand of the fourth row cost 1,335 KiB (quotients)
-//! and 1,401 KiB (differences) through [`latex`] alone, the second of them the
-//! figure of the first table above: the same walk, which the depth rule now
-//! keeps a report away from. Both of those two were measured the way every
-//! figure of the two tables was, by bisecting in steps of 1 KiB the size of the
-//! thread the walk runs on, and both were taken again at the review of this
-//! slice and read the same: the quotients are a bare `chain(AstKind::Divide,
-//! MAX_AST_DEPTH)` and the differences the chain of
-//! `a_chain_of_differences_whose_operands_are_compared_is_written_without_overflowing_the_stack`
-//! of `tests/latex.rs`, each handed to [`latex`] with no depth rule in front of
-//! it. They are the largest figures this crate has measured and no test carries
-//! them, because `math` cannot reach either shape any more.
-//!
-//! So the deepest latex walk which is still reachable fits, with room to spare,
-//! in the megabyte of wasm in a debug build. A release build has smaller frames
-//! than a debug one, by how much nobody has measured, and nothing in the
-//! workspace builds or runs wasm yet, so these are still not wasm
-//! measurements: a slice which raises [`MAX_MATHML_DEPTH`], lets a caller reach
-//! [`latex`] without the depth rule, or runs on a smaller stack has to measure
-//! again. The two tests of the parent module which carry a tree at the cap run
-//! on a thread pinned to that megabyte, so a change which grows a frame of the
-//! walk is a red run and not a surprise on the target.
+//! The two tests of the parent module which walk a tree at the bound run on a
+//! thread pinned to that megabyte, so a change which brings a frame per level
+//! back is a red run and not a surprise on the target.
 //!
 //! # The string value
 //!
@@ -158,10 +132,38 @@ use std::borrow::Cow;
 /// [`MathError::UnknownKind`] for a tree which holds a node of a kind the
 /// libsbml shim does not map, whose latex would not be the one of the document.
 pub fn latex(ast: &Ast) -> Result<String, MathError> {
-    let mut out = String::from("$ ");
-    emit(ast, 0, None, 0, 1, &mut out)?;
-    out.push('$');
-    Ok(fix_mathit_symbols(&replacements(&out)))
+    let mut walk = Walk {
+        out: String::from("$ "),
+        rest: vec![Piece::of(ast, 0, None, 0, 1)],
+    };
+    while let Some(piece) = walk.rest.pop() {
+        match piece {
+            Piece::Text(text) => walk.out.push_str(text),
+            Piece::Emit {
+                node,
+                p,
+                parent,
+                index,
+                depth,
+            } => emit(node, p, parent, index, depth, &mut walk)?,
+            Piece::Summand {
+                node,
+                child,
+                index,
+                depth,
+            } => emit_summand(node, child, index, depth, &mut walk)?,
+            Piece::Times {
+                node,
+                args,
+                p,
+                op,
+                first,
+                depth,
+            } => emit_times(node, &args, p, op, first, depth, &mut walk),
+        }
+    }
+    walk.out.push('$');
+    Ok(fix_mathit_symbols(&replacements(&walk.out)))
 }
 
 /* ------------------------------------------------------- the replacements */
@@ -487,37 +489,67 @@ fn without_trailing_zeros(formatted: &str) -> &str {
 /// of `ctopff.xsl`. Reaching those four needs the two wrappers in the model of
 /// this writer, and the fourth of them is python writing no math at all.
 ///
+/// # The stack
+///
+/// The unrolling keeps its own stack on the heap and costs no call frame per
+/// level of the chain it follows, which a flat sum of n terms is n levels of.
+///
 /// # Errors
 ///
 /// [`MathError::TooDeep`] where the unrolling would follow a chain of sums or
 /// products deeper than [`MAX_AST_DEPTH`].
 fn operands(node: &Ast, depth: usize) -> Result<Vec<&Ast>, MathError> {
-    if depth > MAX_AST_DEPTH {
-        return Err(MathError::TooDeep);
-    }
-    let children = &node.children;
-    let written = match node.kind {
-        AstKind::Plus | AstKind::Times if children.len() <= 2 => {
-            let mut out = Vec::new();
-            for child in children {
-                if child.kind == node.kind {
-                    out.append(&mut operands(child, depth + 1)?);
-                } else {
+    let mut out = Vec::new();
+    // what is left to read, the next one last: a node whose own operands stand
+    // in its place, or an operand which is written as it is
+    let mut rest = vec![Operand::Unroll(node, depth)];
+    while let Some(operand) = rest.pop() {
+        let (node, depth) = match operand {
+            Operand::Written(child) => {
+                // a child of the kind `Unknown` is written as no element at
+                // all, so it is no operand
+                if child.kind != AstKind::Unknown {
                     out.push(child);
                 }
+                continue;
             }
-            out
+            Operand::Unroll(node, depth) => (node, depth),
+        };
+        if depth > MAX_AST_DEPTH {
+            return Err(MathError::TooDeep);
         }
-        AstKind::Minus | AstKind::Divide | AstKind::Power | AstKind::FunctionRoot => {
-            first_and_last(children, true)
+        let children = &node.children;
+        // a plus or a times of at most two children unrolls a child of its own
+        // kind, which is the one branch which follows a chain
+        if matches!(node.kind, AstKind::Plus | AstKind::Times) && children.len() <= 2 {
+            rest.extend(children.iter().rev().map(|child| {
+                if child.kind == node.kind {
+                    Operand::Unroll(child, depth + 1)
+                } else {
+                    Operand::Written(child)
+                }
+            }));
+            continue;
         }
-        AstKind::FunctionLog => first_and_last(children, false),
-        _ => children.iter().collect(),
-    };
-    Ok(written
-        .into_iter()
-        .filter(|child| child.kind != AstKind::Unknown)
-        .collect())
+        let written = match node.kind {
+            AstKind::Minus | AstKind::Divide | AstKind::Power | AstKind::FunctionRoot => {
+                first_and_last(children, true)
+            }
+            AstKind::FunctionLog => first_and_last(children, false),
+            _ => children.iter().collect(),
+        };
+        rest.extend(written.into_iter().rev().map(Operand::Written));
+    }
+    Ok(out)
+}
+
+/// One operand of the unrolling of [`operands`], before it is read.
+enum Operand<'a> {
+    /// An operand as the `apply` of its node writes it.
+    Written(&'a Ast),
+    /// A node of the kind of its parent, whose own operands stand in its place,
+    /// and how deep it stands.
+    Unroll(&'a Ast, usize),
 }
 
 /// The first and the last of `children`, the first alone where there is one and
@@ -724,12 +756,10 @@ pub(super) fn holds_a_childless_lambda(ast: &Ast) -> bool {
 /// # The stack
 ///
 /// The walk keeps its own stack on the heap, so a tree costs it no call frame
-/// per level. The one recursion it reaches is the unrolling of [`operands`],
-/// which follows a chain of sums or of products one frame per level and is
-/// bounded by [`MAX_AST_DEPTH`] like every other walk here; the latex writer
-/// makes the same call, so this adds no frame the writer did not already need.
-/// Measured in a debug build, `math` of a chain of a thousand sums needs
-/// 512 KiB and one of a thousand quotients 384 KiB, inside the megabyte
+/// per level, and the one other walk it reaches, the unrolling of
+/// [`operands`], keeps its own as well. Measured in a debug build, `math` of a
+/// chain of sums at the bound and one of quotients at the bound both run
+/// within the 16 KiB floor of the measurement, far inside the megabyte
 /// `wasm32-unknown-unknown` passes
 /// (`tests::the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm`
 /// of the parent module, which runs on a thread pinned to that megabyte).
@@ -927,10 +957,10 @@ enum Current<'a> {
 ///   both values whole would walk such a chain in the cube of its depth.
 ///   [`string_values_differ`] produces the two in step and stops at the first
 ///   byte which differs, which for a chain is within the first few.
-/// - The production keeps its own stack rather than the call stack, so the
-///   comparison recurses no further than the one `operands` call `expand` makes
-///   for a chain of sums or products, whatever the depth the latex walk already
-///   stands at.
+/// - The production keeps its own stack rather than the call stack, as the
+///   `operands` call `expand` makes for a chain of sums or products does, so
+///   the comparison costs no call frame per level whatever the depth the latex
+///   walk already stands at.
 ///
 /// `level` is how deep the element stands, which decides the indentation before
 /// each of its children. The two operands of a difference are siblings and so
@@ -1124,18 +1154,100 @@ fn string_values_differ(left: &Ast, right: &Ast, depth: usize) -> Result<bool, M
 
 /* --------------------------------------------------------------- the walk */
 
+/// One piece of what is left of a latex.
+///
+/// The pieces of the walk stand on its stack with the next one last, which is
+/// what keeps the walk off the call stack: every template writes what stands
+/// before its first operand and leaves its operands, and what stands between
+/// and after them, here ([`Walk::then`]). Nothing a template writes depends on
+/// what another one wrote, so the text is the one the recursive walk this was
+/// before wrote.
+enum Piece<'a> {
+    /// A node, with what the template of its parent passes it.
+    Emit {
+        /// The node itself.
+        node: &'a Ast,
+        /// The `$p` of ctopff, the precedence its parent passed down.
+        p: i32,
+        /// Its parent, which the templates which ask `name(../*[1])` read.
+        parent: Option<&'a Ast>,
+        /// Which operand of its parent it is.
+        index: usize,
+        /// How deep it stands in the tree.
+        depth: usize,
+    },
+    /// Literal text.
+    Text(&'static str),
+    /// One operand of a sum, whose sign the plus template has written.
+    Summand {
+        /// The sum.
+        node: &'a Ast,
+        /// The operand.
+        child: &'a Ast,
+        /// Which operand of the sum it is.
+        index: usize,
+        /// How deep the sum stands.
+        depth: usize,
+    },
+    /// A product whose operands are read already, which the plus template has
+    /// written the leading factors of itself.
+    Times {
+        /// The product.
+        node: &'a Ast,
+        /// Its operands, as [`operands`] read them.
+        args: Vec<&'a Ast>,
+        /// The `$p` of ctopff.
+        p: i32,
+        /// The operator of the parent of the product.
+        op: Operator,
+        /// How many of its leading factors are written already.
+        first: usize,
+        /// How deep the product stands.
+        depth: usize,
+    },
+}
+
+impl<'a> Piece<'a> {
+    /// The piece which writes `node`, operand `index` of `parent`, with the
+    /// precedence `p` and at `depth` levels below the root.
+    fn of(node: &'a Ast, p: i32, parent: Option<&'a Ast>, index: usize, depth: usize) -> Piece<'a> {
+        Piece::Emit {
+            node,
+            p,
+            parent,
+            index,
+            depth,
+        }
+    }
+}
+
+/// The latex written so far and what is left to write.
+struct Walk<'a> {
+    /// The latex so far.
+    out: String,
+    /// The pieces which are left, the next one last.
+    rest: Vec<Piece<'a>>,
+}
+
+impl<'a> Walk<'a> {
+    /// Puts the pieces of a construct on the stack, the first of them next.
+    fn then(&mut self, pieces: Vec<Piece<'a>>) {
+        self.rest.extend(pieces.into_iter().rev());
+    }
+}
+
 /// Writes the latex of `node` as the two stylesheets write it.
 ///
 /// `p` is the `$p` of ctopff, the precedence its parent passed down, `parent`
 /// and `index` are what the templates which ask `name(../*[1])` and
 /// `. != ../*[2]` read, and `depth` is how deep the node stands.
-fn emit(
-    node: &Ast,
+fn emit<'a>(
+    node: &'a Ast,
     p: i32,
-    parent: Option<&Ast>,
+    parent: Option<&'a Ast>,
     index: usize,
     depth: usize,
-    out: &mut String,
+    walk: &mut Walk<'a>,
 ) -> Result<(), MathError> {
     if depth > MAX_AST_DEPTH {
         return Err(MathError::TooDeep);
@@ -1151,9 +1263,10 @@ fn emit(
         return Ok(());
     }
     if let Some(special) = special_real(node) {
-        emit_special_real(special, p, out);
+        emit_special_real(special, p, &mut walk.out);
         return Ok(());
     }
+    let out = &mut walk.out;
     match node.kind {
         AstKind::Name => write_mi_italic(node.name.as_deref().unwrap_or_default(), out),
         // a csymbol is typeset by the text the document gave it, not by the word
@@ -1168,7 +1281,7 @@ fn emit(
         AstKind::ConstantPi => write_mi("\u{03c0}", out),
         AstKind::ConstantTrue => write_mi("true", out),
         AstKind::ConstantFalse => write_mi("false", out),
-        _ => return emit_apply(node, p, parent, index, depth, out),
+        _ => return emit_apply(node, p, parent, index, depth, walk),
     }
     Ok(())
 }
@@ -1208,67 +1321,71 @@ fn emit_number(node: &Ast, out: &mut String) {
 
 /// Writes a node which libsbml writes as an `apply`, a `piecewise` or a `lambda`.
 ///
-/// Every construct is written by a function of its own, which keeps the frame of
-/// this one small: a chain of a thousand nodes puts a thousand of them on the
-/// stack.
-fn emit_apply(
-    node: &Ast,
+/// Every construct is written by a function of its own, each of which writes
+/// what stands before its first operand and leaves the rest on the stack of
+/// the walk.
+fn emit_apply<'a>(
+    node: &'a Ast,
     p: i32,
-    parent: Option<&Ast>,
+    parent: Option<&'a Ast>,
     index: usize,
     depth: usize,
-    out: &mut String,
+    walk: &mut Walk<'a>,
 ) -> Result<(), MathError> {
     let op = parent_operator(parent);
     let args = operands(node, depth)?;
     if let Some(shape) = shape(node.kind) {
-        return match shape {
-            Shape::Delimited(delimiters) => emit_delimited(node, &args, delimiters, depth, out),
-            Shape::Named(name) => emit_named(node, &args, name, false, p, op, depth, out),
-            Shape::Infix(token, this_p) => emit_infix(node, &args, token, this_p, p, depth, out),
-            Shape::Set(name) => emit_set(node, &args, name, depth, out),
-        };
+        match shape {
+            Shape::Delimited(delimiters) => emit_delimited(node, &args, delimiters, depth, walk),
+            Shape::Named(name) => emit_named(node, &args, name, false, p, op, depth, walk),
+            Shape::Infix(token, this_p) => emit_infix(node, &args, token, this_p, p, depth, walk),
+            Shape::Set(name) => emit_set(node, &args, name, depth, walk),
+        }
+        return Ok(());
     }
     match node.kind {
         AstKind::Divide => {
             // a quotient is wrapped only as the base of a power, where the
             // parentheses hold a fraction alone and so are stretched
-            emit_fraction(node, &args, p >= 5 && op == Operator::Power, depth, out)
+            emit_fraction(node, &args, p >= 5 && op == Operator::Power, depth, walk);
         }
-        AstKind::Minus if args.len() == 1 => emit_negation(node, &args, p, depth, out),
+        AstKind::Minus if args.len() == 1 => emit_negation(node, &args, p, depth, walk),
         AstKind::Minus if args.len() >= 2 => {
-            emit_binary(node, &args, "-", 2, p, parent, index, depth, out)
+            emit_binary(node, &args, "-", 2, p, parent, index, depth, walk)?;
         }
-        AstKind::LogicalImplies => emit_binary(
-            node,
-            &args,
-            "\\Rightarrow ",
-            3,
-            p,
-            parent,
-            index,
-            depth,
-            out,
-        ),
-        AstKind::Plus => emit_plus(node, &args, p, parent, index, depth, out),
-        AstKind::Times => emit_times(node, &args, p, op, 0, depth, out),
+        AstKind::LogicalImplies => {
+            emit_binary(
+                node,
+                &args,
+                "\\Rightarrow ",
+                3,
+                p,
+                parent,
+                index,
+                depth,
+                walk,
+            )?;
+        }
+        AstKind::Plus => emit_plus(node, &args, p, parent, index, depth, walk)?,
+        AstKind::Times => emit_times(node, &args, p, op, 0, depth, walk),
         AstKind::Power | AstKind::FunctionPower => {
             let group = op == Operator::Power && args.get(1).is_some_and(|e| is_apply(e));
-            emit_power(node, &args, group, depth, out)
+            emit_power(node, &args, group, depth, walk);
         }
         AstKind::FunctionExp => {
             let group = op == Operator::Power && args.first().is_some_and(|e| is_apply(e));
-            emit_exponential(node, &args, group, depth, out)
+            emit_exponential(node, &args, group, depth, walk);
         }
-        AstKind::FunctionLog => emit_logarithm(node, &args, p, op, depth, out),
-        AstKind::FunctionRoot => emit_root(node, &args, depth, out),
-        AstKind::FunctionPiecewise => emit_piecewise(node, depth, out),
-        AstKind::Lambda => emit_lambda(node, depth, out),
+        AstKind::FunctionLog => emit_logarithm(node, &args, p, op, depth, walk),
+        AstKind::FunctionRoot => emit_root(node, &args, depth, walk),
+        AstKind::FunctionPiecewise => emit_piecewise(node, depth, walk),
+        AstKind::Lambda => emit_lambda(node, depth, walk),
         // the generic apply template: a call of a function of the model, a
         // csymbol function, and a difference of no operand, which is written as
         // a call of its name
-        _ => emit_call(node, &args, depth, out),
+        _ => emit_call(node, &args, depth, walk)?,
     }
+    Ok(())
 }
 
 /// A construct ctopff writes by one template which a fixed token or name fills in.
@@ -1303,87 +1420,79 @@ fn shape(kind: AstKind) -> Option<Shape> {
 }
 
 /// Writes a logarithm, whose base stands below its name unless it is ten.
-fn emit_logarithm(
-    node: &Ast,
-    args: &[&Ast],
+fn emit_logarithm<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
     p: i32,
     op: Operator,
     depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
+    walk: &mut Walk<'a>,
+) {
     // the base stands in a logbase and is no child of the apply, so the
     // argument alone is written and tested
-    let rest: Vec<&Ast> = args.get(1..).unwrap_or_default().to_vec();
+    let written: Vec<&Ast> = args.get(1..).unwrap_or_default().to_vec();
     let subscript = args.len() > 1 && !args.first().is_some_and(|b| wrapper_number_is(b, 10.0));
-    emit_named(node, &rest, "log", subscript, p, op, depth, out)
+    emit_named(node, &written, "log", subscript, p, op, depth, walk);
 }
 
 /// Writes a quotient as a fraction, in parentheses where it is the base of a power.
-fn emit_fraction(
-    node: &Ast,
-    args: &[&Ast],
+fn emit_fraction<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
     group: bool,
     depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
-    open(group, false, out);
-    out.push_str("\\frac{");
-    argument(node, args, 0, 0, depth, out)?;
-    out.push_str("}{");
-    argument(node, args, 1, 0, depth, out)?;
-    out.push('}');
-    close(group, false, out);
-    Ok(())
+    walk: &mut Walk<'a>,
+) {
+    open(group, false, &mut walk.out);
+    walk.out.push_str("\\frac{");
+    let mut pieces = Vec::new();
+    argument(node, args, 0, 0, depth, &mut pieces);
+    pieces.push(Piece::Text("}{"));
+    argument(node, args, 1, 0, depth, &mut pieces);
+    pieces.push(Piece::Text("}"));
+    closes(group, false, &mut pieces);
+    walk.then(pieces);
 }
 
 /// Writes a negation, the unary minus template of ctopff.
-fn emit_negation(
-    node: &Ast,
-    args: &[&Ast],
-    p: i32,
-    depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
+fn emit_negation<'a>(node: &'a Ast, args: &[&'a Ast], p: i32, depth: usize, walk: &mut Walk<'a>) {
     let group = p >= 5;
-    open(group, true, out);
-    out.push('-');
-    argument(node, args, 0, 5, depth, out)?;
-    close(group, true, out);
-    Ok(())
+    open(group, true, &mut walk.out);
+    walk.out.push('-');
+    let mut pieces = Vec::new();
+    argument(node, args, 0, 5, depth, &mut pieces);
+    closes(group, true, &mut pieces);
+    walk.then(pieces);
 }
 
 /// Writes a power as a superscript, its base wrapped where the power is itself one.
-fn emit_power(
-    node: &Ast,
-    args: &[&Ast],
-    group: bool,
-    depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
-    open(group, false, out);
-    out.push('{');
-    argument(node, args, 0, 5, depth, out)?;
-    out.push_str("}^{");
-    argument(node, args, 1, 0, depth, out)?;
-    out.push('}');
-    close(group, false, out);
-    Ok(())
+fn emit_power<'a>(node: &'a Ast, args: &[&'a Ast], group: bool, depth: usize, walk: &mut Walk<'a>) {
+    open(group, false, &mut walk.out);
+    walk.out.push('{');
+    let mut pieces = Vec::new();
+    argument(node, args, 0, 5, depth, &mut pieces);
+    pieces.push(Piece::Text("}^{"));
+    argument(node, args, 1, 0, depth, &mut pieces);
+    pieces.push(Piece::Text("}"));
+    closes(group, false, &mut pieces);
+    walk.then(pieces);
 }
 
 /// Writes an exponential as a power of `e`.
-fn emit_exponential(
-    node: &Ast,
-    args: &[&Ast],
+fn emit_exponential<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
     group: bool,
     depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
-    open(group, false, out);
-    out.push_str("{e}^{");
-    argument(node, args, 0, 0, depth, out)?;
-    out.push('}');
-    close(group, false, out);
-    Ok(())
+    walk: &mut Walk<'a>,
+) {
+    open(group, false, &mut walk.out);
+    walk.out.push_str("{e}^{");
+    let mut pieces = Vec::new();
+    argument(node, args, 0, 0, depth, &mut pieces);
+    pieces.push(Piece::Text("}"));
+    closes(group, false, &mut pieces);
+    walk.then(pieces);
 }
 
 /// What ctopff writes before, between and after the arguments of a delimited
@@ -1463,134 +1572,139 @@ fn delimiters(kind: AstKind) -> Option<&'static Delimiters> {
 }
 
 /// Writes a node whose arguments stand between delimiters of their own.
-fn emit_delimited(
-    node: &Ast,
-    args: &[&Ast],
-    delimiters: &Delimiters,
+fn emit_delimited<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
+    delimiters: &'static Delimiters,
     depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
-    out.push_str(delimiters.before);
-    argument(node, args, 0, delimiters.inner_p, depth, out)?;
+    walk: &mut Walk<'a>,
+) {
+    walk.out.push_str(delimiters.before);
+    let mut pieces = Vec::new();
+    argument(node, args, 0, delimiters.inner_p, depth, &mut pieces);
     if let Some(token) = delimiters.between {
-        out.push_str(token);
-        argument(node, args, 1, delimiters.inner_p, depth, out)?;
+        pieces.push(Piece::Text(token));
+        argument(node, args, 1, delimiters.inner_p, depth, &mut pieces);
     }
-    out.push_str(delimiters.after);
-    Ok(())
+    pieces.push(Piece::Text(delimiters.after));
+    walk.then(pieces);
 }
 
 /// Writes a root, as a square root unless its degree says otherwise.
-fn emit_root(node: &Ast, args: &[&Ast], depth: usize, out: &mut String) -> Result<(), MathError> {
+fn emit_root<'a>(node: &'a Ast, args: &[&'a Ast], depth: usize, walk: &mut Walk<'a>) {
     let degreed = args.len() > 1;
+    let mut pieces = Vec::new();
     if !degreed
         || args
             .first()
             .is_some_and(|degree| wrapper_number_is(degree, 2.0))
     {
-        out.push_str("\\sqrt{");
+        walk.out.push_str("\\sqrt{");
         // a root of one child carries its radicand there, one of two after its degree
-        argument(node, args, usize::from(degreed), 0, depth, out)?;
-        out.push('}');
-        return Ok(());
+        argument(node, args, usize::from(degreed), 0, depth, &mut pieces);
+        pieces.push(Piece::Text("}"));
+        walk.then(pieces);
+        return;
     }
-    out.push_str("\\sqrt[");
-    if let Some(degree) = args.first() {
-        emit(degree, 0, None, 0, depth + 1, out)?;
+    walk.out.push_str("\\sqrt[");
+    if let Some(&degree) = args.first() {
+        pieces.push(Piece::of(degree, 0, None, 0, depth + 1));
     }
-    out.push_str("]{");
-    argument(node, args, 1, 0, depth, out)?;
-    out.push('}');
-    Ok(())
+    pieces.push(Piece::Text("]{"));
+    argument(node, args, 1, 0, depth, &mut pieces);
+    pieces.push(Piece::Text("}"));
+    walk.then(pieces);
 }
 
 /// Writes a relation or a conjunction, the `infix` template of ctopff.
-fn emit_infix(
-    node: &Ast,
-    args: &[&Ast],
-    token: &str,
+fn emit_infix<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
+    token: &'static str,
     this_p: i32,
     p: i32,
     depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
+    walk: &mut Walk<'a>,
+) {
     let group = this_p < p;
     let has_operator = args.len() > 1;
-    open(group, has_operator, out);
-    for (n, child) in args.iter().enumerate() {
+    open(group, has_operator, &mut walk.out);
+    let mut pieces = Vec::new();
+    for (n, &child) in args.iter().enumerate() {
         if n > 0 {
-            out.push_str(token);
+            pieces.push(Piece::Text(token));
         }
-        emit(child, this_p, Some(node), n, depth + 1, out)?;
+        pieces.push(Piece::of(child, this_p, Some(node), n, depth + 1));
     }
-    close(group, has_operator, out);
-    Ok(())
+    closes(group, has_operator, &mut pieces);
+    walk.then(pieces);
 }
 
 /// Writes a maximum, a minimum or a remainder, the `set` template of ctopff.
 ///
 /// The template separates its arguments with a comma, which is an operator
 /// between the parentheses and keeps them unstretched.
-fn emit_set(
-    node: &Ast,
-    args: &[&Ast],
-    name: &str,
-    depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
-    write_mi(name, out);
+fn emit_set<'a>(node: &'a Ast, args: &[&'a Ast], name: &str, depth: usize, walk: &mut Walk<'a>) {
+    write_mi(name, &mut walk.out);
     let has_operator = args.len() > 1;
-    open(true, has_operator, out);
-    for (n, child) in args.iter().enumerate() {
+    open(true, has_operator, &mut walk.out);
+    let mut pieces = Vec::new();
+    for (n, &child) in args.iter().enumerate() {
         if n > 0 {
-            out.push(',');
+            pieces.push(Piece::Text(","));
         }
-        emit(child, 0, Some(node), n, depth + 1, out)?;
+        pieces.push(Piece::of(child, 0, Some(node), n, depth + 1));
     }
-    close(true, has_operator, out);
-    Ok(())
+    closes(true, has_operator, &mut pieces);
+    walk.then(pieces);
 }
 
 /// Writes a call of a function of the model or of a csymbol, the generic apply template.
 ///
 /// The arguments stand in an `mfenced`, which `glayout.xsl` writes between a
 /// stretched pair of parentheses whatever stands inside them.
-fn emit_call(node: &Ast, args: &[&Ast], depth: usize, out: &mut String) -> Result<(), MathError> {
+fn emit_call<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
+    depth: usize,
+    walk: &mut Walk<'a>,
+) -> Result<(), MathError> {
     let name = node.name.as_deref().unwrap_or_default();
     if node.kind == AstKind::Function {
-        write_mi_italic(name, out);
+        write_mi_italic(name, &mut walk.out);
     } else if is_csymbol_function(node.kind) {
-        write_mi(name, out);
+        write_mi(name, &mut walk.out);
     } else {
-        write_mi(operator_name(node.kind)?, out);
+        write_mi(operator_name(node.kind)?, &mut walk.out);
     }
-    out.push_str("\\left(");
-    for (n, child) in args.iter().enumerate() {
+    walk.out.push_str("\\left(");
+    let mut pieces = Vec::new();
+    for (n, &child) in args.iter().enumerate() {
         if n > 0 {
-            out.push(',');
+            pieces.push(Piece::Text(","));
         }
-        emit(child, 0, Some(node), n, depth + 1, out)?;
+        pieces.push(Piece::of(child, 0, Some(node), n, depth + 1));
     }
-    out.push_str("\\right)");
+    pieces.push(Piece::Text("\\right)"));
+    walk.then(pieces);
     Ok(())
 }
 
-/// Writes operand `n` of `node`, nothing where the node has none.
+/// Puts operand `n` of `node` among `pieces`, nothing where the node has none.
 ///
 /// The stylesheets select the element of an operand by its position and write
 /// nothing where there is none, so a quotient of one operand is `\frac{a}{}`
 /// rather than an error.
-fn argument(
-    node: &Ast,
-    args: &[&Ast],
+fn argument<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
     n: usize,
     p: i32,
     depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
-    match args.get(n) {
-        Some(child) => emit(child, p, Some(node), n, depth + 1, out),
-        None => Ok(()),
+    pieces: &mut Vec<Piece<'a>>,
+) {
+    if let Some(&child) = args.get(n) {
+        pieces.push(Piece::of(child, p, Some(node), n, depth + 1));
     }
 }
 
@@ -1603,64 +1717,69 @@ fn argument(
 /// `subscript` says that the base of a logarithm stands below its name, in which
 /// case it is the first child of the node itself.
 #[expect(clippy::too_many_arguments, reason = "the parameters of the template")]
-fn emit_named(
-    node: &Ast,
-    args: &[&Ast],
+fn emit_named<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
     name: &str,
     subscript: bool,
     p: i32,
     op: Operator,
     depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
+    walk: &mut Walk<'a>,
+) {
     let has_apply = args.iter().any(|child| is_apply(child));
     let group = p >= 5 && !has_apply && op != Operator::Minus;
     // the name and the invisible function application stand between the outer
     // parentheses, so those are never stretched
-    open(group, true, out);
+    open(group, true, &mut walk.out);
+    let mut pieces = Vec::new();
     if subscript {
-        out.push('{');
-        write_mi(name, out);
-        out.push_str("}_{");
+        walk.out.push('{');
+        write_mi(name, &mut walk.out);
+        walk.out.push_str("}_{");
         if let Some(base) = node.children.first() {
-            emit(base, 0, None, 0, depth + 1, out)?;
+            pieces.push(Piece::of(base, 0, None, 0, depth + 1));
         }
-        out.push('}');
+        pieces.push(Piece::Text("}"));
     } else {
-        write_mi(name, out);
+        write_mi(name, &mut walk.out);
     }
-    open(has_apply, false, out);
-    if let Some(first) = args.first() {
-        emit(first, 0, Some(node), 0, depth + 1, out)?;
+    if has_apply {
+        pieces.push(Piece::Text(opening(false)));
     }
-    close(has_apply, false, out);
-    close(group, true, out);
-    Ok(())
+    if let Some(&first) = args.first() {
+        pieces.push(Piece::of(first, 0, Some(node), 0, depth + 1));
+    }
+    closes(has_apply, false, &mut pieces);
+    closes(group, true, &mut pieces);
+    walk.then(pieces);
 }
 
 /// Writes a difference or an implication, the `binary` template of ctopff.
 #[expect(clippy::too_many_arguments, reason = "the parameters of the template")]
-fn emit_binary(
-    node: &Ast,
-    args: &[&Ast],
-    token: &str,
+fn emit_binary<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
+    token: &'static str,
     this_p: i32,
     p: i32,
     parent: Option<&Ast>,
     index: usize,
     depth: usize,
-    out: &mut String,
+    walk: &mut Walk<'a>,
 ) -> Result<(), MathError> {
     let group = this_p < p
         || (this_p == p
             && token == "-"
             && parent_operator(parent) == Operator::Minus
             && right_of_minus(parent, index, depth)?);
-    open(group, true, out);
-    argument(node, args, 0, this_p, depth, out)?;
-    out.push_str(token);
-    argument(node, args, 1, this_p, depth, out)?;
-    close(group, true, out);
+    open(group, true, &mut walk.out);
+    let mut pieces = Vec::new();
+    argument(node, args, 0, this_p, depth, &mut pieces);
+    pieces.push(Piece::Text(token));
+    argument(node, args, 1, this_p, depth, &mut pieces);
+    closes(group, true, &mut pieces);
+    walk.then(pieces);
     Ok(())
 }
 
@@ -1668,14 +1787,14 @@ fn emit_binary(
 ///
 /// The template writes a minus rather than a plus before an operand which is a
 /// negative number or a negated expression.
-fn emit_plus(
-    node: &Ast,
-    args: &[&Ast],
+fn emit_plus<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
     p: i32,
     parent: Option<&Ast>,
     index: usize,
     depth: usize,
-    out: &mut String,
+    walk: &mut Walk<'a>,
 ) -> Result<(), MathError> {
     let op = parent_operator(parent);
     let group = (p > 2 && op != Operator::Minus)
@@ -1686,16 +1805,23 @@ fn emit_plus(
         || args
             .first()
             .is_some_and(|first| is_unary_minus(first) || is_negative_number(first));
-    open(group, has_operator, out);
-    for (n, child) in args.iter().enumerate() {
+    open(group, has_operator, &mut walk.out);
+    let mut pieces = Vec::new();
+    for (n, &child) in args.iter().enumerate() {
         if is_unary_minus(child) || is_negative_number(child) {
-            out.push('-');
+            pieces.push(Piece::Text("-"));
         } else if n > 0 {
-            out.push('+');
+            pieces.push(Piece::Text("+"));
         }
-        emit_summand(node, child, n, depth, out)?;
+        pieces.push(Piece::Summand {
+            node,
+            child,
+            index: n,
+            depth,
+        });
     }
-    close(group, has_operator, out);
+    closes(group, has_operator, &mut pieces);
+    walk.then(pieces);
     Ok(())
 }
 
@@ -1705,33 +1831,36 @@ fn emit_plus(
 /// sign out of a product whose first factor is a negative number, which drops
 /// that sign altogether, and out of one whose first factor is a difference of
 /// three operands or more.
-fn emit_summand(
-    node: &Ast,
-    child: &Ast,
+fn emit_summand<'a>(
+    node: &'a Ast,
+    child: &'a Ast,
     index: usize,
     depth: usize,
-    out: &mut String,
+    walk: &mut Walk<'a>,
 ) -> Result<(), MathError> {
     if is_negative_number(child) {
-        write_mn(&xpath_number(-number_value(child)), out);
+        write_mn(&xpath_number(-number_value(child)), &mut walk.out);
         return Ok(());
     }
     if special_real(child) == Some(SpecialReal::NegativeInfinity) {
         // the one element of that apply is the infinity, which the node holds
         // no child for
-        write_mi("\u{221e}", out);
+        write_mi("\u{221e}", &mut walk.out);
         return Ok(());
     }
     if is_unary_minus(child) {
         if let Some(operand) = child.children.first() {
-            emit(operand, 2, Some(child), 0, depth + 2, out)?;
+            walk.rest
+                .push(Piece::of(operand, 2, Some(child), 0, depth + 2));
         }
         return Ok(());
     }
-    if child.kind == AstKind::Times && emit_pulled_product(child, depth, out)? {
+    if child.kind == AstKind::Times && emit_pulled_product(child, depth, walk)? {
         return Ok(());
     }
-    emit(child, 2, Some(node), index, depth + 1, out)
+    walk.rest
+        .push(Piece::of(child, 2, Some(node), index, depth + 1));
+    Ok(())
 }
 
 /// Writes a product of a sum whose first factor the plus template pulls apart,
@@ -1745,25 +1874,38 @@ fn emit_summand(
 /// right child of a difference and nothing between them, so the apply of a
 /// difference never holds more than three elements. It is ported because the
 /// template has it, not because a tree reaches it.
-fn emit_pulled_product(child: &Ast, depth: usize, out: &mut String) -> Result<bool, MathError> {
+fn emit_pulled_product<'a>(
+    child: &'a Ast,
+    depth: usize,
+    walk: &mut Walk<'a>,
+) -> Result<bool, MathError> {
     let factors = operands(child, depth + 1)?;
-    let Some(first) = factors.first() else {
+    let Some(&first) = factors.first() else {
         return Ok(false);
     };
+    let mut pieces = Vec::new();
     if is_negative_number(first) {
-        write_mn(&xpath_number(-number_value(first)), out);
+        write_mn(&xpath_number(-number_value(first)), &mut walk.out);
     } else if first.kind == AstKind::Minus {
         let inner = operands(first, depth + 2)?;
         if inner.len() < 3 {
             return Ok(false);
         }
-        if let Some(inner) = inner.first() {
-            emit(inner, 0, Some(first), 0, depth + 3, out)?;
+        if let Some(&inner) = inner.first() {
+            pieces.push(Piece::of(inner, 0, Some(first), 0, depth + 3));
         }
     } else {
         return Ok(false);
     }
-    emit_times(child, &factors, 2, Operator::Other, 1, depth + 1, out)?;
+    pieces.push(Piece::Times {
+        node: child,
+        args: factors,
+        p: 2,
+        op: Operator::Other,
+        first: 1,
+        depth: depth + 1,
+    });
+    walk.then(pieces);
     Ok(true)
 }
 
@@ -1772,43 +1914,45 @@ fn emit_pulled_product(child: &Ast, depth: usize, out: &mut String) -> Result<bo
 /// `first` is the `$first` of the template: the number of leading factors whose
 /// own latex is left out, which the plus template sets where it has written the
 /// first factor of a product itself.
-fn emit_times(
-    node: &Ast,
-    args: &[&Ast],
+fn emit_times<'a>(
+    node: &'a Ast,
+    args: &[&'a Ast],
     p: i32,
     op: Operator,
     first: usize,
     depth: usize,
-    out: &mut String,
-) -> Result<(), MathError> {
+    walk: &mut Walk<'a>,
+) {
     let group = p > 3 && op != Operator::Minus;
     let has_operator = args.len() > 1;
-    open(group, has_operator, out);
-    for (n, child) in args.iter().enumerate() {
+    open(group, has_operator, &mut walk.out);
+    let mut pieces = Vec::new();
+    for (n, &child) in args.iter().enumerate() {
         if n > 0 {
-            out.push_str("\\cdot ");
+            pieces.push(Piece::Text("\\cdot "));
         }
         if n >= first {
-            emit(child, 3, Some(node), n, depth + 1, out)?;
+            pieces.push(Piece::of(child, 3, Some(node), n, depth + 1));
         }
     }
-    close(group, has_operator, out);
-    Ok(())
+    closes(group, has_operator, &mut pieces);
+    walk.then(pieces);
 }
 
 /// Writes a piecewise as the array `tables.xsl` writes, which the replacements
 /// turn into a cases environment.
-fn emit_piecewise(node: &Ast, depth: usize, out: &mut String) -> Result<(), MathError> {
-    out.push_str("\\{\\begin{array}{");
+fn emit_piecewise<'a>(node: &'a Ast, depth: usize, walk: &mut Walk<'a>) {
+    walk.out.push_str("\\{\\begin{array}{");
     // the template counts the columns of the first row, which is three whether
     // that row is a piece or the otherwise
     if !node.children.is_empty() {
-        out.push_str("ccc");
+        walk.out.push_str("ccc");
     }
-    out.push('}');
+    walk.out.push('}');
+    let mut pieces = Vec::new();
     for (n, case) in node.children.chunks(2).enumerate() {
         if n > 0 {
-            out.push_str("\\\\ ");
+            pieces.push(Piece::Text("\\\\ "));
         }
         // libsbml writes a pair of children as a piece and a trailing single
         // child as the otherwise, whatever either of them is, so the row is the
@@ -1821,20 +1965,22 @@ fn emit_piecewise(node: &Ast, depth: usize, out: &mut String) -> Result<(), Math
             .filter(|(_, child)| child.kind != AstKind::Unknown)
             .map(|(at, child)| (2 * n + at, child))
             .collect();
-        if let Some((index, value)) = written.first() {
-            emit(value, 0, Some(node), *index, depth + 1, out)?;
+        if let Some(&(index, value)) = written.first() {
+            pieces.push(Piece::of(value, 0, Some(node), index, depth + 1));
         }
         if case.len() > 1 {
-            out.push_str("& \\text{\u{a0} if \u{a0}}\\hfill & ");
-            if let Some((index, condition)) = written.get(1) {
-                emit(condition, 0, Some(node), *index, depth + 1, out)?;
+            pieces.push(Piece::Text("& \\text{\u{a0} if \u{a0}}\\hfill & "));
+            if let Some(&(index, condition)) = written.get(1) {
+                pieces.push(Piece::of(condition, 0, Some(node), index, depth + 1));
             }
         } else {
-            out.push_str("& \\multicolumn{2}{c}{\\text{\u{a0} otherwise}}");
+            pieces.push(Piece::Text(
+                "& \\multicolumn{2}{c}{\\text{\u{a0} otherwise}}",
+            ));
         }
     }
-    out.push_str("\\end{array}");
-    Ok(())
+    pieces.push(Piece::Text("\\end{array}"));
+    walk.then(pieces);
 }
 
 /// Writes a lambda, whose bound variables the replacements separate and close.
@@ -1844,26 +1990,29 @@ fn emit_piecewise(node: &Ast, depth: usize, out: &mut String) -> Result<(), Math
 /// a document has. A lambda of a bound variable and no body, which is not valid
 /// SBML and which libsbml writes with the bound variable in both places, is
 /// written here as a body alone.
-fn emit_lambda(node: &Ast, depth: usize, out: &mut String) -> Result<(), MathError> {
+fn emit_lambda<'a>(node: &'a Ast, depth: usize, walk: &mut Walk<'a>) {
     let Some((body, bvars)) = node.children.split_last() else {
         // a lambda of no child at all, which ctopff writes by the template of a
         // lambda without a bound variable
-        out.push_str("{|}_{}");
-        return Ok(());
+        walk.out.push_str("{|}_{}");
+        return;
     };
     if bvars.is_empty() {
-        emit(body, 0, Some(node), 0, depth + 1, out)?;
-        out.push_str("{|}_{}");
-        return Ok(());
+        walk.then(vec![
+            Piece::of(body, 0, Some(node), 0, depth + 1),
+            Piece::Text("{|}_{}"),
+        ]);
+        return;
     }
-    out.push_str("\\lambda ");
+    walk.out.push_str("\\lambda ");
+    let mut pieces = Vec::new();
     for (n, bvar) in bvars.iter().enumerate() {
-        emit(bvar, 0, Some(node), n, depth + 1, out)?;
+        pieces.push(Piece::of(bvar, 0, Some(node), n, depth + 1));
     }
-    out.push_str(".\\left(");
-    emit(body, 0, Some(node), bvars.len(), depth + 1, out)?;
-    out.push_str("\\right)");
-    Ok(())
+    pieces.push(Piece::Text(".\\left("));
+    pieces.push(Piece::of(body, 0, Some(node), bvars.len(), depth + 1));
+    pieces.push(Piece::Text("\\right)"));
+    walk.then(pieces);
 }
 
 /* -------------------------------------------------------- the parentheses */
@@ -1876,14 +2025,34 @@ fn emit_lambda(node: &Ast, depth: usize, out: &mut String) -> Result<(), MathErr
 /// stretched.
 fn open(group: bool, has_operator: bool, out: &mut String) {
     if group {
-        out.push_str(if has_operator { "(" } else { "\\left(" });
+        out.push_str(opening(has_operator));
     }
+}
+
+/// The opening parenthesis of a group, stretched where it holds no operator.
+fn opening(has_operator: bool) -> &'static str {
+    if has_operator { "(" } else { "\\left(" }
 }
 
 /// Writes the closing parenthesis of a group.
 fn close(group: bool, has_operator: bool, out: &mut String) {
     if group {
-        out.push_str(if has_operator { ")" } else { "\\right)" });
+        out.push_str(closing(has_operator));
+    }
+}
+
+/// The closing parenthesis of a group, stretched where it holds no operator.
+fn closing(has_operator: bool) -> &'static str {
+    if has_operator { ")" } else { "\\right)" }
+}
+
+/// Puts the closing parenthesis of a group among `pieces`, where there is one.
+///
+/// It is the [`close`] of a template whose content stands on the stack of the
+/// walk rather than being written where the template runs.
+fn closes(group: bool, has_operator: bool, pieces: &mut Vec<Piece<'_>>) {
+    if group {
+        pieces.push(Piece::Text(closing(has_operator)));
     }
 }
 
