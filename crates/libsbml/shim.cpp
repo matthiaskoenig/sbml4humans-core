@@ -1106,10 +1106,13 @@ ASTNode* s4h_read_formula(const char* formula) {
 ///
 /// The tree is taken apart on a stack of its own before anything is deleted,
 /// because `~ASTNode` deletes the children of a node itself and so follows a
-/// tree on the call stack, one frame per level: a plain `delete` of a chain of
-/// a few hundred thousand nodes, which a flat sum of that many terms is, ends
-/// the process with SIGSEGV (measured at 300,000 on the 8 MiB stack of a main
-/// thread). `removeChild` hands a child over without deleting it
+/// tree on the call stack, one frame per level: a plain `delete` of a long
+/// chain of nodes, which a flat sum of that many terms is, ends the process
+/// with SIGSEGV, at 49 bytes of stack a level measured, so at 21,452 levels on
+/// a stack of one megabyte and at about 171,600 on the eight of a main thread.
+/// The doc comment of `MAX_AST_DEPTH` holds that measurement next to the one
+/// of the writer which recurses as well. `removeChild` hands a child over
+/// without deleting it
 /// (ASTNode.cpp), so every node here reaches `delete` with no children left
 /// and the destructor never reaches a second level.
 void s4h_ast_free(ASTNode* node) {

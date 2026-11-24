@@ -271,8 +271,8 @@ mod tests {
     // Measured on this thread in a debug build, bisected in steps of 1 KiB:
     // all three run within 16 KiB, which is the floor of the method and not a
     // figure of the walk, where the recursive walks of the slice before needed
-    // 352 KiB and 463 KiB for the same shapes at a two hundredth of this
-    // depth. The table of `latex.rs` carries the before and the after.
+    // 352 KiB and 463 KiB for the same shapes at a tenth of this depth. The
+    // table of `latex.rs` carries the before and the after.
     #[test]
     fn the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm() {
         on_a_wasm_stack(|| {
@@ -280,9 +280,9 @@ mod tests {
                 let written = math(&chain(kind, MAX_AST_DEPTH)).expect("a tree of the cap");
                 assert!(!written.formula.is_empty(), "{kind:?}");
                 // the mathml of a chain of quotients is one element per level
-                // and so a thousand deep, far past the bound of the stylesheet
-                // pipeline, while the mathml of a chain which unrolls is three
-                // elements whatever its length
+                // and so as deep as the chain, far past the bound of the
+                // stylesheet pipeline, while the mathml of a chain which
+                // unrolls is three elements whatever its length
                 assert_eq!(written.latex.is_some(), kind != AstKind::Divide, "{kind:?}");
                 assert_eq!(
                     math(&chain(kind, MAX_AST_DEPTH + 1)).err(),
@@ -338,8 +338,8 @@ mod tests {
     // shapes which reach it: a chain of quotients, which is the plain walk, and
     // a chain of differences, which compares a string value at every level and
     // did cost more per level for it. Each of the two is 253 wrappers over a
-    // chain of sums at the bound, so the tree below the wrappers is two hundred
-    // thousand levels deep.
+    // chain of sums at the bound, so the tree below the wrappers is
+    // `MAX_AST_DEPTH` levels deep.
     //
     // Measured on this thread in a debug build, bisected in steps of 1 KiB:
     // both run within 16 KiB, the floor of the method. The same two shapes cost

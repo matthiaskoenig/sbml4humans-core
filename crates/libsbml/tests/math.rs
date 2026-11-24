@@ -527,13 +527,15 @@ fn a_string_which_is_no_formula_is_an_error_and_never_a_panic() {
 /// A nesting of `apply` elements which libsbml still reads.
 ///
 /// Its MathML reader follows the nesting of a document on its own call stack,
-/// about 1.3 KB per level measured against 5.21.2, and ends the process with
-/// SIGSEGV at about 6,000 levels on the 8 MiB stack of a main thread and at a
-/// fraction of that on the 2 MiB stack of a test thread. So a nesting is no
-/// shape a test of this crate can take to the bound, and the shape which does
-/// reach the bound is a flat sum, whose nesting libsbml builds without
-/// recursing. The fill of this crate follows neither on the call stack.
-const NESTING_LIBSBML_READS: usize = 1000;
+/// 1.6 KB per level measured against 5.21.2, and ends the process with SIGSEGV
+/// at 1,272 levels on the 2 MiB stack a test thread is given and at 5,087 on
+/// the 8 MiB of a main thread. This is half of what the thread of a test
+/// survives, so that the measurement of a machine whose frames are a little
+/// larger does not take the run down. A nesting is therefore no shape a test
+/// of this crate can take to the bound, and the shape which does reach the
+/// bound is a flat sum, whose nesting libsbml builds without recursing. The
+/// fill of this crate follows neither on the call stack.
+const NESTING_LIBSBML_READS: usize = 500;
 
 #[test]
 fn a_nested_tree_is_filled_level_by_level() {
@@ -611,12 +613,12 @@ fn the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone(
     // one flat `apply`, so the lxml pipeline it feeds sees a document of three
     // elements).
     //
-    // Measured here: a flat sum of a hundred thousand terms, the width the
-    // issue of this slice names, is read as a tree of a hundred thousand levels.
-    // The report of that very math, its latex included, is pinned by
-    // `a_wide_sum_of_a_hundred_thousand_terms_is_reported_in_full` of
+    // Measured here: a flat sum of 1,001 terms, the width the issue of this
+    // slice names and one term past the bound the port had, is read as a tree
+    // of 1,001 levels. The report of a sum at the bound itself, its latex
+    // included, is pinned by `a_wide_sum_at_the_bound_is_reported_in_full` of
     // `crates/report/tests/build.rs`.
-    let wide = read_math(&flat_sum(A_WIDE_SUM)).expect("a flat sum of a hundred thousand terms");
+    let wide = read_math(&flat_sum(A_WIDE_SUM)).expect("a flat sum of 1,001 terms");
     assert_eq!(depth_of(&wide), A_WIDE_SUM);
     assert_eq!(wide.kind, AstKind::Plus);
     // two operands at every level, the sum of the terms before it and the next
@@ -633,8 +635,9 @@ fn the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone(
 }
 
 /// The width of the flat sum the issue of this slice names, which the port
-/// refused whole before it and reports in full after it.
-const A_WIDE_SUM: usize = 100_000;
+/// refused whole before it and reports in full after it. The bound stands at
+/// ten times this.
+const A_WIDE_SUM: usize = 1_001;
 
 #[test]
 fn a_number_whose_value_is_not_finite_is_filled_with_that_value() {

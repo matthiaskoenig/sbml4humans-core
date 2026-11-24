@@ -52,9 +52,9 @@ fn all_holds_every_kind_exactly_once() {
 }
 
 #[test]
-fn the_default_is_other_and_the_depth_bound_is_two_hundred_thousand() {
+fn the_default_is_other_and_the_depth_bound_is_ten_thousand() {
     assert_eq!(Ast::default().kind, AstKind::Other);
-    assert_eq!(MAX_AST_DEPTH, 200_000);
+    assert_eq!(MAX_AST_DEPTH, 10_000);
 }
 
 /// A tree of this many levels, which is far past [`MAX_AST_DEPTH`] whatever the

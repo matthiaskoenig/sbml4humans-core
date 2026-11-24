@@ -706,44 +706,28 @@ fn document_with_a_flat_sum(terms: usize) -> Vec<u8> {
     .into_bytes()
 }
 
-/// The width of the flat sum the issue of this slice names.
-const A_WIDE_SUM: usize = 100_000;
-
-/// Runs `work` on a thread with the stack the writers of libsbml need.
-///
-/// No walk of this crate follows a tree on the call stack, and neither does
-/// the reader of `crates/libsbml`; `SBase::toSBML()` of libsbml does, which
-/// the `xml` of every element of a report is, at about 70 bytes of stack per
-/// level of the math of the element (measured against 5.21.2). A document
-/// whose math is a sum of a hundred thousand terms therefore needs about 7 MB
-/// of stack to be read at all, where a test thread is given 2 MiB. The doc
-/// comment of `MAX_AST_DEPTH` carries the figures.
-fn on_a_stack_for_libsbml<T: Send + 'static>(work: impl FnOnce() -> T + Send + 'static) -> T {
-    std::thread::Builder::new()
-        .stack_size(64 * 1024 * 1024)
-        .spawn(work)
-        .expect("a thread of a stack for libsbml starts")
-        .join()
-        .expect("it ends")
-}
-
 #[test]
-fn a_wide_sum_of_a_hundred_thousand_terms_is_reported_in_full() {
+fn a_wide_sum_at_the_bound_is_reported_in_full() {
     // The MathML reader of libsbml nests a flat n-ary sum into a binary tree to
-    // the left, one apply per term, so a flat sum of `A_WIDE_SUM` terms is a
-    // tree of a hundred thousand levels and the whole report of the document
+    // the left, one apply per term, so a flat sum of `MAX_AST_DEPTH` terms is a
+    // tree of exactly that many levels and the whole report of the document
     // rests on every walk of such a tree costing no call frame per level. The
-    // bound of 1,000 this port had before this slice refused this document
-    // whole, where the python implementation reports it in full.
+    // bound of 1,000 this port had before this slice refused a sum of 1,001
+    // terms and the document with it, where the python implementation reports
+    // it in full.
     //
-    // Measured with this document: the formula and the latex of the sum are
-    // both written, and the latex is the one KaTeX renders.
-    let json = on_a_stack_for_libsbml(|| report_of(&document_with_a_flat_sum(A_WIDE_SUM)));
+    // This runs on the ordinary thread of a test, which cargo gives two
+    // megabytes, and that is the point of it: the bound stands at half of what
+    // `SBase::toSBML()` of libsbml survives on such a stack, so a document at
+    // the bound has to be read and reported within it. A run which dies here
+    // rather than failing says the bound is too high; the doc comment of
+    // `MAX_AST_DEPTH` carries the measurement.
+    let json = report_of(&document_with_a_flat_sum(MAX_AST_DEPTH));
     let math = &json["models"][0]["listOfRules"][0]["math"];
     let formula = math["formula"].as_str().expect("the formula is written");
-    assert_eq!(formula.matches(" + ").count(), A_WIDE_SUM - 1);
+    assert_eq!(formula.matches(" + ").count(), MAX_AST_DEPTH - 1);
     let latex = math["latex"].as_str().expect("and so is the latex");
-    assert_eq!(latex.matches('+').count(), A_WIDE_SUM - 1);
+    assert_eq!(latex.matches('+').count(), MAX_AST_DEPTH - 1);
     // the leading space is where the `$` of the inline math of `mmltex.xsl`
     // stood, which every latex of the report carries
     assert!(latex.starts_with(" 1+1+1"), "{}", &latex[..16]);
@@ -756,7 +740,7 @@ fn a_sum_one_term_wider_than_the_bound_costs_the_whole_report() {
     // math of the one element which holds it. What the bound stands at, and
     // why a document which reaches it is one no model holds, is the doc
     // comment of `MAX_AST_DEPTH`.
-    let refused = on_a_stack_for_libsbml(|| read(&document_with_a_flat_sum(MAX_AST_DEPTH + 1)));
+    let refused = read(&document_with_a_flat_sum(MAX_AST_DEPTH + 1));
     assert!(
         matches!(refused, Err(ReadError::MathTooDeep)),
         "one term past the bound"

@@ -37,10 +37,12 @@ pub enum ReadError {
     /// one `apply` per operand after the first, so a flat sum of n terms is a
     /// chain of n levels, and a sum of a thousand terms is ordinary where a
     /// nesting of a thousand is not. No walk of the port follows such a chain
-    /// on the call stack, which is what lets the bound stand at two hundred
-    /// thousand levels, five megabytes of math in one element; what a tree
-    /// costs there, and what libsbml itself cannot hand over whatever this
-    /// bound is, is the doc comment of
+    /// on the call stack; what keeps the bound at ten thousand levels, a sum of
+    /// about 250 KB of MathML in one element, is libsbml, which follows the
+    /// tree of a math on the call stack in `SBase::toSBML()` and dies on a
+    /// deeper one before this error can be answered. The bound is half of what
+    /// that writer survives on the smallest stack a path of the port runs on,
+    /// and the measurement behind it is the doc comment of
     /// [`sbml4humans_model::MAX_AST_DEPTH`].
     #[error(
         "the math is nested deeper than {} levels",

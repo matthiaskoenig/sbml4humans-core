@@ -69,13 +69,13 @@
 //! deepest trees the bound allows are written within 16 KiB, which is the
 //! floor of the method on glibc (`PTHREAD_STACK_MIN`, below which a thread
 //! cannot be asked for less) and no figure of the walk itself. A chain of
-//! 2,000,000 levels, ten times the bound, is written within that same 16 KiB,
-//! which is the measurement that says the depth of a tree no longer shows in
-//! the stack at all. The shapes taken were the two the bound allows through
-//! `math`, a chain of quotients and a chain of sums of 200,000 levels, and
-//! the two whose latex is written, 253 quotients and 253 differences over
-//! such a chain of sums, which are the costliest shapes the earlier slice
-//! found.
+//! 2,000,000 levels, two hundred times the bound, is written within that same
+//! 16 KiB, which is the measurement that says the depth of a tree no longer
+//! shows in the stack at all. The shapes taken were the two the bound allows
+//! through `math`, a chain of quotients and a chain of sums at
+//! [`MAX_AST_DEPTH`], and the two whose latex is written, 253 quotients and
+//! 253 differences over such a chain of sums, which are the costliest shapes
+//! the earlier slice found.
 //!
 //! What those four cost before this, when [`emit`] and `operands` recursed per
 //! level and the bound was 1,000, is the table below. Every row is a tree of
@@ -492,8 +492,7 @@ fn without_trailing_zeros(formatted: &str) -> &str {
 /// # The stack
 ///
 /// The unrolling keeps its own stack on the heap and costs no call frame per
-/// level of the chain it follows, which a flat sum of a hundred thousand terms
-/// is a hundred thousand levels of.
+/// level of the chain it follows, which a flat sum of n terms is n levels of.
 ///
 /// # Errors
 ///

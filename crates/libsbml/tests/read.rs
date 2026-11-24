@@ -461,26 +461,6 @@ const UNKNOWN_MATHS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
   </model>
 </sbml>"#;
 
-/// Runs `work` on a thread with the stack the writers of libsbml need.
-///
-/// Nothing of this crate follows a tree on the call stack, but libsbml does:
-/// `SBase::toSBML()`, which the `xml` of every element of a report is, writes
-/// the math of an element with `writeOperatorArgs`, one call frame per level
-/// of the tree and about 70 bytes of stack per frame (measured against
-/// 5.21.2). The `xml` of an element whose math is a flat sum of the bound
-/// therefore needs about 14 MB of stack, and a test thread is given 2 MiB.
-/// Every document of a test whose math is wider than a few thousand terms is
-/// read on such a thread, and the figures are in the doc comment of
-/// `MAX_AST_DEPTH`.
-fn on_a_stack_for_libsbml<T: Send + 'static>(work: impl FnOnce() -> T + Send + 'static) -> T {
-    std::thread::Builder::new()
-        .stack_size(64 * 1024 * 1024)
-        .spawn(work)
-        .expect("a thread of a stack for libsbml starts")
-        .join()
-        .expect("it ends")
-}
-
 #[test]
 fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
     // The reader of a math is the one place which refuses a math, and it
@@ -488,7 +468,14 @@ fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
     // flat sum, which libsbml reads as a tree of one level per term and is the
     // one shape of a document which reaches the bound: a nesting of that many
     // `apply` elements is one the MathML reader of libsbml dies on long before
-    // (about 6,000 levels, measured against 5.21.2).
+    // (1,272 levels on the stack of this very thread, measured against 5.21.2).
+    //
+    // This runs on the ordinary thread of a test, two megabytes, like the
+    // tests of `crates/report` which read a document at the bound. The `xml`
+    // of the rule below is written by `SBase::toSBML()` of libsbml before the
+    // math is read, and that writer follows the tree on its call stack, so the
+    // test only answers an error at all because the bound stands at half of
+    // what it survives on such a stack.
     let mut body = String::from("<apply><plus/>");
     for _ in 0..=MAX_AST_DEPTH {
         body.push_str("<cn type=\"integer\">1</cn>");
@@ -507,7 +494,7 @@ fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
   </model>
 </sbml>"#
     );
-    let refused = on_a_stack_for_libsbml(move || read(sbml.as_bytes()));
+    let refused = read(sbml.as_bytes());
     assert!(matches!(refused, Err(ReadError::MathTooDeep)));
 }
 

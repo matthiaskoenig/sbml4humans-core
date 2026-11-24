@@ -4,60 +4,81 @@ use std::fmt;
 
 /// The deepest nesting of a syntax tree which a reader or a writer follows.
 ///
-/// # What the bound is a bound on
+/// # Whose stack this is a bound on
 ///
-/// It is memory, and no longer the stack. Every walk of a tree in this
-/// workspace keeps its own stack on the heap, the drop glue of [`Ast`]
-/// included, so a tree costs a walk no call frame per level and the deepest
-/// tree the bound allows is written within a few kilobytes of stack
+/// Not the stack of this workspace. Every walk of a tree here keeps its own
+/// stack on the heap, the drop glue of [`Ast`] included, so a tree costs a walk
+/// of the port no call frame per level and the deepest tree the bound allows is
+/// walked within a few kilobytes: measured at 16 KiB, which is the floor of the
+/// measurement and no figure of the walk
 /// (`the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm` and
 /// `the_deepest_latex_the_bound_allows_is_written_within_the_stack_of_wasm` of
 /// `crates/report/src/math/mod.rs`, both on a thread pinned to the megabyte of
-/// `wasm32-unknown-unknown`; measured at 16 KiB, which is the floor of the
-/// measurement and not a figure of the walk). What is left to bound is what a
-/// tree costs to hold, since the math of a document is untrusted input and the
-/// port must refuse what it cannot hold rather than try.
+/// `wasm32-unknown-unknown`). A chain of 2,000,000 levels, two hundred times
+/// this bound, is walked within that same 16 KiB.
 ///
-/// The bound is reached by the **width** of a math and not by its nesting
-/// alone: the MathML reader of libsbml nests a flat n-ary application into a
-/// binary tree to the left, one `apply` per operand after the first and each
-/// of them holding the sum of the terms before it and the next term, so a flat
-/// sum of n terms is a tree of exactly n levels. A wide sum is ordinary in a
-/// model and no adversarial shape, and the python implementation reports such
-/// a document in full and with its latex, so the bound has to stand where no
-/// document of a user reaches it: a sum of two hundred thousand terms is a
-/// math of five megabytes in one element.
+/// What the bound stands below is the recursion of **libsbml**, which the port
+/// calls and does not own. `SBase::toSBML()` writes the `xml` of every element
+/// of a report (`element_with_xml` of `crates/libsbml/src/fill.rs`) and follows
+/// the syntax tree of the math of that element on the call stack. It is reached
+/// before any bound of this crate can answer an error, since the xml of an
+/// element is written before its math is read, and a stack which runs out is no
+/// error but SIGSEGV, and in WebAssembly the end of the instance. A bound which
+/// admits a document that then ends the process is no bound at all, so this one
+/// is set at half of what libsbml survives on the smallest stack a path of the
+/// port runs on.
 ///
-/// # What the bound costs
+/// | what of libsbml recurses per level | bytes a level | 1 MiB | 2 MiB | 8 MiB |
+/// | --- | --- | --- | --- | --- |
+/// | `SBase::toSBML()`, the xml of an element | 80 | 12,969 | 26,093 | 104,531 |
+/// | `~ASTNode`, the free of the math of a document | 49 | 21,452 | 42,900 | 171,600 |
 ///
-/// Measured on a chain at the bound, which is the tree a flat sum of that many
-/// terms is read as: an [`Ast`] is 104 bytes and a level of such a chain is two
-/// of them and the name of the leaf, 256 bytes measured, so the owned tree of
-/// a math at the bound is about 50 MB. The tree libsbml fills it from is about
-/// five times that, 1.2 KB per node measured over the reader of
-/// `crates/libsbml`, and the two strings the report writes of such a math are
-/// smaller than the tree: 400 KB of formula and 200 KB of latex per hundred
-/// thousand terms of a sum, both measured against the python implementation,
-/// which writes the same bytes.
+/// Measured by bisecting the width of a flat sum, one process per probe, each
+/// operation run on a thread of exactly that size
+/// (`pthread_attr_setstacksize`); the two figures which are not measured
+/// directly follow the bytes a level, which the three measured sizes agree on
+/// to within one percent.
 ///
-/// The temporary scaffolding of `crates/libsbml` cannot hand over a tree much
-/// deeper than this in any case, and for a reason no bound of this crate
-/// guards: libsbml follows a tree on the call stack in writers of its own. Its
-/// `SBase::toSBML()`, which the `xml` of every element of the report is, ends
-/// the process with SIGSEGV at about 105,000 levels on the 8 MiB stack of a
-/// main thread, and its MathML reader at about 6,000 nested `apply` elements.
-/// Both are reached before this bound is, both are the recursion of libsbml
-/// and not of the port, and both go with that crate when the reader of step 2
-/// replaces it.
+/// The smallest stack a path which reaches libsbml runs on is two megabytes:
+/// the cli reads a document on the eight megabytes of a main thread, no crate
+/// of the port creates a thread of its own for a read, and a test of the
+/// workspace runs on the two megabytes the harness of cargo gives a test thread
+/// (measured from `/proc/self/maps`). The lowest cliff of that stack is 26,093
+/// levels, half of it is 13,046, and the bound is the largest round number
+/// below that.
+///
+/// # What the bound refuses
+///
+/// It is reached by the **width** of a math and not by its nesting alone: the
+/// MathML reader of libsbml nests a flat n-ary application into a binary tree to
+/// the left, one `apply` per operand after the first and each of them holding
+/// the sum of the terms before it and the next term, so a flat sum of n terms is
+/// a tree of exactly n levels. What a document has to hold to be refused is
+/// therefore a flat sum of more than ten thousand terms, about 250 KB of MathML
+/// in one element, which the python implementation reports in full and with its
+/// latex. No model of a user writes one, and a document which does gets no
+/// report at all rather than ending the process of whoever asked for it.
+///
+/// A tree at the bound costs about 2.5 MB here, an [`Ast`] being 104 bytes and
+/// a level of such a chain 256 bytes measured, and about 12 MB in libsbml, at
+/// 1.2 KB a node measured.
+///
+/// One cliff of libsbml is left which no bound of the port can guard, since it
+/// ends the process before the port holds a tree of any kind: the MathML reader
+/// of libsbml follows nested `apply` elements on the call stack, at 1.6 KB a
+/// level, and dies inside the read of the document at 1,272 of them on a stack
+/// of two megabytes and at 5,087 on one of eight. That is the nesting of the
+/// source and not the width a flat sum is read as, so no document which reaches
+/// this bound comes near it; it goes with `crates/libsbml` when the reader of
+/// step 2 replaces that crate, and until then only a larger stack hides it.
 ///
 /// A tree past the bound is refused by the reader of a math, which ends the
 /// read of the whole document, and by every writer of `crates/report`:
 /// `a_tree_as_deep_as_the_bound_is_filled_and_one_level_deeper_is_refused` of
 /// `crates/libsbml/tests/math.rs` pins both answers of the reader, and
-/// `a_wide_sum_of_a_hundred_thousand_terms_is_reported_in_full` of
-/// `crates/report/tests/build.rs` pins the report of the width the issue of
-/// this slice names.
-pub const MAX_AST_DEPTH: usize = 200_000;
+/// `a_wide_sum_at_the_bound_is_reported_in_full` of
+/// `crates/report/tests/build.rs` pins the report of a document which holds one.
+pub const MAX_AST_DEPTH: usize = 10_000;
 
 /// Declares [`AstKind`] with its codes, [`AstKind::ALL`] and [`AstKind::from_code`]
 /// from one list, so the three cannot disagree.

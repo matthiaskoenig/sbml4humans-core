@@ -106,9 +106,11 @@ fn read_tree(
 /// # The bound
 ///
 /// This is the one place which answers [`ReadError::MathTooDeep`]. The walk
-/// keeps its own stack on the heap and costs no call frame per level, so what
-/// the bound bounds is the memory a tree takes and no longer the stack it
-/// would need; the doc comment of [`MAX_AST_DEPTH`] carries that account. A
+/// keeps its own stack on the heap and costs no call frame per level, so the
+/// bound is no bound on the stack of this walk: it stands below the stack
+/// libsbml needs for the same tree in `SBase::toSBML()`, which the fill of an
+/// element calls before this and which ends the process rather than answering
+/// an error. The doc comment of [`MAX_AST_DEPTH`] carries that measurement. A
 /// tree of [`MAX_AST_DEPTH`] levels is filled and one of a level more is
 /// refused here, and the whole document with it, since the reader of a math is
 /// the one place which refuses one.
