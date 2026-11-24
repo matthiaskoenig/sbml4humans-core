@@ -2,4 +2,3 @@ target/
 third_party/
 .superpowers/
 __pycache__/
-.reports/
