@@ -24,7 +24,7 @@ use sbml4humans_oracles::{compare, names_a_pointer};
 // Five values the port leaves at a default and no entry of this list silences: the `history`, the
 // `comp`, the `uncertainties` and the `keyValuePairs` of every element, which `build::sbase` leaves
 // at the default of `SBase`, and the `externalModelDefinitions` of the report. The `cvterms` of
-// every element is the fifth of that kind and is the one with an entry, the live
+// every element is the sixth of that kind and is the one with an entry, the live
 // `MINIMAL_MODEL_ONLY` below, because a document of the gate reaches it. The other five are reached
 // by no document of the gate, and an entry for them would take the comparison of one leaf of every
 // element of every document out of the walk; without one the gate fails at their pointer the day a
