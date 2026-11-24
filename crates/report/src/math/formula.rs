@@ -23,6 +23,14 @@ use sbml4humans_model::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};
 /// ambiguous operand of a logical or relational operator whatever its
 /// precedence; and a number prints its `sbml:units` behind its value.
 ///
+/// # The stack
+///
+/// The walk keeps its own stack on the heap, so a tree costs it no call frame
+/// per level: what is left to write is a list of pieces, and a node is one
+/// piece which is replaced by the pieces of what it writes when its turn
+/// comes. Nothing of the formula is decided by what another piece wrote, so
+/// the text is the one the recursive walk this is the port of writes.
+///
 /// # Errors
 ///
 /// [`MathError::TooDeep`] for a tree nested deeper than [`MAX_AST_DEPTH`] and
@@ -31,18 +39,57 @@ use sbml4humans_model::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};
 /// document.
 pub fn formula(ast: &Ast) -> Result<String, MathError> {
     let mut out = String::new();
-    visit(None, ast, 1, &mut out)?;
+    let mut rest = vec![Piece::Visit {
+        parent: None,
+        node: ast,
+        depth: 1,
+    }];
+    while let Some(piece) = rest.pop() {
+        match piece {
+            Piece::Text(text) => out.push_str(text),
+            Piece::Token(node) => format(node, &mut out),
+            Piece::Visit {
+                parent,
+                node,
+                depth,
+            } => visit(parent, node, depth, &mut out, &mut rest)?,
+        }
+    }
     Ok(out)
 }
 
 /* ------------------------------------------------------------------ the walk */
 
+/// One piece of what is left of a formula.
+///
+/// The pieces stand on the stack of [`formula`] with the next one last, so a
+/// writer puts the pieces of what it writes there in reverse.
+enum Piece<'a> {
+    /// A node, the child of a parent, which stands this deep in the tree.
+    Visit {
+        /// The parent of the node, [`None`] for the root of the math.
+        parent: Option<&'a Ast>,
+        /// The node itself.
+        node: &'a Ast,
+        /// How many levels below the root it stands.
+        depth: usize,
+    },
+    /// Literal text.
+    Text(&'static str),
+    /// The token of a node, which stands before or between its children.
+    Token(&'a Ast),
+}
+
 /// Writes `node`, the child of `parent`, at `depth` levels below the root.
-fn visit(
-    parent: Option<&Ast>,
-    node: &Ast,
+///
+/// What stands after a child of the node goes on `rest`, which is what makes
+/// the walk cost no call frame per level.
+fn visit<'a>(
+    parent: Option<&'a Ast>,
+    node: &'a Ast,
     depth: usize,
     out: &mut String,
+    rest: &mut Vec<Piece<'a>>,
 ) -> Result<(), MathError> {
     if depth > MAX_AST_DEPTH {
         return Err(MathError::TooDeep);
@@ -51,34 +98,39 @@ fn visit(
         return Err(MathError::UnknownKind(node.kind));
     }
     if is_log10(node) {
-        visit_one_of_two(node, "log10(", depth, out)
+        visit_one_of_two(node, "log10(", depth, out, rest)
     } else if is_sqrt(node) {
-        visit_one_of_two(node, "sqrt(", depth, out)
+        visit_one_of_two(node, "sqrt(", depth, out, rest)
     } else if is_translated_modulo(node) {
-        visit_modulo(parent, node, depth, out)
+        visit_modulo(parent, node, depth, out, rest)
     } else if is_function(node) {
-        visit_function(node, depth, out)
+        visit_function(node, depth, out, rest);
+        Ok(())
     } else if is_unary_minus(node) {
-        visit_unary(parent, node, '-', depth, out)
+        visit_unary(parent, node, '-', depth, out, rest)
     } else if is_unary_not(node) {
-        visit_unary(parent, node, '!', depth, out)
+        visit_unary(parent, node, '!', depth, out, rest)
     } else {
-        visit_other(parent, node, depth, out)
+        visit_other(parent, node, depth, out, rest);
+        Ok(())
     }
 }
 
 /// Writes `node` as a call of its name, its children separated by `, `.
-fn visit_function(node: &Ast, depth: usize, out: &mut String) -> Result<(), MathError> {
+fn visit_function<'a>(node: &'a Ast, depth: usize, out: &mut String, rest: &mut Vec<Piece<'a>>) {
     format(node, out);
     out.push('(');
-    for (n, child) in node.children.iter().enumerate() {
+    rest.push(Piece::Text(")"));
+    for (n, child) in node.children.iter().enumerate().rev() {
+        rest.push(Piece::Visit {
+            parent: Some(node),
+            node: child,
+            depth: depth + 1,
+        });
         if n > 0 {
-            out.push_str(", ");
+            rest.push(Piece::Text(", "));
         }
-        visit(Some(node), child, depth + 1, out)?;
     }
-    out.push(')');
-    Ok(())
 }
 
 /// Writes `node` as `prefix` and its second child, the form of `log10` and of `sqrt`.
@@ -86,16 +138,21 @@ fn visit_function(node: &Ast, depth: usize, out: &mut String) -> Result<(), Math
 /// libsbml writes a logarithm to the base ten and a root of degree two by the
 /// name of their one argument form, dropping the base or the degree, which
 /// their syntax tree holds as the first child.
-fn visit_one_of_two(
-    node: &Ast,
+fn visit_one_of_two<'a>(
+    node: &'a Ast,
     prefix: &str,
     depth: usize,
     out: &mut String,
+    rest: &mut Vec<Piece<'a>>,
 ) -> Result<(), MathError> {
     let argument = node.children.get(1).ok_or(MathError::MissingChild)?;
     out.push_str(prefix);
-    visit(Some(node), argument, depth + 1, out)?;
-    out.push(')');
+    rest.push(Piece::Text(")"));
+    rest.push(Piece::Visit {
+        parent: Some(node),
+        node: argument,
+        depth: depth + 1,
+    });
     Ok(())
 }
 
@@ -103,32 +160,36 @@ fn visit_one_of_two(
 ///
 /// A unary operator is not of the highest precedence, since a power binds
 /// tighter, so its own parentheses are the ones of [`is_grouped`].
-fn visit_unary(
+fn visit_unary<'a>(
     parent: Option<&Ast>,
-    node: &Ast,
+    node: &'a Ast,
     sign: char,
     depth: usize,
     out: &mut String,
+    rest: &mut Vec<Piece<'a>>,
 ) -> Result<(), MathError> {
     let operand = node.children.first().ok_or(MathError::MissingChild)?;
     let group = is_grouped(parent, node);
     if group {
         out.push('(');
+        rest.push(Piece::Text(")"));
     }
     out.push(sign);
-    visit(Some(node), operand, depth + 1, out)?;
-    if group {
-        out.push(')');
-    }
+    rest.push(Piece::Visit {
+        parent: Some(node),
+        node: operand,
+        depth: depth + 1,
+    });
     Ok(())
 }
 
 /// Writes `node`, a piecewise which spells out a modulo, as `x % y`.
-fn visit_modulo(
+fn visit_modulo<'a>(
     parent: Option<&Ast>,
-    node: &Ast,
+    node: &'a Ast,
     depth: usize,
     out: &mut String,
+    rest: &mut Vec<Piece<'a>>,
 ) -> Result<(), MathError> {
     // the shape is piecewise(x - y * ceil(x / y), xor(x < 0, y < 0), x - y *
     // floor(x / y)), which `is_translated_modulo` established, so x is the first
@@ -140,13 +201,19 @@ fn visit_modulo(
     let group = is_grouped(parent, node);
     if group {
         out.push('(');
+        rest.push(Piece::Text(")"));
     }
-    visit(Some(node), x, depth + 1, out)?;
-    out.push_str(" % ");
-    visit(Some(node), y, depth + 1, out)?;
-    if group {
-        out.push(')');
-    }
+    rest.push(Piece::Visit {
+        parent: Some(node),
+        node: y,
+        depth: depth + 1,
+    });
+    rest.push(Piece::Text(" % "));
+    rest.push(Piece::Visit {
+        parent: Some(node),
+        node: x,
+        depth: depth + 1,
+    });
     Ok(())
 }
 
@@ -156,36 +223,46 @@ fn visit_modulo(
 /// node of one child which is neither a unary operator nor a function cannot
 /// come from a document; libsbml writes it as a call of its token, which this
 /// does too.
-fn visit_other(
+fn visit_other<'a>(
     parent: Option<&Ast>,
-    node: &Ast,
+    node: &'a Ast,
     depth: usize,
     out: &mut String,
-) -> Result<(), MathError> {
+    rest: &mut Vec<Piece<'a>>,
+) {
     let group = is_grouped(parent, node);
     if group {
         out.push('(');
+        rest.push(Piece::Text(")"));
     }
     match node.children.split_first() {
         None => format(node, out),
         Some((only, [])) => {
             format(node, out);
             out.push('(');
-            visit(Some(node), only, depth + 1, out)?;
-            out.push(')');
+            rest.push(Piece::Text(")"));
+            rest.push(Piece::Visit {
+                parent: Some(node),
+                node: only,
+                depth: depth + 1,
+            });
         }
-        Some((first, rest)) => {
-            visit(Some(node), first, depth + 1, out)?;
-            for child in rest {
-                format(node, out);
-                visit(Some(node), child, depth + 1, out)?;
+        Some((first, children)) => {
+            for child in children.iter().rev() {
+                rest.push(Piece::Visit {
+                    parent: Some(node),
+                    node: child,
+                    depth: depth + 1,
+                });
+                rest.push(Piece::Token(node));
             }
+            rest.push(Piece::Visit {
+                parent: Some(node),
+                node: first,
+                depth: depth + 1,
+            });
         }
     }
-    if group {
-        out.push(')');
-    }
-    Ok(())
 }
 
 /* ------------------------------------------------------------- the grouping */
