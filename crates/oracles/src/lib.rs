@@ -38,6 +38,40 @@ pub fn compare(ours: &Value, theirs: &Value, excluded: &[&str]) -> Vec<String> {
     differences
 }
 
+/// Whether `entry` matches a pointer of `value`, in either of the two forms of an entry.
+///
+/// It is the measure of whether an entry of an exclusion list is spelled to match the report at
+/// all, which the liveness of that entry does not say: an entry whose pointer both sides of the
+/// gate agree on silences no difference, and so does an entry which names nothing at all because
+/// it is misspelled or carries a form the matcher does not have. The segment match is exact, so
+/// `**/unitsLatex` does not match `substanceUnitsLatex`, and this answers that it does not.
+///
+/// The pointers are the ones [`compare`] walks, the object and the array among them, so an entry
+/// which names a list the report writes empty is matched as well.
+pub fn names_a_pointer(entry: &str, value: &Value) -> bool {
+    let mut stack = vec![(String::new(), value)];
+    while let Some((pointer, value)) = stack.pop() {
+        if is_excluded(&pointer, &[entry]) {
+            return true;
+        }
+        match value {
+            Value::Object(fields) => stack.extend(
+                fields
+                    .iter()
+                    .map(|(key, value)| (format!("{pointer}/{}", escape(key)), value)),
+            ),
+            Value::Array(items) => stack.extend(
+                items
+                    .iter()
+                    .enumerate()
+                    .map(|(index, value)| (format!("{pointer}/{index}"), value)),
+            ),
+            _ => {}
+        }
+    }
+    false
+}
+
 /// The last segment of a pointer, `None` for the pointer of the root, which has none.
 fn last_segment(pointer: &str) -> Option<&str> {
     pointer.rsplit_once('/').map(|(_, last)| last)
