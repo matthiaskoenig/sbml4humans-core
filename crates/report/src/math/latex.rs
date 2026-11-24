@@ -109,7 +109,15 @@
 //! The two chains of a thousand of the fourth row cost 1,335 KiB (quotients)
 //! and 1,401 KiB (differences) through [`latex`] alone, the second of them the
 //! figure of the first table above: the same walk, which the depth rule now
-//! keeps a report away from.
+//! keeps a report away from. Both of those two were measured the way every
+//! figure of the two tables was, by bisecting in steps of 1 KiB the size of the
+//! thread the walk runs on, and both were taken again at the review of this
+//! slice and read the same: the quotients are a bare `chain(AstKind::Divide,
+//! MAX_AST_DEPTH)` and the differences the chain of
+//! `a_chain_of_differences_whose_operands_are_compared_is_written_without_overflowing_the_stack`
+//! of `tests/latex.rs`, each handed to [`latex`] with no depth rule in front of
+//! it. They are the largest figures this crate has measured and no test carries
+//! them, because `math` cannot reach either shape any more.
 //!
 //! So the deepest latex walk which is still reachable fits, with room to spare,
 //! in the megabyte of wasm in a debug build. A release build has smaller frames

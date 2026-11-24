@@ -337,9 +337,12 @@ mod tests {
     // in the stack of wasm, is now unreachable through `math`.
     //
     // Measured on this thread in a debug build, bisected to 1 KiB: the quotients
-    // need 684 KiB and the differences 704 KiB, which is the worst walk this
-    // crate has measured and the figure the table of `latex.rs` says a later
-    // slice must not lose.
+    // need 684 KiB and the differences 704 KiB, which is the worst walk still
+    // reachable through `math` and the figure the table of `latex.rs` says a
+    // later slice must not lose. It is not the worst this crate has measured:
+    // the same two shapes as a bare chain of a thousand cost 1,335 KiB and
+    // 1,401 KiB through `latex` alone, and those are the walks the depth rule
+    // keeps a report away from.
     #[test]
     fn the_deepest_latex_the_bound_allows_is_written_within_the_stack_of_wasm() {
         for shape in [
