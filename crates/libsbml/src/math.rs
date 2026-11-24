@@ -109,8 +109,9 @@ fn read_tree(
 /// recurses once per level of the tree, as `operands` of
 /// `crates/report/src/math/latex.rs` does per level of a chain it unrolls.
 /// What the bound costs is no theoretical shape. libsbml nests a flat n-ary
-/// application into a binary tree of one `apply` per operand after the first,
-/// so a flat sum of [`MAX_AST_DEPTH`] + 1 terms, an ordinary wide sum of a
+/// application into a binary tree to the left, one `apply` per operand after
+/// the first, so a flat sum of [`MAX_AST_DEPTH`] + 1 terms, an ordinary wide
+/// sum of a
 /// model, is a chain of that many levels and is refused here, and the whole
 /// document with it; the python implementation reports the same document in
 /// full and with its latex, since `writeMathML` unrolls the nesting back into

@@ -3,16 +3,17 @@
 use sbml4humans_oracles::{compare, names_a_pointer};
 
 // What this slice does not build yet, and the values it fabricates, each line saying which slice
-// removes it. No field this slice does build belongs here: such a field is compared, so a
-// regression in the code the gate guards shows up. Every later slice removes lines from this
-// list, and the list is empty when the port is complete.
+// removes it. Every later slice removes lines from this list, and the list is empty when the port
+// is complete.
 //
-// The list says what the port does not build and is no proof of it: it is as complete as the last
-// reading of the builder against `model.py` of the python implementation. The four classes from
-// `/models/0/substanceUnits` on were added at the review of this slice, found by measuring an
-// ordinary Level 3 Version 2 document against python and not by the gate, which was green over all
-// four because no document of `testdata/` reaches one of them. The five values below are of that
-// same kind and are named here rather than silenced, which is said where they are named.
+// The rule of the list, so that the next reader applies it rather than deriving it again: an entry
+// belongs here when the port writes a value which **differs** from the one python writes on a
+// document the gate already has, which is what would make the gate red today. The fabricated `-` of
+// `derivedUnits`, the missing `unitsLatex`, the empty `linkGraph` and the lists of a package are
+// those. A value the port does not build which **agrees** with python on every document of the gate
+// is declared below instead and stays compared: silencing an agreement buys nothing and costs the
+// comparison. No field this slice does build belongs here either, for the same reason: such a field
+// is compared, so a regression in the code the gate guards shows up.
 //
 // Every entry of this list silences the same pointer of every document of the gate, so a pointer
 // which names an element by its place in a list belongs to the one document it is owed on and not
@@ -21,17 +22,51 @@ use sbml4humans_oracles::{compare, names_a_pointer};
 // `every_entry_of_the_exclusion_lists_silences_a_difference_of_a_document_it_covers` and by
 // `every_entry_of_the_exclusion_lists_names_a_pointer_of_a_document_it_covers`.
 //
-// Five values the port leaves at a default and no entry of this list silences: the `history`, the
-// `comp`, the `uncertainties` and the `keyValuePairs` of every element, which `build::sbase` leaves
-// at the default of `SBase`, and the `externalModelDefinitions` of the report. The `cvterms` of
-// every element is the sixth of that kind and is the one with an entry, the live
-// `MINIMAL_MODEL_ONLY` below, because a document of the gate reaches it. The other five are reached
-// by no document of the gate, and an entry for them would take the comparison of one leaf of every
-// element of every document out of the walk; without one the gate fails at their pointer the day a
-// document carries one, which says the same thing louder. They are removed by the slices which
-// read the annotation RDF, the comp extension and the distrib and fbc annotations of an element.
+// What the port does not build and no entry silences. Nine classes, every one of them `null`, the
+// empty list or absent on both sides of every document of the gate, so each agrees today and none
+// of them is silenced. The day a document states one, the gate fails at its pointer with
+// `ours null but python "mole"`, which names the value which is owed and asks for it to be built;
+// an entry here would take that failure away and leave the liveness test saying that a line of the
+// list became live, which is less. So this is the declaration, and no list to widen:
+//
+//   - The six unit attributes of a model, `substanceUnits`, `timeUnits`, `volumeUnits`, `areaUnits`,
+//     `lengthUnits` and `extentUnits` (core §4.2.4). A plain read the filler skips, owed by the
+//     slice which finishes the attributes of a model. Setting `substanceUnits` and `timeUnits` is
+//     near universal in a Level 3 model, so this is the class the next document of the gate is
+//     likeliest to make red.
+//   - The six latex renderings of those attributes, `substanceUnitsLatex` to `extentUnitsLatex`.
+//     They need the renderer `**/unitsLatex` below waits for, owed by the slice which derives
+//     units. `**/unitsLatex` covers none of the six: the segment match of an entry is exact, and
+//     the segment of such a field is `substanceUnitsLatex` and never `unitsLatex`.
+//   - The `conversionFactor` of a model and of a species (core §4.2.5, §4.6.7). Python resolves the
+//     parameter the attribute names in the model and writes its `sid`, its `value` and its `units`
+//     (`sbmlinfo.conversion_factor`), so a species with a `conversionFactor="cf"` is
+//     `{"sid": "cf", "units": null, "value": 2.0}` there and `null` here. Owed by the slice which
+//     resolves the parameter an element names.
+//   - The `lists` of every element: the `listOf` containers which state something of their own, a
+//     `listOfReactants` with an id, a `listOfSpecies` with a notes, which every `ListOf` class of
+//     SBML may carry because it derives from `SBase` (core §4.2.7, `sbmlinfo.lists`). Owed by the
+//     slice which reads the lists of an element.
+//   - The `fbc` of a species and of a reaction (fbc §3.4, §3.5), owed by the slice which reads fbc.
+//     The `fbc` of a model is the one of the three which differs on a document of the gate today,
+//     the `{"activeObjective": null, "strict": false}` of `minimal_model.xml`, and is the entry
+//     `/models/0/fbc` below.
+//   - The `history`, the `comp`, the `uncertainties` and the `keyValuePairs` of every element, which
+//     `build::sbase` leaves at the default of `SBase`, and the `externalModelDefinitions` of the
+//     report. Owed by the slices which read the annotation RDF (the history of an element is parsed
+//     out of it, as the cvterms are), the comp extension of an element, the distrib and the fbc
+//     annotations of one, and the model definitions of a document. The `cvterms` of an element is of
+//     that same kind and is the one with an entry, the live `MINIMAL_MODEL_ONLY` below, because a
+//     document of the gate reaches it and the port differs there.
+//
+// This list and that declaration together are the whole account of what the port does not build, as
+// of the last reading of the builder against `model.py` of the python implementation. The nine
+// classes were written down at the review of this slice, found by that reading and by measuring an
+// ordinary Level 3 Version 2 document against python, and not by the gate, which is green over all
+// nine and stays green over them.
 const EXCLUDED: &[&str] = &[
     "/models/0/listOfPorts",
+    "/models/0/fbc",
     "/models/0/listOfSubmodels",
     "/models/0/listOfGeneProducts",
     "/models/0/listOfObjectives",
@@ -53,60 +88,6 @@ const EXCLUDED: &[&str] = &[
     // renderer and not a reader, which sets this line apart from `**/derivedUnits` above, where
     // the port cannot ask libsbml what it derives. Removed by the slice which derives units.
     "**/unitsLatex",
-    // The six attributes of a model which name a unit of it and the six latex renderings of them
-    // (core §4.2.4). The port writes `null` for all twelve whatever the document states, where
-    // python answers `mole` and `second` and the latex `mol` and `s` for the
-    // `substanceUnits="mole" timeUnits="second"` an ordinary Level 3 model sets, so the port drops
-    // on such a document the two units every number of it is read in. The pointers are exact, one
-    // per field, because the twelve sit on a model and on nothing else, and because
-    // `**/substanceUnits` would silence the `substanceUnits` of a species, which the port does
-    // build. `**/unitsLatex` above covers none of the six latex fields: the segment match is
-    // exact, so it matches `unitsLatex` and never `substanceUnitsLatex`. Reached by no document of
-    // the gate, so all twelve are entries of `UNREACHED` as well. The six attributes are a plain
-    // read the filler skips, owed by the slice which finishes the attributes of a model; the six
-    // latex fields need the renderer of `**/unitsLatex`, owed by the slice which derives units.
-    "/models/0/substanceUnits",
-    "/models/0/substanceUnitsLatex",
-    "/models/0/timeUnits",
-    "/models/0/timeUnitsLatex",
-    "/models/0/volumeUnits",
-    "/models/0/volumeUnitsLatex",
-    "/models/0/areaUnits",
-    "/models/0/areaUnitsLatex",
-    "/models/0/lengthUnits",
-    "/models/0/lengthUnitsLatex",
-    "/models/0/extentUnits",
-    "/models/0/extentUnitsLatex",
-    // The conversion factor of a model and of a species (core §4.2.5, §4.6.7), which the port
-    // writes as `null` for every document. Python resolves the parameter the attribute names in
-    // the model and writes its `sid`, its `value` and its `units`
-    // (`sbmlinfo.conversion_factor`), so a species with a `conversionFactor="cf"` is
-    // `{"sid": "cf", "units": null, "value": 2.0}` there and `null` here. The trailing segment
-    // covers the model, the species and the `conversionFactor` of a comp `replacedElement`, and no
-    // element whose conversion factor the port builds, because it builds none. Reached by no
-    // document of the gate. Removed by the slice which resolves the parameter an element names.
-    "**/conversionFactor",
-    // The `listOf` containers of an element which state something of their own: a `listOfReactants`
-    // with an id, a `listOfSpecies` with a notes. Every `ListOf` class of SBML derives from `SBase`
-    // (core §4.2.7), and python carries one entry per such list in the `lists` of the element which
-    // owns it, with the name the list has in the file, the number of its elements and the xml of
-    // the list without them (`sbmlinfo.lists`); the port writes the empty list for every element of
-    // every document. Reached by no document of the gate: every list of every element of them
-    // states nothing at all, so both sides write `[]` and no leaf of the walk sits below one.
-    // Removed by the slice which reads the lists of an element.
-    "**/lists",
-    // The fbc extension of a model, of a species and of a reaction: the `strict` and the
-    // `activeObjective` of a model (fbc §3.3), the `chemicalFormula` and the `charge` of a species
-    // (fbc §3.4) and the two flux bounds and the gene product association of a reaction (fbc §3.5).
-    // The port writes `null` for all three. The fbc of the model of `minimal_model.xml`, which
-    // python writes as `{"activeObjective": null, "strict": false}`, is the one of the three a
-    // document of the gate reaches and what keeps this entry live. The fbc of a species and of a
-    // reaction is reached by no document of the gate and can be in no `UNREACHED` entry of its own:
-    // an entry is an exact pointer or a last segment and nothing between, and an exact pointer per
-    // index would name an element by its place. So this one line declares all three and the day a
-    // document carries the fbc of a species or of a reaction it silences it, where the liveness
-    // test would have named it. Removed by the slice which reads fbc.
-    "**/fbc",
     "/linkGraph",
     "/odeSystem",
     "/odeError",
@@ -186,24 +167,19 @@ gated! {
     the_report_of_level2_reactions_equals_the_python_report = "level2_reactions", &[];
 }
 
-// The entries of `EXCLUDED` which no document of the gate reaches, and why. An entry which is here
-// is a value the port does not build and which no document of `testdata/` carries, so both sides
-// write the same nothing for it and the entry silences no difference today; the liveness test says
-// so the day one of them is reached, which is the whole reason they are listed.
+// The entries of `EXCLUDED` which no document of the gate reaches, and why: each is the list of the
+// elements of a package, which the port writes as the empty list python writes for a document
+// without that package, so only a document which carries the package differs in it. The two
+// documents this slice adds hold no package at all, by the ruling of the slice, and of the two
+// before them `minimal_model.xml` is the one with a comp port and an fbc plugin, which is why
+// `/models/0/listOfPorts` and `/models/0/fbc` are live and are not listed here. The slice which
+// reads the packages brings the documents which make these seven live, and removes them from
+// `EXCLUDED` together with the two.
 //
-// The first seven are the list of the elements of a package, which the port writes as the empty
-// list python writes for a document without that package, so only a document which carries the
-// package differs in it. The two documents this slice adds hold no package at all, by the ruling of
-// the slice, and of the two before them `minimal_model.xml` is the one with a comp port and an fbc
-// plugin, which is why `/models/0/listOfPorts` and `**/fbc` are live and are not listed here. The
-// slice which reads the packages brings the documents which make these seven live, and removes them
-// from `EXCLUDED` together with the two.
-//
-// The fourteen after them are the three classes of core values the port does not build which no
-// document of the gate states: the twelve unit fields of a model, the conversion factor of a model
-// and of a species, and the lists of an element. Each is near universal in a real Level 3 model,
-// `substanceUnits` and `timeUnits` above all, so each is a line the next document of the gate is
-// likely to make live.
+// An entry belongs here only where the port writes something a document of the gate could differ
+// in, which a list of a package is: the port writes the empty list of a document without the
+// package, so a document with it differs. A value which agrees with python on every document, like
+// the nine classes declared at the head of `EXCLUDED`, is in neither list.
 const UNREACHED: &[&str] = &[
     "/models/0/listOfSubmodels",
     "/models/0/listOfGeneProducts",
@@ -212,20 +188,6 @@ const UNREACHED: &[&str] = &[
     "/models/0/listOfUserDefinedConstraints",
     "/models/0/listOfQualitativeSpecies",
     "/models/0/listOfTransitions",
-    "/models/0/substanceUnits",
-    "/models/0/substanceUnitsLatex",
-    "/models/0/timeUnits",
-    "/models/0/timeUnitsLatex",
-    "/models/0/volumeUnits",
-    "/models/0/volumeUnitsLatex",
-    "/models/0/areaUnits",
-    "/models/0/areaUnitsLatex",
-    "/models/0/lengthUnits",
-    "/models/0/lengthUnitsLatex",
-    "/models/0/extentUnits",
-    "/models/0/extentUnitsLatex",
-    "**/conversionFactor",
-    "**/lists",
 ];
 
 /// The document of `GATED` named `name`, which the gate test of every one of them passes.
@@ -353,8 +315,8 @@ fn silences(
 // alone, which is the document it is owed on and the only one it silences. Either way a dead entry
 // is one of two things: the value it hid is a value the port now builds, and the gate would no
 // longer guard that value, or no document of the gate reaches it, and the line reads as a gap of the
-// port which is none. The second is the honest state of the entries of `UNREACHED`, which name what
-// they wait for; every other entry has to be live.
+// port which is none. The second is the honest state of the seven package lists of `UNREACHED`,
+// which name what they wait for; every other entry has to be live.
 #[test]
 fn every_entry_of_the_exclusion_lists_silences_a_difference_of_a_document_it_covers() {
     // the stem of a document appears once in `GATED`: `of` answers the first line which carries it,
@@ -427,9 +389,9 @@ fn every_entry_of_the_exclusion_lists_silences_a_difference_of_a_document_it_cov
 // not say: an entry of `UNREACHED` silences no difference by definition, and neither does an entry
 // which names nothing at all. The two are told apart here, by asking whether the entry matches a
 // pointer of the report of a document it covers, the pointer of an object or of an empty list
-// included. It is the measure the twelve unit fields of a model need: the segment match is exact,
-// so `**/unitsLatex` names `unitsLatex` and never `substanceUnitsLatex`, and an entry which was
-// written in that form would silence nothing and look like a declaration all the same.
+// included. The form of an entry is easy to get wrong in a way nothing else catches: the segment
+// match is exact, so `**/unitsLatex` names `unitsLatex` and never `substanceUnitsLatex`, and an
+// entry written for the wrong segment silences nothing while reading like a line which does.
 #[test]
 fn every_entry_of_the_exclusion_lists_names_a_pointer_of_a_document_it_covers() {
     let gated: Vec<(serde_json::Value, serde_json::Value)> = GATED

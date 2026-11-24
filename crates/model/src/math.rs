@@ -5,9 +5,11 @@
 /// # What the bound costs
 ///
 /// It is reached by the **width** of a math and not by its nesting alone: the
-/// MathML reader of libsbml nests a flat n-ary application into a binary tree,
-/// one `apply` per operand after the first, so a flat sum of a thousand terms
-/// is a tree of a thousand levels and a flat sum of one term more is refused.
+/// MathML reader of libsbml nests a flat n-ary application into a binary tree
+/// to the left, one `apply` per operand after the first and each of them
+/// holding the sum of the terms before it and the next term, so a flat sum of
+/// a thousand terms is a tree of exactly a thousand levels and a flat sum of
+/// one term more is refused.
 /// A wide sum is ordinary in a model and no adversarial shape, and the python
 /// implementation reports such a document in full and with its latex, because
 /// `writeMathML` unrolls the nesting back into one flat `apply`, so the lxml

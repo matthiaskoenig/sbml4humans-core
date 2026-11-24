@@ -708,9 +708,9 @@ fn document_with_a_flat_sum(terms: usize) -> Vec<u8> {
 
 #[test]
 fn a_wide_sum_is_reported_in_full_up_to_the_bound_and_costs_the_whole_report_past_it() {
-    // The MathML reader of libsbml nests a flat n-ary sum into a binary tree of
-    // one apply per term, so a flat sum of `MAX_AST_DEPTH` terms is a tree of
-    // exactly the bound and one term more is past it. The refusal is the reader's
+    // The MathML reader of libsbml nests a flat n-ary sum into a binary tree to
+    // the left, one apply per term, so a flat sum of `MAX_AST_DEPTH` terms is a
+    // tree of exactly the bound and one term more is past it. The refusal is the reader's
     // and ends the read of the document, so the blast radius of one wide sum is
     // the whole report and not the math of the one element which holds it.
     //

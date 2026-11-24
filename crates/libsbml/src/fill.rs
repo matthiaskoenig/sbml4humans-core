@@ -31,8 +31,8 @@ pub enum ReadError {
     ///
     /// An ordinary document reaches it, and loses its whole report over it: the
     /// MathML reader of libsbml nests a flat n-ary application into a binary
-    /// tree of one `apply` per operand after the first, so a flat sum of
-    /// 1,001 terms is a chain of 1,001 levels and is answered with this, while
+    /// tree to the left, one `apply` per operand after the first, so a flat sum
+    /// of 1,001 terms is a chain of 1,001 levels and is answered with this, while
     /// the python implementation reports such a document in full and with its
     /// latex (`writeMathML` unrolls the nesting back into one flat `apply`).
     /// The two walks which still recurse per level are what keeps the bound
