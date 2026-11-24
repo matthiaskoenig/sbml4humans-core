@@ -1430,9 +1430,9 @@ fn emit_logarithm<'a>(
 ) {
     // the base stands in a logbase and is no child of the apply, so the
     // argument alone is written and tested
-    let argument: Vec<&Ast> = args.get(1..).unwrap_or_default().to_vec();
+    let written: Vec<&Ast> = args.get(1..).unwrap_or_default().to_vec();
     let subscript = args.len() > 1 && !args.first().is_some_and(|b| wrapper_number_is(b, 10.0));
-    emit_named(node, &argument, "log", subscript, p, op, depth, walk);
+    emit_named(node, &written, "log", subscript, p, op, depth, walk);
 }
 
 /// Writes a quotient as a fraction, in parentheses where it is the base of a power.

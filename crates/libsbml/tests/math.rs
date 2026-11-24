@@ -529,9 +529,9 @@ fn a_string_which_is_no_formula_is_an_error_and_never_a_panic() {
 /// Its MathML reader follows the nesting of a document on its own call stack,
 /// 1.6 KB per level measured against 5.21.2, and ends the process with SIGSEGV
 /// at 1,272 levels on the 2 MiB stack a test thread is given and at 5,087 on
-/// the 8 MiB of a main thread. This is half of what the thread of a test
-/// survives, so that the measurement of a machine whose frames are a little
-/// larger does not take the run down. A nesting is therefore no shape a test
+/// the 8 MiB of a main thread. This is 39 percent of what the thread of a
+/// test survives, so that the measurement of a machine whose frames are a
+/// little larger does not take the run down. A nesting is therefore no shape a test
 /// of this crate can take to the bound, and the shape which does reach the
 /// bound is a flat sum, whose nesting libsbml builds without recursing. The
 /// fill of this crate follows neither on the call stack.
@@ -568,19 +568,61 @@ fn the_math_reads_of_many_threads_do_not_race() {
     }
 }
 
+/// A width whose tree libsbml cannot free with its own destructor.
+///
+/// `~ASTNode` deletes the children of a node itself, one call frame per level
+/// and 49 bytes a level measured, so a plain `delete` of a chain of this many
+/// nodes dies between 42,000 and 44,000 levels on the two megabytes a test
+/// thread is given. The fill refuses such a tree at the bound, long before
+/// this, and `Parsed::drop` then has to free what libsbml built of the whole
+/// string: that free is `s4h_ast_free` of the shim, which takes the tree apart
+/// on a stack of its own, and this is the width which holds it to that.
+const PAST_THE_CLIFF_OF_A_RECURSIVE_DELETE: usize = 50_000;
+
+#[test]
+fn a_tree_too_wide_to_delete_recursively_is_freed_when_the_fill_refuses_it() {
+    let refused = read_math(&flat_sum(PAST_THE_CLIFF_OF_A_RECURSIVE_DELETE));
+    assert!(matches!(refused, Err(ReadError::MathTooDeep)));
+}
+
+/// Runs `work` on a thread of one megabyte, the stack of a wasm instance.
+///
+/// Nothing of this crate reaches WebAssembly, where there is no libsbml, but
+/// the fill is held to the same rule as the writers of `crates/report`: it
+/// walks a tree on a stack of its own and costs no call frame per level. A
+/// read of a string is the one path of this crate which does not call
+/// `SBase::toSBML()` of libsbml on the way, so it is the one which can be
+/// pinned to a stack this small. A walk which brings a frame per level back
+/// takes the whole run down here rather than failing a test somewhere else.
+fn on_a_megabyte_of_stack<T: Send + 'static>(work: impl FnOnce() -> T + Send + 'static) -> T {
+    std::thread::Builder::new()
+        .stack_size(1024 * 1024)
+        .spawn(work)
+        .expect("a thread of a megabyte starts")
+        .join()
+        .expect("it ends")
+}
+
+#[test]
+fn a_tree_at_the_bound_is_filled_within_the_stack_of_a_wasm_instance() {
+    let depth = on_a_megabyte_of_stack(|| {
+        depth_of(&read_math(&flat_sum(MAX_AST_DEPTH)).expect("a flat sum of the bound"))
+    });
+    assert_eq!(depth, MAX_AST_DEPTH);
+}
+
 #[test]
 fn a_tree_as_deep_as_the_bound_is_filled_and_one_level_deeper_is_refused() {
     // The shape is a flat sum, the one shape of a document which reaches the
-    // bound at all: the fill walks a tree on a stack of its own, so the bound
-    // is where the memory of a tree stops being memory the port will spend and
-    // not where a stack runs out.
-    //
-    // The tree libsbml builds of either string is freed when the read ends,
-    // which is the second walk this pins: `~ASTNode` deletes the children of a
-    // node itself, one call frame per level, and a plain `delete` of a chain
-    // of 300,000 nodes ends the process on the 8 MiB stack of a main thread,
-    // where a test thread gets 2 MiB. `s4h_ast_free` of the shim takes the
-    // tree apart on a stack of its own instead.
+    // bound at all. The bound is where a stack runs out, and the stack is
+    // libsbml's: `SBase::toSBML()` writes the xml of every element of a report
+    // and follows the tree of its math on the call stack, 80 bytes a level, so
+    // it dies at 26,093 levels on the two megabytes a test thread is given.
+    // The bound is half of that, which is what makes this refusal an error
+    // here rather than a SIGSEGV somewhere in the fill of a document. The fill
+    // of this crate walks a tree on a stack of its own and would not care
+    // where the bound stood; the doc comment of `MAX_AST_DEPTH` carries the
+    // measurement of both.
     {
         let at_the_bound = read_math(&flat_sum(MAX_AST_DEPTH)).expect("a flat sum of the bound");
         assert_eq!(depth_of(&at_the_bound), MAX_AST_DEPTH);
@@ -617,7 +659,10 @@ fn the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone(
     // slice names and one term past the bound the port had, is read as a tree
     // of 1,001 levels. The report of a sum at the bound itself, its latex
     // included, is pinned by `a_wide_sum_at_the_bound_is_reported_in_full` of
-    // `crates/report/tests/build.rs`.
+    // `crates/report/tests/build.rs`, and what the bound refuses stands far
+    // past this width, which
+    // `a_tree_as_deep_as_the_bound_is_filled_and_one_level_deeper_is_refused`
+    // pins at the bound itself.
     let wide = read_math(&flat_sum(A_WIDE_SUM)).expect("a flat sum of 1,001 terms");
     assert_eq!(depth_of(&wide), A_WIDE_SUM);
     assert_eq!(wide.kind, AstKind::Plus);
@@ -629,14 +674,11 @@ fn the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone(
         AstKind::Plus,
         "the nesting is on the left operand"
     );
-    // what the bound refuses stands far past this width, which
-    // `a_tree_as_deep_as_the_bound_is_filled_and_one_level_deeper_is_refused`
-    // pins at the bound itself
 }
 
 /// The width of the flat sum the issue of this slice names, which the port
 /// refused whole before it and reports in full after it. The bound stands at
-/// ten times this.
+/// 10,000 terms, about ten times this.
 const A_WIDE_SUM: usize = 1_001;
 
 #[test]

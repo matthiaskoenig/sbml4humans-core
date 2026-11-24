@@ -1126,8 +1126,10 @@ void s4h_ast_free(ASTNode* node) {
         stack.pop_back();
         for (unsigned int n = top->getNumChildren(); n > 0; --n) {
             ASTNode* child = top->getChild(n - 1);
-            top->removeChild(n - 1);
-            if (child != nullptr) {
+            // a child is pushed only once it is detached, so that nothing on
+            // the stack is deleted a second time by the destructor of its
+            // parent should `removeChild` ever refuse an index
+            if (child != nullptr && top->removeChild(n - 1) == LIBSBML_OPERATION_SUCCESS) {
                 stack.push_back(child);
             }
         }

@@ -31,7 +31,14 @@ use std::fmt;
 /// | what of libsbml recurses per level | bytes a level | 1 MiB | 2 MiB | 8 MiB |
 /// | --- | --- | --- | --- | --- |
 /// | `SBase::toSBML()`, the xml of an element | 80 | 12,969 | 26,093 | 104,531 |
-/// | `~ASTNode`, the free of the math of a document | 49 | 21,452 | 42,900 | 171,600 |
+/// | `~ASTNode`, the `delete` of a document by libsbml | 49 | 21,452 | 42,900 | 171,600 |
+///
+/// The second row is the destructor chain of libsbml itself, which frees the
+/// math of every element when a document is deleted and which the shim never
+/// touches: the iterative `s4h_ast_free` of the shim frees the tree of a
+/// string it was asked to read and nothing of a document. It does not bind,
+/// standing above the writer on every stack, and it is here because it is the
+/// second thing of libsbml which follows a tree on the call stack.
 ///
 /// Measured by bisecting the width of a flat sum, one process per probe, each
 /// operation run on a thread of exactly that size
