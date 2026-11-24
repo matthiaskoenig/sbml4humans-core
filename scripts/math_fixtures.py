@@ -10,6 +10,11 @@ to `testdata/oracles/maths.json` together with its own provenance.
 
 The two shapes of `SYNTHETIC` are added to the maths of the corpus, which reaches neither of them.
 
+Every value of an entry is a string or `None`, and a number of a math is a character of the
+`formula` or of the `latex` and no double of its own, so the bare `Infinity` which
+`json.dumps` writes of a non-finite float cannot arise here the way it can in the report
+fixtures of `oracle_fixtures.py`.
+
 Usage, from the backend/ directory of the python repository:
     uv run --frozen python -I /path/to/sbml4humans-core/scripts/math_fixtures.py
 """
@@ -158,6 +163,11 @@ def main() -> None:
         ),
         "element_types": sorted(MATH_TYPES),
         "excluded": EXCLUDED,
+        # `count` is how many maths the corpus holds, before they are deduplicated by
+        # their mathml and without the two of `SYNTHETIC`; `distinct` is how many
+        # entries the fixture holds, after the deduplication and with those two. So
+        # `distinct` is the number of the entries the gate asserts and `count` is no
+        # count of anything in the file.
         "count": total,
         "synthetic": {name: why for name, (_, why) in SYNTHETIC.items()},
         "distinct": len(maths),

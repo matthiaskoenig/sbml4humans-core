@@ -77,13 +77,25 @@ def rust_libsbml() -> dict:
 
 
 def report_json(path: Path) -> dict:
-    """Return the report of the one SBML entry of a file, serialized by alias."""
+    """Return the report of the one SBML entry of a file, serialized as the api sends it.
+
+    The serializer is `model_dump_json`, the one the http api uses, and not
+    `model_dump(mode="json")`: the `ser_json_inf_nan="strings"` of the report model
+    (`model.py:32-34`) applies to the JSON serializer of pydantic alone, so the latter
+    hands back the float `inf` and `json.dumps` writes it as the bare token `Infinity`,
+    which is no JSON at all and the opposite of the contract the api answers,
+    `"Infinity"`, `"-Infinity"` and `"NaN"` as strings. No fixture holds a non-finite
+    double today and both serializations agree on all four documents of the gate, so
+    this changes no committed byte; it becomes the difference between a fixture and a
+    file `serde_json` refuses as soon as a document of fbc, whose flux bounds are valued
+    `INF` and `-INF`, is gated.
+    """
     response = report_for_path(path, trusted=True)
     entries = response.reports
     if len(entries) != 1:
         raise ValueError(f"{path} has {len(entries)} entries, expected one")
     entry = next(iter(entries.values()))
-    return entry.model_dump(mode="json", by_alias=True)["report"]
+    return json.loads(entry.model_dump_json(by_alias=True))["report"]
 
 
 def main(argv: list[str]) -> None:

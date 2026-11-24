@@ -8,6 +8,11 @@ use sbml4humans_report::{formula, math};
 const PRINTED: usize = 20;
 
 /// How many entries the fixture holds: the 1,832 maths of the corpus and the 2 of the bound.
+///
+/// It is the `distinct` of the provenance of the fixture, the number of its entries after they
+/// were deduplicated by their mathml and with the two synthetic ones among them. The `count` of
+/// that provenance is another number, 2,328: how many maths the corpus holds before the
+/// deduplication and without the two synthetic ones, so it counts nothing in the file.
 const ENTRIES: usize = 1834;
 
 // The fixture is the math of the whole corpus, enumerated document wide: one of its 1,832
