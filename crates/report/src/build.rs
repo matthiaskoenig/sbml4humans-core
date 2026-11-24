@@ -29,6 +29,50 @@ const DOCUMENT_KEY: &str = "document";
 /// The key python gives a model which carries neither an id nor a metaId (`MAIN_MODEL_KEY`).
 const MAIN_MODEL_KEY: &str = "model";
 
+/// An object of the document model which carries the fields of `SBase`.
+///
+/// Every list of a model is keyed by one call per list, which reaches the fields of `SBase` of a
+/// child whatever type that list holds. The types of the model share no base of their own, each
+/// holding those fields in a field `element`, so this is what they are asked for in common.
+trait Keyed {
+    /// The fields of `SBase` the object carries.
+    fn element(&self) -> &Element;
+}
+
+/// Implements [`Keyed`] for every type of the model which holds its `SBase` in a field `element`.
+macro_rules! keyed {
+    ($($type:ty),* $(,)?) => {
+        $(
+            impl Keyed for $type {
+                fn element(&self) -> &Element {
+                    &self.element
+                }
+            }
+        )*
+    };
+}
+
+keyed!(
+    Compartment,
+    Constraint,
+    Event,
+    FunctionDefinition,
+    InitialAssignment,
+    Parameter,
+    Reaction,
+    Rule,
+    Species,
+    UnitDefinition,
+);
+
+/// The key of every child of one list of a model, each named by its place in that list.
+///
+/// The children of a list are all of one type but the rules, whose three classes `model` counts
+/// apart and which therefore call [`pk::indexed`] for themselves.
+fn places<T: Keyed>(children: &[T], sbml_type: &'static str) -> Vec<String> {
+    pk::indexed(children, |child| child.element(), |_| sbml_type)
+}
+
 /// The shared fields of an element, keyed in `scope` under `key`.
 ///
 /// It is the one place of the builder which makes an `SBase`, through [`SBase::new`], which takes
@@ -45,34 +89,37 @@ fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key: &str) -> 
     }
 }
 
-/// The key of an element of a list, its id, else its metaId, else its position in that list.
-fn key_in_list(element: &Element, index: usize) -> String {
-    pk::key(element, || index.to_string())
-}
-
 /// The key of an element whose aliased id names what it sets: an initial assignment or a rule.
 ///
 /// Python reads the `id` attribute of the document first, then the target libsbml aliases to the id
-/// of the element (`KEYED_BY_TARGET_CLASSES`, `sbmlinfo.py:457-458`), then the metaId, then the key
+/// of the element (`KEYED_BY_TARGET_CLASSES`, `sbmlinfo.py:576-577`), then the metaId, then the key
 /// its parent derived for it. The target comes before the metaId, which is the order of `_key`
-/// (`sbmlinfo.py:452-463`) and not the one of [`pk::key`]: a model holds at most one initial
+/// (`sbmlinfo.py:572-581`) and not the one of [`pk::key`]: a model holds at most one initial
 /// assignment per symbol and at most one rule per variable (core §4.8.2, §4.9.1), so the target
 /// keys the element, and it keeps the permalink of a rule of a Level 2 document, which can carry no
 /// id at all, independent of the metaId.
 ///
 /// `target` is `None` for a target the document does not name, which is every algebraic rule and
-/// an assignment of an invalid document, and `fallback` answers the key the parent derived.
-fn key_of_target(
-    element: &Element,
-    target: Option<&str>,
-    fallback: impl FnOnce() -> String,
-) -> String {
+/// an assignment of an invalid document, and `place` is the key the list of the parent derived,
+/// which `pk::indexed` already answers as the identifier of an element which carries one: the
+/// metaId of such an element is reserved against the places of its siblings although the target
+/// and not the metaId keys it.
+fn key_of_target(element: &Element, target: Option<&str>, place: &str) -> String {
     element
         .id
         .as_deref()
         .or(target)
         .or(element.meta_id.as_deref())
-        .map_or_else(fallback, str::to_owned)
+        .map_or_else(|| place.to_owned(), str::to_owned)
+}
+
+/// The type of the report object of a rule, which is the class of its kind in SBML.
+const fn rule_type(kind: RuleKind) -> &'static str {
+    match kind {
+        RuleKind::Assignment => "AssignmentRule",
+        RuleKind::Rate => "RateRule",
+        RuleKind::Algebraic => "AlgebraicRule",
+    }
 }
 
 /// The math of an element, a failure to write one named by the pk of the element which holds it.
@@ -119,14 +166,9 @@ pub enum BuildError {
 }
 
 /// A compartment of a model.
-fn compartment(scope: &str, index: usize, c: &Compartment) -> ReportCompartment {
+fn compartment(scope: &str, key: &str, c: &Compartment) -> ReportCompartment {
     ReportCompartment {
-        sbase: sbase(
-            scope,
-            "Compartment",
-            &c.element,
-            &key_in_list(&c.element, index),
-        ),
+        sbase: sbase(scope, "Compartment", &c.element, key),
         spatial_dimensions: c.spatial_dimensions.map(Double),
         size: c.size.map(Double),
         constant: c.constant,
@@ -137,14 +179,9 @@ fn compartment(scope: &str, index: usize, c: &Compartment) -> ReportCompartment 
 }
 
 /// A species of a model.
-fn species(scope: &str, index: usize, s: &Species) -> ReportSpecies {
+fn species(scope: &str, key: &str, s: &Species) -> ReportSpecies {
     ReportSpecies {
-        sbase: sbase(
-            scope,
-            "Species",
-            &s.element,
-            &key_in_list(&s.element, index),
-        ),
+        sbase: sbase(scope, "Species", &s.element, key),
         compartment: s.compartment.clone(),
         initial_amount: s.initial_amount.map(Double),
         initial_concentration: s.initial_concentration.map(Double),
@@ -160,14 +197,9 @@ fn species(scope: &str, index: usize, s: &Species) -> ReportSpecies {
 }
 
 /// A global parameter of a model.
-fn parameter(scope: &str, index: usize, p: &Parameter) -> ReportParameter {
+fn parameter(scope: &str, key: &str, p: &Parameter) -> ReportParameter {
     ReportParameter {
-        sbase: sbase(
-            scope,
-            "Parameter",
-            &p.element,
-            &key_in_list(&p.element, index),
-        ),
+        sbase: sbase(scope, "Parameter", &p.element, key),
         value: p.value.map(Double),
         constant: p.constant,
         units: p.units.clone(),
@@ -183,28 +215,18 @@ fn parameter(scope: &str, index: usize, p: &Parameter) -> ReportParameter {
 /// What [`math_of`] answers for the math of the definition.
 fn function_definition(
     scope: &str,
-    index: usize,
+    key: &str,
     fd: &FunctionDefinition,
 ) -> Result<ReportFunctionDefinition, BuildError> {
-    let sbase = sbase(
-        scope,
-        "FunctionDefinition",
-        &fd.element,
-        &key_in_list(&fd.element, index),
-    );
+    let sbase = sbase(scope, "FunctionDefinition", &fd.element, key);
     let math = math_of(fd.math.as_ref(), &sbase.pk)?;
     Ok(ReportFunctionDefinition { sbase, math })
 }
 
 /// A unit definition with its factors.
-fn unit_definition(scope: &str, index: usize, ud: &UnitDefinition) -> ReportUnitDefinition {
+fn unit_definition(scope: &str, key: &str, ud: &UnitDefinition) -> ReportUnitDefinition {
     ReportUnitDefinition {
-        sbase: sbase(
-            scope,
-            "UnitDefinition",
-            &ud.element,
-            &key_in_list(&ud.element, index),
-        ),
+        sbase: sbase(scope, "UnitDefinition", &ud.element, key),
         units_latex: None,
         list_of_units: ud.units.iter().map(unit).collect(),
     }
@@ -217,12 +239,12 @@ fn unit_definition(scope: &str, index: usize, ud: &UnitDefinition) -> ReportUnit
 /// What [`math_of`] answers for the math of the assignment.
 fn initial_assignment(
     scope: &str,
-    index: usize,
+    place: &str,
     ia: &InitialAssignment,
 ) -> Result<ReportInitialAssignment, BuildError> {
     // the symbol is a required attribute, so the empty string is a document which names none
     let symbol = (!ia.symbol.is_empty()).then_some(ia.symbol.as_str());
-    let key = key_of_target(&ia.element, symbol, || index.to_string());
+    let key = key_of_target(&ia.element, symbol, place);
     let sbase = sbase(scope, "InitialAssignment", &ia.element, &key);
     let math = math_of(ia.math.as_ref(), &sbase.pk)?;
     Ok(ReportInitialAssignment {
@@ -235,23 +257,15 @@ fn initial_assignment(
 
 /// A rule of one of the three rule classes of SBML.
 ///
-/// `algebraic` is the number of algebraic rules of the model before this one, which keys an
-/// algebraic rule that carries no identifier of its own.
+/// `place` is the key the list of the rules derived for this one, which names it by its place among
+/// the rules of its class.
 ///
 /// # Errors
 ///
 /// What [`math_of`] answers for the math of the rule.
-fn rule(scope: &str, index: usize, algebraic: usize, r: &Rule) -> Result<ReportRule, BuildError> {
-    let sbml_type = match r.kind {
-        RuleKind::Assignment => "AssignmentRule",
-        RuleKind::Rate => "RateRule",
-        RuleKind::Algebraic => "AlgebraicRule",
-    };
-    let key = key_of_target(&r.element, r.variable.as_deref(), || match r.kind {
-        RuleKind::Algebraic => format!("algebraicRule.{algebraic}"),
-        RuleKind::Assignment | RuleKind::Rate => index.to_string(),
-    });
-    let sbase = sbase(scope, sbml_type, &r.element, &key);
+fn rule(scope: &str, place: &str, r: &Rule) -> Result<ReportRule, BuildError> {
+    let key = key_of_target(&r.element, r.variable.as_deref(), place);
+    let sbase = sbase(scope, rule_type(r.kind), &r.element, &key);
     let math = math_of(r.math.as_ref(), &sbase.pk)?;
     Ok(ReportRule {
         sbase,
@@ -272,11 +286,8 @@ fn rule(scope: &str, index: usize, algebraic: usize, r: &Rule) -> Result<ReportR
 /// # Errors
 ///
 /// What [`math_of`] answers for the math of the constraint.
-fn constraint(scope: &str, index: usize, c: &Constraint) -> Result<ReportConstraint, BuildError> {
-    // a constraint carries nothing which names it, so one without an identifier is keyed by
-    // its place in the list of the constraints (`sbmlinfo.py:870`)
-    let key = pk::key(&c.element, || format!("constraint.{index}"));
-    let sbase = sbase(scope, "Constraint", &c.element, &key);
+fn constraint(scope: &str, key: &str, c: &Constraint) -> Result<ReportConstraint, BuildError> {
+    let sbase = sbase(scope, "Constraint", &c.element, key);
     let math = math_of(c.math.as_ref(), &sbase.pk)?;
     Ok(ReportConstraint {
         sbase,
@@ -369,26 +380,47 @@ fn modifier_species_references(
         .collect()
 }
 
-/// A local parameter of a kinetic law, the one element whose own id never keys it.
+/// The key of every local parameter of one kinetic law, the one element whose own id never keys it.
 ///
-/// Python passes `use_id=False` (`sbmlinfo.py:1186-1203`): the id of a local parameter is a genuine
-/// id, required by SBML, but scoped to its own kinetic law and not to the model, since two laws may
-/// each hold a parameter of the same id, so the key carries the law instead. Its metaId, which is
-/// unique within the document, still wins over that key (`_key`, `sbmlinfo.py:447-452`), which is
-/// why this key is built here and reaches for neither [`pk::key`] nor [`pk::derived`]. The `id`
-/// field of the report object carries the id of the parameter all the same.
+/// A port of the keying of `kinetic_law` (`sbmlinfo.py:1345-1375`), which keys its parameters
+/// itself rather than through `_keyed_by`. Python passes `use_id=False`: the id of a local
+/// parameter is a genuine id, required by SBML and unique within its law (core §4.11.6), but scoped
+/// to that law and not to the model, since two laws may each hold a parameter of the same id, so
+/// the key carries the law instead. A law which leaves an id out is invalid and its parameter is
+/// keyed by its place among the parameters, `J0.kineticLaw.localParameter.1`, and a law which
+/// repeats an id has the repetition told apart by its occurrence, so that no two parameters of one
+/// law share a pk. The metaId of a parameter, which is unique within the document, wins over that
+/// key (`_key`, `sbmlinfo.py:578-581`) and is reserved against the keys of the siblings, which is
+/// why every parameter takes a candidate and only the others keep it.
 ///
-/// `law_key` is the key the reaction derived for its law and not the key the law is reported under,
-/// which is what python builds the key of a local parameter from: a law with a metaId of its own is
-/// keyed by it and its parameters stay keyed by the reaction.
-fn local_parameter(scope: &str, law_key: &str, lp: &LocalParameter) -> ReportLocalParameter {
-    let key = lp.element.meta_id.clone().unwrap_or_else(|| {
-        // python reads the id of the parameter unguarded, so a parameter of an invalid document
-        // which carries none is keyed by the law and the empty string, as python keys it
-        format!("{law_key}.{}", lp.element.id.as_deref().unwrap_or_default())
-    });
+/// `law_key` is the key the reaction derived for its law and not the key the law is reported under:
+/// a law with a metaId of its own is keyed by it and its parameters stay keyed by the reaction.
+fn local_parameter_keys(law_key: &str, parameters: &[LocalParameter]) -> Vec<String> {
+    let candidates: Vec<String> = parameters
+        .iter()
+        .enumerate()
+        .map(|(index, lp)| match lp.element.id.as_deref() {
+            Some(id) => format!("{law_key}.{id}"),
+            None => format!("{law_key}.localParameter.{index}"),
+        })
+        .collect();
+    let reserved: Vec<&str> = parameters
+        .iter()
+        .filter_map(|lp| lp.element.meta_id.as_deref())
+        .collect();
+    pk::unique(&candidates, &reserved)
+        .into_iter()
+        .zip(parameters)
+        .map(|(key, lp)| lp.element.meta_id.clone().unwrap_or(key))
+        .collect()
+}
+
+/// A local parameter of a kinetic law, keyed by [`local_parameter_keys`].
+///
+/// The `id` field of the report object carries the id of the parameter all the same.
+fn local_parameter(scope: &str, key: &str, lp: &LocalParameter) -> ReportLocalParameter {
     ReportLocalParameter {
-        sbase: sbase(scope, "LocalParameter", &lp.element, &key),
+        sbase: sbase(scope, "LocalParameter", &lp.element, key),
         value: lp.value.map(Double),
         units: lp.units.clone(),
         units_latex: None,
@@ -424,7 +456,8 @@ fn kinetic_law(
         list_of_local_parameters: law
             .local_parameters
             .iter()
-            .map(|lp| local_parameter(scope, &derived, lp))
+            .zip(local_parameter_keys(&derived, &law.local_parameters))
+            .map(|(lp, key)| local_parameter(scope, &key, lp))
             .collect(),
     })
 }
@@ -439,25 +472,24 @@ fn kinetic_law(
 /// What [`math_of`] answers for the math of the kinetic law of the reaction.
 fn reaction(
     scope: &str,
-    index: usize,
+    key: &str,
     level: u32,
     version: u32,
     r: &Reaction,
 ) -> Result<ReportReaction, BuildError> {
-    let key = key_in_list(&r.element, index);
     let law = r
         .kinetic_law
         .as_ref()
-        .map(|law| kinetic_law(scope, &key, law))
+        .map(|law| kinetic_law(scope, key, law))
         .transpose()?;
     Ok(ReportReaction {
-        sbase: sbase(scope, "Reaction", &r.element, &key),
+        sbase: sbase(scope, "Reaction", &r.element, key),
         reversible: reversible(r, level),
         fast: fast(r, level, version),
         compartment: r.compartment.clone(),
-        list_of_reactants: species_references(scope, &key, "reactant", &r.reactants, level),
-        list_of_products: species_references(scope, &key, "product", &r.products, level),
-        list_of_modifiers: modifier_species_references(scope, &key, &r.modifiers),
+        list_of_reactants: species_references(scope, key, "reactant", &r.reactants, level),
+        list_of_products: species_references(scope, key, "product", &r.products, level),
+        list_of_modifiers: modifier_species_references(scope, key, &r.modifiers),
         kinetic_law: law,
         equation: crate::equation::equation(r),
         fbc: None,
@@ -566,29 +598,22 @@ fn event_assignments(
 ///
 /// What [`math_of`] answers for the math of the first element of the event whose math no writer
 /// writes.
-fn event(scope: &str, index: usize, e: &Event) -> Result<ReportEvent, BuildError> {
-    // an event carries nothing which names it, so one without an identifier is keyed by its place
-    // in the list of the events (`sbmlinfo.py:876-879`)
-    let key = pk::key(&e.element, || format!("event.{index}"));
+fn event(scope: &str, key: &str, e: &Event) -> Result<ReportEvent, BuildError> {
     Ok(ReportEvent {
-        sbase: sbase(scope, "Event", &e.element, &key),
+        sbase: sbase(scope, "Event", &e.element, key),
         use_values_from_trigger_time: e.use_values_from_trigger_time,
         trigger: e
             .trigger
             .as_ref()
-            .map(|t| trigger(scope, &key, t))
+            .map(|t| trigger(scope, key, t))
             .transpose()?,
         priority: e
             .priority
             .as_ref()
-            .map(|p| priority(scope, &key, p))
+            .map(|p| priority(scope, key, p))
             .transpose()?,
-        delay: e
-            .delay
-            .as_ref()
-            .map(|d| delay(scope, &key, d))
-            .transpose()?,
-        list_of_event_assignments: event_assignments(scope, &key, &e.event_assignments)?,
+        delay: e.delay.as_ref().map(|d| delay(scope, key, d)).transpose()?,
+        list_of_event_assignments: event_assignments(scope, key, &e.event_assignments)?,
     })
 }
 
@@ -603,17 +628,16 @@ fn event(scope: &str, index: usize, e: &Event) -> Result<ReportEvent, BuildError
 fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildError> {
     // the key of the model is the scope of every element below it
     let scope = pk::key(&model.element, || MAIN_MODEL_KEY.to_owned());
-    // an algebraic rule sets no variable, so one which carries no identifier is keyed by its place
-    // among the algebraic rules alone, which an edit of another rule does not move; the place is
-    // counted for every algebraic rule, as `rules` of `sbmlinfo.py:1031-1049` counts it, so that
-    // one which is keyed by an identifier of its own does not move the key of a later one
-    let mut algebraic: usize = 0;
+    // every list of the model keys its children by their place, the whole list at once: an element
+    // which carries an id or a metaId is keyed by it and the others by the name of their element
+    // and their place among the children of that name (`_indexed`, `sbmlinfo.py:984-1019`). A rule
+    // is counted under the name of its class, so an algebraic rule which carries no identifier is
+    // keyed by its place among the algebraic rules alone, which an edit of another rule does not
+    // move
+    let rule_keys = pk::indexed(&model.rules, Keyed::element, |r| rule_type(r.kind));
     let mut rules = Vec::with_capacity(model.rules.len());
-    for (i, r) in model.rules.iter().enumerate() {
-        rules.push(rule(&scope, i, algebraic, r)?);
-        if matches!(r.kind, RuleKind::Algebraic) {
-            algebraic += 1;
-        }
+    for (r, key) in model.rules.iter().zip(rule_keys) {
+        rules.push(rule(&scope, &key, r)?);
     }
     Ok(ReportModel {
         // the model is keyed by the key which is its own scope, python writes `<key>/Model:<key>`
@@ -636,57 +660,57 @@ fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildEr
         list_of_function_definitions: model
             .function_definitions
             .iter()
-            .enumerate()
-            .map(|(i, fd)| function_definition(&scope, i, fd))
+            .zip(places(&model.function_definitions, "FunctionDefinition"))
+            .map(|(fd, key)| function_definition(&scope, &key, fd))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_unit_definitions: model
             .unit_definitions
             .iter()
-            .enumerate()
-            .map(|(i, ud)| unit_definition(&scope, i, ud))
+            .zip(places(&model.unit_definitions, "UnitDefinition"))
+            .map(|(ud, key)| unit_definition(&scope, &key, ud))
             .collect(),
         list_of_compartments: model
             .compartments
             .iter()
-            .enumerate()
-            .map(|(i, c)| compartment(&scope, i, c))
+            .zip(places(&model.compartments, "Compartment"))
+            .map(|(c, key)| compartment(&scope, &key, c))
             .collect(),
         list_of_species: model
             .species
             .iter()
-            .enumerate()
-            .map(|(i, s)| species(&scope, i, s))
+            .zip(places(&model.species, "Species"))
+            .map(|(s, key)| species(&scope, &key, s))
             .collect(),
         list_of_parameters: model
             .parameters
             .iter()
-            .enumerate()
-            .map(|(i, p)| parameter(&scope, i, p))
+            .zip(places(&model.parameters, "Parameter"))
+            .map(|(p, key)| parameter(&scope, &key, p))
             .collect(),
         list_of_initial_assignments: model
             .initial_assignments
             .iter()
-            .enumerate()
-            .map(|(i, ia)| initial_assignment(&scope, i, ia))
+            .zip(places(&model.initial_assignments, "InitialAssignment"))
+            .map(|(ia, key)| initial_assignment(&scope, &key, ia))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_rules: rules,
         list_of_constraints: model
             .constraints
             .iter()
-            .enumerate()
-            .map(|(i, c)| constraint(&scope, i, c))
+            .zip(places(&model.constraints, "Constraint"))
+            .map(|(c, key)| constraint(&scope, &key, c))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_reactions: model
             .reactions
             .iter()
-            .enumerate()
-            .map(|(i, r)| reaction(&scope, i, level, version, r))
+            .zip(places(&model.reactions, "Reaction"))
+            .map(|(r, key)| reaction(&scope, &key, level, version, r))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_events: model
             .events
             .iter()
-            .enumerate()
-            .map(|(i, e)| event(&scope, i, e))
+            .zip(places(&model.events, "Event"))
+            .map(|(e, key)| event(&scope, &key, e))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_submodels: vec![],
         list_of_ports: vec![],

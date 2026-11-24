@@ -499,9 +499,13 @@ fn the_report_carries_the_reactions_and_the_events() {
     // of the reference and by a `?` where it carries none, and the arrow of an unset `reversible`
     // is the reversible one although the report writes no `reversible` at all
     assert_eq!(bare["equation"], "? S3 ⇆ ");
-    // the reaction carries no identifier of any kind, so the key is its place in the list, which
-    // is the fallback of `pk::key` and not the digest of the xml python falls back to
-    assert_eq!(bare["pk"], "core_elements/Reaction:1");
+    // the reaction carries no identifier of any kind, so the key is the name of its element and
+    // its place in the list, and the reference below it is keyed after that key
+    assert_eq!(bare["pk"], "core_elements/Reaction:reaction.1");
+    assert_eq!(
+        bare["listOfReactants"][0]["pk"],
+        "core_elements/SpeciesReference:reaction.1.reactant.S3"
+    );
     // the second event carries nothing, not even a trigger, and is keyed by its place
     let bare_event = &json["models"][0]["listOfEvents"][1];
     assert_eq!(bare_event["pk"], "core_elements/Event:event.1");
@@ -674,12 +678,15 @@ fn a_rule_of_a_document_which_names_no_variable_is_reported_with_an_empty_one() 
     let model = &json["models"][0];
     assert_eq!(model["listOfRules"][0]["variable"], "");
     assert_eq!(model["listOfInitialAssignments"][0]["symbol"], "");
-    // neither carries an identifier of any kind, so the key is the place in its list, which is
-    // the fallback of `pk::key` and not the digest of the xml python falls back to
-    assert_eq!(model["listOfRules"][0]["pk"], "m/AssignmentRule:0");
+    // neither carries an identifier of any kind and neither names a target, so the key is the
+    // name of its element and its place in its list
+    assert_eq!(
+        model["listOfRules"][0]["pk"],
+        "m/AssignmentRule:assignmentRule.0"
+    );
     assert_eq!(
         model["listOfInitialAssignments"][0]["pk"],
-        "m/InitialAssignment:0"
+        "m/InitialAssignment:initialAssignment.0"
     );
 }
 
