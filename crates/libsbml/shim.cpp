@@ -1112,9 +1112,11 @@ ASTNode* s4h_read_formula(const char* formula) {
 /// a stack of one megabyte and at about 171,600 on the eight of a main thread.
 /// The doc comment of `MAX_AST_DEPTH` holds that measurement next to the one
 /// of the writer which recurses as well. `removeChild` hands a child over
-/// without deleting it
-/// (ASTNode.cpp), so every node here reaches `delete` with no children left
-/// and the destructor never reaches a second level.
+/// without deleting it (ASTNode.cpp), so a node whose children were all
+/// detached reaches `delete` with nothing below it, and a child which was not
+/// detached, because libsbml refused the index or because the slot is null,
+/// stays with its parent and is freed by that one destructor rather than
+/// going on the stack and being freed a second time.
 void s4h_ast_free(ASTNode* node) {
     if (node == nullptr) {
         return;

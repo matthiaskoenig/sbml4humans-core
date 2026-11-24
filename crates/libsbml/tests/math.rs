@@ -572,17 +572,22 @@ fn the_math_reads_of_many_threads_do_not_race() {
 ///
 /// `~ASTNode` deletes the children of a node itself, one call frame per level
 /// and 49 bytes a level measured, so a plain `delete` of a chain of this many
-/// nodes dies between 42,000 and 44,000 levels on the two megabytes a test
-/// thread is given. The fill refuses such a tree at the bound, long before
-/// this, and `Parsed::drop` then has to free what libsbml built of the whole
-/// string: that free is `s4h_ast_free` of the shim, which takes the tree apart
-/// on a stack of its own, and this is the width which holds it to that.
+/// nodes dies at 21,452 levels on the megabyte the test below gives it, and
+/// between 42,000 and 44,000 on the two a test thread is given by default.
+/// The width is read on the megabyte, so that it stands against the lower of
+/// the two and the pin does not rest on the frame size of one build of
+/// libsbml. The fill refuses such a tree at the bound, long before this, and
+/// `Parsed::drop` then has to free what libsbml built of the whole string:
+/// that free is `s4h_ast_free` of the shim, which takes the tree apart on a
+/// stack of its own, and this is the width which holds it to that.
 const PAST_THE_CLIFF_OF_A_RECURSIVE_DELETE: usize = 50_000;
 
 #[test]
 fn a_tree_too_wide_to_delete_recursively_is_freed_when_the_fill_refuses_it() {
-    let refused = read_math(&flat_sum(PAST_THE_CLIFF_OF_A_RECURSIVE_DELETE));
-    assert!(matches!(refused, Err(ReadError::MathTooDeep)));
+    on_a_megabyte_of_stack(|| {
+        let refused = read_math(&flat_sum(PAST_THE_CLIFF_OF_A_RECURSIVE_DELETE));
+        assert!(matches!(refused, Err(ReadError::MathTooDeep)));
+    });
 }
 
 /// Runs `work` on a thread of one megabyte, the stack of a wasm instance.
