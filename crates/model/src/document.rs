@@ -216,9 +216,12 @@ pub struct Reaction {
     pub element: Element,
     /// The `reversible` attribute, `None` where the document does not set it.
     ///
-    /// libsbml answers `true` for a reaction which sets it at every level, so
-    /// the default of a level is written where the report is built and never
-    /// read from libsbml.
+    /// `getReversible()` of libsbml answers `true` for a reaction which does
+    /// **not** set the attribute, and does so at every level, where it is the
+    /// default of Level 1 and of Level 2 and no value at all in Level 3. So the
+    /// filler asks `isSetReversible()` and this field is what the document
+    /// states, and the default of the level is written where the report is
+    /// built and never read from libsbml.
     pub reversible: Option<bool>,
     /// The `fast` attribute, which Level 3 Version 2 dropped.
     pub fast: Option<bool>,

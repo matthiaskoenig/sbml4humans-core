@@ -257,6 +257,17 @@ char* s4h_sbase_annotation(SBase* sbase) {
 }
 
 /// The element serialized back to XML, handed over, null on failure.
+///
+/// `SBase::toSBML()` is the second writer of libsbml which dies on a lambda
+/// without children, the shape `writeLambda` reads one child too few of and
+/// dereferences a null for, so that the process ends with SIGSEGV
+/// (sbmlteam/libsbml#521). No `catch` saves that, as it saves nothing of the
+/// mathml writer either. It is unreachable today, and for the same reason the
+/// python implementation records at `mathml.unwritable_mathml`: the shape is
+/// invalid SBML which only the Level 1 parser of a `formula` attribute builds,
+/// and a Level 1 document writes that attribute back and never a math. Should
+/// a level conversion ever be added to the port, this writer needs the guard
+/// of `holds_a_childless_lambda` in front of it, as the latex writer has it.
 char* s4h_sbase_xml(SBase* sbase) {
     try {
         return sbase->toSBML();
