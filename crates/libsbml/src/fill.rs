@@ -29,18 +29,19 @@ pub enum ReadError {
     Libsbml(String),
     /// The syntax tree of a math is nested deeper than [`sbml4humans_model::MAX_AST_DEPTH`].
     ///
-    /// An ordinary document reaches it, and loses its whole report over it: the
-    /// MathML reader of libsbml nests a flat n-ary application into a binary
-    /// tree to the left, one `apply` per operand after the first, so a flat sum
-    /// of 1,001 terms is a chain of 1,001 levels and is answered with this, while
-    /// the python implementation reports such a document in full and with its
-    /// latex (`writeMathML` unrolls the nesting back into one flat `apply`).
-    /// The two walks which still recurse per level are what keeps the bound
-    /// this low, `ast_of` of this crate and `operands` of
-    /// `crates/report/src/math/latex.rs`; the doc comment of
-    /// [`sbml4humans_model::MAX_AST_DEPTH`] carries the whole account, and the
-    /// slice which makes those two non-recursive is what removes the
-    /// difference.
+    /// It ends the read of the whole document, since the reader of a math is
+    /// the one place which refuses one, so the bound it answers for may only
+    /// stand where no document of a user reaches it. The bound is reached by
+    /// the **width** of a math as much as by its nesting: the MathML reader of
+    /// libsbml nests a flat n-ary application into a binary tree to the left,
+    /// one `apply` per operand after the first, so a flat sum of n terms is a
+    /// chain of n levels, and a sum of a thousand terms is ordinary where a
+    /// nesting of a thousand is not. No walk of the port follows such a chain
+    /// on the call stack, which is what lets the bound stand at two hundred
+    /// thousand levels, five megabytes of math in one element; what a tree
+    /// costs there, and what libsbml itself cannot hand over whatever this
+    /// bound is, is the doc comment of
+    /// [`sbml4humans_model::MAX_AST_DEPTH`].
     #[error(
         "the math is nested deeper than {} levels",
         sbml4humans_model::MAX_AST_DEPTH

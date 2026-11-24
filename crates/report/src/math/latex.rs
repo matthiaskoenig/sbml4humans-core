@@ -54,80 +54,54 @@
 //!
 //! # The stack
 //!
-//! A math may be nested to that bound and the walk follows it on the stack, so
-//! every function of the walk writes into one string rather than building its
-//! own and hands each construct to a function of its own, and the string value
-//! of an element is produced with a stack of its own ([`StringValue`]) rather
-//! than by a second recursion. The two chain tests of `tests/latex.rs` carry the
-//! deepest tree the bound allows; the stack a chain of a thousand levels needs,
-//! measured by bisecting the size of the thread it is written on, is
+//! No walk of this module follows a tree on the call stack. [`emit`] and the
+//! template it hands a construct to write what stands before the first operand
+//! of that construct and leave its operands, and what stands between and after
+//! them, on the stack of the walk ([`Piece`]); the unrolling of [`operands`]
+//! keeps its own stack; and so do [`mathml_depth`],
+//! [`holds_a_childless_lambda`] and the production of a string value
+//! ([`StringValue`]). What a tree of any depth costs a walk is memory and
+//! never a call frame, which is what lets [`MAX_AST_DEPTH`] stand where it
+//! does.
+//!
+//! Measured the way every figure of this file was, by bisecting in steps of
+//! 1 KiB the size of the thread the walk runs on, in a debug build: the
+//! deepest trees the bound allows are written within 16 KiB, which is the
+//! floor of the method on glibc (`PTHREAD_STACK_MIN`, below which a thread
+//! cannot be asked for less) and no figure of the walk itself. A chain of
+//! 2,000,000 levels, ten times the bound, is written within that same 16 KiB,
+//! which is the measurement that says the depth of a tree no longer shows in
+//! the stack at all. The shapes taken were the two the bound allows through
+//! `math`, a chain of quotients and a chain of sums of 200,000 levels, and
+//! the two whose latex is written, 253 quotients and 253 differences over
+//! such a chain of sums, which are the costliest shapes the earlier slice
+//! found.
+//!
+//! What those four cost before this, when [`emit`] and `operands` recursed per
+//! level and the bound was 1,000, is the table below. Every row is a tree of
+//! a thousand levels, or of 253 wrappers over one, on a native thread in a
+//! debug build:
 //!
 //! | shape | stack |
 //! | --- | --- |
-//! | `minus(chain, plus(a, b))`, which compares the string values at every level | 1,401 KiB |
-//! | a chain of `abs`, which is the plain walk | 1,369 KiB |
-//! | a chain of `plus`, which is unrolled into one operator | 415 KiB |
+//! | 253 differences over a chain of sums, their operands compared at every level | 704 KiB |
+//! | 253 quotients over a chain of sums | 684 KiB |
+//! | a chain of a thousand sums or products, unrolled into one operator | 463 KiB |
+//! | a chain of a thousand quotients, or of differences | 352 KiB |
+//! | a chain of a thousand `abs`, of a piecewise or of a lambda | 305 KiB |
+//! | a chain of a thousand differences through [`latex`] alone | 1,401 KiB |
 //!
-//! **Those are a debug native build on the 2 MiB stack a test thread gets.**
-//! The target this constraint exists for is `wasm32-unknown-unknown`, whose
-//! stack is 1 MiB (`stack-size=1048576` in its target spec) and which traps on
-//! an overflow. **1,401 KiB does not fit in 1 MiB**, so a wasm build of these
-//! frame sizes would trap on the deepest tree the bound allows **where [`latex`]
-//! is called for it**. `math` of the parent module no longer is: it asks
-//! [`mathml_depth`] first, and the mathml of a chain of a thousand quotients is
-//! a thousand elements, far past [`MAX_MATHML_DEPTH`], so the python
-//! implementation writes no latex for such a tree and neither does this one.
-//! What a tree at the cap costs through `math`, measured the same way, is
+//! The last row is the one which did not fit in the megabyte a wasm instance
+//! has (`stack-size=1048576` in the spec of `wasm32-unknown-unknown`, which
+//! traps on an overflow), and what kept such a tree away from a report was the
+//! depth rule of `math` and not the walk. Nothing of that is left: the depth
+//! rule stands for the one thing it is for, writing the latex exactly where
+//! the python implementation writes one, and no shape of any depth costs the
+//! stack anything.
 //!
-//! | shape | stack | is a latex written |
-//! | --- | --- | --- |
-//! | 253 quotients over a chain of sums, the deepest mathml the bound allows | 684 KiB | yes |
-//! | 253 differences over that same chain, their operands compared at every level | 704 KiB | yes |
-//! | a chain of a thousand sums or products, unrolled into one operator | 463 KiB | yes |
-//! | a chain of a thousand quotients, or of differences | 352 KiB | no |
-//! | a chain of a thousand `abs`, of a piecewise or of a lambda | 305 KiB | no |
-//!
-//! Every figure here is the smallest stack on which the walk still completes,
-//! bisected over the size of the thread it runs on in steps of 1 KiB, and it
-//! drifts by about a step between runs: read each one as plus or minus 1 KiB.
-//! The same five were taken on a grid of 64 KiB before and read 704, 704, 512,
-//! 384 and 320 KiB, each the figure next to it rounded up, so a later
-//! measurement on a coarser grid writes a larger number for the same walk and
-//! no regression.
-//!
-//! They are the deepest **measured** walks and no proof of the deepest possible
-//! one: a shape nobody has built may cost more per level. The two shapes of the
-//! first two rows are the two which were measured at the bound, the plain walk
-//! and the one which compares a string value at every level, and the
-//! differences are the worse of them. **Their 704 KiB is the one figure of this
-//! file a later slice must not lose**: it is what the 64 KiB grid read for the
-//! quotients alone before the shape was measured, so the row it stood in held
-//! no slack at all, and what it leaves of the megabyte of wasm is the 320 KiB
-//! of a debug build and nothing a measurement of the target has confirmed. The
-//! test of the parent module carries both shapes.
-//!
-//! The two chains of a thousand of the fourth row cost 1,335 KiB (quotients)
-//! and 1,401 KiB (differences) through [`latex`] alone, the second of them the
-//! figure of the first table above: the same walk, which the depth rule now
-//! keeps a report away from. Both of those two were measured the way every
-//! figure of the two tables was, by bisecting in steps of 1 KiB the size of the
-//! thread the walk runs on, and both were taken again at the review of this
-//! slice and read the same: the quotients are a bare `chain(AstKind::Divide,
-//! MAX_AST_DEPTH)` and the differences the chain of
-//! `a_chain_of_differences_whose_operands_are_compared_is_written_without_overflowing_the_stack`
-//! of `tests/latex.rs`, each handed to [`latex`] with no depth rule in front of
-//! it. They are the largest figures this crate has measured and no test carries
-//! them, because `math` cannot reach either shape any more.
-//!
-//! So the deepest latex walk which is still reachable fits, with room to spare,
-//! in the megabyte of wasm in a debug build. A release build has smaller frames
-//! than a debug one, by how much nobody has measured, and nothing in the
-//! workspace builds or runs wasm yet, so these are still not wasm
-//! measurements: a slice which raises [`MAX_MATHML_DEPTH`], lets a caller reach
-//! [`latex`] without the depth rule, or runs on a smaller stack has to measure
-//! again. The two tests of the parent module which carry a tree at the cap run
-//! on a thread pinned to that megabyte, so a change which grows a frame of the
-//! walk is a red run and not a surprise on the target.
+//! The two tests of the parent module which walk a tree at the bound run on a
+//! thread pinned to that megabyte, so a change which brings a frame per level
+//! back is a red run and not a surprise on the target.
 //!
 //! # The string value
 //!
@@ -783,12 +757,10 @@ pub(super) fn holds_a_childless_lambda(ast: &Ast) -> bool {
 /// # The stack
 ///
 /// The walk keeps its own stack on the heap, so a tree costs it no call frame
-/// per level. The one recursion it reaches is the unrolling of [`operands`],
-/// which follows a chain of sums or of products one frame per level and is
-/// bounded by [`MAX_AST_DEPTH`] like every other walk here; the latex writer
-/// makes the same call, so this adds no frame the writer did not already need.
-/// Measured in a debug build, `math` of a chain of a thousand sums needs
-/// 512 KiB and one of a thousand quotients 384 KiB, inside the megabyte
+/// per level, and the one other walk it reaches, the unrolling of
+/// [`operands`], keeps its own as well. Measured in a debug build, `math` of a
+/// chain of sums at the bound and one of quotients at the bound both run
+/// within the 16 KiB floor of the measurement, far inside the megabyte
 /// `wasm32-unknown-unknown` passes
 /// (`tests::the_math_of_a_chain_at_the_cap_is_written_within_the_stack_of_wasm`
 /// of the parent module, which runs on a thread pinned to that megabyte).
@@ -986,10 +958,10 @@ enum Current<'a> {
 ///   both values whole would walk such a chain in the cube of its depth.
 ///   [`string_values_differ`] produces the two in step and stops at the first
 ///   byte which differs, which for a chain is within the first few.
-/// - The production keeps its own stack rather than the call stack, so the
-///   comparison recurses no further than the one `operands` call `expand` makes
-///   for a chain of sums or products, whatever the depth the latex walk already
-///   stands at.
+/// - The production keeps its own stack rather than the call stack, as the
+///   `operands` call `expand` makes for a chain of sums or products does, so
+///   the comparison costs no call frame per level whatever the depth the latex
+///   walk already stands at.
 ///
 /// `level` is how deep the element stands, which decides the indentation before
 /// each of its children. The two operands of a difference are siblings and so

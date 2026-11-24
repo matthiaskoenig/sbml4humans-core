@@ -524,16 +524,27 @@ fn a_string_which_is_no_formula_is_an_error_and_never_a_panic() {
     }
 }
 
+/// A nesting of `apply` elements which libsbml still reads.
+///
+/// Its MathML reader follows the nesting of a document on its own call stack,
+/// about 1.3 KB per level measured against 5.21.2, and ends the process with
+/// SIGSEGV at about 6,000 levels on the 8 MiB stack of a main thread and at a
+/// fraction of that on the 2 MiB stack of a test thread. So a nesting is no
+/// shape a test of this crate can take to the bound, and the shape which does
+/// reach the bound is a flat sum, whose nesting libsbml builds without
+/// recursing. The fill of this crate follows neither on the call stack.
+const NESTING_LIBSBML_READS: usize = 1000;
+
 #[test]
-fn a_tree_as_deep_as_the_bound_is_filled() {
-    let ast = read_math(&nested(MAX_AST_DEPTH - 1)).expect("it parses");
+fn a_nested_tree_is_filled_level_by_level() {
+    let ast = read_math(&nested(NESTING_LIBSBML_READS - 1)).expect("it parses");
     let mut depth = 1;
     let mut node = &ast;
     while let Some(child) = node.children.last() {
         depth += 1;
         node = child;
     }
-    assert_eq!(depth, MAX_AST_DEPTH);
+    assert_eq!(depth, NESTING_LIBSBML_READS);
 }
 
 #[test]
@@ -556,35 +567,34 @@ fn the_math_reads_of_many_threads_do_not_race() {
 }
 
 #[test]
-fn a_tree_deeper_than_the_bound_is_an_error() {
-    let deep = nested(MAX_AST_DEPTH);
-    assert!(matches!(read_math(&deep), Err(ReadError::MathTooDeep)));
-}
-
-/// A width at which a free which followed the tree on the call stack would end
-/// the process.
-///
-/// `~ASTNode` of libsbml deletes the children of a node itself, which follows a
-/// tree one call frame per level: a plain `delete` of a chain of 300,000 nodes
-/// ends the process with SIGSEGV on the 8 MiB stack of a main thread, and a
-/// test thread gets 2 MiB. `s4h_ast_free` of the shim therefore takes a tree
-/// apart on a stack of its own, and this is the width which pins it.
-const PAST_A_RECURSIVE_FREE: usize = 200_000;
-
-#[test]
-fn the_tree_of_a_math_far_wider_than_the_bound_is_freed_without_ending_the_process() {
-    // Whatever the bound answers of this width, libsbml has built the tree by
-    // then and the read frees it on its way out, which is what this pins: the
-    // test ends rather than aborting, and every other free of the crate takes
-    // the same path.
-    let _ = read_math(&flat_sum(PAST_A_RECURSIVE_FREE));
-    // the parser of a Level 1 formula builds the same chain, whose tree is
-    // freed the same way
+fn a_tree_as_deep_as_the_bound_is_filled_and_one_level_deeper_is_refused() {
+    // The shape is a flat sum, the one shape of a document which reaches the
+    // bound at all: the fill walks a tree on a stack of its own, so the bound
+    // is where the memory of a tree stops being memory the port will spend and
+    // not where a stack runs out.
+    //
+    // The tree libsbml builds of either string is freed when the read ends,
+    // which is the second walk this pins: `~ASTNode` deletes the children of a
+    // node itself, one call frame per level, and a plain `delete` of a chain
+    // of 300,000 nodes ends the process on the 8 MiB stack of a main thread,
+    // where a test thread gets 2 MiB. `s4h_ast_free` of the shim takes the
+    // tree apart on a stack of its own instead.
+    {
+        let at_the_bound = read_math(&flat_sum(MAX_AST_DEPTH)).expect("a flat sum of the bound");
+        assert_eq!(depth_of(&at_the_bound), MAX_AST_DEPTH);
+    }
+    assert!(matches!(
+        read_math(&flat_sum(MAX_AST_DEPTH + 1)),
+        Err(ReadError::MathTooDeep)
+    ));
+    // the parser of a Level 1 formula builds the same chain of the same width,
+    // which the same fill and the same free answer
     let mut formula = String::from("1");
-    for _ in 1..PAST_A_RECURSIVE_FREE {
+    for _ in 1..MAX_AST_DEPTH {
         formula.push_str("+1");
     }
-    let _ = read_formula(&formula);
+    let of_a_formula = read_formula(&formula).expect("a formula of the bound");
+    assert_eq!(depth_of(&of_a_formula), MAX_AST_DEPTH);
 }
 
 #[test]
@@ -593,31 +603,38 @@ fn the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone(
     // tree, one `apply` per operand after the first and the nesting on the left
     // operand, so the tree of a flat sum of `n` terms is `n` levels deep and the
     // bound of the reader is a bound on the width of a sum of a document as much
-    // as on its nesting. An ordinary document reaches it: a sum of 1,001 terms is
-    // nothing unusual and no adversarial shape.
+    // as on its nesting. That is why the bound may not stand where an ordinary
+    // document reaches it: a sum of 1,001 terms is nothing unusual and no
+    // adversarial shape, and the bound of 1,000 this crate had before this slice
+    // refused such a document whole, where the python implementation reports it
+    // in full and with its latex (`writeMathML` unrolls the nesting back into
+    // one flat `apply`, so the lxml pipeline it feeds sees a document of three
+    // elements).
     //
-    // Measured here, and the figures the doc comment of `MAX_AST_DEPTH` and of
-    // `ReadError::MathTooDeep` carry: a flat sum of 1,000 terms is read as a tree
-    // of 1,000 levels and one of 1,001 terms is `MathTooDeep`. The python
-    // implementation reports such a document in full and with its latex, because
-    // `writeMathML` unrolls the nesting back into one flat `apply` and the lxml
-    // pipeline it feeds sees a document of three elements.
-    let at_the_bound = read_math(&flat_sum(MAX_AST_DEPTH)).expect("a flat sum of the bound");
-    assert_eq!(depth_of(&at_the_bound), MAX_AST_DEPTH);
-    assert_eq!(at_the_bound.kind, AstKind::Plus);
+    // Measured here: a flat sum of a hundred thousand terms, the width the
+    // issue of this slice names, is read as a tree of a hundred thousand levels.
+    // The report of that very math, its latex included, is pinned by
+    // `a_wide_sum_of_a_hundred_thousand_terms_is_reported_in_full` of
+    // `crates/report/tests/build.rs`.
+    let wide = read_math(&flat_sum(A_WIDE_SUM)).expect("a flat sum of a hundred thousand terms");
+    assert_eq!(depth_of(&wide), A_WIDE_SUM);
+    assert_eq!(wide.kind, AstKind::Plus);
     // two operands at every level, the sum of the terms before it and the next
     // term, which is what makes the depth the number of the terms
-    assert_eq!(at_the_bound.children.len(), 2);
+    assert_eq!(wide.children.len(), 2);
     assert_eq!(
-        at_the_bound.children[0].kind,
+        wide.children[0].kind,
         AstKind::Plus,
         "the nesting is on the left operand"
     );
-    assert!(matches!(
-        read_math(&flat_sum(MAX_AST_DEPTH + 1)),
-        Err(ReadError::MathTooDeep)
-    ));
+    // what the bound refuses stands far past this width, which
+    // `a_tree_as_deep_as_the_bound_is_filled_and_one_level_deeper_is_refused`
+    // pins at the bound itself
 }
+
+/// The width of the flat sum the issue of this slice names, which the port
+/// refused whole before it and reports in full after it.
+const A_WIDE_SUM: usize = 100_000;
 
 #[test]
 fn a_number_whose_value_is_not_finite_is_filled_with_that_value() {

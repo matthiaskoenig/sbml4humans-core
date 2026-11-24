@@ -461,18 +461,39 @@ const UNKNOWN_MATHS: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
   </model>
 </sbml>"#;
 
+/// Runs `work` on a thread with the stack the writers of libsbml need.
+///
+/// Nothing of this crate follows a tree on the call stack, but libsbml does:
+/// `SBase::toSBML()`, which the `xml` of every element of a report is, writes
+/// the math of an element with `writeOperatorArgs`, one call frame per level
+/// of the tree and about 70 bytes of stack per frame (measured against
+/// 5.21.2). The `xml` of an element whose math is a flat sum of the bound
+/// therefore needs about 14 MB of stack, and a test thread is given 2 MiB.
+/// Every document of a test whose math is wider than a few thousand terms is
+/// read on such a thread, and the figures are in the doc comment of
+/// `MAX_AST_DEPTH`.
+fn on_a_stack_for_libsbml<T: Send + 'static>(work: impl FnOnce() -> T + Send + 'static) -> T {
+    std::thread::Builder::new()
+        .stack_size(64 * 1024 * 1024)
+        .spawn(work)
+        .expect("a thread of a stack for libsbml starts")
+        .join()
+        .expect("it ends")
+}
+
 #[test]
 fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
-    // the reader of a math is the one place which refuses a math, and it
-    // refuses one of a document as it refuses one of a string
-    let mut body = String::new();
-    for _ in 0..MAX_AST_DEPTH {
-        body.push_str("<apply><plus/><cn type=\"integer\">1</cn>");
+    // The reader of a math is the one place which refuses a math, and it
+    // refuses one of a document as it refuses one of a string. The shape is a
+    // flat sum, which libsbml reads as a tree of one level per term and is the
+    // one shape of a document which reaches the bound: a nesting of that many
+    // `apply` elements is one the MathML reader of libsbml dies on long before
+    // (about 6,000 levels, measured against 5.21.2).
+    let mut body = String::from("<apply><plus/>");
+    for _ in 0..=MAX_AST_DEPTH {
+        body.push_str("<cn type=\"integer\">1</cn>");
     }
-    body.push_str("<cn type=\"integer\">1</cn>");
-    for _ in 0..MAX_AST_DEPTH {
-        body.push_str("</apply>");
-    }
+    body.push_str("</apply>");
     let sbml = format!(
         r#"<?xml version="1.0" encoding="UTF-8"?>
 <sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
@@ -486,7 +507,8 @@ fn a_math_of_the_document_which_is_nested_too_deep_ends_the_read() {
   </model>
 </sbml>"#
     );
-    assert!(matches!(read(sbml.as_bytes()), Err(ReadError::MathTooDeep)));
+    let refused = on_a_stack_for_libsbml(move || read(sbml.as_bytes()));
+    assert!(matches!(refused, Err(ReadError::MathTooDeep)));
 }
 
 #[test]
