@@ -17,7 +17,7 @@ The crates live in `crates/`, each named `sbml4humans-<name>`.
 
 ## Building libsbml for the filler
 
-`crates/libsbml` links libsbml, so the workspace does not build without a libsbml prefix (a directory with `include/` and `lib/`). `crates/libsbml/build.rs` reads the prefix from the environment variable `LIBSBML_DIR`, or else from `third_party/prefix`. Without one of them every command which builds `libsbml` fails at build time: the workspace wide commands, and `-p` of any crate which depends on it (`libsbml`, `cli`, `oracles`). `abi` and `model` do not link libsbml, so `cargo test -p sbml4humans-abi` builds without a prefix. Point `LIBSBML_DIR` at an existing prefix:
+`crates/libsbml` links libsbml, so the workspace does not build without a libsbml prefix (a directory with `include/` and `lib/`). `crates/libsbml/build.rs` reads the prefix from the environment variable `LIBSBML_DIR`, or else from `third_party/prefix`. Without one of them every command which builds `libsbml` fails at build time: the workspace wide commands, and `-p` of any crate which depends on it (`libsbml`, `cli`, `oracles`, and `report`, whose tests read a document of SBML and which therefore carries `sbml4humans-libsbml` as a dev-dependency). That dev-dependency is the one note for the slice which builds for wasm: `report` itself links nothing, but `cargo test -p sbml4humans-report` does not run without the native build of libsbml, so a wasm target has to be given a test which does not go through the filler. `abi` and `model` do not link libsbml, so `cargo test -p sbml4humans-abi` builds without a prefix. Point `LIBSBML_DIR` at an existing prefix:
 
 ```bash
 export LIBSBML_DIR=/path/to/prefix
@@ -60,8 +60,8 @@ LIBSBML_DIR=/path/to/prefix uv run --frozen --project /path/to/sbml4humans/backe
 The one command which runs everything is the workspace test command. Clippy and the format check are the other two gates, run as below:
 
 ```bash
-LIBSBML_DIR=/path/to/prefix cargo test --workspace
-LIBSBML_DIR=/path/to/prefix cargo clippy --workspace --all-targets -- -D warnings
+LIBSBML_DIR=/path/to/prefix cargo test --workspace --all-features
+LIBSBML_DIR=/path/to/prefix cargo clippy --workspace --all-features --all-targets -- -D warnings
 cargo fmt --check
 ```
 
