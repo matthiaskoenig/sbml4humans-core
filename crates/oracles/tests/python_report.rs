@@ -22,8 +22,8 @@ use sbml4humans_oracles::{compare, names_a_pointer};
 // `every_entry_of_the_exclusion_lists_silences_a_difference_of_a_document_it_covers` and by
 // `every_entry_of_the_exclusion_lists_names_a_pointer_of_a_document_it_covers`.
 //
-// What the port does not build and no entry silences. Nine classes, every one of them `null`, the
-// empty list or absent on both sides of every document of the gate, so each agrees today and none
+// What the port does not build and no entry silences. Every value named below is `null`, the empty
+// list or absent on both sides of every document of the gate, so each of them agrees today and none
 // of them is silenced. The day a document states one, the gate fails at its pointer with
 // `ours null but python "mole"`, which names the value which is owed and asks for it to be built;
 // an entry here would take that failure away and leave the liveness test saying that a line of the
@@ -60,10 +60,10 @@ use sbml4humans_oracles::{compare, names_a_pointer};
 //     document of the gate reaches it and the port differs there.
 //
 // This list and that declaration together are the whole account of what the port does not build, as
-// of the last reading of the builder against `model.py` of the python implementation. The nine
-// classes were written down at the review of this slice, found by that reading and by measuring an
-// ordinary Level 3 Version 2 document against python, and not by the gate, which is green over all
-// nine and stays green over them.
+// of the last reading of the builder against `model.py` of the python implementation. The values of
+// the declaration were written down at the review of this slice, found by that reading and by
+// measuring an ordinary Level 3 Version 2 document against python, and not by the gate, which is
+// green over every one of them and stays green over them.
 const EXCLUDED: &[&str] = &[
     "/models/0/listOfPorts",
     "/models/0/fbc",
@@ -179,7 +179,7 @@ gated! {
 // An entry belongs here only where the port writes something a document of the gate could differ
 // in, which a list of a package is: the port writes the empty list of a document without the
 // package, so a document with it differs. A value which agrees with python on every document, like
-// the nine classes declared at the head of `EXCLUDED`, is in neither list.
+// the ones declared at the head of `EXCLUDED`, is in neither list.
 const UNREACHED: &[&str] = &[
     "/models/0/listOfSubmodels",
     "/models/0/listOfGeneProducts",
