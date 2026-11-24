@@ -499,9 +499,13 @@ fn the_report_carries_the_reactions_and_the_events() {
     // of the reference and by a `?` where it carries none, and the arrow of an unset `reversible`
     // is the reversible one although the report writes no `reversible` at all
     assert_eq!(bare["equation"], "? S3 ⇆ ");
-    // the reaction carries no identifier of any kind, so the key is its place in the list, which
-    // is the fallback of `pk::key` and not the digest of the xml python falls back to
-    assert_eq!(bare["pk"], "core_elements/Reaction:1");
+    // the reaction carries no identifier of any kind, so the key is the name of its element and
+    // its place in the list, and the reference below it is keyed after that key
+    assert_eq!(bare["pk"], "core_elements/Reaction:reaction.1");
+    assert_eq!(
+        bare["listOfReactants"][0]["pk"],
+        "core_elements/SpeciesReference:reaction.1.reactant.S3"
+    );
     // the second event carries nothing, not even a trigger, and is keyed by its place
     let bare_event = &json["models"][0]["listOfEvents"][1];
     assert_eq!(bare_event["pk"], "core_elements/Event:event.1");
@@ -637,6 +641,149 @@ fn a_reaction_of_a_level_2_document_is_reported_with_the_defaults_of_its_level()
     assert_eq!(parameter["value"], 1.0);
 }
 
+/// A document whose reactions hold every shape of the key a parent derives from a place.
+///
+/// The first reaction carries an id and the second states nothing at all, which is the pair the
+/// gate kept excluded while python keyed the second by a digest. The third carries a metaId which
+/// reads like the place of the fourth, and the second reactant of the first carries one which reads
+/// like the key its sibling is about; an SId holds no dot and can be neither, a metaId is an XML
+/// `ID` and can be both.
+const DERIVED_KEYS: &[u8] = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="m">
+    <listOfCompartments>
+      <compartment id="c" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="J0" reversible="false">
+        <listOfReactants>
+          <speciesReference species="S1" constant="true"/>
+          <speciesReference metaid="J0.reactant.S1" species="S1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction reversible="false">
+        <listOfReactants>
+          <speciesReference species="S1" constant="true"/>
+        </listOfReactants>
+      </reaction>
+      <reaction metaid="reaction.3" reversible="false"/>
+      <reaction reversible="false"/>
+    </listOfReactions>
+  </model>
+</sbml>"#;
+
+// A reaction which states nothing at all is keyed by the name of its element and its place in the
+// list, and everything below it is keyed after that key. It is the shape the gate had to exclude
+// while python keyed such an element by the sha1 digest of its xml, which no port could match, and
+// which python has keyed by its place since 0.13.0. The place counts over the whole list, so the
+// reaction which carries the id takes the place 0 and the one after it is `reaction.1`.
+#[test]
+fn a_reaction_which_states_nothing_is_keyed_by_its_place_and_keys_its_reference() {
+    let json = report_of(DERIVED_KEYS);
+    let reactions = &json["models"][0]["listOfReactions"];
+    assert_eq!(reactions[0]["pk"], "m/Reaction:J0");
+    assert_eq!(
+        reactions[0]["listOfReactants"][0]["pk"],
+        "m/SpeciesReference:J0.reactant.S1.1"
+    );
+    assert_eq!(reactions[1]["pk"], "m/Reaction:reaction.1");
+    assert_eq!(
+        reactions[1]["listOfReactants"][0]["pk"],
+        "m/SpeciesReference:reaction.1.reactant.S1"
+    );
+}
+
+// The keys the file gives the siblings are reserved, so a key the report derives never names
+// another element of that list (`_unique_keys`, `sbmlinfo.py:239-262`). A metaId can read like a
+// derived key, both like the place of a sibling and like what a sibling is about, and the element
+// whose key that is passes over it and takes the first occurrence which is free. An id cannot, so
+// this is the one direction of the reservation a document can reach.
+#[test]
+fn a_metaid_which_reads_like_a_derived_key_is_reserved_against_it() {
+    let json = report_of(DERIVED_KEYS);
+    let reactions = &json["models"][0]["listOfReactions"];
+    // the metaId of the second reactant is the key the first is about, so the first is numbered
+    assert_eq!(
+        reactions[0]["listOfReactants"][1]["pk"],
+        "m/SpeciesReference:J0.reactant.S1"
+    );
+    assert_eq!(
+        reactions[0]["listOfReactants"][0]["pk"],
+        "m/SpeciesReference:J0.reactant.S1.1"
+    );
+    // and the metaId of the third reaction is the place of the fourth, which is numbered as well
+    assert_eq!(reactions[2]["pk"], "m/Reaction:reaction.3");
+    assert_eq!(reactions[3]["pk"], "m/Reaction:reaction.3.1");
+}
+
+/// A kinetic law whose local parameters hold every shape of the key their law gives them.
+///
+/// SBML requires an id of a local parameter and makes it unique within its law (core §4.11.6), so
+/// the first three parameters are a document which is invalid in two ways a reader still reads.
+const LOCAL_PARAMETERS: &[u8] = br#"<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="m">
+    <listOfCompartments>
+      <compartment id="c" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="S1" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="J0" reversible="false">
+        <listOfReactants>
+          <speciesReference species="S1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"><ci>k</ci></math>
+          <listOfLocalParameters>
+            <localParameter value="1"/>
+            <localParameter id="k" value="2"/>
+            <localParameter id="k" value="3"/>
+            <localParameter metaid="J0.kineticLaw.m" id="n" value="4"/>
+            <localParameter id="m" value="5"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>"#;
+
+// A local parameter is keyed by its law and its id and never by the id alone, since the id is
+// scoped to the law and two laws may each hold one of the same id (`use_id=False`,
+// `sbmlinfo.py:1345-1375`). A parameter which carries no id is keyed by its place among the
+// parameters, a repeated id is told apart by its occurrence, and the metaId of a parameter keys it
+// and is reserved against the keys of its siblings.
+#[test]
+fn a_local_parameter_is_keyed_by_its_law_and_a_repetition_by_its_occurrence() {
+    let json = report_of(LOCAL_PARAMETERS);
+    let parameters =
+        &json["models"][0]["listOfReactions"][0]["kineticLaw"]["listOfLocalParameters"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|lp| lp["pk"].as_str().unwrap())
+            .collect::<Vec<&str>>();
+    assert_eq!(
+        parameters,
+        &[
+            "m/LocalParameter:J0.kineticLaw.localParameter.0",
+            "m/LocalParameter:J0.kineticLaw.k",
+            "m/LocalParameter:J0.kineticLaw.k.1",
+            "m/LocalParameter:J0.kineticLaw.m",
+            "m/LocalParameter:J0.kineticLaw.m.1",
+        ]
+    );
+    // the id of the fourth parameter is `n` and its metaId keys it, and the `id` field of the
+    // report object carries the id of the parameter whatever keys it
+    let fourth = &json["models"][0]["listOfReactions"][0]["kineticLaw"]["listOfLocalParameters"][3];
+    assert_eq!(fourth["id"], "n");
+    assert_eq!(fourth["metaId"], "J0.kineticLaw.m");
+}
+
 #[test]
 fn a_reaction_of_level_2_version_1_is_reported_without_a_fast() {
     // Level 2 Version 1 defined no default for `fast`, which Level 2 Version 2 added, so the
@@ -674,12 +821,15 @@ fn a_rule_of_a_document_which_names_no_variable_is_reported_with_an_empty_one() 
     let model = &json["models"][0];
     assert_eq!(model["listOfRules"][0]["variable"], "");
     assert_eq!(model["listOfInitialAssignments"][0]["symbol"], "");
-    // neither carries an identifier of any kind, so the key is the place in its list, which is
-    // the fallback of `pk::key` and not the digest of the xml python falls back to
-    assert_eq!(model["listOfRules"][0]["pk"], "m/AssignmentRule:0");
+    // neither carries an identifier of any kind and neither names a target, so the key is the
+    // name of its element and its place in its list
+    assert_eq!(
+        model["listOfRules"][0]["pk"],
+        "m/AssignmentRule:assignmentRule.0"
+    );
     assert_eq!(
         model["listOfInitialAssignments"][0]["pk"],
-        "m/InitialAssignment:0"
+        "m/InitialAssignment:initialAssignment.0"
     );
 }
 

@@ -234,13 +234,13 @@
       },
       {
         "kind": "reactant",
-        "source": "core_elements/Reaction:4f0ba7f89e92e336b41f5aedb3e782cc35536b53",
-        "target": "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3",
+        "source": "core_elements/Reaction:reaction.1",
+        "target": "core_elements/SpeciesReference:reaction.1.reactant.S3",
         "targetEntry": null
       },
       {
         "kind": "reactant",
-        "source": "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3",
+        "source": "core_elements/SpeciesReference:reaction.1.reactant.S3",
         "target": "core_elements/Species:S3",
         "targetEntry": null
       },
@@ -568,13 +568,6 @@
         "pk": "core_elements/RateRule:k3",
         "sbmlType": "RateRule"
       },
-      "core_elements/Reaction:4f0ba7f89e92e336b41f5aedb3e782cc35536b53": {
-        "id": null,
-        "model": "core_elements/Model:core_elements",
-        "name": null,
-        "pk": "core_elements/Reaction:4f0ba7f89e92e336b41f5aedb3e782cc35536b53",
-        "sbmlType": "Reaction"
-      },
       "core_elements/Reaction:J0": {
         "id": "J0",
         "model": "core_elements/Model:core_elements",
@@ -601,6 +594,13 @@
         "model": "core_elements/Model:core_elements",
         "name": null,
         "pk": "core_elements/Reaction:R4",
+        "sbmlType": "Reaction"
+      },
+      "core_elements/Reaction:reaction.1": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/Reaction:reaction.1",
         "sbmlType": "Reaction"
       },
       "core_elements/Species:E": {
@@ -630,13 +630,6 @@
         "name": null,
         "pk": "core_elements/Species:S3",
         "sbmlType": "Species"
-      },
-      "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3": {
-        "id": null,
-        "model": "core_elements/Model:core_elements",
-        "name": null,
-        "pk": "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3",
-        "sbmlType": "SpeciesReference"
       },
       "core_elements/SpeciesReference:J0.product.S2": {
         "id": null,
@@ -671,6 +664,13 @@
         "model": "core_elements/Model:core_elements",
         "name": null,
         "pk": "core_elements/SpeciesReference:R4.reactant.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "core_elements/SpeciesReference:reaction.1.reactant.S3": {
+        "id": null,
+        "model": "core_elements/Model:core_elements",
+        "name": null,
+        "pk": "core_elements/SpeciesReference:reaction.1.reactant.S3",
         "sbmlType": "SpeciesReference"
       },
       "core_elements/SpeciesReference:sr_S1": {
@@ -1311,7 +1311,7 @@
               "metaId": null,
               "name": null,
               "notes": null,
-              "pk": "core_elements/SpeciesReference:4f0ba7f89e92e336b41f5aedb3e782cc35536b53.reactant.S3",
+              "pk": "core_elements/SpeciesReference:reaction.1.reactant.S3",
               "sbmlType": "SpeciesReference",
               "sbo": null,
               "species": "S3",
@@ -1324,7 +1324,7 @@
           "metaId": null,
           "name": null,
           "notes": null,
-          "pk": "core_elements/Reaction:4f0ba7f89e92e336b41f5aedb3e782cc35536b53",
+          "pk": "core_elements/Reaction:reaction.1",
           "reversible": null,
           "sbmlType": "Reaction",
           "sbo": null,

@@ -51,6 +51,17 @@ use sbml4humans_oracles::{compare, names_a_pointer};
 //     The `fbc` of a model is the one of the three which differs on a document of the gate today,
 //     the `{"activeObjective": null, "strict": false}` of `minimal_model.xml`, and is the entry
 //     `/models/0/fbc` below.
+//   - The models of a document beyond its own, the comp model definitions, and with them the two
+//     rules of the key which belong to them. Python keys a definition by its place in the list of
+//     the definitions (`_indexed`), that key is the scope of every element below it, and the list
+//     reserves the key of the model of the document so that a definition never takes it
+//     (`build_report`, `sbmlinfo.py:508-510`); in the other direction `_main_model_key`
+//     (`sbmlinfo.py:1169-1183`) compares the own key of every definition, so a definition which an
+//     id or a metaId keys `model` sends the model of the document to the sha1 digest of its xml,
+//     which since sbml4humans 0.13.0 is the one place a digest keys anything at all. The port
+//     writes the `model` python writes for every document of the gate, none of which carries a
+//     definition, and `/models/1` would differ at the definition itself long before its key did.
+//     Owed by the slice which reads comp.
 //   - The `history`, the `comp`, the `uncertainties` and the `keyValuePairs` of every element, which
 //     `build::sbase` leaves at the default of `SBase`, and the `externalModelDefinitions` of the
 //     report. Owed by the slices which read the annotation RDF (the history of an element is parsed
@@ -102,23 +113,6 @@ const EXCLUDED: &[&str] = &[
 // annotation RDF.
 const MINIMAL_MODEL_ONLY: &[&str] = &["/models/0/listOfParameters/0/cvterms/0"];
 
-// Python keys an element which carries no id and no metaId by the sha1 digest of its xml (`_key`,
-// `sbmlinfo.py:463`); this port keys it by the index of the element in the list of its parent
-// (`pk::key`), the rule every element type of slice 1 and of this slice follows, and the digest is
-// named there as what the port still owes. `core_elements.xml` holds the one such element of the
-// gate, the reaction which states nothing at all, and these are the two pointers its key reaches:
-// the pk of the reaction, which sits at the index 1 of the reactions of this document, and the pk
-// of the reference below it, whose key its parent derives from the key of the reaction. Every
-// other value of both elements stays compared. They are scoped to this document because they name
-// their element by its place: in `level2_reactions.xml` the same two pointers are the pk of the
-// reaction `J1` and of its reference, both of which the port builds as python does and which are
-// compared. Removed by the slice which writes the digest, which the other element types keyed by
-// it need as well.
-const CORE_ELEMENTS_ONLY: &[&str] = &[
-    "/models/0/listOfReactions/1/pk",
-    "/models/0/listOfReactions/1/listOfReactants/0/pk",
-];
-
 /// One document of the gate: the stem of `testdata/<name>.xml` and of its fixture, and the entries
 /// which silence a part of the report of that document and of no other.
 struct Gated {
@@ -159,7 +153,7 @@ gated! {
     // at all, a reference keyed by an id of its own next to one keyed by its place, the three
     // stoichiometries the half equation of python formats by a branch of its own, a local
     // parameter which shadows a global one and a unit of a fractional exponent.
-    the_report_of_core_elements_equals_the_python_report = "core_elements", CORE_ELEMENTS_ONLY;
+    the_report_of_core_elements_equals_the_python_report = "core_elements", &[];
     // What only an older level has: the defaults Level 2 gives `reversible`, `fast` and the
     // stoichiometry of a reference which states none, a kinetic law whose parameters the document
     // writes as `<parameter>` in a `<listOfParameters>`, and a reference with a `stoichiometryMath`,
@@ -256,41 +250,48 @@ fn compared_leaves(
 }
 
 // That an entry which is owed on one document silences no other, which is what scoping it to its
-// line of `GATED` is for. The two pointers of `CORE_ELEMENTS_ONLY` name a value of
-// `level2_reactions.xml` as well: the pk of its reaction `J1`, which sits at the index 1 of its
-// reactions, and the pk of the reference below it, which its parent derived from the key of that
-// reaction. Both are keys the port builds as python does, so with those two entries shared by every
-// document the gate of this one would pass over two of the pointers at which it reads an id keyed
-// reaction and a parent derived reference key. Not over all of them: this document holds two
-// reactions, `J0` and `J1`, and four references below them, so the gate would still read the key of
-// `J0` and of the three other references. What the two entries would cost is measured below and is
-// exactly two compared leaves.
+// line of `GATED` is for. Such an entry names its element by its place, `the parameter at the index
+// 0`, so the same pointer names another element in every other document and sharing it would
+// silence whatever sits there. Each of them is measured against every document it is not the entry
+// of: it has to reach no leaf of that document at all, so that the scoping takes no comparison out
+// of the walk anywhere. It is the half of the scoping which the liveness test cannot see, because
+// an entry which silences an agreeing value of another document leaves that document green and the
+// gate says nothing; what the liveness test measures is the other half, that the entry is live on
+// the document it is the entry of.
+//
+// What the green of this test says today is less than what it is written for, and a reader should
+// not take more from it: the one scoped entry left is the `/models/0/listOfParameters/0/cvterms/0`
+// of `MINIMAL_MODEL_ONLY`, and the other three documents hold no parameter at that place which
+// carries a cvterm at all, so the equality holds because the pointer reaches nothing of them and
+// not because a comparison was kept. It is a guard for the entries a later slice scopes, not a
+// measure of this one. The assertion above the loop is there so that the day every `only` empties,
+// the loop says it rather than comparing a number with itself four times and passing.
 #[test]
 fn an_entry_which_is_owed_on_one_document_silences_no_pointer_of_another() {
-    let document = of("level2_reactions");
-    let (ours, theirs) = reports(document.name);
-    let keys = [
-        "level2_reactions/Reaction:J1",
-        "level2_reactions/SpeciesReference:J1.reactant.S2",
-    ];
-    let excluded = excluded_for(document);
-    for (entry, key) in CORE_ELEMENTS_ONLY.iter().zip(keys) {
-        // the pointer names a key of this document, and a key both sides agree on
-        assert_eq!(ours.pointer(entry).and_then(|v| v.as_str()), Some(key));
-        assert_eq!(theirs.pointer(entry), ours.pointer(entry));
-        assert!(!excluded.contains(entry), "{entry}");
-    }
-    // and the two are leaves the gate of this document reaches: silencing them takes exactly two
-    // compared leaves out of the walk, which is what sharing them would cost
-    let shared: Vec<&str> = excluded
-        .iter()
-        .copied()
-        .chain(CORE_ELEMENTS_ONLY.iter().copied())
-        .collect();
-    assert_eq!(
-        compared_leaves(&ours, &theirs, &excluded) - compared_leaves(&ours, &theirs, &shared),
-        2
+    assert!(
+        GATED.iter().any(|document| !document.only.is_empty()),
+        "no document of the gate scopes an entry, so this test measures nothing",
     );
+    for document in GATED {
+        let (ours, theirs) = reports(document.name);
+        let excluded = excluded_for(document);
+        let foreign: Vec<&str> = GATED
+            .iter()
+            .filter(|other| other.name != document.name)
+            .flat_map(|other| other.only.iter().copied())
+            .collect();
+        for entry in &foreign {
+            // the entry of another document is no entry of this one, which `excluded_for` says
+            assert!(!excluded.contains(entry), "{entry} of {}", document.name);
+        }
+        let shared: Vec<&str> = excluded.iter().copied().chain(foreign).collect();
+        assert_eq!(
+            compared_leaves(&ours, &theirs, &excluded),
+            compared_leaves(&ours, &theirs, &shared),
+            "an entry of another document silences a leaf of {}",
+            document.name,
+        );
+    }
 }
 
 /// Whether `entry`, taken alone, silences a difference of this document.
