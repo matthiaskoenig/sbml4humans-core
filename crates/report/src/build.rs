@@ -29,21 +29,36 @@ const DOCUMENT_KEY: &str = "document";
 /// The key python gives a model which carries neither an id nor a metaId (`MAIN_MODEL_KEY`).
 const MAIN_MODEL_KEY: &str = "model";
 
-/// An object of the document model which carries the fields of `SBase`.
+/// An object of the document model which is one element of SBML of one type.
 ///
 /// Every list of a model is keyed by one call per list, which reaches the fields of `SBase` of a
 /// child whatever type that list holds. The types of the model share no base of their own, each
 /// holding those fields in a field `element`, so this is what they are asked for in common.
+///
+/// The type carries the name of its class as well, because that name decides two things of one
+/// element: the `sbmlType` of its report object and, through `pk::element_name`, the place which
+/// keys it where it carries no identifier. Naming it once is what keeps the two the same: a place
+/// prefix which does not match the type is a key no reader of the report can follow, and no test
+/// of a document whose every element of that type carries an id would see it.
 trait Keyed {
+    /// The name of the class of the element in SBML, which is the `sbmlType` of its report object.
+    const SBML_TYPE: &'static str;
+
     /// The fields of `SBase` the object carries.
     fn element(&self) -> &Element;
 }
 
 /// Implements [`Keyed`] for every type of the model which holds its `SBase` in a field `element`.
+///
+/// The name is written out next to the type and not taken from it with `stringify!`, although the
+/// two read the same on every line below: the name is a word of SBML and of the wire contract the
+/// frontend reads, and a rename of a struct of this workspace may not move it.
 macro_rules! keyed {
-    ($($type:ty),* $(,)?) => {
+    ($($type:ty => $sbml_type:literal),* $(,)?) => {
         $(
             impl Keyed for $type {
+                const SBML_TYPE: &'static str = $sbml_type;
+
                 fn element(&self) -> &Element {
                     &self.element
                 }
@@ -53,24 +68,23 @@ macro_rules! keyed {
 }
 
 keyed!(
-    Compartment,
-    Constraint,
-    Event,
-    FunctionDefinition,
-    InitialAssignment,
-    Parameter,
-    Reaction,
-    Rule,
-    Species,
-    UnitDefinition,
+    Compartment => "Compartment",
+    Constraint => "Constraint",
+    Event => "Event",
+    FunctionDefinition => "FunctionDefinition",
+    InitialAssignment => "InitialAssignment",
+    Parameter => "Parameter",
+    Reaction => "Reaction",
+    Species => "Species",
+    UnitDefinition => "UnitDefinition",
 );
 
 /// The key of every child of one list of a model, each named by its place in that list.
 ///
 /// The children of a list are all of one type but the rules, whose three classes `model` counts
 /// apart and which therefore call [`pk::indexed`] for themselves.
-fn places<T: Keyed>(children: &[T], sbml_type: &'static str) -> Vec<String> {
-    pk::indexed(children, |child| child.element(), |_| sbml_type)
+fn places<T: Keyed>(children: &[T]) -> Vec<String> {
+    pk::indexed(children, |child| child.element(), |_| T::SBML_TYPE)
 }
 
 /// The shared fields of an element, keyed in `scope` under `key`.
@@ -168,7 +182,7 @@ pub enum BuildError {
 /// A compartment of a model.
 fn compartment(scope: &str, key: &str, c: &Compartment) -> ReportCompartment {
     ReportCompartment {
-        sbase: sbase(scope, "Compartment", &c.element, key),
+        sbase: sbase(scope, Compartment::SBML_TYPE, &c.element, key),
         spatial_dimensions: c.spatial_dimensions.map(Double),
         size: c.size.map(Double),
         constant: c.constant,
@@ -181,7 +195,7 @@ fn compartment(scope: &str, key: &str, c: &Compartment) -> ReportCompartment {
 /// A species of a model.
 fn species(scope: &str, key: &str, s: &Species) -> ReportSpecies {
     ReportSpecies {
-        sbase: sbase(scope, "Species", &s.element, key),
+        sbase: sbase(scope, Species::SBML_TYPE, &s.element, key),
         compartment: s.compartment.clone(),
         initial_amount: s.initial_amount.map(Double),
         initial_concentration: s.initial_concentration.map(Double),
@@ -199,7 +213,7 @@ fn species(scope: &str, key: &str, s: &Species) -> ReportSpecies {
 /// A global parameter of a model.
 fn parameter(scope: &str, key: &str, p: &Parameter) -> ReportParameter {
     ReportParameter {
-        sbase: sbase(scope, "Parameter", &p.element, key),
+        sbase: sbase(scope, Parameter::SBML_TYPE, &p.element, key),
         value: p.value.map(Double),
         constant: p.constant,
         units: p.units.clone(),
@@ -218,7 +232,7 @@ fn function_definition(
     key: &str,
     fd: &FunctionDefinition,
 ) -> Result<ReportFunctionDefinition, BuildError> {
-    let sbase = sbase(scope, "FunctionDefinition", &fd.element, key);
+    let sbase = sbase(scope, FunctionDefinition::SBML_TYPE, &fd.element, key);
     let math = math_of(fd.math.as_ref(), &sbase.pk)?;
     Ok(ReportFunctionDefinition { sbase, math })
 }
@@ -226,7 +240,7 @@ fn function_definition(
 /// A unit definition with its factors.
 fn unit_definition(scope: &str, key: &str, ud: &UnitDefinition) -> ReportUnitDefinition {
     ReportUnitDefinition {
-        sbase: sbase(scope, "UnitDefinition", &ud.element, key),
+        sbase: sbase(scope, UnitDefinition::SBML_TYPE, &ud.element, key),
         units_latex: None,
         list_of_units: ud.units.iter().map(unit).collect(),
     }
@@ -245,7 +259,7 @@ fn initial_assignment(
     // the symbol is a required attribute, so the empty string is a document which names none
     let symbol = (!ia.symbol.is_empty()).then_some(ia.symbol.as_str());
     let key = key_of_target(&ia.element, symbol, place);
-    let sbase = sbase(scope, "InitialAssignment", &ia.element, &key);
+    let sbase = sbase(scope, InitialAssignment::SBML_TYPE, &ia.element, &key);
     let math = math_of(ia.math.as_ref(), &sbase.pk)?;
     Ok(ReportInitialAssignment {
         sbase,
@@ -290,7 +304,7 @@ fn rule(scope: &str, place: &str, r: &Rule) -> Result<ReportRule, BuildError> {
 ///
 /// What [`math_of`] answers for the math of the constraint.
 fn constraint(scope: &str, key: &str, c: &Constraint) -> Result<ReportConstraint, BuildError> {
-    let sbase = sbase(scope, "Constraint", &c.element, key);
+    let sbase = sbase(scope, Constraint::SBML_TYPE, &c.element, key);
     let math = math_of(c.math.as_ref(), &sbase.pk)?;
     Ok(ReportConstraint {
         sbase,
@@ -486,7 +500,7 @@ fn reaction(
         .map(|law| kinetic_law(scope, key, law))
         .transpose()?;
     Ok(ReportReaction {
-        sbase: sbase(scope, "Reaction", &r.element, key),
+        sbase: sbase(scope, Reaction::SBML_TYPE, &r.element, key),
         reversible: reversible(r, level),
         fast: fast(r, level, version),
         compartment: r.compartment.clone(),
@@ -607,7 +621,7 @@ fn event_assignments(
 /// writes.
 fn event(scope: &str, key: &str, e: &Event) -> Result<ReportEvent, BuildError> {
     Ok(ReportEvent {
-        sbase: sbase(scope, "Event", &e.element, key),
+        sbase: sbase(scope, Event::SBML_TYPE, &e.element, key),
         use_values_from_trigger_time: e.use_values_from_trigger_time,
         trigger: e
             .trigger
@@ -641,7 +655,7 @@ fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildEr
     // is counted under the name of its class, so an algebraic rule which carries no identifier is
     // keyed by its place among the algebraic rules alone, which an edit of another rule does not
     // move
-    let rule_keys = pk::indexed(&model.rules, Keyed::element, |r| rule_type(r.kind));
+    let rule_keys = pk::indexed(&model.rules, |r| &r.element, |r| rule_type(r.kind));
     let mut rules = Vec::with_capacity(model.rules.len());
     for (r, key) in model.rules.iter().zip(rule_keys) {
         rules.push(rule(&scope, &key, r)?);
@@ -667,56 +681,56 @@ fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildEr
         list_of_function_definitions: model
             .function_definitions
             .iter()
-            .zip(places(&model.function_definitions, "FunctionDefinition"))
+            .zip(places(&model.function_definitions))
             .map(|(fd, key)| function_definition(&scope, &key, fd))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_unit_definitions: model
             .unit_definitions
             .iter()
-            .zip(places(&model.unit_definitions, "UnitDefinition"))
+            .zip(places(&model.unit_definitions))
             .map(|(ud, key)| unit_definition(&scope, &key, ud))
             .collect(),
         list_of_compartments: model
             .compartments
             .iter()
-            .zip(places(&model.compartments, "Compartment"))
+            .zip(places(&model.compartments))
             .map(|(c, key)| compartment(&scope, &key, c))
             .collect(),
         list_of_species: model
             .species
             .iter()
-            .zip(places(&model.species, "Species"))
+            .zip(places(&model.species))
             .map(|(s, key)| species(&scope, &key, s))
             .collect(),
         list_of_parameters: model
             .parameters
             .iter()
-            .zip(places(&model.parameters, "Parameter"))
+            .zip(places(&model.parameters))
             .map(|(p, key)| parameter(&scope, &key, p))
             .collect(),
         list_of_initial_assignments: model
             .initial_assignments
             .iter()
-            .zip(places(&model.initial_assignments, "InitialAssignment"))
+            .zip(places(&model.initial_assignments))
             .map(|(ia, key)| initial_assignment(&scope, &key, ia))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_rules: rules,
         list_of_constraints: model
             .constraints
             .iter()
-            .zip(places(&model.constraints, "Constraint"))
+            .zip(places(&model.constraints))
             .map(|(c, key)| constraint(&scope, &key, c))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_reactions: model
             .reactions
             .iter()
-            .zip(places(&model.reactions, "Reaction"))
+            .zip(places(&model.reactions))
             .map(|(r, key)| reaction(&scope, &key, level, version, r))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_events: model
             .events
             .iter()
-            .zip(places(&model.events, "Event"))
+            .zip(places(&model.events))
             .map(|(e, key)| event(&scope, &key, e))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_submodels: vec![],
