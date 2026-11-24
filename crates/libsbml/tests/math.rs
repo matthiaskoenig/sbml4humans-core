@@ -561,6 +561,32 @@ fn a_tree_deeper_than_the_bound_is_an_error() {
     assert!(matches!(read_math(&deep), Err(ReadError::MathTooDeep)));
 }
 
+/// A width at which a free which followed the tree on the call stack would end
+/// the process.
+///
+/// `~ASTNode` of libsbml deletes the children of a node itself, which follows a
+/// tree one call frame per level: a plain `delete` of a chain of 300,000 nodes
+/// ends the process with SIGSEGV on the 8 MiB stack of a main thread, and a
+/// test thread gets 2 MiB. `s4h_ast_free` of the shim therefore takes a tree
+/// apart on a stack of its own, and this is the width which pins it.
+const PAST_A_RECURSIVE_FREE: usize = 200_000;
+
+#[test]
+fn the_tree_of_a_math_far_wider_than_the_bound_is_freed_without_ending_the_process() {
+    // Whatever the bound answers of this width, libsbml has built the tree by
+    // then and the read frees it on its way out, which is what this pins: the
+    // test ends rather than aborting, and every other free of the crate takes
+    // the same path.
+    let _ = read_math(&flat_sum(PAST_A_RECURSIVE_FREE));
+    // the parser of a Level 1 formula builds the same chain, whose tree is
+    // freed the same way
+    let mut formula = String::from("1");
+    for _ in 1..PAST_A_RECURSIVE_FREE {
+        formula.push_str("+1");
+    }
+    let _ = read_formula(&formula);
+}
+
 #[test]
 fn the_bound_is_reached_by_the_width_of_a_flat_sum_and_not_by_its_nesting_alone() {
     // The MathML reader of libsbml nests a flat n-ary application into a binary

@@ -1,9 +1,10 @@
 //! Filling the syntax tree of a math with the getters of libsbml.
 //!
-//! Nothing here may end a read of a math a request brought: the fill of a tree
-//! which is nested deeper than [`MAX_AST_DEPTH`] answers an error rather than
-//! following it, since the stack a deeper one would need is no error but an
-//! abort of the process and, in WebAssembly, the end of the instance.
+//! Nothing here may end a read of a math a request brought: the fill keeps its
+//! own stack on the heap rather than following a tree on the call stack, since
+//! a stack which runs out is no error but an abort of the process and, in
+//! WebAssembly, the end of the instance, and a tree which is nested deeper than
+//! [`MAX_AST_DEPTH`] answers an error rather than being filled.
 
 use std::ffi::{CString, c_char, c_double, c_int, c_longlong};
 
@@ -104,21 +105,18 @@ fn read_tree(
 ///
 /// # The bound
 ///
-/// This is the one place which answers [`ReadError::MathTooDeep`], and it is
-/// also one of the two walks which force the bound to stay as low as it is: it
-/// recurses once per level of the tree, as `operands` of
-/// `crates/report/src/math/latex.rs` does per level of a chain it unrolls.
-/// What the bound costs is no theoretical shape. libsbml nests a flat n-ary
-/// application into a binary tree to the left, one `apply` per operand after
-/// the first, so a flat sum of [`MAX_AST_DEPTH`] + 1 terms, an ordinary wide
-/// sum of a
-/// model, is a chain of that many levels and is refused here, and the whole
-/// document with it; the python implementation reports the same document in
-/// full and with its latex, since `writeMathML` unrolls the nesting back into
-/// one flat `apply`. The doc comment of [`MAX_AST_DEPTH`] carries the whole
-/// account. Removing the difference means making this walk and `operands`
-/// non-recursive, which is the business of the slice before the wheel and not
-/// of a higher bound.
+/// This is the one place which answers [`ReadError::MathTooDeep`]. The walk
+/// keeps its own stack on the heap and costs no call frame per level, so what
+/// the bound bounds is the memory a tree takes and no longer the stack it
+/// would need; the doc comment of [`MAX_AST_DEPTH`] carries that account. A
+/// tree of [`MAX_AST_DEPTH`] levels is filled and one of a level more is
+/// refused here, and the whole document with it, since the reader of a math is
+/// the one place which refuses one.
+///
+/// The two refusals keep the order the recursive walk met them in: the depth
+/// of a node is read on the way down and the kind of a node after its
+/// children, so a tree which is both too deep and holds a node of a kind the
+/// shim does not name is [`ReadError::MathTooDeep`].
 ///
 /// # Safety
 ///
@@ -128,17 +126,86 @@ pub(crate) unsafe fn ast_of(node: *const sys::ASTNode, depth: usize) -> Result<A
     if depth > MAX_AST_DEPTH {
         return Err(ReadError::MathTooDeep);
     }
-    unsafe {
-        // a child libsbml does not answer is left out, so that the number it
-        // states of its children cannot make the fill ask for one which is
-        // not there
-        let mut children = Vec::new();
-        for n in 0..sys::s4h_ast_num_children(node) {
-            let child = sys::s4h_ast_child(node, n);
+    let mut stack = vec![unsafe { Frame::of(node) }];
+    loop {
+        let top = stack.last_mut().expect("the frame of the root");
+        if let Some(child) = unsafe { top.next_child() } {
+            // the root stands at `depth`, so the frame which is pushed stands
+            // one level below the last one on the stack
+            if depth + stack.len() > MAX_AST_DEPTH {
+                return Err(ReadError::MathTooDeep);
+            }
+            stack.push(unsafe { Frame::of(child) });
+            continue;
+        }
+        let done = stack.pop().expect("the frame of the node which is done");
+        let filled = unsafe { filled(done.node, done.children) }?;
+        match stack.last_mut() {
+            Some(parent) => parent.children.push(filled),
+            None => return Ok(filled),
+        }
+    }
+}
+
+/// One node of the walk of [`ast_of`], and what is filled of it so far.
+struct Frame {
+    /// The node of libsbml being read.
+    node: *const sys::ASTNode,
+    /// How many children libsbml states of it.
+    count: u32,
+    /// How many of them the walk has asked for.
+    asked: u32,
+    /// The children which are filled so far.
+    children: Vec<Ast>,
+}
+
+impl Frame {
+    /// The frame of `node`, before any of its children is read.
+    ///
+    /// # Safety
+    ///
+    /// `node` is a node of a syntax tree of libsbml which is alive, and the
+    /// caller holds the lock of libsbml.
+    unsafe fn of(node: *const sys::ASTNode) -> Frame {
+        let count = unsafe { sys::s4h_ast_num_children(node) };
+        Frame {
+            node,
+            count,
+            asked: 0,
+            children: Vec::with_capacity(count as usize),
+        }
+    }
+
+    /// The next child of the node, [`None`] where every one of them is read.
+    ///
+    /// A child libsbml does not answer is left out, so that the number it
+    /// states of its children cannot make the fill ask for one which is not
+    /// there.
+    ///
+    /// # Safety
+    ///
+    /// The node of the frame is alive, and the caller holds the lock of
+    /// libsbml.
+    unsafe fn next_child(&mut self) -> Option<*const sys::ASTNode> {
+        while self.asked < self.count {
+            let child = unsafe { sys::s4h_ast_child(self.node, self.asked) };
+            self.asked += 1;
             if !child.is_null() {
-                children.push(ast_of(child, depth + 1)?);
+                return Some(child);
             }
         }
+        None
+    }
+}
+
+/// The node of a syntax tree of libsbml, with the children already filled of it.
+///
+/// # Safety
+///
+/// `node` is a node of a syntax tree of libsbml which is alive, and the caller
+/// holds the lock of libsbml.
+unsafe fn filled(node: *const sys::ASTNode, children: Vec<Ast>) -> Result<Ast, ReadError> {
+    unsafe {
         // the shim names every type a document of libsbml 5.21.2 reaches, the
         // `AST_UNKNOWN` of a math it could not read included, so a node of no
         // kind is one of a libsbml which declares a type the shim does not; the

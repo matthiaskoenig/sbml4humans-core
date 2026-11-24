@@ -35,6 +35,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <vector>
 
 #include <sbml/SBMLTypes.h>
 #include <sbml/SBMLNamespaces.h>
@@ -1102,8 +1103,33 @@ ASTNode* s4h_read_formula(const char* formula) {
 /// It is the one function of a node which takes a mutable `ASTNode*`, which is
 /// the tree its caller owns. A node of a document is a `const ASTNode*` and
 /// reaches no free.
+///
+/// The tree is taken apart on a stack of its own before anything is deleted,
+/// because `~ASTNode` deletes the children of a node itself and so follows a
+/// tree on the call stack, one frame per level: a plain `delete` of a chain of
+/// a few hundred thousand nodes, which a flat sum of that many terms is, ends
+/// the process with SIGSEGV (measured at 300,000 on the 8 MiB stack of a main
+/// thread). `removeChild` hands a child over without deleting it
+/// (ASTNode.cpp), so every node here reaches `delete` with no children left
+/// and the destructor never reaches a second level.
 void s4h_ast_free(ASTNode* node) {
-    delete node;
+    if (node == nullptr) {
+        return;
+    }
+    std::vector<ASTNode*> stack;
+    stack.push_back(node);
+    while (!stack.empty()) {
+        ASTNode* top = stack.back();
+        stack.pop_back();
+        for (unsigned int n = top->getNumChildren(); n > 0; --n) {
+            ASTNode* child = top->getChild(n - 1);
+            top->removeChild(n - 1);
+            if (child != nullptr) {
+                stack.push_back(child);
+            }
+        }
+        delete top;
+    }
 }
 
 /// The kind of a node as the code of the `AstKind` of the report.
