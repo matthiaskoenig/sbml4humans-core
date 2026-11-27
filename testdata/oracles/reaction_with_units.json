@@ -1,0 +1,816 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "reaction_with_units/Model:reaction_with_units",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Model:reaction_with_units",
+        "target": "reaction_with_units/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Model:reaction_with_units",
+        "target": "reaction_with_units/UnitDefinition:s",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Model:reaction_with_units",
+        "target": "reaction_with_units/UnitDefinition:liter",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Model:reaction_with_units",
+        "target": "reaction_with_units/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Model:reaction_with_units",
+        "target": "reaction_with_units/UnitDefinition:m",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Compartment:cell",
+        "target": "reaction_with_units/UnitDefinition:liter",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction_with_units/Species:A",
+        "target": "reaction_with_units/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Species:A",
+        "target": "reaction_with_units/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction_with_units/Species:B",
+        "target": "reaction_with_units/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Species:B",
+        "target": "reaction_with_units/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Parameter:v1_Vmax",
+        "target": "reaction_with_units/UnitDefinition:mmole_per_s",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "reaction_with_units/Parameter:v1_Km_A",
+        "target": "reaction_with_units/UnitDefinition:mM",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction_with_units/Reaction:v1",
+        "target": "reaction_with_units/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction_with_units/Reaction:v1",
+        "target": "reaction_with_units/SpeciesReference:v1.reactant.A",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction_with_units/SpeciesReference:v1.reactant.A",
+        "target": "reaction_with_units/Species:A",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction_with_units/Reaction:v1",
+        "target": "reaction_with_units/SpeciesReference:v1.product.B",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction_with_units/SpeciesReference:v1.product.B",
+        "target": "reaction_with_units/Species:B",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "reaction_with_units/Reaction:v1",
+        "target": "reaction_with_units/KineticLaw:v1.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction_with_units/KineticLaw:v1.kineticLaw",
+        "target": "reaction_with_units/Species:A",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction_with_units/KineticLaw:v1.kineticLaw",
+        "target": "reaction_with_units/Parameter:v1_Km_A",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction_with_units/KineticLaw:v1.kineticLaw",
+        "target": "reaction_with_units/Parameter:v1_Vmax",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "reaction_with_units/Compartment:cell": {
+        "id": "cell",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "cell",
+        "pk": "reaction_with_units/Compartment:cell",
+        "sbmlType": "Compartment"
+      },
+      "reaction_with_units/KineticLaw:v1.kineticLaw": {
+        "id": null,
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": null,
+        "pk": "reaction_with_units/KineticLaw:v1.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "reaction_with_units/Model:reaction_with_units": {
+        "id": "reaction_with_units",
+        "model": null,
+        "name": "model reaction with units",
+        "pk": "reaction_with_units/Model:reaction_with_units",
+        "sbmlType": "Model"
+      },
+      "reaction_with_units/Parameter:v1_Km_A": {
+        "id": "v1_Km_A",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": null,
+        "pk": "reaction_with_units/Parameter:v1_Km_A",
+        "sbmlType": "Parameter"
+      },
+      "reaction_with_units/Parameter:v1_Vmax": {
+        "id": "v1_Vmax",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": null,
+        "pk": "reaction_with_units/Parameter:v1_Vmax",
+        "sbmlType": "Parameter"
+      },
+      "reaction_with_units/Reaction:v1": {
+        "id": "v1",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "v1: A -> B",
+        "pk": "reaction_with_units/Reaction:v1",
+        "sbmlType": "Reaction"
+      },
+      "reaction_with_units/Species:A": {
+        "id": "A",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "A",
+        "pk": "reaction_with_units/Species:A",
+        "sbmlType": "Species"
+      },
+      "reaction_with_units/Species:B": {
+        "id": "B",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "B",
+        "pk": "reaction_with_units/Species:B",
+        "sbmlType": "Species"
+      },
+      "reaction_with_units/SpeciesReference:v1.product.B": {
+        "id": null,
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": null,
+        "pk": "reaction_with_units/SpeciesReference:v1.product.B",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction_with_units/SpeciesReference:v1.reactant.A": {
+        "id": null,
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": null,
+        "pk": "reaction_with_units/SpeciesReference:v1.reactant.A",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction_with_units/UnitDefinition:liter": {
+        "id": "liter",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "liter",
+        "pk": "reaction_with_units/UnitDefinition:liter",
+        "sbmlType": "UnitDefinition"
+      },
+      "reaction_with_units/UnitDefinition:m": {
+        "id": "m",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "meter",
+        "pk": "reaction_with_units/UnitDefinition:m",
+        "sbmlType": "UnitDefinition"
+      },
+      "reaction_with_units/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "meter^2",
+        "pk": "reaction_with_units/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "reaction_with_units/UnitDefinition:mM": {
+        "id": "mM",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "mmole/liter",
+        "pk": "reaction_with_units/UnitDefinition:mM",
+        "sbmlType": "UnitDefinition"
+      },
+      "reaction_with_units/UnitDefinition:mmole": {
+        "id": "mmole",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "mmole",
+        "pk": "reaction_with_units/UnitDefinition:mmole",
+        "sbmlType": "UnitDefinition"
+      },
+      "reaction_with_units/UnitDefinition:mmole_per_s": {
+        "id": "mmole_per_s",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "mmole/s",
+        "pk": "reaction_with_units/UnitDefinition:mmole_per_s",
+        "sbmlType": "UnitDefinition"
+      },
+      "reaction_with_units/UnitDefinition:s": {
+        "id": "s",
+        "model": "reaction_with_units/Model:reaction_with_units",
+        "name": "second",
+        "pk": "reaction_with_units/UnitDefinition:s",
+        "sbmlType": "UnitDefinition"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_reaction_with_units\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mmole",
+      "extentUnitsLatex": "mmol",
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "reaction_with_units",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "m",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000290"
+              ]
+            }
+          ],
+          "derivedUnits": "l",
+          "history": null,
+          "id": "cell",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_cell",
+          "name": "cell",
+          "notes": null,
+          "pk": "reaction_with_units/Compartment:cell",
+          "sbmlType": "Compartment",
+          "sbo": "SBO:0000290",
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": "liter",
+          "unitsLatex": "l",
+          "xml": "<compartment metaid=\"meta_cell\" sboTerm=\"SBO:0000290\" id=\"cell\" name=\"cell\" spatialDimensions=\"3\" size=\"1\" units=\"liter\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_cell\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000290\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</compartment>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mmol}{s}",
+          "history": null,
+          "id": "v1_Vmax",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "reaction_with_units/Parameter:v1_Vmax",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mmole_per_s",
+          "unitsLatex": "\\frac{mmol}{s}",
+          "value": 1.0,
+          "xml": "<parameter id=\"v1_Vmax\" value=\"1\" units=\"mmole_per_s\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "history": null,
+          "id": "v1_Km_A",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "reaction_with_units/Parameter:v1_Km_A",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mM",
+          "unitsLatex": "\\frac{mmol}{l}",
+          "value": 0.1,
+          "xml": "<parameter id=\"v1_Km_A\" value=\"0.1\" units=\"mM\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": "cell",
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000176"
+              ]
+            }
+          ],
+          "equation": "A ➞ B",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "v1",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "\\frac{mmol}{s}",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "v1_Vmax * v1_Km_A / (v1_Km_A + A)",
+              "latex": " \\frac{\\mathit{v1_{Vmax}}\\cdot \\mathit{v1\\_Km\\_A}}{\\mathit{v1\\_Km\\_A}+\\mathit{A}}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "reaction_with_units/KineticLaw:v1.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <divide/>\n      <apply>\n        <times/>\n        <ci> v1_Vmax </ci>\n        <ci> v1_Km_A </ci>\n      </apply>\n      <apply>\n        <plus/>\n        <ci> v1_Km_A </ci>\n        <ci> A </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction_with_units/SpeciesReference:v1.product.B",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "B",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"B\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction_with_units/SpeciesReference:v1.reactant.A",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "A",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"A\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": "meta_v1",
+          "name": "v1: A -> B",
+          "notes": null,
+          "pk": "reaction_with_units/Reaction:v1",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": "SBO:0000176",
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_v1\" sboTerm=\"SBO:0000176\" id=\"v1\" name=\"v1: A -&gt; B\" reversible=\"false\" fast=\"false\" compartment=\"cell\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_v1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000176\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfReactants>\n    <speciesReference species=\"A\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"B\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <divide/>\n        <apply>\n          <times/>\n          <ci> v1_Vmax </ci>\n          <ci> v1_Km_A </ci>\n        </apply>\n        <apply>\n          <plus/>\n          <ci> v1_Km_A </ci>\n          <ci> A </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "A",
+          "initialAmount": null,
+          "initialConcentration": 10.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_A",
+          "name": "A",
+          "notes": null,
+          "pk": "reaction_with_units/Species:A",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mmole",
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<species metaid=\"meta_A\" sboTerm=\"SBO:0000247\" id=\"A\" name=\"A\" compartment=\"cell\" initialConcentration=\"10\" substanceUnits=\"mmole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_A\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "B",
+          "initialAmount": null,
+          "initialConcentration": 10.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_B",
+          "name": "B",
+          "notes": null,
+          "pk": "reaction_with_units/Species:B",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mmole",
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<species metaid=\"meta_B\" sboTerm=\"SBO:0000247\" id=\"B\" name=\"B\" compartment=\"cell\" initialConcentration=\"10\" substanceUnits=\"mmole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_B\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "liter",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "liter",
+          "notes": null,
+          "pk": "reaction_with_units/UnitDefinition:liter",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "l",
+          "xml": "<unitDefinition id=\"liter\" name=\"liter\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter",
+          "notes": null,
+          "pk": "reaction_with_units/UnitDefinition:m",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m",
+          "xml": "<unitDefinition id=\"m\" name=\"meter\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "reaction_with_units/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mM",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/liter",
+          "notes": null,
+          "pk": "reaction_with_units/UnitDefinition:mM",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{l}",
+          "xml": "<unitDefinition id=\"mM\" name=\"mmole/liter\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole",
+          "notes": null,
+          "pk": "reaction_with_units/UnitDefinition:mmole",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<unitDefinition id=\"mmole\" name=\"mmole\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_s",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/s",
+          "notes": null,
+          "pk": "reaction_with_units/UnitDefinition:mmole_per_s",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{s}",
+          "xml": "<unitDefinition id=\"mmole_per_s\" name=\"mmole/s\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "s",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "second",
+          "notes": null,
+          "pk": "reaction_with_units/UnitDefinition:s",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "s",
+          "xml": "<unitDefinition id=\"s\" name=\"second\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_reaction_with_units",
+      "name": "model reaction with units",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Model reaction with units</h1>\n    <p>This example demonstrates how to create a compartment, species and reaction.\nThe model uses units.\nModel with single irreversible reaction v1: A -&gt; B.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "reaction_with_units/Model:reaction_with_units",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mmole",
+      "substanceUnitsLatex": "mmol",
+      "timeUnits": "s",
+      "timeUnitsLatex": "s",
+      "uncertainties": [],
+      "volumeUnits": "liter",
+      "volumeUnitsLatex": "l",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=reaction_with_units/Species:A}{A}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-\\htmlData{pk=reaction_with_units/Reaction:v1}{v_{\\mathrm{v1}}}}{\\htmlData{pk=reaction_with_units/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "reaction_with_units/Species:A"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=reaction_with_units/Species:B}{B}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=reaction_with_units/Reaction:v1}{v_{\\mathrm{v1}}}}{\\htmlData{pk=reaction_with_units/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "reaction_with_units/Species:B"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=reaction_with_units/Reaction:v1}{v_{\\mathrm{v1}}}",
+        "lines": [
+          "\\frac{\\htmlData{pk=reaction_with_units/Parameter:v1_Vmax}{\\mathrm{v1}_{\\mathrm{Vmax}}} \\cdot \\htmlData{pk=reaction_with_units/Parameter:v1_Km_A}{\\mathrm{v1}_{\\mathrm{Km\\_A}}}}{\\htmlData{pk=reaction_with_units/Parameter:v1_Km_A}{\\mathrm{v1}_{\\mathrm{Km\\_A}}} + \\htmlData{pk=reaction_with_units/Species:A}{A}}"
+        ],
+        "origin": "reaction",
+        "variable": "reaction_with_units/Reaction:v1"
+      }
+    ],
+    "unsupported": []
+  }
+}

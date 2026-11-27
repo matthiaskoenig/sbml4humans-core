@@ -1,0 +1,5012 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [
+      {
+        "prefix": "comp",
+        "version": 1
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "linear_chain/Model:linear_chain",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S1",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S2",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S3",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S4",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S5",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S6",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S7",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S8",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S9",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S10",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S11",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S12",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S13",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S14",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S15",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S16",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S17",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S18",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S19",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S20",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "linear_chain/Species:S21",
+        "target": "linear_chain/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J1",
+        "target": "linear_chain/SpeciesReference:J1.reactant.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J1.reactant.S1",
+        "target": "linear_chain/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J1",
+        "target": "linear_chain/SpeciesReference:J1.product.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J1.product.S2",
+        "target": "linear_chain/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J1",
+        "target": "linear_chain/KineticLaw:J1.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J1.kineticLaw",
+        "target": "linear_chain/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J1.kineticLaw",
+        "target": "linear_chain/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J2",
+        "target": "linear_chain/SpeciesReference:J2.reactant.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J2.reactant.S2",
+        "target": "linear_chain/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J2",
+        "target": "linear_chain/SpeciesReference:J2.product.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J2.product.S3",
+        "target": "linear_chain/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J2",
+        "target": "linear_chain/KineticLaw:J2.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J2.kineticLaw",
+        "target": "linear_chain/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J2.kineticLaw",
+        "target": "linear_chain/Parameter:k2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J3",
+        "target": "linear_chain/SpeciesReference:J3.reactant.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J3.reactant.S3",
+        "target": "linear_chain/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J3",
+        "target": "linear_chain/SpeciesReference:J3.product.S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J3.product.S4",
+        "target": "linear_chain/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J3",
+        "target": "linear_chain/KineticLaw:J3.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J3.kineticLaw",
+        "target": "linear_chain/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J3.kineticLaw",
+        "target": "linear_chain/Parameter:k3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J4",
+        "target": "linear_chain/SpeciesReference:J4.reactant.S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J4.reactant.S4",
+        "target": "linear_chain/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J4",
+        "target": "linear_chain/SpeciesReference:J4.product.S5",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J4.product.S5",
+        "target": "linear_chain/Species:S5",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J4",
+        "target": "linear_chain/KineticLaw:J4.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J4.kineticLaw",
+        "target": "linear_chain/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J4.kineticLaw",
+        "target": "linear_chain/Parameter:k4",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J5",
+        "target": "linear_chain/SpeciesReference:J5.reactant.S5",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J5.reactant.S5",
+        "target": "linear_chain/Species:S5",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J5",
+        "target": "linear_chain/SpeciesReference:J5.product.S6",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J5.product.S6",
+        "target": "linear_chain/Species:S6",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J5",
+        "target": "linear_chain/KineticLaw:J5.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J5.kineticLaw",
+        "target": "linear_chain/Species:S5",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J5.kineticLaw",
+        "target": "linear_chain/Parameter:k5",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J6",
+        "target": "linear_chain/SpeciesReference:J6.reactant.S6",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J6.reactant.S6",
+        "target": "linear_chain/Species:S6",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J6",
+        "target": "linear_chain/SpeciesReference:J6.product.S7",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J6.product.S7",
+        "target": "linear_chain/Species:S7",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J6",
+        "target": "linear_chain/KineticLaw:J6.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J6.kineticLaw",
+        "target": "linear_chain/Species:S6",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J6.kineticLaw",
+        "target": "linear_chain/Parameter:k6",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J7",
+        "target": "linear_chain/SpeciesReference:J7.reactant.S7",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J7.reactant.S7",
+        "target": "linear_chain/Species:S7",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J7",
+        "target": "linear_chain/SpeciesReference:J7.product.S8",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J7.product.S8",
+        "target": "linear_chain/Species:S8",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J7",
+        "target": "linear_chain/KineticLaw:J7.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J7.kineticLaw",
+        "target": "linear_chain/Species:S7",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J7.kineticLaw",
+        "target": "linear_chain/Parameter:k7",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J8",
+        "target": "linear_chain/SpeciesReference:J8.reactant.S8",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J8.reactant.S8",
+        "target": "linear_chain/Species:S8",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J8",
+        "target": "linear_chain/SpeciesReference:J8.product.S9",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J8.product.S9",
+        "target": "linear_chain/Species:S9",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J8",
+        "target": "linear_chain/KineticLaw:J8.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J8.kineticLaw",
+        "target": "linear_chain/Species:S8",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J8.kineticLaw",
+        "target": "linear_chain/Parameter:k8",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J9",
+        "target": "linear_chain/SpeciesReference:J9.reactant.S9",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J9.reactant.S9",
+        "target": "linear_chain/Species:S9",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J9",
+        "target": "linear_chain/SpeciesReference:J9.product.S10",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J9.product.S10",
+        "target": "linear_chain/Species:S10",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J9",
+        "target": "linear_chain/KineticLaw:J9.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J9.kineticLaw",
+        "target": "linear_chain/Species:S9",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J9.kineticLaw",
+        "target": "linear_chain/Parameter:k9",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J10",
+        "target": "linear_chain/SpeciesReference:J10.reactant.S10",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J10.reactant.S10",
+        "target": "linear_chain/Species:S10",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J10",
+        "target": "linear_chain/SpeciesReference:J10.product.S11",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J10.product.S11",
+        "target": "linear_chain/Species:S11",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J10",
+        "target": "linear_chain/KineticLaw:J10.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J10.kineticLaw",
+        "target": "linear_chain/Species:S10",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J10.kineticLaw",
+        "target": "linear_chain/Parameter:k10",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J11",
+        "target": "linear_chain/SpeciesReference:J11.reactant.S11",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J11.reactant.S11",
+        "target": "linear_chain/Species:S11",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J11",
+        "target": "linear_chain/SpeciesReference:J11.product.S12",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J11.product.S12",
+        "target": "linear_chain/Species:S12",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J11",
+        "target": "linear_chain/KineticLaw:J11.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J11.kineticLaw",
+        "target": "linear_chain/Species:S11",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J11.kineticLaw",
+        "target": "linear_chain/Parameter:k11",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J12",
+        "target": "linear_chain/SpeciesReference:J12.reactant.S12",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J12.reactant.S12",
+        "target": "linear_chain/Species:S12",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J12",
+        "target": "linear_chain/SpeciesReference:J12.product.S13",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J12.product.S13",
+        "target": "linear_chain/Species:S13",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J12",
+        "target": "linear_chain/KineticLaw:J12.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J12.kineticLaw",
+        "target": "linear_chain/Species:S12",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J12.kineticLaw",
+        "target": "linear_chain/Parameter:k12",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J13",
+        "target": "linear_chain/SpeciesReference:J13.reactant.S13",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J13.reactant.S13",
+        "target": "linear_chain/Species:S13",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J13",
+        "target": "linear_chain/SpeciesReference:J13.product.S14",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J13.product.S14",
+        "target": "linear_chain/Species:S14",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J13",
+        "target": "linear_chain/KineticLaw:J13.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J13.kineticLaw",
+        "target": "linear_chain/Species:S13",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J13.kineticLaw",
+        "target": "linear_chain/Parameter:k13",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J14",
+        "target": "linear_chain/SpeciesReference:J14.reactant.S14",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J14.reactant.S14",
+        "target": "linear_chain/Species:S14",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J14",
+        "target": "linear_chain/SpeciesReference:J14.product.S15",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J14.product.S15",
+        "target": "linear_chain/Species:S15",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J14",
+        "target": "linear_chain/KineticLaw:J14.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J14.kineticLaw",
+        "target": "linear_chain/Species:S14",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J14.kineticLaw",
+        "target": "linear_chain/Parameter:k14",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J15",
+        "target": "linear_chain/SpeciesReference:J15.reactant.S15",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J15.reactant.S15",
+        "target": "linear_chain/Species:S15",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J15",
+        "target": "linear_chain/SpeciesReference:J15.product.S16",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J15.product.S16",
+        "target": "linear_chain/Species:S16",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J15",
+        "target": "linear_chain/KineticLaw:J15.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J15.kineticLaw",
+        "target": "linear_chain/Species:S15",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J15.kineticLaw",
+        "target": "linear_chain/Parameter:k15",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J16",
+        "target": "linear_chain/SpeciesReference:J16.reactant.S16",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J16.reactant.S16",
+        "target": "linear_chain/Species:S16",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J16",
+        "target": "linear_chain/SpeciesReference:J16.product.S17",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J16.product.S17",
+        "target": "linear_chain/Species:S17",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J16",
+        "target": "linear_chain/KineticLaw:J16.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J16.kineticLaw",
+        "target": "linear_chain/Species:S16",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J16.kineticLaw",
+        "target": "linear_chain/Parameter:k16",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J17",
+        "target": "linear_chain/SpeciesReference:J17.reactant.S17",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J17.reactant.S17",
+        "target": "linear_chain/Species:S17",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J17",
+        "target": "linear_chain/SpeciesReference:J17.product.S18",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J17.product.S18",
+        "target": "linear_chain/Species:S18",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J17",
+        "target": "linear_chain/KineticLaw:J17.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J17.kineticLaw",
+        "target": "linear_chain/Species:S17",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J17.kineticLaw",
+        "target": "linear_chain/Parameter:k17",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J18",
+        "target": "linear_chain/SpeciesReference:J18.reactant.S18",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J18.reactant.S18",
+        "target": "linear_chain/Species:S18",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J18",
+        "target": "linear_chain/SpeciesReference:J18.product.S19",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J18.product.S19",
+        "target": "linear_chain/Species:S19",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J18",
+        "target": "linear_chain/KineticLaw:J18.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J18.kineticLaw",
+        "target": "linear_chain/Species:S18",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J18.kineticLaw",
+        "target": "linear_chain/Parameter:k18",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J19",
+        "target": "linear_chain/SpeciesReference:J19.reactant.S19",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J19.reactant.S19",
+        "target": "linear_chain/Species:S19",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J19",
+        "target": "linear_chain/SpeciesReference:J19.product.S20",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J19.product.S20",
+        "target": "linear_chain/Species:S20",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J19",
+        "target": "linear_chain/KineticLaw:J19.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J19.kineticLaw",
+        "target": "linear_chain/Species:S19",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J19.kineticLaw",
+        "target": "linear_chain/Parameter:k19",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/Reaction:J20",
+        "target": "linear_chain/SpeciesReference:J20.reactant.S20",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "linear_chain/SpeciesReference:J20.reactant.S20",
+        "target": "linear_chain/Species:S20",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/Reaction:J20",
+        "target": "linear_chain/SpeciesReference:J20.product.S21",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "linear_chain/SpeciesReference:J20.product.S21",
+        "target": "linear_chain/Species:S21",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "linear_chain/Reaction:J20",
+        "target": "linear_chain/KineticLaw:J20.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J20.kineticLaw",
+        "target": "linear_chain/Species:S20",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "linear_chain/KineticLaw:J20.kineticLaw",
+        "target": "linear_chain/Parameter:k20",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "linear_chain/Compartment:cell": {
+        "id": "cell",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Compartment:cell",
+        "sbmlType": "Compartment"
+      },
+      "linear_chain/KineticLaw:J1.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J1.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J10.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J10.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J11.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J11.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J12.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J12.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J13.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J13.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J14.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J14.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J15.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J15.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J16.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J16.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J17.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J17.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J18.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J18.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J19.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J19.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J2.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J2.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J20.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J20.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J3.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J3.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J4.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J4.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J5.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J5.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J6.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J6.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J7.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J7.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J8.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J8.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/KineticLaw:J9.kineticLaw": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/KineticLaw:J9.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "linear_chain/Model:linear_chain": {
+        "id": "linear_chain",
+        "model": null,
+        "name": null,
+        "pk": "linear_chain/Model:linear_chain",
+        "sbmlType": "Model"
+      },
+      "linear_chain/Parameter:k1": {
+        "id": "k1",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 1",
+        "pk": "linear_chain/Parameter:k1",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k10": {
+        "id": "k10",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 10",
+        "pk": "linear_chain/Parameter:k10",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k11": {
+        "id": "k11",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 11",
+        "pk": "linear_chain/Parameter:k11",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k12": {
+        "id": "k12",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 12",
+        "pk": "linear_chain/Parameter:k12",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k13": {
+        "id": "k13",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 13",
+        "pk": "linear_chain/Parameter:k13",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k14": {
+        "id": "k14",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 14",
+        "pk": "linear_chain/Parameter:k14",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k15": {
+        "id": "k15",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 15",
+        "pk": "linear_chain/Parameter:k15",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k16": {
+        "id": "k16",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 16",
+        "pk": "linear_chain/Parameter:k16",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k17": {
+        "id": "k17",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 17",
+        "pk": "linear_chain/Parameter:k17",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k18": {
+        "id": "k18",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 18",
+        "pk": "linear_chain/Parameter:k18",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k19": {
+        "id": "k19",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 19",
+        "pk": "linear_chain/Parameter:k19",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k2": {
+        "id": "k2",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 2",
+        "pk": "linear_chain/Parameter:k2",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k20": {
+        "id": "k20",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 20",
+        "pk": "linear_chain/Parameter:k20",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k3": {
+        "id": "k3",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 3",
+        "pk": "linear_chain/Parameter:k3",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k4": {
+        "id": "k4",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 4",
+        "pk": "linear_chain/Parameter:k4",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k5": {
+        "id": "k5",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 5",
+        "pk": "linear_chain/Parameter:k5",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k6": {
+        "id": "k6",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 6",
+        "pk": "linear_chain/Parameter:k6",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k7": {
+        "id": "k7",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 7",
+        "pk": "linear_chain/Parameter:k7",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k8": {
+        "id": "k8",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 8",
+        "pk": "linear_chain/Parameter:k8",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Parameter:k9": {
+        "id": "k9",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "rate constant 9",
+        "pk": "linear_chain/Parameter:k9",
+        "sbmlType": "Parameter"
+      },
+      "linear_chain/Reaction:J1": {
+        "id": "J1",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J1",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J10": {
+        "id": "J10",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J10",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J11": {
+        "id": "J11",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J11",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J12": {
+        "id": "J12",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J12",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J13": {
+        "id": "J13",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J13",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J14": {
+        "id": "J14",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J14",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J15": {
+        "id": "J15",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J15",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J16": {
+        "id": "J16",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J16",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J17": {
+        "id": "J17",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J17",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J18": {
+        "id": "J18",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J18",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J19": {
+        "id": "J19",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J19",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J2": {
+        "id": "J2",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J2",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J20": {
+        "id": "J20",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J20",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J3": {
+        "id": "J3",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J3",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J4": {
+        "id": "J4",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J4",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J5": {
+        "id": "J5",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J5",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J6": {
+        "id": "J6",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J6",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J7": {
+        "id": "J7",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J7",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J8": {
+        "id": "J8",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J8",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Reaction:J9": {
+        "id": "J9",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Reaction:J9",
+        "sbmlType": "Reaction"
+      },
+      "linear_chain/Species:S1": {
+        "id": "S1",
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/Species:S1",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S10": {
+        "id": "S10",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 10",
+        "pk": "linear_chain/Species:S10",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S11": {
+        "id": "S11",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 11",
+        "pk": "linear_chain/Species:S11",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S12": {
+        "id": "S12",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 12",
+        "pk": "linear_chain/Species:S12",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S13": {
+        "id": "S13",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 13",
+        "pk": "linear_chain/Species:S13",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S14": {
+        "id": "S14",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 14",
+        "pk": "linear_chain/Species:S14",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S15": {
+        "id": "S15",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 15",
+        "pk": "linear_chain/Species:S15",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S16": {
+        "id": "S16",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 16",
+        "pk": "linear_chain/Species:S16",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S17": {
+        "id": "S17",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 17",
+        "pk": "linear_chain/Species:S17",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S18": {
+        "id": "S18",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 18",
+        "pk": "linear_chain/Species:S18",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S19": {
+        "id": "S19",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 19",
+        "pk": "linear_chain/Species:S19",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S2": {
+        "id": "S2",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 2",
+        "pk": "linear_chain/Species:S2",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S20": {
+        "id": "S20",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 20",
+        "pk": "linear_chain/Species:S20",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S21": {
+        "id": "S21",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 21",
+        "pk": "linear_chain/Species:S21",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S3": {
+        "id": "S3",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 3",
+        "pk": "linear_chain/Species:S3",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S4": {
+        "id": "S4",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 4",
+        "pk": "linear_chain/Species:S4",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S5": {
+        "id": "S5",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 5",
+        "pk": "linear_chain/Species:S5",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S6": {
+        "id": "S6",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 6",
+        "pk": "linear_chain/Species:S6",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S7": {
+        "id": "S7",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 7",
+        "pk": "linear_chain/Species:S7",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S8": {
+        "id": "S8",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 8",
+        "pk": "linear_chain/Species:S8",
+        "sbmlType": "Species"
+      },
+      "linear_chain/Species:S9": {
+        "id": "S9",
+        "model": "linear_chain/Model:linear_chain",
+        "name": "Species 9",
+        "pk": "linear_chain/Species:S9",
+        "sbmlType": "Species"
+      },
+      "linear_chain/SpeciesReference:J1.product.S2": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J1.product.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J1.reactant.S1": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J1.reactant.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J10.product.S11": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J10.product.S11",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J10.reactant.S10": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J10.reactant.S10",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J11.product.S12": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J11.product.S12",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J11.reactant.S11": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J11.reactant.S11",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J12.product.S13": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J12.product.S13",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J12.reactant.S12": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J12.reactant.S12",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J13.product.S14": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J13.product.S14",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J13.reactant.S13": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J13.reactant.S13",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J14.product.S15": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J14.product.S15",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J14.reactant.S14": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J14.reactant.S14",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J15.product.S16": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J15.product.S16",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J15.reactant.S15": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J15.reactant.S15",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J16.product.S17": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J16.product.S17",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J16.reactant.S16": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J16.reactant.S16",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J17.product.S18": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J17.product.S18",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J17.reactant.S17": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J17.reactant.S17",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J18.product.S19": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J18.product.S19",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J18.reactant.S18": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J18.reactant.S18",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J19.product.S20": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J19.product.S20",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J19.reactant.S19": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J19.reactant.S19",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J2.product.S3": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J2.product.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J2.reactant.S2": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J2.reactant.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J20.product.S21": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J20.product.S21",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J20.reactant.S20": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J20.reactant.S20",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J3.product.S4": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J3.product.S4",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J3.reactant.S3": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J3.reactant.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J4.product.S5": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J4.product.S5",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J4.reactant.S4": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J4.reactant.S4",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J5.product.S6": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J5.product.S6",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J5.reactant.S5": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J5.reactant.S5",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J6.product.S7": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J6.product.S7",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J6.reactant.S6": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J6.reactant.S6",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J7.product.S8": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J7.product.S8",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J7.reactant.S7": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J7.reactant.S7",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J8.product.S9": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J8.product.S9",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J8.reactant.S8": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J8.reactant.S8",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J9.product.S10": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J9.product.S10",
+        "sbmlType": "SpeciesReference"
+      },
+      "linear_chain/SpeciesReference:J9.reactant.S9": {
+        "id": null,
+        "model": "linear_chain/Model:linear_chain",
+        "name": null,
+        "pk": "linear_chain/SpeciesReference:J9.reactant.S9",
+        "sbmlType": "SpeciesReference"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_linear_chain\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "linear_chain",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Compartment:cell",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell\" spatialDimensions=\"3\" size=\"1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 1",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k1",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k1\" name=\"rate constant 1\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k2",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 2",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k2",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k2\" name=\"rate constant 2\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k3",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 3",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k3",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k3\" name=\"rate constant 3\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k4",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 4",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k4",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k4\" name=\"rate constant 4\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k5",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 5",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k5",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k5\" name=\"rate constant 5\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k6",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 6",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k6",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k6\" name=\"rate constant 6\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k7",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 7",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k7",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k7\" name=\"rate constant 7\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k8",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 8",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k8",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k8\" name=\"rate constant 8\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k9",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 9",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k9",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k9\" name=\"rate constant 9\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k10",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 10",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k10",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k10\" name=\"rate constant 10\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k11",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 11",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k11",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k11\" name=\"rate constant 11\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k12",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 12",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k12",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k12\" name=\"rate constant 12\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k13",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 13",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k13",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k13\" name=\"rate constant 13\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k14",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 14",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k14",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k14\" name=\"rate constant 14\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k15",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 15",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k15",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k15\" name=\"rate constant 15\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k16",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 16",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k16",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k16\" name=\"rate constant 16\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k17",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 17",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k17",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k17\" name=\"rate constant 17\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k18",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 18",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k18",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k18\" name=\"rate constant 18\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k19",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 19",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k19",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k19\" name=\"rate constant 19\" value=\"0.1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k20",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "rate constant 20",
+          "notes": null,
+          "pk": "linear_chain/Parameter:k20",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k20\" name=\"rate constant 20\" value=\"0.1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S1 ➞ S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J1",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k1 * S1",
+              "latex": " \\mathit{k1}\\cdot \\mathit{S1}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J1.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k1 </ci>\n      <ci> S1 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J1.product.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J1.reactant.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J1",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J1\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k1 </ci>\n        <ci> S1 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S2 ➞ S3",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J2",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k2 * S2",
+              "latex": " \\mathit{k2}\\cdot \\mathit{S2}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J2.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k2 </ci>\n      <ci> S2 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J2.product.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J2.reactant.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J2",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J2\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k2 </ci>\n        <ci> S2 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S3 ➞ S4",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J3",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k3 * S3",
+              "latex": " \\mathit{k3}\\cdot \\mathit{S3}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J3.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k3 </ci>\n      <ci> S3 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J3.product.S4",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S4",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J3.reactant.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J3",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J3\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k3 </ci>\n        <ci> S3 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S4 ➞ S5",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J4",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k4 * S4",
+              "latex": " \\mathit{k4}\\cdot \\mathit{S4}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J4.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k4 </ci>\n      <ci> S4 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J4.product.S5",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S5",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S5\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J4.reactant.S4",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S4",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J4",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J4\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S5\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k4 </ci>\n        <ci> S4 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S5 ➞ S6",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J5",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k5 * S5",
+              "latex": " \\mathit{k5}\\cdot \\mathit{S5}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J5.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k5 </ci>\n      <ci> S5 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J5.product.S6",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S6",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S6\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J5.reactant.S5",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S5",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S5\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J5",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J5\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S5\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S6\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k5 </ci>\n        <ci> S5 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S6 ➞ S7",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J6",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k6 * S6",
+              "latex": " \\mathit{k6}\\cdot \\mathit{S6}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J6.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k6 </ci>\n      <ci> S6 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J6.product.S7",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S7",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S7\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J6.reactant.S6",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S6",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S6\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J6",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J6\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S6\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S7\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k6 </ci>\n        <ci> S6 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S7 ➞ S8",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J7",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k7 * S7",
+              "latex": " \\mathit{k7}\\cdot \\mathit{S7}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J7.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k7 </ci>\n      <ci> S7 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J7.product.S8",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S8",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S8\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J7.reactant.S7",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S7",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S7\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J7",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J7\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S7\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S8\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k7 </ci>\n        <ci> S7 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S8 ➞ S9",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J8",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k8 * S8",
+              "latex": " \\mathit{k8}\\cdot \\mathit{S8}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J8.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k8 </ci>\n      <ci> S8 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J8.product.S9",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S9",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S9\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J8.reactant.S8",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S8",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S8\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J8",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J8\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S8\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S9\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k8 </ci>\n        <ci> S8 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S9 ➞ S10",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J9",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k9 * S9",
+              "latex": " \\mathit{k9}\\cdot \\mathit{S9}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J9.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k9 </ci>\n      <ci> S9 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J9.product.S10",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S10",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S10\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J9.reactant.S9",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S9",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S9\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J9",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J9\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S9\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S10\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k9 </ci>\n        <ci> S9 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S10 ➞ S11",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J10",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k10 * S10",
+              "latex": " \\mathit{k10}\\cdot \\mathit{S10}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J10.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k10 </ci>\n      <ci> S10 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J10.product.S11",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S11",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S11\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J10.reactant.S10",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S10",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S10\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J10",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J10\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S10\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S11\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k10 </ci>\n        <ci> S10 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S11 ➞ S12",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J11",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k11 * S11",
+              "latex": " \\mathit{k11}\\cdot \\mathit{S11}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J11.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k11 </ci>\n      <ci> S11 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J11.product.S12",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S12",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S12\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J11.reactant.S11",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S11",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S11\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J11",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J11\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S11\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S12\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k11 </ci>\n        <ci> S11 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S12 ➞ S13",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J12",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k12 * S12",
+              "latex": " \\mathit{k12}\\cdot \\mathit{S12}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J12.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k12 </ci>\n      <ci> S12 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J12.product.S13",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S13",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S13\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J12.reactant.S12",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S12",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S12\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J12",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J12\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S12\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S13\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k12 </ci>\n        <ci> S12 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S13 ➞ S14",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J13",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k13 * S13",
+              "latex": " \\mathit{k13}\\cdot \\mathit{S13}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J13.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k13 </ci>\n      <ci> S13 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J13.product.S14",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S14",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S14\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J13.reactant.S13",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S13",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S13\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J13",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J13\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S13\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S14\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k13 </ci>\n        <ci> S13 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S14 ➞ S15",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J14",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k14 * S14",
+              "latex": " \\mathit{k14}\\cdot \\mathit{S14}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J14.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k14 </ci>\n      <ci> S14 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J14.product.S15",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S15",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S15\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J14.reactant.S14",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S14",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S14\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J14",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J14\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S14\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S15\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k14 </ci>\n        <ci> S14 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S15 ➞ S16",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J15",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k15 * S15",
+              "latex": " \\mathit{k15}\\cdot \\mathit{S15}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J15.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k15 </ci>\n      <ci> S15 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J15.product.S16",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S16",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S16\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J15.reactant.S15",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S15",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S15\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J15",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J15\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S15\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S16\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k15 </ci>\n        <ci> S15 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S16 ➞ S17",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J16",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k16 * S16",
+              "latex": " \\mathit{k16}\\cdot \\mathit{S16}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J16.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k16 </ci>\n      <ci> S16 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J16.product.S17",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S17",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S17\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J16.reactant.S16",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S16",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S16\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J16",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J16\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S16\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S17\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k16 </ci>\n        <ci> S16 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S17 ➞ S18",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J17",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k17 * S17",
+              "latex": " \\mathit{k17}\\cdot \\mathit{S17}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J17.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k17 </ci>\n      <ci> S17 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J17.product.S18",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S18",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S18\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J17.reactant.S17",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S17",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S17\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J17",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J17\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S17\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S18\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k17 </ci>\n        <ci> S17 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S18 ➞ S19",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J18",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k18 * S18",
+              "latex": " \\mathit{k18}\\cdot \\mathit{S18}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J18.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k18 </ci>\n      <ci> S18 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J18.product.S19",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S19",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S19\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J18.reactant.S18",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S18",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S18\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J18",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J18\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S18\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S19\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k18 </ci>\n        <ci> S18 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S19 ➞ S20",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J19",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k19 * S19",
+              "latex": " \\mathit{k19}\\cdot \\mathit{S19}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J19.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k19 </ci>\n      <ci> S19 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J19.product.S20",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S20",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S20\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J19.reactant.S19",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S19",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S19\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J19",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J19\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S19\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S20\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k19 </ci>\n        <ci> S19 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S20 ➞ S21",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J20",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k20 * S20",
+              "latex": " \\mathit{k20}\\cdot \\mathit{S20}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "linear_chain/KineticLaw:J20.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k20 </ci>\n      <ci> S20 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J20.product.S21",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S21",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S21\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "linear_chain/SpeciesReference:J20.reactant.S20",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S20",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S20\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Reaction:J20",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J20\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S20\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S21\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k20 </ci>\n        <ci> S20 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S1",
+          "initialAmount": null,
+          "initialConcentration": 10.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "linear_chain/Species:S1",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S1\" compartment=\"cell\" initialConcentration=\"10\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 2",
+          "notes": null,
+          "pk": "linear_chain/Species:S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S2\" name=\"Species 2\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S3",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 3",
+          "notes": null,
+          "pk": "linear_chain/Species:S3",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S3\" name=\"Species 3\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S4",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 4",
+          "notes": null,
+          "pk": "linear_chain/Species:S4",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S4\" name=\"Species 4\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S5",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 5",
+          "notes": null,
+          "pk": "linear_chain/Species:S5",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S5\" name=\"Species 5\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S6",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 6",
+          "notes": null,
+          "pk": "linear_chain/Species:S6",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S6\" name=\"Species 6\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S7",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 7",
+          "notes": null,
+          "pk": "linear_chain/Species:S7",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S7\" name=\"Species 7\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S8",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 8",
+          "notes": null,
+          "pk": "linear_chain/Species:S8",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S8\" name=\"Species 8\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S9",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 9",
+          "notes": null,
+          "pk": "linear_chain/Species:S9",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S9\" name=\"Species 9\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S10",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 10",
+          "notes": null,
+          "pk": "linear_chain/Species:S10",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S10\" name=\"Species 10\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S11",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 11",
+          "notes": null,
+          "pk": "linear_chain/Species:S11",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S11\" name=\"Species 11\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S12",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 12",
+          "notes": null,
+          "pk": "linear_chain/Species:S12",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S12\" name=\"Species 12\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S13",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 13",
+          "notes": null,
+          "pk": "linear_chain/Species:S13",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S13\" name=\"Species 13\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S14",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 14",
+          "notes": null,
+          "pk": "linear_chain/Species:S14",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S14\" name=\"Species 14\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S15",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 15",
+          "notes": null,
+          "pk": "linear_chain/Species:S15",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S15\" name=\"Species 15\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S16",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 16",
+          "notes": null,
+          "pk": "linear_chain/Species:S16",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S16\" name=\"Species 16\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S17",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 17",
+          "notes": null,
+          "pk": "linear_chain/Species:S17",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S17\" name=\"Species 17\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S18",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 18",
+          "notes": null,
+          "pk": "linear_chain/Species:S18",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S18\" name=\"Species 18\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S19",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 19",
+          "notes": null,
+          "pk": "linear_chain/Species:S19",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S19\" name=\"Species 19\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S20",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 20",
+          "notes": null,
+          "pk": "linear_chain/Species:S20",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S20\" name=\"Species 20\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S21",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "Species 21",
+          "notes": null,
+          "pk": "linear_chain/Species:S21",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S21\" name=\"Species 21\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_linear_chain",
+      "name": null,
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Linear chain</h1>\n    <p>Programmatic creation of a linear chain.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2025 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "linear_chain/Model:linear_chain",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S1}{S_{1}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-\\htmlData{pk=linear_chain/Reaction:J1}{v_{\\mathrm{J1}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S1"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S2}{S_{2}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J1}{v_{\\mathrm{J1}}} - \\htmlData{pk=linear_chain/Reaction:J2}{v_{\\mathrm{J2}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S2"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S3}{S_{3}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J2}{v_{\\mathrm{J2}}} - \\htmlData{pk=linear_chain/Reaction:J3}{v_{\\mathrm{J3}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S3"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S4}{S_{4}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J3}{v_{\\mathrm{J3}}} - \\htmlData{pk=linear_chain/Reaction:J4}{v_{\\mathrm{J4}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S4"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S5}{S_{5}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J4}{v_{\\mathrm{J4}}} - \\htmlData{pk=linear_chain/Reaction:J5}{v_{\\mathrm{J5}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S5"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S6}{S_{6}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J5}{v_{\\mathrm{J5}}} - \\htmlData{pk=linear_chain/Reaction:J6}{v_{\\mathrm{J6}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S6"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S7}{S_{7}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J6}{v_{\\mathrm{J6}}} - \\htmlData{pk=linear_chain/Reaction:J7}{v_{\\mathrm{J7}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S7"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S8}{S_{8}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J7}{v_{\\mathrm{J7}}} - \\htmlData{pk=linear_chain/Reaction:J8}{v_{\\mathrm{J8}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S8"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S9}{S_{9}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J8}{v_{\\mathrm{J8}}} - \\htmlData{pk=linear_chain/Reaction:J9}{v_{\\mathrm{J9}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S9"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S10}{S_{10}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J9}{v_{\\mathrm{J9}}} - \\htmlData{pk=linear_chain/Reaction:J10}{v_{\\mathrm{J10}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S10"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S11}{S_{11}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J10}{v_{\\mathrm{J10}}} - \\htmlData{pk=linear_chain/Reaction:J11}{v_{\\mathrm{J11}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S11"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S12}{S_{12}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J11}{v_{\\mathrm{J11}}} - \\htmlData{pk=linear_chain/Reaction:J12}{v_{\\mathrm{J12}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S12"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S13}{S_{13}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J12}{v_{\\mathrm{J12}}} - \\htmlData{pk=linear_chain/Reaction:J13}{v_{\\mathrm{J13}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S13"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S14}{S_{14}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J13}{v_{\\mathrm{J13}}} - \\htmlData{pk=linear_chain/Reaction:J14}{v_{\\mathrm{J14}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S14"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S15}{S_{15}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J14}{v_{\\mathrm{J14}}} - \\htmlData{pk=linear_chain/Reaction:J15}{v_{\\mathrm{J15}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S15"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S16}{S_{16}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J15}{v_{\\mathrm{J15}}} - \\htmlData{pk=linear_chain/Reaction:J16}{v_{\\mathrm{J16}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S16"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S17}{S_{17}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J16}{v_{\\mathrm{J16}}} - \\htmlData{pk=linear_chain/Reaction:J17}{v_{\\mathrm{J17}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S17"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S18}{S_{18}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J17}{v_{\\mathrm{J17}}} - \\htmlData{pk=linear_chain/Reaction:J18}{v_{\\mathrm{J18}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S18"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S19}{S_{19}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J18}{v_{\\mathrm{J18}}} - \\htmlData{pk=linear_chain/Reaction:J19}{v_{\\mathrm{J19}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S19"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S20}{S_{20}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J19}{v_{\\mathrm{J19}}} - \\htmlData{pk=linear_chain/Reaction:J20}{v_{\\mathrm{J20}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S20"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=linear_chain/Species:S21}{S_{21}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=linear_chain/Reaction:J20}{v_{\\mathrm{J20}}}}{\\htmlData{pk=linear_chain/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "linear_chain/Species:S21"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J1}{v_{\\mathrm{J1}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k1}{k_{1}} \\cdot \\htmlData{pk=linear_chain/Species:S1}{S_{1}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J1"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J2}{v_{\\mathrm{J2}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k2}{k_{2}} \\cdot \\htmlData{pk=linear_chain/Species:S2}{S_{2}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J2"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J3}{v_{\\mathrm{J3}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k3}{k_{3}} \\cdot \\htmlData{pk=linear_chain/Species:S3}{S_{3}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J3"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J4}{v_{\\mathrm{J4}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k4}{k_{4}} \\cdot \\htmlData{pk=linear_chain/Species:S4}{S_{4}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J4"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J5}{v_{\\mathrm{J5}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k5}{k_{5}} \\cdot \\htmlData{pk=linear_chain/Species:S5}{S_{5}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J5"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J6}{v_{\\mathrm{J6}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k6}{k_{6}} \\cdot \\htmlData{pk=linear_chain/Species:S6}{S_{6}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J6"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J7}{v_{\\mathrm{J7}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k7}{k_{7}} \\cdot \\htmlData{pk=linear_chain/Species:S7}{S_{7}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J7"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J8}{v_{\\mathrm{J8}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k8}{k_{8}} \\cdot \\htmlData{pk=linear_chain/Species:S8}{S_{8}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J8"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J9}{v_{\\mathrm{J9}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k9}{k_{9}} \\cdot \\htmlData{pk=linear_chain/Species:S9}{S_{9}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J9"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J10}{v_{\\mathrm{J10}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k10}{k_{10}} \\cdot \\htmlData{pk=linear_chain/Species:S10}{S_{10}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J10"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J11}{v_{\\mathrm{J11}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k11}{k_{11}} \\cdot \\htmlData{pk=linear_chain/Species:S11}{S_{11}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J11"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J12}{v_{\\mathrm{J12}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k12}{k_{12}} \\cdot \\htmlData{pk=linear_chain/Species:S12}{S_{12}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J12"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J13}{v_{\\mathrm{J13}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k13}{k_{13}} \\cdot \\htmlData{pk=linear_chain/Species:S13}{S_{13}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J13"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J14}{v_{\\mathrm{J14}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k14}{k_{14}} \\cdot \\htmlData{pk=linear_chain/Species:S14}{S_{14}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J14"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J15}{v_{\\mathrm{J15}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k15}{k_{15}} \\cdot \\htmlData{pk=linear_chain/Species:S15}{S_{15}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J15"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J16}{v_{\\mathrm{J16}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k16}{k_{16}} \\cdot \\htmlData{pk=linear_chain/Species:S16}{S_{16}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J16"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J17}{v_{\\mathrm{J17}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k17}{k_{17}} \\cdot \\htmlData{pk=linear_chain/Species:S17}{S_{17}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J17"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J18}{v_{\\mathrm{J18}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k18}{k_{18}} \\cdot \\htmlData{pk=linear_chain/Species:S18}{S_{18}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J18"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J19}{v_{\\mathrm{J19}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k19}{k_{19}} \\cdot \\htmlData{pk=linear_chain/Species:S19}{S_{19}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J19"
+      },
+      {
+        "lhs": "\\htmlData{pk=linear_chain/Reaction:J20}{v_{\\mathrm{J20}}}",
+        "lines": [
+          "\\htmlData{pk=linear_chain/Parameter:k20}{k_{20}} \\cdot \\htmlData{pk=linear_chain/Species:S20}{S_{20}}"
+        ],
+        "origin": "reaction",
+        "variable": "linear_chain/Reaction:J20"
+      }
+    ],
+    "unsupported": []
+  }
+}

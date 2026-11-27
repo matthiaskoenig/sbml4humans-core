@@ -1,0 +1,2140 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [
+      {
+        "prefix": "comp",
+        "version": 1
+      },
+      {
+        "prefix": "fbc",
+        "version": 3
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "fbc_example/Model:fbc_example",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Model:fbc_example",
+        "target": "fbc_example/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Model:fbc_example",
+        "target": "fbc_example/UnitDefinition:hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Model:fbc_example",
+        "target": "fbc_example/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_example/Species:Glcxt",
+        "target": "fbc_example/Compartment:bioreactor",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Species:Glcxt",
+        "target": "fbc_example/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_example/Species:Ac",
+        "target": "fbc_example/Compartment:bioreactor",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Species:Ac",
+        "target": "fbc_example/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_example/Species:O2",
+        "target": "fbc_example/Compartment:bioreactor",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Species:O2",
+        "target": "fbc_example/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_example/Species:X",
+        "target": "fbc_example/Compartment:bioreactor",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Species:X",
+        "target": "fbc_example/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Parameter:zero",
+        "target": "fbc_example/UnitDefinition:mmole_per_hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Parameter:ub_inf",
+        "target": "fbc_example/UnitDefinition:mmole_per_hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Parameter:lb_inf",
+        "target": "fbc_example/UnitDefinition:mmole_per_hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Parameter:glc_import",
+        "target": "fbc_example/UnitDefinition:mmole_per_hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_example/Parameter:o2_import",
+        "target": "fbc_example/UnitDefinition:mmole_per_hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_example/Reaction:v1",
+        "target": "fbc_example/Compartment:bioreactor",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:v1",
+        "target": "fbc_example/SpeciesReference:v1.reactant.Ac",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:v1.reactant.Ac",
+        "target": "fbc_example/Species:Ac",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:v1",
+        "target": "fbc_example/SpeciesReference:v1.reactant.O2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:v1.reactant.O2",
+        "target": "fbc_example/Species:O2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/Reaction:v1",
+        "target": "fbc_example/SpeciesReference:v1.product.X",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/SpeciesReference:v1.product.X",
+        "target": "fbc_example/Species:X",
+        "targetEntry": null
+      },
+      {
+        "kind": "lowerFluxBound",
+        "source": "fbc_example/Reaction:v1",
+        "target": "fbc_example/Parameter:zero",
+        "targetEntry": null
+      },
+      {
+        "kind": "upperFluxBound",
+        "source": "fbc_example/Reaction:v1",
+        "target": "fbc_example/Parameter:ub_inf",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_example/Reaction:v2",
+        "target": "fbc_example/Compartment:bioreactor",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:v2",
+        "target": "fbc_example/SpeciesReference:v2.reactant.Glcxt",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:v2.reactant.Glcxt",
+        "target": "fbc_example/Species:Glcxt",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:v2",
+        "target": "fbc_example/SpeciesReference:v2.reactant.O2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:v2.reactant.O2",
+        "target": "fbc_example/Species:O2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/Reaction:v2",
+        "target": "fbc_example/SpeciesReference:v2.product.X",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/SpeciesReference:v2.product.X",
+        "target": "fbc_example/Species:X",
+        "targetEntry": null
+      },
+      {
+        "kind": "lowerFluxBound",
+        "source": "fbc_example/Reaction:v2",
+        "target": "fbc_example/Parameter:zero",
+        "targetEntry": null
+      },
+      {
+        "kind": "upperFluxBound",
+        "source": "fbc_example/Reaction:v2",
+        "target": "fbc_example/Parameter:ub_inf",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_example/Reaction:v3",
+        "target": "fbc_example/Compartment:bioreactor",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:v3",
+        "target": "fbc_example/SpeciesReference:v3.reactant.Glcxt",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:v3.reactant.Glcxt",
+        "target": "fbc_example/Species:Glcxt",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:v3",
+        "target": "fbc_example/SpeciesReference:v3.reactant.O2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:v3.reactant.O2",
+        "target": "fbc_example/Species:O2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/Reaction:v3",
+        "target": "fbc_example/SpeciesReference:v3.product.Ac",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/SpeciesReference:v3.product.Ac",
+        "target": "fbc_example/Species:Ac",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/Reaction:v3",
+        "target": "fbc_example/SpeciesReference:v3.product.X",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/SpeciesReference:v3.product.X",
+        "target": "fbc_example/Species:X",
+        "targetEntry": null
+      },
+      {
+        "kind": "lowerFluxBound",
+        "source": "fbc_example/Reaction:v3",
+        "target": "fbc_example/Parameter:zero",
+        "targetEntry": null
+      },
+      {
+        "kind": "upperFluxBound",
+        "source": "fbc_example/Reaction:v3",
+        "target": "fbc_example/Parameter:ub_inf",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_example/Reaction:v4",
+        "target": "fbc_example/Compartment:bioreactor",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:v4",
+        "target": "fbc_example/SpeciesReference:v4.reactant.Glcxt",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:v4.reactant.Glcxt",
+        "target": "fbc_example/Species:Glcxt",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/Reaction:v4",
+        "target": "fbc_example/SpeciesReference:v4.product.Ac",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/SpeciesReference:v4.product.Ac",
+        "target": "fbc_example/Species:Ac",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/Reaction:v4",
+        "target": "fbc_example/SpeciesReference:v4.product.X",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_example/SpeciesReference:v4.product.X",
+        "target": "fbc_example/Species:X",
+        "targetEntry": null
+      },
+      {
+        "kind": "lowerFluxBound",
+        "source": "fbc_example/Reaction:v4",
+        "target": "fbc_example/Parameter:zero",
+        "targetEntry": null
+      },
+      {
+        "kind": "upperFluxBound",
+        "source": "fbc_example/Reaction:v4",
+        "target": "fbc_example/Parameter:ub_inf",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:EX_Ac",
+        "target": "fbc_example/SpeciesReference:EX_Ac.reactant.Ac",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:EX_Ac.reactant.Ac",
+        "target": "fbc_example/Species:Ac",
+        "targetEntry": null
+      },
+      {
+        "kind": "lowerFluxBound",
+        "source": "fbc_example/Reaction:EX_Ac",
+        "target": "fbc_example/Parameter:lb_inf",
+        "targetEntry": null
+      },
+      {
+        "kind": "upperFluxBound",
+        "source": "fbc_example/Reaction:EX_Ac",
+        "target": "fbc_example/Parameter:ub_inf",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:EX_O2",
+        "target": "fbc_example/SpeciesReference:EX_O2.reactant.O2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:EX_O2.reactant.O2",
+        "target": "fbc_example/Species:O2",
+        "targetEntry": null
+      },
+      {
+        "kind": "lowerFluxBound",
+        "source": "fbc_example/Reaction:EX_O2",
+        "target": "fbc_example/Parameter:o2_import",
+        "targetEntry": null
+      },
+      {
+        "kind": "upperFluxBound",
+        "source": "fbc_example/Reaction:EX_O2",
+        "target": "fbc_example/Parameter:zero",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:EX_Glcxt",
+        "target": "fbc_example/SpeciesReference:EX_Glcxt.reactant.Glcxt",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:EX_Glcxt.reactant.Glcxt",
+        "target": "fbc_example/Species:Glcxt",
+        "targetEntry": null
+      },
+      {
+        "kind": "lowerFluxBound",
+        "source": "fbc_example/Reaction:EX_Glcxt",
+        "target": "fbc_example/Parameter:glc_import",
+        "targetEntry": null
+      },
+      {
+        "kind": "upperFluxBound",
+        "source": "fbc_example/Reaction:EX_Glcxt",
+        "target": "fbc_example/Parameter:zero",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/Reaction:EX_X",
+        "target": "fbc_example/SpeciesReference:EX_X.reactant.X",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_example/SpeciesReference:EX_X.reactant.X",
+        "target": "fbc_example/Species:X",
+        "targetEntry": null
+      },
+      {
+        "kind": "lowerFluxBound",
+        "source": "fbc_example/Reaction:EX_X",
+        "target": "fbc_example/Parameter:lb_inf",
+        "targetEntry": null
+      },
+      {
+        "kind": "upperFluxBound",
+        "source": "fbc_example/Reaction:EX_X",
+        "target": "fbc_example/Parameter:ub_inf",
+        "targetEntry": null
+      },
+      {
+        "kind": "activeObjective",
+        "source": "fbc_example/Model:fbc_example",
+        "target": "fbc_example/Objective:biomass_max",
+        "targetEntry": null
+      },
+      {
+        "kind": "fluxObjective",
+        "source": "fbc_example/Objective:biomass_max",
+        "target": "fbc_example/FluxObjective:biomass_max.fluxObjective.v1",
+        "targetEntry": null
+      },
+      {
+        "kind": "fluxObjective",
+        "source": "fbc_example/FluxObjective:biomass_max.fluxObjective.v1",
+        "target": "fbc_example/Reaction:v1",
+        "targetEntry": null
+      },
+      {
+        "kind": "fluxObjective",
+        "source": "fbc_example/Objective:biomass_max",
+        "target": "fbc_example/FluxObjective:biomass_max.fluxObjective.v2",
+        "targetEntry": null
+      },
+      {
+        "kind": "fluxObjective",
+        "source": "fbc_example/FluxObjective:biomass_max.fluxObjective.v2",
+        "target": "fbc_example/Reaction:v2",
+        "targetEntry": null
+      },
+      {
+        "kind": "fluxObjective",
+        "source": "fbc_example/Objective:biomass_max",
+        "target": "fbc_example/FluxObjective:biomass_max.fluxObjective.v3",
+        "targetEntry": null
+      },
+      {
+        "kind": "fluxObjective",
+        "source": "fbc_example/FluxObjective:biomass_max.fluxObjective.v3",
+        "target": "fbc_example/Reaction:v3",
+        "targetEntry": null
+      },
+      {
+        "kind": "fluxObjective",
+        "source": "fbc_example/Objective:biomass_max",
+        "target": "fbc_example/FluxObjective:biomass_max.fluxObjective.v4",
+        "targetEntry": null
+      },
+      {
+        "kind": "fluxObjective",
+        "source": "fbc_example/FluxObjective:biomass_max.fluxObjective.v4",
+        "target": "fbc_example/Reaction:v4",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "fbc_example/Compartment:bioreactor": {
+        "id": "bioreactor",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "bioreactor",
+        "pk": "fbc_example/Compartment:bioreactor",
+        "sbmlType": "Compartment"
+      },
+      "fbc_example/FluxObjective:biomass_max.fluxObjective.v1": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/FluxObjective:biomass_max.fluxObjective.v1",
+        "sbmlType": "FluxObjective"
+      },
+      "fbc_example/FluxObjective:biomass_max.fluxObjective.v2": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/FluxObjective:biomass_max.fluxObjective.v2",
+        "sbmlType": "FluxObjective"
+      },
+      "fbc_example/FluxObjective:biomass_max.fluxObjective.v3": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/FluxObjective:biomass_max.fluxObjective.v3",
+        "sbmlType": "FluxObjective"
+      },
+      "fbc_example/FluxObjective:biomass_max.fluxObjective.v4": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/FluxObjective:biomass_max.fluxObjective.v4",
+        "sbmlType": "FluxObjective"
+      },
+      "fbc_example/Model:fbc_example": {
+        "id": "fbc_example",
+        "model": null,
+        "name": null,
+        "pk": "fbc_example/Model:fbc_example",
+        "sbmlType": "Model"
+      },
+      "fbc_example/Objective:biomass_max": {
+        "id": "biomass_max",
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/Objective:biomass_max",
+        "sbmlType": "Objective"
+      },
+      "fbc_example/Parameter:glc_import": {
+        "id": "glc_import",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "glc import bound",
+        "pk": "fbc_example/Parameter:glc_import",
+        "sbmlType": "Parameter"
+      },
+      "fbc_example/Parameter:lb_inf": {
+        "id": "lb_inf",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "default lower bound",
+        "pk": "fbc_example/Parameter:lb_inf",
+        "sbmlType": "Parameter"
+      },
+      "fbc_example/Parameter:o2_import": {
+        "id": "o2_import",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "o2 import bound",
+        "pk": "fbc_example/Parameter:o2_import",
+        "sbmlType": "Parameter"
+      },
+      "fbc_example/Parameter:ub_inf": {
+        "id": "ub_inf",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "default upper bound",
+        "pk": "fbc_example/Parameter:ub_inf",
+        "sbmlType": "Parameter"
+      },
+      "fbc_example/Parameter:zero": {
+        "id": "zero",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "zero bound",
+        "pk": "fbc_example/Parameter:zero",
+        "sbmlType": "Parameter"
+      },
+      "fbc_example/Reaction:EX_Ac": {
+        "id": "EX_Ac",
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/Reaction:EX_Ac",
+        "sbmlType": "Reaction"
+      },
+      "fbc_example/Reaction:EX_Glcxt": {
+        "id": "EX_Glcxt",
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/Reaction:EX_Glcxt",
+        "sbmlType": "Reaction"
+      },
+      "fbc_example/Reaction:EX_O2": {
+        "id": "EX_O2",
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/Reaction:EX_O2",
+        "sbmlType": "Reaction"
+      },
+      "fbc_example/Reaction:EX_X": {
+        "id": "EX_X",
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/Reaction:EX_X",
+        "sbmlType": "Reaction"
+      },
+      "fbc_example/Reaction:v1": {
+        "id": "v1",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "v1 (39.43 Ac + 35 O2 -> X)",
+        "pk": "fbc_example/Reaction:v1",
+        "sbmlType": "Reaction"
+      },
+      "fbc_example/Reaction:v2": {
+        "id": "v2",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "v2 (9.46 Glcxt + 12.92 O2 -> X)",
+        "pk": "fbc_example/Reaction:v2",
+        "sbmlType": "Reaction"
+      },
+      "fbc_example/Reaction:v3": {
+        "id": "v3",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "v3 (9.84 Glcxt + 12.73 O2 -> 1.24 Ac + X)",
+        "pk": "fbc_example/Reaction:v3",
+        "sbmlType": "Reaction"
+      },
+      "fbc_example/Reaction:v4": {
+        "id": "v4",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "v4 (19.23 Glcxt -> 12.12 Ac + X)",
+        "pk": "fbc_example/Reaction:v4",
+        "sbmlType": "Reaction"
+      },
+      "fbc_example/Species:Ac": {
+        "id": "Ac",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "acetate",
+        "pk": "fbc_example/Species:Ac",
+        "sbmlType": "Species"
+      },
+      "fbc_example/Species:Glcxt": {
+        "id": "Glcxt",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "glucose",
+        "pk": "fbc_example/Species:Glcxt",
+        "sbmlType": "Species"
+      },
+      "fbc_example/Species:O2": {
+        "id": "O2",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "oxygen",
+        "pk": "fbc_example/Species:O2",
+        "sbmlType": "Species"
+      },
+      "fbc_example/Species:X": {
+        "id": "X",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "biomass",
+        "pk": "fbc_example/Species:X",
+        "sbmlType": "Species"
+      },
+      "fbc_example/SpeciesReference:EX_Ac.reactant.Ac": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:EX_Ac.reactant.Ac",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:EX_Glcxt.reactant.Glcxt": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:EX_Glcxt.reactant.Glcxt",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:EX_O2.reactant.O2": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:EX_O2.reactant.O2",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:EX_X.reactant.X": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:EX_X.reactant.X",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v1.product.X": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v1.product.X",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v1.reactant.Ac": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v1.reactant.Ac",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v1.reactant.O2": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v1.reactant.O2",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v2.product.X": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v2.product.X",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v2.reactant.Glcxt": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v2.reactant.Glcxt",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v2.reactant.O2": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v2.reactant.O2",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v3.product.Ac": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v3.product.Ac",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v3.product.X": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v3.product.X",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v3.reactant.Glcxt": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v3.reactant.Glcxt",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v3.reactant.O2": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v3.reactant.O2",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v4.product.Ac": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v4.product.Ac",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v4.product.X": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v4.product.X",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/SpeciesReference:v4.reactant.Glcxt": {
+        "id": null,
+        "model": "fbc_example/Model:fbc_example",
+        "name": null,
+        "pk": "fbc_example/SpeciesReference:v4.reactant.Glcxt",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_example/UnitDefinition:hr": {
+        "id": "hr",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "hr",
+        "pk": "fbc_example/UnitDefinition:hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "fbc_example/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "meter^2",
+        "pk": "fbc_example/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "fbc_example/UnitDefinition:mmole": {
+        "id": "mmole",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "mmole",
+        "pk": "fbc_example/UnitDefinition:mmole",
+        "sbmlType": "UnitDefinition"
+      },
+      "fbc_example/UnitDefinition:mmole_per_hr": {
+        "id": "mmole_per_hr",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "mmole/hr",
+        "pk": "fbc_example/UnitDefinition:mmole_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "fbc_example/UnitDefinition:mmole_per_l": {
+        "id": "mmole_per_l",
+        "model": "fbc_example/Model:fbc_example",
+        "name": "mmole/liter",
+        "pk": "fbc_example/UnitDefinition:mmole_per_l",
+        "sbmlType": "UnitDefinition"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_fbc_example\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mmole",
+      "extentUnitsLatex": "mmol",
+      "fbc": {
+        "activeObjective": "biomass_max",
+        "strict": false
+      },
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "fbc_example",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "metre",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "l",
+          "history": null,
+          "id": "bioreactor",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "bioreactor",
+          "notes": null,
+          "pk": "fbc_example/Compartment:bioreactor",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": "litre",
+          "unitsLatex": "l",
+          "xml": "<compartment id=\"bioreactor\" name=\"bioreactor\" spatialDimensions=\"3\" size=\"1\" units=\"litre\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "biomass_max",
+          "keyValuePairs": [],
+          "listOfFluxObjectives": [
+            {
+              "coefficient": 1.0,
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/FluxObjective:biomass_max.fluxObjective.v1",
+              "reaction": "v1",
+              "reaction2": null,
+              "sbmlType": "FluxObjective",
+              "sbo": null,
+              "uncertainties": [],
+              "variableType": "linear",
+              "xml": "<fbc:fluxObjective fbc:reaction=\"v1\" fbc:coefficient=\"1\" fbc:variableType=\"linear\"/>"
+            },
+            {
+              "coefficient": 1.0,
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/FluxObjective:biomass_max.fluxObjective.v2",
+              "reaction": "v2",
+              "reaction2": null,
+              "sbmlType": "FluxObjective",
+              "sbo": null,
+              "uncertainties": [],
+              "variableType": "linear",
+              "xml": "<fbc:fluxObjective fbc:reaction=\"v2\" fbc:coefficient=\"1\" fbc:variableType=\"linear\"/>"
+            },
+            {
+              "coefficient": 1.0,
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/FluxObjective:biomass_max.fluxObjective.v3",
+              "reaction": "v3",
+              "reaction2": null,
+              "sbmlType": "FluxObjective",
+              "sbo": null,
+              "uncertainties": [],
+              "variableType": "linear",
+              "xml": "<fbc:fluxObjective fbc:reaction=\"v3\" fbc:coefficient=\"1\" fbc:variableType=\"linear\"/>"
+            },
+            {
+              "coefficient": 1.0,
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/FluxObjective:biomass_max.fluxObjective.v4",
+              "reaction": "v4",
+              "reaction2": null,
+              "sbmlType": "FluxObjective",
+              "sbo": null,
+              "uncertainties": [],
+              "variableType": "linear",
+              "xml": "<fbc:fluxObjective fbc:reaction=\"v4\" fbc:coefficient=\"1\" fbc:variableType=\"linear\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "fbc_example/Objective:biomass_max",
+          "sbmlType": "Objective",
+          "sbo": null,
+          "type": "maximize",
+          "uncertainties": [],
+          "xml": "<fbc:objective fbc:id=\"biomass_max\" fbc:type=\"maximize\">\n  <fbc:listOfFluxObjectives>\n    <fbc:fluxObjective fbc:reaction=\"v1\" fbc:coefficient=\"1\" fbc:variableType=\"linear\"/>\n    <fbc:fluxObjective fbc:reaction=\"v2\" fbc:coefficient=\"1\" fbc:variableType=\"linear\"/>\n    <fbc:fluxObjective fbc:reaction=\"v3\" fbc:coefficient=\"1\" fbc:variableType=\"linear\"/>\n    <fbc:fluxObjective fbc:reaction=\"v4\" fbc:coefficient=\"1\" fbc:variableType=\"linear\"/>\n  </fbc:listOfFluxObjectives>\n</fbc:objective>"
+        }
+      ],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000625"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{hr}",
+          "history": null,
+          "id": "zero",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_zero",
+          "name": "zero bound",
+          "notes": null,
+          "pk": "fbc_example/Parameter:zero",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000625",
+          "uncertainties": [],
+          "units": "mmole_per_hr",
+          "unitsLatex": "\\frac{mmol}{hr}",
+          "value": 0.0,
+          "xml": "<parameter metaid=\"meta_zero\" sboTerm=\"SBO:0000625\" id=\"zero\" name=\"zero bound\" value=\"0\" units=\"mmole_per_hr\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_zero\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000625\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000625"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{hr}",
+          "history": null,
+          "id": "ub_inf",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_ub_inf",
+          "name": "default upper bound",
+          "notes": null,
+          "pk": "fbc_example/Parameter:ub_inf",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000625",
+          "uncertainties": [],
+          "units": "mmole_per_hr",
+          "unitsLatex": "\\frac{mmol}{hr}",
+          "value": "Infinity",
+          "xml": "<parameter metaid=\"meta_ub_inf\" sboTerm=\"SBO:0000625\" id=\"ub_inf\" name=\"default upper bound\" value=\"INF\" units=\"mmole_per_hr\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_ub_inf\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000625\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000625"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{hr}",
+          "history": null,
+          "id": "lb_inf",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_lb_inf",
+          "name": "default lower bound",
+          "notes": null,
+          "pk": "fbc_example/Parameter:lb_inf",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000625",
+          "uncertainties": [],
+          "units": "mmole_per_hr",
+          "unitsLatex": "\\frac{mmol}{hr}",
+          "value": "-Infinity",
+          "xml": "<parameter metaid=\"meta_lb_inf\" sboTerm=\"SBO:0000625\" id=\"lb_inf\" name=\"default lower bound\" value=\"-INF\" units=\"mmole_per_hr\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_lb_inf\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000625\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000625"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{hr}",
+          "history": null,
+          "id": "glc_import",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_glc_import",
+          "name": "glc import bound",
+          "notes": null,
+          "pk": "fbc_example/Parameter:glc_import",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000625",
+          "uncertainties": [],
+          "units": "mmole_per_hr",
+          "unitsLatex": "\\frac{mmol}{hr}",
+          "value": -15.0,
+          "xml": "<parameter metaid=\"meta_glc_import\" sboTerm=\"SBO:0000625\" id=\"glc_import\" name=\"glc import bound\" value=\"-15\" units=\"mmole_per_hr\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_glc_import\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000625\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000625"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{hr}",
+          "history": null,
+          "id": "o2_import",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_o2_import",
+          "name": "o2 import bound",
+          "notes": null,
+          "pk": "fbc_example/Parameter:o2_import",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000625",
+          "uncertainties": [],
+          "units": "mmole_per_hr",
+          "unitsLatex": "\\frac{mmol}{hr}",
+          "value": -10.0,
+          "xml": "<parameter metaid=\"meta_o2_import\" sboTerm=\"SBO:0000625\" id=\"o2_import\" name=\"o2 import bound\" value=\"-10\" units=\"mmole_per_hr\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_o2_import\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000625\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": "bioreactor",
+          "cvterms": [],
+          "equation": "39.43 Ac + 35.0 O2 ➞ X",
+          "fast": false,
+          "fbc": {
+            "geneProductAssociation": null,
+            "lowerFluxBound": "zero",
+            "upperFluxBound": "ub_inf"
+          },
+          "history": null,
+          "id": "v1",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v1.product.X",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "X",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v1.reactant.Ac",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "Ac",
+              "stoichiometry": 39.43,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"Ac\" stoichiometry=\"39.43\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v1.reactant.O2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "O2",
+              "stoichiometry": 35.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"O2\" stoichiometry=\"35\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "v1 (39.43 Ac + 35 O2 -> X)",
+          "notes": null,
+          "pk": "fbc_example/Reaction:v1",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"v1\" name=\"v1 (39.43 Ac + 35 O2 -&gt; X)\" reversible=\"false\" fast=\"false\" compartment=\"bioreactor\" fbc:lowerFluxBound=\"zero\" fbc:upperFluxBound=\"ub_inf\">\n  <listOfReactants>\n    <speciesReference species=\"Ac\" stoichiometry=\"39.43\" constant=\"true\"/>\n    <speciesReference species=\"O2\" stoichiometry=\"35\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": "bioreactor",
+          "cvterms": [],
+          "equation": "9.46 Glcxt + 12.92 O2 ➞ X",
+          "fast": false,
+          "fbc": {
+            "geneProductAssociation": null,
+            "lowerFluxBound": "zero",
+            "upperFluxBound": "ub_inf"
+          },
+          "history": null,
+          "id": "v2",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v2.product.X",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "X",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v2.reactant.Glcxt",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "Glcxt",
+              "stoichiometry": 9.46,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"Glcxt\" stoichiometry=\"9.46\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v2.reactant.O2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "O2",
+              "stoichiometry": 12.92,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"O2\" stoichiometry=\"12.92\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "v2 (9.46 Glcxt + 12.92 O2 -> X)",
+          "notes": null,
+          "pk": "fbc_example/Reaction:v2",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"v2\" name=\"v2 (9.46 Glcxt + 12.92 O2 -&gt; X)\" reversible=\"false\" fast=\"false\" compartment=\"bioreactor\" fbc:lowerFluxBound=\"zero\" fbc:upperFluxBound=\"ub_inf\">\n  <listOfReactants>\n    <speciesReference species=\"Glcxt\" stoichiometry=\"9.46\" constant=\"true\"/>\n    <speciesReference species=\"O2\" stoichiometry=\"12.92\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": "bioreactor",
+          "cvterms": [],
+          "equation": "9.84 Glcxt + 12.73 O2 ➞ 1.24 Ac + X",
+          "fast": false,
+          "fbc": {
+            "geneProductAssociation": null,
+            "lowerFluxBound": "zero",
+            "upperFluxBound": "ub_inf"
+          },
+          "history": null,
+          "id": "v3",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v3.product.Ac",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "Ac",
+              "stoichiometry": 1.24,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"Ac\" stoichiometry=\"1.24\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v3.product.X",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "X",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v3.reactant.Glcxt",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "Glcxt",
+              "stoichiometry": 9.84,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"Glcxt\" stoichiometry=\"9.84\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v3.reactant.O2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "O2",
+              "stoichiometry": 12.73,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"O2\" stoichiometry=\"12.73\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "v3 (9.84 Glcxt + 12.73 O2 -> 1.24 Ac + X)",
+          "notes": null,
+          "pk": "fbc_example/Reaction:v3",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"v3\" name=\"v3 (9.84 Glcxt + 12.73 O2 -&gt; 1.24 Ac + X)\" reversible=\"false\" fast=\"false\" compartment=\"bioreactor\" fbc:lowerFluxBound=\"zero\" fbc:upperFluxBound=\"ub_inf\">\n  <listOfReactants>\n    <speciesReference species=\"Glcxt\" stoichiometry=\"9.84\" constant=\"true\"/>\n    <speciesReference species=\"O2\" stoichiometry=\"12.73\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"Ac\" stoichiometry=\"1.24\" constant=\"true\"/>\n    <speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": "bioreactor",
+          "cvterms": [],
+          "equation": "19.23 Glcxt ➞ 12.12 Ac + X",
+          "fast": false,
+          "fbc": {
+            "geneProductAssociation": null,
+            "lowerFluxBound": "zero",
+            "upperFluxBound": "ub_inf"
+          },
+          "history": null,
+          "id": "v4",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v4.product.Ac",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "Ac",
+              "stoichiometry": 12.12,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"Ac\" stoichiometry=\"12.12\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v4.product.X",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "X",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:v4.reactant.Glcxt",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "Glcxt",
+              "stoichiometry": 19.23,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"Glcxt\" stoichiometry=\"19.23\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "v4 (19.23 Glcxt -> 12.12 Ac + X)",
+          "notes": null,
+          "pk": "fbc_example/Reaction:v4",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"v4\" name=\"v4 (19.23 Glcxt -&gt; 12.12 Ac + X)\" reversible=\"false\" fast=\"false\" compartment=\"bioreactor\" fbc:lowerFluxBound=\"zero\" fbc:upperFluxBound=\"ub_inf\">\n  <listOfReactants>\n    <speciesReference species=\"Glcxt\" stoichiometry=\"19.23\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"Ac\" stoichiometry=\"12.12\" constant=\"true\"/>\n    <speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000627"
+              ]
+            }
+          ],
+          "equation": "Ac ➞ ",
+          "fast": false,
+          "fbc": {
+            "geneProductAssociation": null,
+            "lowerFluxBound": "lb_inf",
+            "upperFluxBound": "ub_inf"
+          },
+          "history": null,
+          "id": "EX_Ac",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:EX_Ac.reactant.Ac",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "Ac",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"Ac\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": "meta_EX_Ac",
+          "name": null,
+          "notes": null,
+          "pk": "fbc_example/Reaction:EX_Ac",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": "SBO:0000627",
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_EX_Ac\" sboTerm=\"SBO:0000627\" id=\"EX_Ac\" reversible=\"false\" fast=\"false\" fbc:lowerFluxBound=\"lb_inf\" fbc:upperFluxBound=\"ub_inf\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_EX_Ac\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000627\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfReactants>\n    <speciesReference species=\"Ac\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000627"
+              ]
+            }
+          ],
+          "equation": "O2 ➞ ",
+          "fast": false,
+          "fbc": {
+            "geneProductAssociation": null,
+            "lowerFluxBound": "o2_import",
+            "upperFluxBound": "zero"
+          },
+          "history": null,
+          "id": "EX_O2",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:EX_O2.reactant.O2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "O2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"O2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": "meta_EX_O2",
+          "name": null,
+          "notes": null,
+          "pk": "fbc_example/Reaction:EX_O2",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": "SBO:0000627",
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_EX_O2\" sboTerm=\"SBO:0000627\" id=\"EX_O2\" reversible=\"false\" fast=\"false\" fbc:lowerFluxBound=\"o2_import\" fbc:upperFluxBound=\"zero\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_EX_O2\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000627\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfReactants>\n    <speciesReference species=\"O2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000627"
+              ]
+            }
+          ],
+          "equation": "Glcxt ➞ ",
+          "fast": false,
+          "fbc": {
+            "geneProductAssociation": null,
+            "lowerFluxBound": "glc_import",
+            "upperFluxBound": "zero"
+          },
+          "history": null,
+          "id": "EX_Glcxt",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:EX_Glcxt.reactant.Glcxt",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "Glcxt",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"Glcxt\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": "meta_EX_Glcxt",
+          "name": null,
+          "notes": null,
+          "pk": "fbc_example/Reaction:EX_Glcxt",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": "SBO:0000627",
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_EX_Glcxt\" sboTerm=\"SBO:0000627\" id=\"EX_Glcxt\" reversible=\"false\" fast=\"false\" fbc:lowerFluxBound=\"glc_import\" fbc:upperFluxBound=\"zero\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_EX_Glcxt\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000627\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfReactants>\n    <speciesReference species=\"Glcxt\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000627"
+              ]
+            }
+          ],
+          "equation": "X ➞ ",
+          "fast": false,
+          "fbc": {
+            "geneProductAssociation": null,
+            "lowerFluxBound": "lb_inf",
+            "upperFluxBound": "ub_inf"
+          },
+          "history": null,
+          "id": "EX_X",
+          "keyValuePairs": [],
+          "kineticLaw": null,
+          "listOfModifiers": [],
+          "listOfProducts": [],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_example/SpeciesReference:EX_X.reactant.X",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "X",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": "meta_EX_X",
+          "name": null,
+          "notes": null,
+          "pk": "fbc_example/Reaction:EX_X",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": "SBO:0000627",
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_EX_X\" sboTerm=\"SBO:0000627\" id=\"EX_X\" reversible=\"false\" fast=\"false\" fbc:lowerFluxBound=\"lb_inf\" fbc:upperFluxBound=\"ub_inf\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_EX_X\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000627\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfReactants>\n    <speciesReference species=\"X\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "bioreactor",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "Glcxt",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "glucose",
+          "notes": null,
+          "pk": "fbc_example/Species:Glcxt",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": "mmole",
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<species id=\"Glcxt\" name=\"glucose\" compartment=\"bioreactor\" initialConcentration=\"0\" substanceUnits=\"mmole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "bioreactor",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "Ac",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "acetate",
+          "notes": null,
+          "pk": "fbc_example/Species:Ac",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": "mmole",
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<species id=\"Ac\" name=\"acetate\" compartment=\"bioreactor\" initialConcentration=\"0\" substanceUnits=\"mmole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "bioreactor",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "O2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "oxygen",
+          "notes": null,
+          "pk": "fbc_example/Species:O2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": "mmole",
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<species id=\"O2\" name=\"oxygen\" compartment=\"bioreactor\" initialConcentration=\"0\" substanceUnits=\"mmole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "bioreactor",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "X",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "biomass",
+          "notes": null,
+          "pk": "fbc_example/Species:X",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": "mmole",
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<species id=\"X\" name=\"biomass\" compartment=\"bioreactor\" initialConcentration=\"0\" substanceUnits=\"mmole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "hr",
+          "notes": null,
+          "pk": "fbc_example/UnitDefinition:hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "hr",
+          "xml": "<unitDefinition id=\"hr\" name=\"hr\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "fbc_example/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole",
+          "notes": null,
+          "pk": "fbc_example/UnitDefinition:mmole",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<unitDefinition id=\"mmole\" name=\"mmole\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/hr",
+          "notes": null,
+          "pk": "fbc_example/UnitDefinition:mmole_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{hr}",
+          "xml": "<unitDefinition id=\"mmole_per_hr\" name=\"mmole/hr\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_l",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/liter",
+          "notes": null,
+          "pk": "fbc_example/UnitDefinition:mmole_per_l",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{l}",
+          "xml": "<unitDefinition id=\"mmole_per_l\" name=\"mmole/liter\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_fbc_example",
+      "name": null,
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Model with fbc version 3.</h1>\n    <p>Example creating fbc model.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2023 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "fbc_example/Model:fbc_example",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mmole",
+      "substanceUnitsLatex": "mmol",
+      "timeUnits": "hr",
+      "timeUnitsLatex": "hr",
+      "uncertainties": [],
+      "volumeUnits": "litre",
+      "volumeUnitsLatex": "l",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=fbc_example/Species:Glcxt}{\\mathrm{Glcxt}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-9.46 \\cdot \\htmlData{pk=fbc_example/Reaction:v2}{v_{\\mathrm{v2}}} - 9.84 \\cdot \\htmlData{pk=fbc_example/Reaction:v3}{v_{\\mathrm{v3}}} - 19.23 \\cdot \\htmlData{pk=fbc_example/Reaction:v4}{v_{\\mathrm{v4}}} - \\htmlData{pk=fbc_example/Reaction:EX_Glcxt}{v_{\\mathrm{EX\\_Glcxt}}}}{\\htmlData{pk=fbc_example/Compartment:bioreactor}{\\mathrm{bioreactor}}}"
+        ],
+        "origin": "reactions",
+        "variable": "fbc_example/Species:Glcxt"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=fbc_example/Species:Ac}{\\mathrm{Ac}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-39.43 \\cdot \\htmlData{pk=fbc_example/Reaction:v1}{v_{\\mathrm{v1}}} + 1.24 \\cdot \\htmlData{pk=fbc_example/Reaction:v3}{v_{\\mathrm{v3}}} + 12.12 \\cdot \\htmlData{pk=fbc_example/Reaction:v4}{v_{\\mathrm{v4}}} - \\htmlData{pk=fbc_example/Reaction:EX_Ac}{v_{\\mathrm{EX\\_Ac}}}}{\\htmlData{pk=fbc_example/Compartment:bioreactor}{\\mathrm{bioreactor}}}"
+        ],
+        "origin": "reactions",
+        "variable": "fbc_example/Species:Ac"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=fbc_example/Species:O2}{O_{2}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-35 \\cdot \\htmlData{pk=fbc_example/Reaction:v1}{v_{\\mathrm{v1}}} - 12.92 \\cdot \\htmlData{pk=fbc_example/Reaction:v2}{v_{\\mathrm{v2}}} - 12.73 \\cdot \\htmlData{pk=fbc_example/Reaction:v3}{v_{\\mathrm{v3}}} - \\htmlData{pk=fbc_example/Reaction:EX_O2}{v_{\\mathrm{EX\\_O2}}}}{\\htmlData{pk=fbc_example/Compartment:bioreactor}{\\mathrm{bioreactor}}}"
+        ],
+        "origin": "reactions",
+        "variable": "fbc_example/Species:O2"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=fbc_example/Species:X}{X}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{1}{\\htmlData{pk=fbc_example/Compartment:bioreactor}{\\mathrm{bioreactor}}} \\Bigl( \\htmlData{pk=fbc_example/Reaction:v1}{v_{\\mathrm{v1}}} + \\htmlData{pk=fbc_example/Reaction:v2}{v_{\\mathrm{v2}}} + \\htmlData{pk=fbc_example/Reaction:v3}{v_{\\mathrm{v3}}} + \\htmlData{pk=fbc_example/Reaction:v4}{v_{\\mathrm{v4}}}",
+          "- \\htmlData{pk=fbc_example/Reaction:EX_X}{v_{\\mathrm{EX\\_X}}} \\Bigr)"
+        ],
+        "origin": "reactions",
+        "variable": "fbc_example/Species:X"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=fbc_example/Reaction:v1}{v_{\\mathrm{v1}}}",
+        "lines": [
+          "0"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_example/Reaction:v1"
+      },
+      {
+        "lhs": "\\htmlData{pk=fbc_example/Reaction:v2}{v_{\\mathrm{v2}}}",
+        "lines": [
+          "0"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_example/Reaction:v2"
+      },
+      {
+        "lhs": "\\htmlData{pk=fbc_example/Reaction:v3}{v_{\\mathrm{v3}}}",
+        "lines": [
+          "0"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_example/Reaction:v3"
+      },
+      {
+        "lhs": "\\htmlData{pk=fbc_example/Reaction:v4}{v_{\\mathrm{v4}}}",
+        "lines": [
+          "0"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_example/Reaction:v4"
+      },
+      {
+        "lhs": "\\htmlData{pk=fbc_example/Reaction:EX_Ac}{v_{\\mathrm{EX\\_Ac}}}",
+        "lines": [
+          "0"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_example/Reaction:EX_Ac"
+      },
+      {
+        "lhs": "\\htmlData{pk=fbc_example/Reaction:EX_O2}{v_{\\mathrm{EX\\_O2}}}",
+        "lines": [
+          "0"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_example/Reaction:EX_O2"
+      },
+      {
+        "lhs": "\\htmlData{pk=fbc_example/Reaction:EX_Glcxt}{v_{\\mathrm{EX\\_Glcxt}}}",
+        "lines": [
+          "0"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_example/Reaction:EX_Glcxt"
+      },
+      {
+        "lhs": "\\htmlData{pk=fbc_example/Reaction:EX_X}{v_{\\mathrm{EX\\_X}}}",
+        "lines": [
+          "0"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_example/Reaction:EX_X"
+      }
+    ],
+    "unsupported": []
+  }
+}

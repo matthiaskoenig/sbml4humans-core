@@ -1,0 +1,941 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [
+      {
+        "prefix": "comp",
+        "version": 1
+      },
+      {
+        "prefix": "fbc",
+        "version": 2
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "fbc_mass_charge/Model:fbc_mass_charge",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_mass_charge/Model:fbc_mass_charge",
+        "target": "fbc_mass_charge/UnitDefinition:m3",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_mass_charge/Model:fbc_mass_charge",
+        "target": "fbc_mass_charge/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_mass_charge/Compartment:cyto",
+        "target": "fbc_mass_charge/UnitDefinition:m3",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_mass_charge/Species:glc",
+        "target": "fbc_mass_charge/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_mass_charge/Species:atp",
+        "target": "fbc_mass_charge/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_mass_charge/Species:glc6p",
+        "target": "fbc_mass_charge/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_mass_charge/Species:adp",
+        "target": "fbc_mass_charge/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_mass_charge/Species:h",
+        "target": "fbc_mass_charge/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_mass_charge/Parameter:HEX1_v",
+        "target": "fbc_mass_charge/UnitDefinition:mole_per_s",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "fbc_mass_charge/AssignmentRule:cyto",
+        "target": "fbc_mass_charge/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "fbc_mass_charge/AssignmentRule:cyto",
+        "target": "fbc_mass_charge/UnitDefinition:m3",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "fbc_mass_charge/Reaction:HEX1",
+        "target": "fbc_mass_charge/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_mass_charge/Reaction:HEX1",
+        "target": "fbc_mass_charge/SpeciesReference:HEX1.reactant.glc",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_mass_charge/SpeciesReference:HEX1.reactant.glc",
+        "target": "fbc_mass_charge/Species:glc",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_mass_charge/Reaction:HEX1",
+        "target": "fbc_mass_charge/SpeciesReference:HEX1.reactant.atp",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "fbc_mass_charge/SpeciesReference:HEX1.reactant.atp",
+        "target": "fbc_mass_charge/Species:atp",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_mass_charge/Reaction:HEX1",
+        "target": "fbc_mass_charge/SpeciesReference:HEX1.product.glc6p",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_mass_charge/SpeciesReference:HEX1.product.glc6p",
+        "target": "fbc_mass_charge/Species:glc6p",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_mass_charge/Reaction:HEX1",
+        "target": "fbc_mass_charge/SpeciesReference:HEX1.product.adp",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_mass_charge/SpeciesReference:HEX1.product.adp",
+        "target": "fbc_mass_charge/Species:adp",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_mass_charge/Reaction:HEX1",
+        "target": "fbc_mass_charge/SpeciesReference:HEX1.product.h",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "fbc_mass_charge/SpeciesReference:HEX1.product.h",
+        "target": "fbc_mass_charge/Species:h",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "fbc_mass_charge/Reaction:HEX1",
+        "target": "fbc_mass_charge/KineticLaw:HEX1.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "fbc_mass_charge/KineticLaw:HEX1.kineticLaw",
+        "target": "fbc_mass_charge/Parameter:HEX1_v",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "fbc_mass_charge/AssignmentRule:cyto": {
+        "id": null,
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": null,
+        "pk": "fbc_mass_charge/AssignmentRule:cyto",
+        "sbmlType": "AssignmentRule"
+      },
+      "fbc_mass_charge/Compartment:cyto": {
+        "id": "cyto",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "cytosol",
+        "pk": "fbc_mass_charge/Compartment:cyto",
+        "sbmlType": "Compartment"
+      },
+      "fbc_mass_charge/KineticLaw:HEX1.kineticLaw": {
+        "id": null,
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": null,
+        "pk": "fbc_mass_charge/KineticLaw:HEX1.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "fbc_mass_charge/Model:fbc_mass_charge": {
+        "id": "fbc_mass_charge",
+        "model": null,
+        "name": "fbc model with mass and charge balance",
+        "pk": "fbc_mass_charge/Model:fbc_mass_charge",
+        "sbmlType": "Model"
+      },
+      "fbc_mass_charge/Parameter:HEX1_v": {
+        "id": "HEX1_v",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": null,
+        "pk": "fbc_mass_charge/Parameter:HEX1_v",
+        "sbmlType": "Parameter"
+      },
+      "fbc_mass_charge/Reaction:HEX1": {
+        "id": "HEX1",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "Hexokinase (D-Glucose:ATP)",
+        "pk": "fbc_mass_charge/Reaction:HEX1",
+        "sbmlType": "Reaction"
+      },
+      "fbc_mass_charge/Species:adp": {
+        "id": "adp",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "ADP",
+        "pk": "fbc_mass_charge/Species:adp",
+        "sbmlType": "Species"
+      },
+      "fbc_mass_charge/Species:atp": {
+        "id": "atp",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "ATP",
+        "pk": "fbc_mass_charge/Species:atp",
+        "sbmlType": "Species"
+      },
+      "fbc_mass_charge/Species:glc": {
+        "id": "glc",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "D-glucose",
+        "pk": "fbc_mass_charge/Species:glc",
+        "sbmlType": "Species"
+      },
+      "fbc_mass_charge/Species:glc6p": {
+        "id": "glc6p",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "glucose-6 phosphate",
+        "pk": "fbc_mass_charge/Species:glc6p",
+        "sbmlType": "Species"
+      },
+      "fbc_mass_charge/Species:h": {
+        "id": "h",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "H+",
+        "pk": "fbc_mass_charge/Species:h",
+        "sbmlType": "Species"
+      },
+      "fbc_mass_charge/SpeciesReference:HEX1.product.adp": {
+        "id": null,
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": null,
+        "pk": "fbc_mass_charge/SpeciesReference:HEX1.product.adp",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_mass_charge/SpeciesReference:HEX1.product.glc6p": {
+        "id": null,
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": null,
+        "pk": "fbc_mass_charge/SpeciesReference:HEX1.product.glc6p",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_mass_charge/SpeciesReference:HEX1.product.h": {
+        "id": null,
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": null,
+        "pk": "fbc_mass_charge/SpeciesReference:HEX1.product.h",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_mass_charge/SpeciesReference:HEX1.reactant.atp": {
+        "id": null,
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": null,
+        "pk": "fbc_mass_charge/SpeciesReference:HEX1.reactant.atp",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_mass_charge/SpeciesReference:HEX1.reactant.glc": {
+        "id": null,
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": null,
+        "pk": "fbc_mass_charge/SpeciesReference:HEX1.reactant.glc",
+        "sbmlType": "SpeciesReference"
+      },
+      "fbc_mass_charge/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "meter^2",
+        "pk": "fbc_mass_charge/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "fbc_mass_charge/UnitDefinition:m3": {
+        "id": "m3",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "meter^3",
+        "pk": "fbc_mass_charge/UnitDefinition:m3",
+        "sbmlType": "UnitDefinition"
+      },
+      "fbc_mass_charge/UnitDefinition:mole_per_s": {
+        "id": "mole_per_s",
+        "model": "fbc_mass_charge/Model:fbc_mass_charge",
+        "name": "mole/s",
+        "pk": "fbc_mass_charge/UnitDefinition:mole_per_s",
+        "sbmlType": "UnitDefinition"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_fbc_mass_charge\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>2025-10-27T17:37:51Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>2025-10-27T17:37:51Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mole",
+      "extentUnitsLatex": "mole",
+      "fbc": {
+        "activeObjective": null,
+        "strict": false
+      },
+      "history": {
+        "createdDate": "2025-10-27T17:37:51Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "2025-10-27T17:37:51Z"
+        ]
+      },
+      "id": "fbc_mass_charge",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "metre",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000290",
+                "https://identifiers.org/GO:0005829",
+                "https://en.wikipedia.org/wiki/Cytosol"
+              ]
+            }
+          ],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": "cyto",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_cyto",
+          "name": "cytosol",
+          "notes": null,
+          "pk": "fbc_mass_charge/Compartment:cyto",
+          "sbmlType": "Compartment",
+          "sbo": "SBO:0000290",
+          "size": null,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": "m3",
+          "unitsLatex": "m^3",
+          "xml": "<compartment metaid=\"meta_cyto\" sboTerm=\"SBO:0000290\" id=\"cyto\" name=\"cytosol\" spatialDimensions=\"3\" units=\"m3\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_cyto\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000290\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/GO:0005829\"/>\n            <rdf:li rdf:resource=\"https://en.wikipedia.org/wiki/Cytosol\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</compartment>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mol}{s}",
+          "history": null,
+          "id": "HEX1_v",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "fbc_mass_charge/Parameter:HEX1_v",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mole_per_s",
+          "unitsLatex": "\\frac{mol}{s}",
+          "value": 1.0,
+          "xml": "<parameter id=\"HEX1_v\" value=\"1\" units=\"mole_per_s\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": "cyto",
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000176",
+                "https://identifiers.org/vmhreaction/HEX1",
+                "https://identifiers.org/ec-code/2.7.1.1",
+                "https://identifiers.org/ec-code/2.7.1.2",
+                "https://identifiers.org/kegg.reaction/R00299",
+                "https://identifiers.org/rhea/17828"
+              ]
+            }
+          ],
+          "equation": "glc + atp ➞ glc6p + adp + h",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "HEX1",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "\\frac{mol}{s}",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "HEX1_v",
+              "latex": " \\mathit{HEX1_{v}}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "fbc_mass_charge/KineticLaw:HEX1.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> HEX1_v </ci>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_mass_charge/SpeciesReference:HEX1.product.glc6p",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "glc6p",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"glc6p\" stoichiometry=\"1\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_mass_charge/SpeciesReference:HEX1.product.adp",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "adp",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"adp\" stoichiometry=\"1\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_mass_charge/SpeciesReference:HEX1.product.h",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "h",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"h\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_mass_charge/SpeciesReference:HEX1.reactant.glc",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "glc",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"glc\" stoichiometry=\"1\" constant=\"true\"/>"
+            },
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "fbc_mass_charge/SpeciesReference:HEX1.reactant.atp",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "atp",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"atp\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": "meta_HEX1",
+          "name": "Hexokinase (D-Glucose:ATP)",
+          "notes": null,
+          "pk": "fbc_mass_charge/Reaction:HEX1",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": "SBO:0000176",
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_HEX1\" sboTerm=\"SBO:0000176\" id=\"HEX1\" name=\"Hexokinase (D-Glucose:ATP)\" reversible=\"false\" fast=\"false\" compartment=\"cyto\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_HEX1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000176\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/vmhreaction/HEX1\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/ec-code/2.7.1.1\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/ec-code/2.7.1.2\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/kegg.reaction/R00299\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/rhea/17828\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfReactants>\n    <speciesReference species=\"glc\" stoichiometry=\"1\" constant=\"true\"/>\n    <speciesReference species=\"atp\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"glc6p\" stoichiometry=\"1\" constant=\"true\"/>\n    <speciesReference species=\"adp\" stoichiometry=\"1\" constant=\"true\"/>\n    <speciesReference species=\"h\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <ci> HEX1_v </ci>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "1 m3",
+            "latex": " 1"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "fbc_mass_charge/AssignmentRule:cyto",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "cyto",
+          "xml": "<assignmentRule variable=\"cyto\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" xmlns:sbml=\"http://www.sbml.org/sbml/level3/version1/core\">\n    <cn sbml:units=\"m3\"> 1 </cn>\n  </math>\n</assignmentRule>"
+        }
+      ],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247",
+                "https://identifiers.org/vmhmetabolite/glc_D",
+                "https://identifiers.org/bigg.metabolite/glc__D",
+                "https://identifiers.org/kegg.compound/C00031",
+                "https://identifiers.org/hmdb/HMDB0000122",
+                "https://identifiers.org/CHEBI:0004167"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mol}{m^3}",
+          "fbc": {
+            "charge": 0.0,
+            "chemicalFormula": "C6H12O6"
+          },
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "glc",
+          "initialAmount": null,
+          "initialConcentration": 3.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_glc",
+          "name": "D-glucose",
+          "notes": null,
+          "pk": "fbc_mass_charge/Species:glc",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species metaid=\"meta_glc\" sboTerm=\"SBO:0000247\" id=\"glc\" name=\"D-glucose\" compartment=\"cyto\" initialConcentration=\"3\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"true\" constant=\"false\" fbc:charge=\"0\" fbc:chemicalFormula=\"C6H12O6\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_glc\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/vmhmetabolite/glc_D\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/bigg.metabolite/glc__D\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/kegg.compound/C00031\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/hmdb/HMDB0000122\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/CHEBI:0004167\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247",
+                "https://identifiers.org/vmhmetabolite/atp"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mol}{m^3}",
+          "fbc": {
+            "charge": -4.0,
+            "chemicalFormula": "C10H12N5O13P3"
+          },
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "atp",
+          "initialAmount": null,
+          "initialConcentration": 3.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_atp",
+          "name": "ATP",
+          "notes": null,
+          "pk": "fbc_mass_charge/Species:atp",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species metaid=\"meta_atp\" sboTerm=\"SBO:0000247\" id=\"atp\" name=\"ATP\" compartment=\"cyto\" initialConcentration=\"3\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"true\" constant=\"false\" fbc:charge=\"-4\" fbc:chemicalFormula=\"C10H12N5O13P3\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_atp\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/vmhmetabolite/atp\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247",
+                "https://identifiers.org/vmhmetabolite/g6p"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mol}{m^3}",
+          "fbc": {
+            "charge": -2.0,
+            "chemicalFormula": "C6H11O9P"
+          },
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "glc6p",
+          "initialAmount": null,
+          "initialConcentration": 3.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_glc6p",
+          "name": "glucose-6 phosphate",
+          "notes": null,
+          "pk": "fbc_mass_charge/Species:glc6p",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species metaid=\"meta_glc6p\" sboTerm=\"SBO:0000247\" id=\"glc6p\" name=\"glucose-6 phosphate\" compartment=\"cyto\" initialConcentration=\"3\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"true\" constant=\"false\" fbc:charge=\"-2\" fbc:chemicalFormula=\"C6H11O9P\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_glc6p\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/vmhmetabolite/g6p\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247",
+                "https://identifiers.org/vmhmetabolite/adp"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mol}{m^3}",
+          "fbc": {
+            "charge": -3.0,
+            "chemicalFormula": "C10H12N5O10P2"
+          },
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "adp",
+          "initialAmount": null,
+          "initialConcentration": 3.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_adp",
+          "name": "ADP",
+          "notes": null,
+          "pk": "fbc_mass_charge/Species:adp",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species metaid=\"meta_adp\" sboTerm=\"SBO:0000247\" id=\"adp\" name=\"ADP\" compartment=\"cyto\" initialConcentration=\"3\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"true\" constant=\"false\" fbc:charge=\"-3\" fbc:chemicalFormula=\"C10H12N5O10P2\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_adp\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/vmhmetabolite/adp\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247",
+                "https://identifiers.org/vmhmetabolite/h"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mol}{m^3}",
+          "fbc": {
+            "charge": 1.0,
+            "chemicalFormula": "H"
+          },
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "h",
+          "initialAmount": null,
+          "initialConcentration": 3.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_h",
+          "name": "H+",
+          "notes": null,
+          "pk": "fbc_mass_charge/Species:h",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species metaid=\"meta_h\" sboTerm=\"SBO:0000247\" id=\"h\" name=\"H+\" compartment=\"cyto\" initialConcentration=\"3\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"true\" constant=\"false\" fbc:charge=\"1\" fbc:chemicalFormula=\"H\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_h\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/vmhmetabolite/h\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "fbc_mass_charge/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m3",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 3.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^3",
+          "notes": null,
+          "pk": "fbc_mass_charge/UnitDefinition:m3",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^3",
+          "xml": "<unitDefinition id=\"m3\" name=\"meter^3\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"3\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mole_per_s",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mole/s",
+          "notes": null,
+          "pk": "fbc_mass_charge/UnitDefinition:mole_per_s",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mol}{s}",
+          "xml": "<unitDefinition id=\"mole_per_s\" name=\"mole/s\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_fbc_mass_charge",
+      "name": "fbc model with mass and charge balance",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Model demonstrating mass and charge balance</h1>\n    <h2>Description</h2>\n    <p>Test model demonstrating inline annotations.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2025 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "fbc_mass_charge/Model:fbc_mass_charge",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mole",
+      "substanceUnitsLatex": "mole",
+      "timeUnits": "second",
+      "timeUnitsLatex": "s",
+      "uncertainties": [],
+      "volumeUnits": "m3",
+      "volumeUnitsLatex": "m^3",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [
+      {
+        "lhs": "\\htmlData{pk=fbc_mass_charge/Compartment:cyto}{\\mathrm{cyto}}",
+        "lines": [
+          "1"
+        ],
+        "origin": "assignment_rule",
+        "variable": "fbc_mass_charge/Compartment:cyto"
+      }
+    ],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=fbc_mass_charge/Reaction:HEX1}{v_{\\mathrm{HEX1}}}",
+        "lines": [
+          "\\htmlData{pk=fbc_mass_charge/Parameter:HEX1_v}{\\mathrm{HEX1}_{\\mathrm{v}}}"
+        ],
+        "origin": "reaction",
+        "variable": "fbc_mass_charge/Reaction:HEX1"
+      }
+    ],
+    "unsupported": []
+  }
+}

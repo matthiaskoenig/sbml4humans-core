@@ -8,8 +8,11 @@ mod equation;
 mod links;
 pub mod math;
 mod number;
+mod odes;
+mod packages;
 pub mod pk;
 mod types;
+pub mod units;
 
 pub use build::{BuildError, build};
 pub use double::Double;

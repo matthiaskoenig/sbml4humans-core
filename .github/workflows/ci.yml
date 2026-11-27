@@ -41,4 +41,58 @@ jobs:
       - name: Lint
         run: cargo clippy --workspace --all-targets -- -D warnings
       - name: Test
-        run: cargo test --workspace
+        run: cargo test --workspace --release --locked
+
+  native:
+    name: native (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python: ["3.12", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.7"
+          python-version: ${{ matrix.python }}
+      - name: Install Rust
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: Build native wheel without libSBML
+        run: uv tool run --from 'maturin>=1.16,<2' maturin build --release --locked --out dist
+      - name: Install and test the wheel
+        run: |
+          uv venv --python ${{ matrix.python }} .venv
+          uv pip install --python .venv/bin/python dist/*.whl
+          .venv/bin/python -m unittest discover -s python/tests -q
+
+  wasm:
+    name: wasm
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: js/package-lock.json
+      - name: Install Rust and the native WASM target
+        run: |
+          rustup show active-toolchain || rustup toolchain install
+          rustup target add wasm32-unknown-unknown
+      - name: Build and check complete reports in Node
+        working-directory: js
+        run: |
+          npm ci
+          npm run build
+          npm test
+      - name: Check browser worker and example
+        working-directory: js
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:browser

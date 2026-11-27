@@ -3,6 +3,12 @@
 /// The fields every SBML object shares.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Element {
+    /// Package-qualified attributes, retained independently of the core namespace.
+    pub package_attributes: Vec<Attribute>,
+    /// The package extension trees directly owned by this object.
+    pub extensions: Vec<Extension>,
+    /// List containers which state metadata of their own.
+    pub lists: Vec<ListMetadata>,
     /// The `id` attribute.
     pub id: Option<String>,
     /// The `metaid` attribute.
@@ -60,4 +66,43 @@ pub struct History {
     pub created_date: Option<String>,
     /// The modification dates, in their authored order.
     pub modified_dates: Vec<String>,
+}
+
+/// An authored attribute of a package extension.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct Attribute {
+    /// Namespace URI; absent for unqualified attributes.
+    pub namespace: Option<String>,
+    /// Local attribute name.
+    pub name: String,
+    /// Authored value.
+    pub value: String,
+}
+
+/// An owned package object or package list, independent of any XML implementation.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct Extension {
+    /// Common SBML metadata and extensions of this object.
+    pub element: Element,
+    /// Package name, identified by its namespace URI rather than its prefix.
+    pub package: String,
+    /// Local XML element name.
+    pub name: String,
+    /// Authored attributes, including attributes without a namespace.
+    pub attributes: Vec<Attribute>,
+    /// Content MathML owned by this object.
+    pub math: Option<crate::Ast>,
+    /// Child objects, preserving list and document order.
+    pub children: Vec<Extension>,
+}
+
+/// The metadata of a ListOf, without duplicating its child objects.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct ListMetadata {
+    /// Common metadata and package extensions on the list itself.
+    pub element: Element,
+    /// Local XML element name.
+    pub name: String,
+    /// Number of list members, excluding the qual default term.
+    pub size: usize,
 }

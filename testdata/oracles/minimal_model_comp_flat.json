@@ -1,0 +1,2458 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [
+      {
+        "prefix": "fbc",
+        "version": 2
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "minimal_model_comp/Model:minimal_model_comp",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S0",
+        "target": "minimal_model_comp/Compartment:cell0",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S1",
+        "target": "minimal_model_comp/Compartment:cell1",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S2",
+        "target": "minimal_model_comp/Compartment:cell2",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S3",
+        "target": "minimal_model_comp/Compartment:cell3",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S4",
+        "target": "minimal_model_comp/Compartment:cell4",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:submodel0__S2",
+        "target": "minimal_model_comp/Compartment:cell0",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:submodel1__S2",
+        "target": "minimal_model_comp/Compartment:cell1",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:submodel2__S2",
+        "target": "minimal_model_comp/Compartment:cell2",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:submodel3__S2",
+        "target": "minimal_model_comp/Compartment:cell3",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:submodel4__S2",
+        "target": "minimal_model_comp/Compartment:cell4",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:J0",
+        "target": "minimal_model_comp/SpeciesReference:J0.reactant.S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:J0.reactant.S0",
+        "target": "minimal_model_comp/Species:S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:J0",
+        "target": "minimal_model_comp/SpeciesReference:J0.product.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:J0.product.S1",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:J0",
+        "target": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "target": "minimal_model_comp/Parameter:D",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:J1",
+        "target": "minimal_model_comp/SpeciesReference:J1.reactant.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:J1.reactant.S1",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:J1",
+        "target": "minimal_model_comp/SpeciesReference:J1.product.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:J1.product.S2",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:J1",
+        "target": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "target": "minimal_model_comp/Parameter:D",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:J2",
+        "target": "minimal_model_comp/SpeciesReference:J2.reactant.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:J2.reactant.S2",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:J2",
+        "target": "minimal_model_comp/SpeciesReference:J2.product.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:J2.product.S3",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:J2",
+        "target": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "target": "minimal_model_comp/Parameter:D",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:J3",
+        "target": "minimal_model_comp/SpeciesReference:J3.reactant.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:J3.reactant.S3",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:J3",
+        "target": "minimal_model_comp/SpeciesReference:J3.product.S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:J3.product.S4",
+        "target": "minimal_model_comp/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:J3",
+        "target": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "target": "minimal_model_comp/Parameter:D",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "target": "minimal_model_comp/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:submodel0__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel0__J0.reactant.S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:submodel0__J0.reactant.S0",
+        "target": "minimal_model_comp/Species:S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:submodel0__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel0__J0.product.submodel0__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:submodel0__J0.product.submodel0__S2",
+        "target": "minimal_model_comp/Species:submodel0__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:submodel0__J0",
+        "target": "minimal_model_comp/KineticLaw:submodel0__J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel0__J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel0__J0.kineticLaw",
+        "target": "minimal_model_comp/Parameter:submodel0__k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:submodel1__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel1__J0.reactant.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:submodel1__J0.reactant.S1",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:submodel1__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel1__J0.product.submodel1__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:submodel1__J0.product.submodel1__S2",
+        "target": "minimal_model_comp/Species:submodel1__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:submodel1__J0",
+        "target": "minimal_model_comp/KineticLaw:submodel1__J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel1__J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel1__J0.kineticLaw",
+        "target": "minimal_model_comp/Parameter:submodel1__k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:submodel2__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel2__J0.reactant.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:submodel2__J0.reactant.S2",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:submodel2__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel2__J0.product.submodel2__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:submodel2__J0.product.submodel2__S2",
+        "target": "minimal_model_comp/Species:submodel2__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:submodel2__J0",
+        "target": "minimal_model_comp/KineticLaw:submodel2__J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel2__J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel2__J0.kineticLaw",
+        "target": "minimal_model_comp/Parameter:submodel2__k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:submodel3__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel3__J0.reactant.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:submodel3__J0.reactant.S3",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:submodel3__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel3__J0.product.submodel3__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:submodel3__J0.product.submodel3__S2",
+        "target": "minimal_model_comp/Species:submodel3__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:submodel3__J0",
+        "target": "minimal_model_comp/KineticLaw:submodel3__J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel3__J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel3__J0.kineticLaw",
+        "target": "minimal_model_comp/Parameter:submodel3__k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:submodel4__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel4__J0.reactant.S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:submodel4__J0.reactant.S4",
+        "target": "minimal_model_comp/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:submodel4__J0",
+        "target": "minimal_model_comp/SpeciesReference:submodel4__J0.product.submodel4__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:submodel4__J0.product.submodel4__S2",
+        "target": "minimal_model_comp/Species:submodel4__S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:submodel4__J0",
+        "target": "minimal_model_comp/KineticLaw:submodel4__J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel4__J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:submodel4__J0.kineticLaw",
+        "target": "minimal_model_comp/Parameter:submodel4__k1",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "minimal_model_comp/Compartment:cell0": {
+        "id": "cell0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell0",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/Compartment:cell1": {
+        "id": "cell1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell1",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/Compartment:cell2": {
+        "id": "cell2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell2",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/Compartment:cell3": {
+        "id": "cell3",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell3",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/Compartment:cell4": {
+        "id": "cell4",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell4",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/KineticLaw:J0.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:J1.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:J2.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:J3.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:submodel0__J0.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:submodel0__J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:submodel1__J0.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:submodel1__J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:submodel2__J0.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:submodel2__J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:submodel3__J0.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:submodel3__J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:submodel4__J0.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:submodel4__J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/Model:minimal_model_comp": {
+        "id": "minimal_model_comp",
+        "model": null,
+        "name": null,
+        "pk": "minimal_model_comp/Model:minimal_model_comp",
+        "sbmlType": "Model"
+      },
+      "minimal_model_comp/Parameter:D": {
+        "id": "D",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Parameter:D",
+        "sbmlType": "Parameter"
+      },
+      "minimal_model_comp/Parameter:submodel0__k1": {
+        "id": "submodel0__k1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": "rate constant for J0",
+        "pk": "minimal_model_comp/Parameter:submodel0__k1",
+        "sbmlType": "Parameter"
+      },
+      "minimal_model_comp/Parameter:submodel1__k1": {
+        "id": "submodel1__k1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": "rate constant for J0",
+        "pk": "minimal_model_comp/Parameter:submodel1__k1",
+        "sbmlType": "Parameter"
+      },
+      "minimal_model_comp/Parameter:submodel2__k1": {
+        "id": "submodel2__k1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": "rate constant for J0",
+        "pk": "minimal_model_comp/Parameter:submodel2__k1",
+        "sbmlType": "Parameter"
+      },
+      "minimal_model_comp/Parameter:submodel3__k1": {
+        "id": "submodel3__k1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": "rate constant for J0",
+        "pk": "minimal_model_comp/Parameter:submodel3__k1",
+        "sbmlType": "Parameter"
+      },
+      "minimal_model_comp/Parameter:submodel4__k1": {
+        "id": "submodel4__k1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": "rate constant for J0",
+        "pk": "minimal_model_comp/Parameter:submodel4__k1",
+        "sbmlType": "Parameter"
+      },
+      "minimal_model_comp/Reaction:J0": {
+        "id": "J0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:J0",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:J1": {
+        "id": "J1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:J1",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:J2": {
+        "id": "J2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:J2",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:J3": {
+        "id": "J3",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:J3",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:submodel0__J0": {
+        "id": "submodel0__J0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:submodel0__J0",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:submodel1__J0": {
+        "id": "submodel1__J0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:submodel1__J0",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:submodel2__J0": {
+        "id": "submodel2__J0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:submodel2__J0",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:submodel3__J0": {
+        "id": "submodel3__J0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:submodel3__J0",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:submodel4__J0": {
+        "id": "submodel4__J0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:submodel4__J0",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Species:S0": {
+        "id": "S0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S0",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:S1": {
+        "id": "S1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S1",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:S2": {
+        "id": "S2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S2",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:S3": {
+        "id": "S3",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S3",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:S4": {
+        "id": "S4",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S4",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:submodel0__S2": {
+        "id": "submodel0__S2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:submodel0__S2",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:submodel1__S2": {
+        "id": "submodel1__S2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:submodel1__S2",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:submodel2__S2": {
+        "id": "submodel2__S2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:submodel2__S2",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:submodel3__S2": {
+        "id": "submodel3__S2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:submodel3__S2",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:submodel4__S2": {
+        "id": "submodel4__S2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:submodel4__S2",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/SpeciesReference:J0.product.S1": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J0.product.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J0.reactant.S0": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J0.reactant.S0",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J1.product.S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J1.product.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J1.reactant.S1": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J1.reactant.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J2.product.S3": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J2.product.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J2.reactant.S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J2.reactant.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J3.product.S4": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J3.product.S4",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J3.reactant.S3": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J3.reactant.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel0__J0.product.submodel0__S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel0__J0.product.submodel0__S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel0__J0.reactant.S0": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel0__J0.reactant.S0",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel1__J0.product.submodel1__S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel1__J0.product.submodel1__S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel1__J0.reactant.S1": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel1__J0.reactant.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel2__J0.product.submodel2__S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel2__J0.product.submodel2__S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel2__J0.reactant.S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel2__J0.reactant.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel3__J0.product.submodel3__S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel3__J0.product.submodel3__S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel3__J0.reactant.S3": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel3__J0.reactant.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel4__J0.product.submodel4__S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel4__J0.product.submodel4__S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:submodel4__J0.reactant.S4": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:submodel4__J0.reactant.S4",
+        "sbmlType": "SpeciesReference"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": {
+        "activeObjective": null,
+        "strict": false
+      },
+      "history": null,
+      "id": "minimal_model_comp",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell0",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell0",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell0\" spatialDimensions=\"3\" size=\"1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell1",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell1\" spatialDimensions=\"3\" size=\"1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell2",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell2",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell2\" spatialDimensions=\"3\" size=\"1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell3",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell3",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell3\" spatialDimensions=\"3\" size=\"1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell4",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell4",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell4\" spatialDimensions=\"3\" size=\"1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "D",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Parameter:D",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.01,
+          "xml": "<parameter id=\"D\" value=\"0.01\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "submodel0__k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "submodel0__meta_k1",
+          "name": "rate constant for J0",
+          "notes": null,
+          "pk": "minimal_model_comp/Parameter:submodel0__k1",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter metaid=\"submodel0__meta_k1\" sboTerm=\"SBO:0000002\" id=\"submodel0__k1\" name=\"rate constant for J0\" value=\"0.1\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#submodel0__meta_k1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000002\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "submodel1__k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "submodel1__meta_k1",
+          "name": "rate constant for J0",
+          "notes": null,
+          "pk": "minimal_model_comp/Parameter:submodel1__k1",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter metaid=\"submodel1__meta_k1\" sboTerm=\"SBO:0000002\" id=\"submodel1__k1\" name=\"rate constant for J0\" value=\"0.1\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#submodel1__meta_k1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000002\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "submodel2__k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "submodel2__meta_k1",
+          "name": "rate constant for J0",
+          "notes": null,
+          "pk": "minimal_model_comp/Parameter:submodel2__k1",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter metaid=\"submodel2__meta_k1\" sboTerm=\"SBO:0000002\" id=\"submodel2__k1\" name=\"rate constant for J0\" value=\"0.1\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#submodel2__meta_k1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000002\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "submodel3__k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "submodel3__meta_k1",
+          "name": "rate constant for J0",
+          "notes": null,
+          "pk": "minimal_model_comp/Parameter:submodel3__k1",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter metaid=\"submodel3__meta_k1\" sboTerm=\"SBO:0000002\" id=\"submodel3__k1\" name=\"rate constant for J0\" value=\"0.1\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#submodel3__meta_k1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000002\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "http://identifiers.org/SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "submodel4__k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "submodel4__meta_k1",
+          "name": "rate constant for J0",
+          "notes": null,
+          "pk": "minimal_model_comp/Parameter:submodel4__k1",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter metaid=\"submodel4__meta_k1\" sboTerm=\"SBO:0000002\" id=\"submodel4__k1\" name=\"rate constant for J0\" value=\"0.1\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#submodel4__meta_k1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"http://identifiers.org/SBO:0000002\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S0 ⇆ S1",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "D * (S0 - S1)",
+              "latex": " \\mathit{D}\\cdot (\\mathit{S0}-\\mathit{S1})"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> D </ci>\n      <apply>\n        <minus/>\n        <ci> S0 </ci>\n        <ci> S1 </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J0.product.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J0.reactant.S0",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S0",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S0\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:J0",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J0\" reversible=\"true\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S0\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> D </ci>\n        <apply>\n          <minus/>\n          <ci> S0 </ci>\n          <ci> S1 </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S1 ⇆ S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J1",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "D * (S1 - S2)",
+              "latex": " \\mathit{D}\\cdot (\\mathit{S1}-\\mathit{S2})"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> D </ci>\n      <apply>\n        <minus/>\n        <ci> S1 </ci>\n        <ci> S2 </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J1.product.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J1.reactant.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:J1",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J1\" reversible=\"true\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> D </ci>\n        <apply>\n          <minus/>\n          <ci> S1 </ci>\n          <ci> S2 </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S2 ⇆ S3",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J2",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "D * (S2 - S3)",
+              "latex": " \\mathit{D}\\cdot (\\mathit{S2}-\\mathit{S3})"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> D </ci>\n      <apply>\n        <minus/>\n        <ci> S2 </ci>\n        <ci> S3 </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J2.product.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J2.reactant.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:J2",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J2\" reversible=\"true\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> D </ci>\n        <apply>\n          <minus/>\n          <ci> S2 </ci>\n          <ci> S3 </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S3 ⇆ S4",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J3",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "D * (S3 - S4)",
+              "latex": " \\mathit{D}\\cdot (\\mathit{S3}-\\mathit{S4})"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> D </ci>\n      <apply>\n        <minus/>\n        <ci> S3 </ci>\n        <ci> S4 </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J3.product.S4",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S4",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J3.reactant.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:J3",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J3\" reversible=\"true\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> D </ci>\n        <apply>\n          <minus/>\n          <ci> S3 </ci>\n          <ci> S4 </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S0 ➞ submodel0__S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "submodel0__J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "submodel0__k1 * S0",
+              "latex": " \\mathit{submodel0\\_\\_k1}\\cdot \\mathit{S0}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:submodel0__J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> submodel0__k1 </ci>\n      <ci> S0 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel0__J0.product.submodel0__S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "submodel0__S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"submodel0__S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel0__J0.reactant.S0",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S0",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S0\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:submodel0__J0",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"submodel0__J0\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S0\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"submodel0__S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> submodel0__k1 </ci>\n        <ci> S0 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S1 ➞ submodel1__S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "submodel1__J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "submodel1__k1 * S1",
+              "latex": " \\mathit{submodel1\\_\\_k1}\\cdot \\mathit{S1}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:submodel1__J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> submodel1__k1 </ci>\n      <ci> S1 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel1__J0.product.submodel1__S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "submodel1__S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"submodel1__S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel1__J0.reactant.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:submodel1__J0",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"submodel1__J0\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"submodel1__S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> submodel1__k1 </ci>\n        <ci> S1 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S2 ➞ submodel2__S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "submodel2__J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "submodel2__k1 * S2",
+              "latex": " \\mathit{submodel2\\_\\_k1}\\cdot \\mathit{S2}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:submodel2__J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> submodel2__k1 </ci>\n      <ci> S2 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel2__J0.product.submodel2__S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "submodel2__S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"submodel2__S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel2__J0.reactant.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:submodel2__J0",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"submodel2__J0\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"submodel2__S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> submodel2__k1 </ci>\n        <ci> S2 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S3 ➞ submodel3__S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "submodel3__J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "submodel3__k1 * S3",
+              "latex": " \\mathit{submodel3\\_\\_k1}\\cdot \\mathit{S3}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:submodel3__J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> submodel3__k1 </ci>\n      <ci> S3 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel3__J0.product.submodel3__S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "submodel3__S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"submodel3__S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel3__J0.reactant.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:submodel3__J0",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"submodel3__J0\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"submodel3__S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> submodel3__k1 </ci>\n        <ci> S3 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S4 ➞ submodel4__S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "submodel4__J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "submodel4__k1 * S4",
+              "latex": " \\mathit{submodel4\\_\\_k1}\\cdot \\mathit{S4}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:submodel4__J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> submodel4__k1 </ci>\n      <ci> S4 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel4__J0.product.submodel4__S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "submodel4__S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"submodel4__S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:submodel4__J0.reactant.S4",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S4",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:submodel4__J0",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"submodel4__J0\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"submodel4__S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> submodel4__k1 </ci>\n        <ci> S4 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell0",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S0",
+          "initialAmount": null,
+          "initialConcentration": 10.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S0",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S0\" compartment=\"cell0\" initialConcentration=\"10\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell1",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S1",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S1",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S1\" compartment=\"cell1\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell2",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S2\" compartment=\"cell2\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell3",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S3",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S3",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S3\" compartment=\"cell3\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell4",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S4",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S4",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S4\" compartment=\"cell4\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell0",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "submodel0__S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:submodel0__S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"submodel0__S2\" compartment=\"cell0\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell1",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "submodel1__S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:submodel1__S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"submodel1__S2\" compartment=\"cell1\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell2",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "submodel2__S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:submodel2__S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"submodel2__S2\" compartment=\"cell2\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell3",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "submodel3__S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:submodel3__S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"submodel3__S2\" compartment=\"cell3\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell4",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "submodel4__S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:submodel4__S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"submodel4__S2\" compartment=\"cell4\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Hierarchical model reusing the minimal model in composite model coupling.</p>\n  </body>\n</notes>",
+      "pk": "minimal_model_comp/Model:minimal_model_comp",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=minimal_model_comp/Species:S0}{S_{0}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-\\htmlData{pk=minimal_model_comp/Reaction:J0}{v_{\\mathrm{J0}}} - \\htmlData{pk=minimal_model_comp/Reaction:submodel0__J0}{v_{\\mathrm{submodel0\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell0}{\\mathrm{cell}_{0}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:S0"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=minimal_model_comp/Species:S1}{S_{1}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:J0}{v_{\\mathrm{J0}}} - \\htmlData{pk=minimal_model_comp/Reaction:J1}{v_{\\mathrm{J1}}} - \\htmlData{pk=minimal_model_comp/Reaction:submodel1__J0}{v_{\\mathrm{submodel1\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell1}{\\mathrm{cell}_{1}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:S1"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=minimal_model_comp/Species:S2}{S_{2}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:J1}{v_{\\mathrm{J1}}} - \\htmlData{pk=minimal_model_comp/Reaction:J2}{v_{\\mathrm{J2}}} - \\htmlData{pk=minimal_model_comp/Reaction:submodel2__J0}{v_{\\mathrm{submodel2\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell2}{\\mathrm{cell}_{2}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:S2"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=minimal_model_comp/Species:S3}{S_{3}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:J2}{v_{\\mathrm{J2}}} - \\htmlData{pk=minimal_model_comp/Reaction:J3}{v_{\\mathrm{J3}}} - \\htmlData{pk=minimal_model_comp/Reaction:submodel3__J0}{v_{\\mathrm{submodel3\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell3}{\\mathrm{cell}_{3}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:S3"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=minimal_model_comp/Species:S4}{S_{4}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:J3}{v_{\\mathrm{J3}}} - \\htmlData{pk=minimal_model_comp/Reaction:submodel4__J0}{v_{\\mathrm{submodel4\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell4}{\\mathrm{cell}_{4}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:S4"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=minimal_model_comp/Species:submodel0__S2}{\\mathrm{submodel0}_{\\mathrm{\\_S2}}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:submodel0__J0}{v_{\\mathrm{submodel0\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell0}{\\mathrm{cell}_{0}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:submodel0__S2"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=minimal_model_comp/Species:submodel1__S2}{\\mathrm{submodel1}_{\\mathrm{\\_S2}}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:submodel1__J0}{v_{\\mathrm{submodel1\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell1}{\\mathrm{cell}_{1}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:submodel1__S2"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=minimal_model_comp/Species:submodel2__S2}{\\mathrm{submodel2}_{\\mathrm{\\_S2}}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:submodel2__J0}{v_{\\mathrm{submodel2\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell2}{\\mathrm{cell}_{2}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:submodel2__S2"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=minimal_model_comp/Species:submodel3__S2}{\\mathrm{submodel3}_{\\mathrm{\\_S2}}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:submodel3__J0}{v_{\\mathrm{submodel3\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell3}{\\mathrm{cell}_{3}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:submodel3__S2"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=minimal_model_comp/Species:submodel4__S2}{\\mathrm{submodel4}_{\\mathrm{\\_S2}}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=minimal_model_comp/Reaction:submodel4__J0}{v_{\\mathrm{submodel4\\_\\_J0}}}}{\\htmlData{pk=minimal_model_comp/Compartment:cell4}{\\mathrm{cell}_{4}}}"
+        ],
+        "origin": "reactions",
+        "variable": "minimal_model_comp/Species:submodel4__S2"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:J0}{v_{\\mathrm{J0}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:D}{D} \\cdot \\mathopen{}\\left(\\htmlData{pk=minimal_model_comp/Species:S0}{S_{0}} - \\htmlData{pk=minimal_model_comp/Species:S1}{S_{1}}\\right)"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:J0"
+      },
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:J1}{v_{\\mathrm{J1}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:D}{D} \\cdot \\mathopen{}\\left(\\htmlData{pk=minimal_model_comp/Species:S1}{S_{1}} - \\htmlData{pk=minimal_model_comp/Species:S2}{S_{2}}\\right)"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:J1"
+      },
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:J2}{v_{\\mathrm{J2}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:D}{D} \\cdot \\mathopen{}\\left(\\htmlData{pk=minimal_model_comp/Species:S2}{S_{2}} - \\htmlData{pk=minimal_model_comp/Species:S3}{S_{3}}\\right)"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:J2"
+      },
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:J3}{v_{\\mathrm{J3}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:D}{D} \\cdot \\mathopen{}\\left(\\htmlData{pk=minimal_model_comp/Species:S3}{S_{3}} - \\htmlData{pk=minimal_model_comp/Species:S4}{S_{4}}\\right)"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:J3"
+      },
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:submodel0__J0}{v_{\\mathrm{submodel0\\_\\_J0}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:submodel0__k1}{\\mathrm{submodel0}_{\\mathrm{\\_k1}}} \\cdot \\htmlData{pk=minimal_model_comp/Species:S0}{S_{0}}"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:submodel0__J0"
+      },
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:submodel1__J0}{v_{\\mathrm{submodel1\\_\\_J0}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:submodel1__k1}{\\mathrm{submodel1}_{\\mathrm{\\_k1}}} \\cdot \\htmlData{pk=minimal_model_comp/Species:S1}{S_{1}}"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:submodel1__J0"
+      },
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:submodel2__J0}{v_{\\mathrm{submodel2\\_\\_J0}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:submodel2__k1}{\\mathrm{submodel2}_{\\mathrm{\\_k1}}} \\cdot \\htmlData{pk=minimal_model_comp/Species:S2}{S_{2}}"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:submodel2__J0"
+      },
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:submodel3__J0}{v_{\\mathrm{submodel3\\_\\_J0}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:submodel3__k1}{\\mathrm{submodel3}_{\\mathrm{\\_k1}}} \\cdot \\htmlData{pk=minimal_model_comp/Species:S3}{S_{3}}"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:submodel3__J0"
+      },
+      {
+        "lhs": "\\htmlData{pk=minimal_model_comp/Reaction:submodel4__J0}{v_{\\mathrm{submodel4\\_\\_J0}}}",
+        "lines": [
+          "\\htmlData{pk=minimal_model_comp/Parameter:submodel4__k1}{\\mathrm{submodel4}_{\\mathrm{\\_k1}}} \\cdot \\htmlData{pk=minimal_model_comp/Species:S4}{S_{4}}"
+        ],
+        "origin": "reaction",
+        "variable": "minimal_model_comp/Reaction:submodel4__J0"
+      }
+    ],
+    "unsupported": []
+  }
+}

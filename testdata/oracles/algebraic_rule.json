@@ -1,0 +1,578 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "algebraic_rule/Model:algebraic_rule",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "algebraic_rule/Model:algebraic_rule",
+        "target": "algebraic_rule/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "algebraic_rule/Model:algebraic_rule",
+        "target": "algebraic_rule/UnitDefinition:hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "algebraic_rule/Model:algebraic_rule",
+        "target": "algebraic_rule/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "algebraic_rule/Parameter:Atot",
+        "target": "algebraic_rule/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "algebraic_rule/Parameter:A1",
+        "target": "algebraic_rule/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "algebraic_rule/Parameter:A2",
+        "target": "algebraic_rule/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "algebraic_rule/AlgebraicRule:algebraicRule.0",
+        "target": "algebraic_rule/Parameter:A1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "algebraic_rule/AlgebraicRule:algebraicRule.0",
+        "target": "algebraic_rule/Parameter:A2",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "algebraic_rule/AlgebraicRule:algebraicRule.0",
+        "target": "algebraic_rule/Parameter:Atot",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "algebraic_rule/AlgebraicRule:algebraicRule.0": {
+        "id": null,
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": null,
+        "pk": "algebraic_rule/AlgebraicRule:algebraicRule.0",
+        "sbmlType": "AlgebraicRule"
+      },
+      "algebraic_rule/Model:algebraic_rule": {
+        "id": "algebraic_rule",
+        "model": null,
+        "name": "model with AlgebraicRule",
+        "pk": "algebraic_rule/Model:algebraic_rule",
+        "sbmlType": "Model"
+      },
+      "algebraic_rule/Parameter:A1": {
+        "id": "A1",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "A1",
+        "pk": "algebraic_rule/Parameter:A1",
+        "sbmlType": "Parameter"
+      },
+      "algebraic_rule/Parameter:A2": {
+        "id": "A2",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "A2",
+        "pk": "algebraic_rule/Parameter:A2",
+        "sbmlType": "Parameter"
+      },
+      "algebraic_rule/Parameter:Atot": {
+        "id": "Atot",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "total A",
+        "pk": "algebraic_rule/Parameter:Atot",
+        "sbmlType": "Parameter"
+      },
+      "algebraic_rule/UnitDefinition:hr": {
+        "id": "hr",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "hr",
+        "pk": "algebraic_rule/UnitDefinition:hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "algebraic_rule/UnitDefinition:kg": {
+        "id": "kg",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "kg",
+        "pk": "algebraic_rule/UnitDefinition:kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "algebraic_rule/UnitDefinition:l_per_hr": {
+        "id": "l_per_hr",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "liter/hr",
+        "pk": "algebraic_rule/UnitDefinition:l_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "algebraic_rule/UnitDefinition:l_per_kg": {
+        "id": "l_per_kg",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "liter/kg",
+        "pk": "algebraic_rule/UnitDefinition:l_per_kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "algebraic_rule/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "meter^2",
+        "pk": "algebraic_rule/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "algebraic_rule/UnitDefinition:mg": {
+        "id": "mg",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "mg",
+        "pk": "algebraic_rule/UnitDefinition:mg",
+        "sbmlType": "UnitDefinition"
+      },
+      "algebraic_rule/UnitDefinition:mg_per_hr": {
+        "id": "mg_per_hr",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "mg/hr",
+        "pk": "algebraic_rule/UnitDefinition:mg_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "algebraic_rule/UnitDefinition:mg_per_l": {
+        "id": "mg_per_l",
+        "model": "algebraic_rule/Model:algebraic_rule",
+        "name": "mg/liter",
+        "pk": "algebraic_rule/UnitDefinition:mg_per_l",
+        "sbmlType": "UnitDefinition"
+      },
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_algebraic_rule\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mg",
+      "extentUnitsLatex": "mg",
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "algebraic_rule",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "metre",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "Atot",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "total A",
+          "notes": null,
+          "pk": "algebraic_rule/Parameter:Atot",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": 20.0,
+          "xml": "<parameter id=\"Atot\" name=\"total A\" value=\"20\" units=\"mg\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "A1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "A1",
+          "notes": null,
+          "pk": "algebraic_rule/Parameter:A1",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": 15.0,
+          "xml": "<parameter id=\"A1\" name=\"A1\" value=\"15\" units=\"mg\" constant=\"false\"/>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "A2",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "A2",
+          "notes": null,
+          "pk": "algebraic_rule/Parameter:A2",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": 5.0,
+          "xml": "<parameter id=\"A2\" name=\"A2\" value=\"5\" units=\"mg\" constant=\"false\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "Atot - (A1 + A2)",
+            "latex": " \\mathit{Atot}-(\\mathit{A1}+\\mathit{A2})"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "algebraic_rule/AlgebraicRule:algebraicRule.0",
+          "sbmlType": "AlgebraicRule",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<algebraicRule>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <minus/>\n      <ci> Atot </ci>\n      <apply>\n        <plus/>\n        <ci> A1 </ci>\n        <ci> A2 </ci>\n      </apply>\n    </apply>\n  </math>\n</algebraicRule>"
+        }
+      ],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "hr",
+          "notes": null,
+          "pk": "algebraic_rule/UnitDefinition:hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "hr",
+          "xml": "<unitDefinition id=\"hr\" name=\"hr\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "kg",
+          "notes": null,
+          "pk": "algebraic_rule/UnitDefinition:kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "kg",
+          "xml": "<unitDefinition id=\"kg\" name=\"kg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "l_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "liter/hr",
+          "notes": null,
+          "pk": "algebraic_rule/UnitDefinition:l_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{l}{hr}",
+          "xml": "<unitDefinition id=\"l_per_hr\" name=\"liter/hr\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "l_per_kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "liter/kg",
+          "notes": null,
+          "pk": "algebraic_rule/UnitDefinition:l_per_kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{l}{kg}",
+          "xml": "<unitDefinition id=\"l_per_kg\" name=\"liter/kg\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "algebraic_rule/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg",
+          "notes": null,
+          "pk": "algebraic_rule/UnitDefinition:mg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "mg",
+          "xml": "<unitDefinition id=\"mg\" name=\"mg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/hr",
+          "notes": null,
+          "pk": "algebraic_rule/UnitDefinition:mg_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{hr}",
+          "xml": "<unitDefinition id=\"mg_per_hr\" name=\"mg/hr\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_l",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/liter",
+          "notes": null,
+          "pk": "algebraic_rule/UnitDefinition:mg_per_l",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{l}",
+          "xml": "<unitDefinition id=\"mg_per_l\" name=\"mg/liter\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_algebraic_rule",
+      "name": "model with AlgebraicRule",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Example model demonstrating <code>AlgebraicRule</code>.</h1>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "algebraic_rule/Model:algebraic_rule",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mg",
+      "substanceUnitsLatex": "mg",
+      "timeUnits": "hr",
+      "timeUnitsLatex": "hr",
+      "uncertainties": [],
+      "volumeUnits": "litre",
+      "volumeUnitsLatex": "l",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [],
+    "reactions": [],
+    "unsupported": [
+      {
+        "element": null,
+        "kind": "algebraic rule"
+      }
+    ]
+  }
+}

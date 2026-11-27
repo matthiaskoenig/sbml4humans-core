@@ -1,0 +1,1213 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "multiple_substance_units/Model:multiple_substance_units",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Model:multiple_substance_units",
+        "target": "multiple_substance_units/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Model:multiple_substance_units",
+        "target": "multiple_substance_units/UnitDefinition:min",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Model:multiple_substance_units",
+        "target": "multiple_substance_units/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "multiple_substance_units/Species:glc",
+        "target": "multiple_substance_units/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Species:glc",
+        "target": "multiple_substance_units/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "multiple_substance_units/Species:glc6p",
+        "target": "multiple_substance_units/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Species:glc6p",
+        "target": "multiple_substance_units/UnitDefinition:mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "multiple_substance_units/Species:hex1",
+        "target": "multiple_substance_units/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "conversionFactor",
+        "source": "multiple_substance_units/Species:hex1",
+        "target": "multiple_substance_units/Parameter:cf_units_per_mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Parameter:cf_units_per_mmole",
+        "target": "multiple_substance_units/UnitDefinition:per_mmole",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Parameter:HEX1SYNTHESIS_k",
+        "target": "multiple_substance_units/UnitDefinition:mmole_per_min",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Parameter:HEX1_Vmax",
+        "target": "multiple_substance_units/UnitDefinition:mmole_per_min",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "multiple_substance_units/Parameter:HEX1_Km_glc",
+        "target": "multiple_substance_units/UnitDefinition:mM",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "multiple_substance_units/Reaction:HEX1SYNTHESIS",
+        "target": "multiple_substance_units/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "multiple_substance_units/Reaction:HEX1SYNTHESIS",
+        "target": "multiple_substance_units/SpeciesReference:HEX1SYNTHESIS.product.hex1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "multiple_substance_units/SpeciesReference:HEX1SYNTHESIS.product.hex1",
+        "target": "multiple_substance_units/Species:hex1",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "multiple_substance_units/Reaction:HEX1SYNTHESIS",
+        "target": "multiple_substance_units/KineticLaw:HEX1SYNTHESIS.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "multiple_substance_units/KineticLaw:HEX1SYNTHESIS.kineticLaw",
+        "target": "multiple_substance_units/Parameter:HEX1SYNTHESIS_k",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "multiple_substance_units/Reaction:HEX1",
+        "target": "multiple_substance_units/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "multiple_substance_units/Reaction:HEX1",
+        "target": "multiple_substance_units/SpeciesReference:HEX1.reactant.glc",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "multiple_substance_units/SpeciesReference:HEX1.reactant.glc",
+        "target": "multiple_substance_units/Species:glc",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "multiple_substance_units/Reaction:HEX1",
+        "target": "multiple_substance_units/SpeciesReference:HEX1.product.glc6p",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "multiple_substance_units/SpeciesReference:HEX1.product.glc6p",
+        "target": "multiple_substance_units/Species:glc6p",
+        "targetEntry": null
+      },
+      {
+        "kind": "modifier",
+        "source": "multiple_substance_units/Reaction:HEX1",
+        "target": "multiple_substance_units/ModifierSpeciesReference:HEX1.modifier.hex1",
+        "targetEntry": null
+      },
+      {
+        "kind": "modifier",
+        "source": "multiple_substance_units/ModifierSpeciesReference:HEX1.modifier.hex1",
+        "target": "multiple_substance_units/Species:hex1",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "multiple_substance_units/Reaction:HEX1",
+        "target": "multiple_substance_units/KineticLaw:HEX1.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "multiple_substance_units/KineticLaw:HEX1.kineticLaw",
+        "target": "multiple_substance_units/Parameter:HEX1_Km_glc",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "multiple_substance_units/KineticLaw:HEX1.kineticLaw",
+        "target": "multiple_substance_units/Parameter:HEX1_Vmax",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "multiple_substance_units/KineticLaw:HEX1.kineticLaw",
+        "target": "multiple_substance_units/Species:glc",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "multiple_substance_units/KineticLaw:HEX1.kineticLaw",
+        "target": "multiple_substance_units/Species:hex1",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "multiple_substance_units/Compartment:cyto": {
+        "id": "cyto",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "cytosol",
+        "pk": "multiple_substance_units/Compartment:cyto",
+        "sbmlType": "Compartment"
+      },
+      "multiple_substance_units/KineticLaw:HEX1.kineticLaw": {
+        "id": null,
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/KineticLaw:HEX1.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "multiple_substance_units/KineticLaw:HEX1SYNTHESIS.kineticLaw": {
+        "id": null,
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/KineticLaw:HEX1SYNTHESIS.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "multiple_substance_units/Model:multiple_substance_units": {
+        "id": "multiple_substance_units",
+        "model": null,
+        "name": "model with multiple substance units",
+        "pk": "multiple_substance_units/Model:multiple_substance_units",
+        "sbmlType": "Model"
+      },
+      "multiple_substance_units/ModifierSpeciesReference:HEX1.modifier.hex1": {
+        "id": null,
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/ModifierSpeciesReference:HEX1.modifier.hex1",
+        "sbmlType": "ModifierSpeciesReference"
+      },
+      "multiple_substance_units/Parameter:HEX1SYNTHESIS_k": {
+        "id": "HEX1SYNTHESIS_k",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/Parameter:HEX1SYNTHESIS_k",
+        "sbmlType": "Parameter"
+      },
+      "multiple_substance_units/Parameter:HEX1_Km_glc": {
+        "id": "HEX1_Km_glc",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/Parameter:HEX1_Km_glc",
+        "sbmlType": "Parameter"
+      },
+      "multiple_substance_units/Parameter:HEX1_Vmax": {
+        "id": "HEX1_Vmax",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/Parameter:HEX1_Vmax",
+        "sbmlType": "Parameter"
+      },
+      "multiple_substance_units/Parameter:cf_units_per_mmole": {
+        "id": "cf_units_per_mmole",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "dimensionless species conversion",
+        "pk": "multiple_substance_units/Parameter:cf_units_per_mmole",
+        "sbmlType": "Parameter"
+      },
+      "multiple_substance_units/Reaction:HEX1": {
+        "id": "HEX1",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "hexokinase",
+        "pk": "multiple_substance_units/Reaction:HEX1",
+        "sbmlType": "Reaction"
+      },
+      "multiple_substance_units/Reaction:HEX1SYNTHESIS": {
+        "id": "HEX1SYNTHESIS",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "hexokinase synthesis",
+        "pk": "multiple_substance_units/Reaction:HEX1SYNTHESIS",
+        "sbmlType": "Reaction"
+      },
+      "multiple_substance_units/Species:glc": {
+        "id": "glc",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "D-glucose",
+        "pk": "multiple_substance_units/Species:glc",
+        "sbmlType": "Species"
+      },
+      "multiple_substance_units/Species:glc6p": {
+        "id": "glc6p",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "D-glucose 6-phosphate",
+        "pk": "multiple_substance_units/Species:glc6p",
+        "sbmlType": "Species"
+      },
+      "multiple_substance_units/Species:hex1": {
+        "id": "hex1",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "hexokinase protein",
+        "pk": "multiple_substance_units/Species:hex1",
+        "sbmlType": "Species"
+      },
+      "multiple_substance_units/SpeciesReference:HEX1.product.glc6p": {
+        "id": null,
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/SpeciesReference:HEX1.product.glc6p",
+        "sbmlType": "SpeciesReference"
+      },
+      "multiple_substance_units/SpeciesReference:HEX1.reactant.glc": {
+        "id": null,
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/SpeciesReference:HEX1.reactant.glc",
+        "sbmlType": "SpeciesReference"
+      },
+      "multiple_substance_units/SpeciesReference:HEX1SYNTHESIS.product.hex1": {
+        "id": null,
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": null,
+        "pk": "multiple_substance_units/SpeciesReference:HEX1SYNTHESIS.product.hex1",
+        "sbmlType": "SpeciesReference"
+      },
+      "multiple_substance_units/UnitDefinition:kg": {
+        "id": "kg",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "kg",
+        "pk": "multiple_substance_units/UnitDefinition:kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "multiple_substance_units/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "meter^2",
+        "pk": "multiple_substance_units/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "multiple_substance_units/UnitDefinition:m3": {
+        "id": "m3",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "meter^3",
+        "pk": "multiple_substance_units/UnitDefinition:m3",
+        "sbmlType": "UnitDefinition"
+      },
+      "multiple_substance_units/UnitDefinition:mM": {
+        "id": "mM",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "mmole/liter",
+        "pk": "multiple_substance_units/UnitDefinition:mM",
+        "sbmlType": "UnitDefinition"
+      },
+      "multiple_substance_units/UnitDefinition:min": {
+        "id": "min",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "min",
+        "pk": "multiple_substance_units/UnitDefinition:min",
+        "sbmlType": "UnitDefinition"
+      },
+      "multiple_substance_units/UnitDefinition:mmole": {
+        "id": "mmole",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "mmole",
+        "pk": "multiple_substance_units/UnitDefinition:mmole",
+        "sbmlType": "UnitDefinition"
+      },
+      "multiple_substance_units/UnitDefinition:mmole_per_min": {
+        "id": "mmole_per_min",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "mmole/min",
+        "pk": "multiple_substance_units/UnitDefinition:mmole_per_min",
+        "sbmlType": "UnitDefinition"
+      },
+      "multiple_substance_units/UnitDefinition:per_min": {
+        "id": "per_min",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "1/min",
+        "pk": "multiple_substance_units/UnitDefinition:per_min",
+        "sbmlType": "UnitDefinition"
+      },
+      "multiple_substance_units/UnitDefinition:per_mmole": {
+        "id": "per_mmole",
+        "model": "multiple_substance_units/Model:multiple_substance_units",
+        "name": "1/mmole",
+        "pk": "multiple_substance_units/UnitDefinition:per_mmole",
+        "sbmlType": "UnitDefinition"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_multiple_substance_units\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mmole",
+      "extentUnitsLatex": "mmol",
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "multiple_substance_units",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "metre",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000290"
+              ]
+            }
+          ],
+          "derivedUnits": "l",
+          "history": null,
+          "id": "cyto",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_cyto",
+          "name": "cytosol",
+          "notes": null,
+          "pk": "multiple_substance_units/Compartment:cyto",
+          "sbmlType": "Compartment",
+          "sbo": "SBO:0000290",
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": "litre",
+          "unitsLatex": "l",
+          "xml": "<compartment metaid=\"meta_cyto\" sboTerm=\"SBO:0000290\" id=\"cyto\" name=\"cytosol\" spatialDimensions=\"3\" size=\"1\" units=\"litre\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_cyto\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000290\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</compartment>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{1}{mmol}",
+          "history": null,
+          "id": "cf_units_per_mmole",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_cf_units_per_mmole",
+          "name": "dimensionless species conversion",
+          "notes": null,
+          "pk": "multiple_substance_units/Parameter:cf_units_per_mmole",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": "per_mmole",
+          "unitsLatex": "\\frac{1}{mmol}",
+          "value": 1.0,
+          "xml": "<parameter metaid=\"meta_cf_units_per_mmole\" sboTerm=\"SBO:0000002\" id=\"cf_units_per_mmole\" name=\"dimensionless species conversion\" value=\"1\" units=\"per_mmole\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_cf_units_per_mmole\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000002\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000186"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{min}",
+          "history": null,
+          "id": "HEX1SYNTHESIS_k",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_HEX1SYNTHESIS_k",
+          "name": null,
+          "notes": null,
+          "pk": "multiple_substance_units/Parameter:HEX1SYNTHESIS_k",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000186",
+          "uncertainties": [],
+          "units": "mmole_per_min",
+          "unitsLatex": "\\frac{mmol}{min}",
+          "value": 1.0,
+          "xml": "<parameter metaid=\"meta_HEX1SYNTHESIS_k\" sboTerm=\"SBO:0000186\" id=\"HEX1SYNTHESIS_k\" value=\"1\" units=\"mmole_per_min\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_HEX1SYNTHESIS_k\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000186\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000186"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{min}",
+          "history": null,
+          "id": "HEX1_Vmax",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_HEX1_Vmax",
+          "name": null,
+          "notes": null,
+          "pk": "multiple_substance_units/Parameter:HEX1_Vmax",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000186",
+          "uncertainties": [],
+          "units": "mmole_per_min",
+          "unitsLatex": "\\frac{mmol}{min}",
+          "value": 1.0,
+          "xml": "<parameter metaid=\"meta_HEX1_Vmax\" sboTerm=\"SBO:0000186\" id=\"HEX1_Vmax\" value=\"1\" units=\"mmole_per_min\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_HEX1_Vmax\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000186\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000027"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "history": null,
+          "id": "HEX1_Km_glc",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_HEX1_Km_glc",
+          "name": null,
+          "notes": null,
+          "pk": "multiple_substance_units/Parameter:HEX1_Km_glc",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000027",
+          "uncertainties": [],
+          "units": "mM",
+          "unitsLatex": "\\frac{mmol}{l}",
+          "value": 0.1,
+          "xml": "<parameter metaid=\"meta_HEX1_Km_glc\" sboTerm=\"SBO:0000027\" id=\"HEX1_Km_glc\" value=\"0.1\" units=\"mM\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_HEX1_Km_glc\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000027\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": "cyto",
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000176"
+              ]
+            }
+          ],
+          "equation": " ➞ hex1",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "HEX1SYNTHESIS",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "\\frac{mmol}{min}",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "HEX1SYNTHESIS_k",
+              "latex": " \\mathit{HEX1SYNTHESIS_{k}}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "multiple_substance_units/KineticLaw:HEX1SYNTHESIS.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> HEX1SYNTHESIS_k </ci>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "multiple_substance_units/SpeciesReference:HEX1SYNTHESIS.product.hex1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "hex1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"hex1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [],
+          "lists": [],
+          "metaId": "meta_HEX1SYNTHESIS",
+          "name": "hexokinase synthesis",
+          "notes": null,
+          "pk": "multiple_substance_units/Reaction:HEX1SYNTHESIS",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": "SBO:0000176",
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_HEX1SYNTHESIS\" sboTerm=\"SBO:0000176\" id=\"HEX1SYNTHESIS\" name=\"hexokinase synthesis\" reversible=\"false\" fast=\"false\" compartment=\"cyto\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_HEX1SYNTHESIS\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000176\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfProducts>\n    <speciesReference species=\"hex1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <ci> HEX1SYNTHESIS_k </ci>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": "cyto",
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000176"
+              ]
+            }
+          ],
+          "equation": "glc ➞ glc6p",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "HEX1",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "\\frac{mmol}{min}",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "HEX1_Vmax * hex1 * glc / (HEX1_Km_glc + glc)",
+              "latex": " \\frac{\\mathit{HEX1_{Vmax}}\\cdot \\mathit{hex1}\\cdot \\mathit{glc}}{\\mathit{HEX1\\_Km\\_glc}+\\mathit{glc}}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "multiple_substance_units/KineticLaw:HEX1.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <divide/>\n      <apply>\n        <times/>\n        <ci> HEX1_Vmax </ci>\n        <ci> hex1 </ci>\n        <ci> glc </ci>\n      </apply>\n      <apply>\n        <plus/>\n        <ci> HEX1_Km_glc </ci>\n        <ci> glc </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "multiple_substance_units/ModifierSpeciesReference:HEX1.modifier.hex1",
+              "sbmlType": "ModifierSpeciesReference",
+              "sbo": null,
+              "species": "hex1",
+              "uncertainties": [],
+              "xml": "<modifierSpeciesReference species=\"hex1\"/>"
+            }
+          ],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "multiple_substance_units/SpeciesReference:HEX1.product.glc6p",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "glc6p",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"glc6p\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "multiple_substance_units/SpeciesReference:HEX1.reactant.glc",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "glc",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"glc\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": "meta_HEX1",
+          "name": "hexokinase",
+          "notes": null,
+          "pk": "multiple_substance_units/Reaction:HEX1",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": "SBO:0000176",
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_HEX1\" sboTerm=\"SBO:0000176\" id=\"HEX1\" name=\"hexokinase\" reversible=\"false\" fast=\"false\" compartment=\"cyto\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_HEX1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000176\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfReactants>\n    <speciesReference species=\"glc\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"glc6p\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <listOfModifiers>\n    <modifierSpeciesReference species=\"hex1\"/>\n  </listOfModifiers>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <divide/>\n        <apply>\n          <times/>\n          <ci> HEX1_Vmax </ci>\n          <ci> hex1 </ci>\n          <ci> glc </ci>\n        </apply>\n        <apply>\n          <plus/>\n          <ci> HEX1_Km_glc </ci>\n          <ci> glc </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "glc",
+          "initialAmount": null,
+          "initialConcentration": 3.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_glc",
+          "name": "D-glucose",
+          "notes": null,
+          "pk": "multiple_substance_units/Species:glc",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mmole",
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<species metaid=\"meta_glc\" sboTerm=\"SBO:0000247\" id=\"glc\" name=\"D-glucose\" compartment=\"cyto\" initialConcentration=\"3\" substanceUnits=\"mmole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_glc\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "glc6p",
+          "initialAmount": null,
+          "initialConcentration": 0.5,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_glc6p",
+          "name": "D-glucose 6-phosphate",
+          "notes": null,
+          "pk": "multiple_substance_units/Species:glc6p",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mmole",
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<species metaid=\"meta_glc6p\" sboTerm=\"SBO:0000247\" id=\"glc6p\" name=\"D-glucose 6-phosphate\" compartment=\"cyto\" initialConcentration=\"0.5\" substanceUnits=\"mmole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_glc6p\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": {
+            "sid": "cf_units_per_mmole",
+            "units": "per_mmole",
+            "value": 1.0
+          },
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000245"
+              ]
+            }
+          ],
+          "derivedUnits": "dimensionless",
+          "fbc": null,
+          "hasOnlySubstanceUnits": true,
+          "history": null,
+          "id": "hex1",
+          "initialAmount": null,
+          "initialConcentration": 1.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_hex1",
+          "name": "hexokinase protein",
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>extent * conversionfactor = substanceUnit</p>\n    <p>mmole * 1/mmole = dimensionless</p>\n  </body>\n</notes>",
+          "pk": "multiple_substance_units/Species:hex1",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000245",
+          "substanceUnits": "dimensionless",
+          "uncertainties": [],
+          "unitsLatex": "-",
+          "xml": "<species metaid=\"meta_hex1\" sboTerm=\"SBO:0000245\" id=\"hex1\" name=\"hexokinase protein\" compartment=\"cyto\" initialConcentration=\"1\" substanceUnits=\"dimensionless\" hasOnlySubstanceUnits=\"true\" boundaryCondition=\"false\" constant=\"false\" conversionFactor=\"cf_units_per_mmole\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>extent * conversionfactor = substanceUnit</p>\n      <p>mmole * 1/mmole = dimensionless</p>\n    </body>\n  </notes>\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_hex1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000245\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "kg",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "kg",
+          "xml": "<unitDefinition id=\"kg\" name=\"kg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m3",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 3.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^3",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:m3",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^3",
+          "xml": "<unitDefinition id=\"m3\" name=\"meter^3\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"3\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mM",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/liter",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:mM",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{l}",
+          "xml": "<unitDefinition id=\"mM\" name=\"mmole/liter\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "min",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "min",
+          "xml": "<unitDefinition id=\"min\" name=\"min\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:mmole",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<unitDefinition id=\"mmole\" name=\"mmole\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/min",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:mmole_per_min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{min}",
+          "xml": "<unitDefinition id=\"mmole_per_min\" name=\"mmole/min\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "per_min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "1/min",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:per_min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{1}{min}",
+          "xml": "<unitDefinition id=\"per_min\" name=\"1/min\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "per_mmole",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": -1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "1/mmole",
+          "notes": null,
+          "pk": "multiple_substance_units/UnitDefinition:per_mmole",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{1}{mmol}",
+          "xml": "<unitDefinition id=\"per_mmole\" name=\"1/mmole\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"-1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_multiple_substance_units",
+      "name": "model with multiple substance units",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Example model for multiple substance units</h1>\n    <p>The substance units for species are restricted to a single substance unit so that\nreaction rates are in [substance_units/time_units] in an SBML model.</p>\n    <p>Applying species conversion factors allows to have distinct subsets of species with\ndifferent units in a single model.</p>\n    <p>A typical example is the combination of metabolic compounds (simple chemicals) often\nin mmole with proteins in a single model.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "multiple_substance_units/Model:multiple_substance_units",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mmole",
+      "substanceUnitsLatex": "mmol",
+      "timeUnits": "min",
+      "timeUnitsLatex": "min",
+      "uncertainties": [],
+      "volumeUnits": "litre",
+      "volumeUnitsLatex": "l",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [
+      {
+        "lhs": "\\htmlData{pk=multiple_substance_units/Species:hex1}{\\mathrm{hex}_{1}}",
+        "lines": [
+          "1 \\cdot \\htmlData{pk=multiple_substance_units/Compartment:cyto}{\\mathrm{cyto}}"
+        ],
+        "origin": "initial_value",
+        "variable": "multiple_substance_units/Species:hex1"
+      }
+    ],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=multiple_substance_units/Species:glc}{\\mathrm{glc}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-\\htmlData{pk=multiple_substance_units/Reaction:HEX1}{v_{\\mathrm{HEX1}}}}{\\htmlData{pk=multiple_substance_units/Compartment:cyto}{\\mathrm{cyto}}}"
+        ],
+        "origin": "reactions",
+        "variable": "multiple_substance_units/Species:glc"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=multiple_substance_units/Species:glc6p}{\\mathrm{glc6p}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=multiple_substance_units/Reaction:HEX1}{v_{\\mathrm{HEX1}}}}{\\htmlData{pk=multiple_substance_units/Compartment:cyto}{\\mathrm{cyto}}}"
+        ],
+        "origin": "reactions",
+        "variable": "multiple_substance_units/Species:glc6p"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\htmlData{pk=multiple_substance_units/Species:hex1}{\\mathrm{hex}_{1}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\htmlData{pk=multiple_substance_units/Parameter:cf_units_per_mmole}{\\mathrm{cf}_{\\mathrm{units\\_per\\_mmole}}} \\cdot \\htmlData{pk=multiple_substance_units/Reaction:HEX1SYNTHESIS}{v_{\\mathrm{HEX1SYNTHESIS}}}"
+        ],
+        "origin": "reactions",
+        "variable": "multiple_substance_units/Species:hex1"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=multiple_substance_units/Reaction:HEX1SYNTHESIS}{v_{\\mathrm{HEX1SYNTHESIS}}}",
+        "lines": [
+          "\\htmlData{pk=multiple_substance_units/Parameter:HEX1SYNTHESIS_k}{\\mathrm{HEX1SYNTHESIS}_{\\mathrm{k}}}"
+        ],
+        "origin": "reaction",
+        "variable": "multiple_substance_units/Reaction:HEX1SYNTHESIS"
+      },
+      {
+        "lhs": "\\htmlData{pk=multiple_substance_units/Reaction:HEX1}{v_{\\mathrm{HEX1}}}",
+        "lines": [
+          "\\frac{\\htmlData{pk=multiple_substance_units/Parameter:HEX1_Vmax}{\\mathrm{HEX1}_{\\mathrm{Vmax}}} \\cdot \\htmlData{pk=multiple_substance_units/Species:hex1}{\\mathrm{hex}_{1}} \\cdot \\htmlData{pk=multiple_substance_units/Species:glc}{\\mathrm{glc}}}{\\htmlData{pk=multiple_substance_units/Parameter:HEX1_Km_glc}{\\mathrm{HEX1}_{\\mathrm{Km\\_glc}}} + \\htmlData{pk=multiple_substance_units/Species:glc}{\\mathrm{glc}}}"
+        ],
+        "origin": "reaction",
+        "variable": "multiple_substance_units/Reaction:HEX1"
+      }
+    ],
+    "unsupported": []
+  }
+}

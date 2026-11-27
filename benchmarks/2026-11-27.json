@@ -1,0 +1,34 @@
+{
+  "platform": "Linux-7.0.0-44-generic-x86_64-with-glibc2.39",
+  "python": "3.14.10",
+  "core": "0.1.0",
+  "libsbml": "5.21.2",
+  "sbmlode": "0.3.3",
+  "repeat": 3,
+  "results": [
+    {
+      "model": "minimal",
+      "xml_bytes": 2925,
+      "json_bytes": 12177,
+      "native_seconds": 0.00021009500051150098,
+      "python_seconds": 0.0027886480020242743,
+      "speedup": 13.273271592541388
+    },
+    {
+      "model": "e_coli_core",
+      "xml_bytes": 707166,
+      "json_bytes": 1763793,
+      "native_seconds": 0.021633332995406818,
+      "python_seconds": 0.13511601999925915,
+      "speedup": 6.245732917250751
+    },
+    {
+      "model": "Recon3D",
+      "xml_bytes": 28573403,
+      "json_bytes": 115169772,
+      "native_seconds": 1.5145569349988364,
+      "python_seconds": 17.67530701799842,
+      "speedup": 11.670282317918938
+    }
+  ]
+}

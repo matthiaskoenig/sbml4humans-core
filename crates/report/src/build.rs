@@ -15,14 +15,6 @@ use crate::{
     pk,
 };
 
-/// The derived units python writes when no unit is derived, deriving a unit belongs to a later slice.
-///
-/// The builder writes it for every element whose class of `model.py` declares a `derived_units`,
-/// and for no other, which is wrong for a document which sets units at all: python derives the
-/// unit of such an element and writes `-` only where nothing derives. It is the one value of the
-/// report this slice fabricates, and the oracle gate declares it as such.
-const NO_DERIVED_UNITS: &str = "-";
-
 /// The scope and the key python gives the document, the one element keyed by a fixed name.
 const DOCUMENT_KEY: &str = "document";
 
@@ -91,8 +83,8 @@ fn places<T: Keyed>(children: &[T]) -> Vec<String> {
 ///
 /// It is the one place of the builder which makes an `SBase`, through [`SBase::new`], which takes
 /// the type of the element: a report object of no `sbmlType` is one the frontend cannot read.
-fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key: &str) -> SBase {
-    SBase {
+pub(crate) fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key: &str) -> SBase {
+    let mut base = SBase {
         id: element.id.clone(),
         meta_id: element.meta_id.clone(),
         name: element.name.clone(),
@@ -115,7 +107,9 @@ fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key: &str) -> 
             modified_dates: history.modified_dates.clone(),
         }),
         ..SBase::new(pk::of(scope, sbml_type, key), sbml_type)
-    }
+    };
+    crate::packages::extend(&mut base, element, scope, key);
+    base
 }
 
 /// Copy a qualified relation without using a call frame for every nested qualifier.
@@ -223,6 +217,9 @@ fn unit(u: &Unit) -> ReportUnit {
 /// Why the report of a document could not be built.
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum BuildError {
+    /// A unit factor the Python registry cannot render.
+    #[error(transparent)]
+    Units(#[from] crate::units::UnitError),
     /// The math of an element could not be written.
     ///
     /// It is unreachable by construction, since a filler of the model refuses a math which is
@@ -247,7 +244,7 @@ fn compartment(scope: &str, key: &str, c: &Compartment) -> ReportCompartment {
         constant: c.constant,
         units: c.units.clone(),
         units_latex: None,
-        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        derived_units: None,
     }
 }
 
@@ -263,7 +260,7 @@ fn species(scope: &str, key: &str, s: &Species) -> ReportSpecies {
         boundary_condition: s.boundary_condition,
         constant: s.constant,
         units_latex: None,
-        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        derived_units: None,
         conversion_factor: None,
         fbc: None,
     }
@@ -277,7 +274,7 @@ fn parameter(scope: &str, key: &str, p: &Parameter) -> ReportParameter {
         constant: p.constant,
         units: p.units.clone(),
         units_latex: None,
-        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        derived_units: None,
     }
 }
 
@@ -324,7 +321,7 @@ fn initial_assignment(
         sbase,
         symbol: ia.symbol.clone(),
         math,
-        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        derived_units: None,
     })
 }
 
@@ -350,7 +347,7 @@ fn rule(scope: &str, place: &str, r: &Rule) -> Result<ReportRule, BuildError> {
             RuleKind::Assignment | RuleKind::Rate => Some(r.variable.clone().unwrap_or_default()),
         },
         math,
-        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        derived_units: None,
     })
 }
 
@@ -500,7 +497,7 @@ fn local_parameter(scope: &str, key: &str, lp: &LocalParameter) -> ReportLocalPa
         value: lp.value.map(Double),
         units: lp.units.clone(),
         units_latex: None,
-        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        derived_units: None,
     }
 }
 
@@ -528,7 +525,7 @@ fn kinetic_law(
     Ok(ReportKineticLaw {
         sbase,
         math,
-        derived_units: Some(NO_DERIVED_UNITS.to_owned()),
+        derived_units: None,
         list_of_local_parameters: law
             .local_parameters
             .iter()
@@ -705,9 +702,15 @@ fn event(scope: &str, key: &str, e: &Event) -> Result<ReportEvent, BuildError> {
 ///
 /// `level` and `version` are the ones of the document, which a reaction of the model is reported
 /// with the defaults of.
-fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildError> {
+fn model(
+    model: &Model,
+    level: u32,
+    version: u32,
+    scope: &str,
+    kind: &'static str,
+) -> Result<ReportModel, BuildError> {
     // the key of the model is the scope of every element below it
-    let scope = pk::key(&model.element, || MAIN_MODEL_KEY.to_owned());
+
     // every list of the model keys its children by their place, the whole list at once: an element
     // which carries an id or a metaId is keyed by it and the others by the name of their element
     // and their place among the children of that name (`_indexed`, `sbmlinfo.py:984-1019`). A rule
@@ -717,12 +720,12 @@ fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildEr
     let rule_keys = pk::indexed(&model.rules, |r| &r.element, |r| rule_type(r.kind));
     let mut rules = Vec::with_capacity(model.rules.len());
     for (r, key) in model.rules.iter().zip(rule_keys) {
-        rules.push(rule(&scope, &key, r)?);
+        rules.push(rule(scope, &key, r)?);
     }
     Ok(ReportModel {
         // the model is keyed by the key which is its own scope, python writes `<key>/Model:<key>`
-        sbase: sbase(&scope, "Model", &model.element, &scope),
-        kind: "model",
+        sbase: sbase(scope, "Model", &model.element, scope),
+        kind,
         annotation_xml: model.element.annotation.clone(),
         substance_units: None,
         substance_units_latex: None,
@@ -741,56 +744,56 @@ fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildEr
             .function_definitions
             .iter()
             .zip(places(&model.function_definitions))
-            .map(|(fd, key)| function_definition(&scope, &key, fd))
+            .map(|(fd, key)| function_definition(scope, &key, fd))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_unit_definitions: model
             .unit_definitions
             .iter()
             .zip(places(&model.unit_definitions))
-            .map(|(ud, key)| unit_definition(&scope, &key, ud))
+            .map(|(ud, key)| unit_definition(scope, &key, ud))
             .collect(),
         list_of_compartments: model
             .compartments
             .iter()
             .zip(places(&model.compartments))
-            .map(|(c, key)| compartment(&scope, &key, c))
+            .map(|(c, key)| compartment(scope, &key, c))
             .collect(),
         list_of_species: model
             .species
             .iter()
             .zip(places(&model.species))
-            .map(|(s, key)| species(&scope, &key, s))
+            .map(|(s, key)| species(scope, &key, s))
             .collect(),
         list_of_parameters: model
             .parameters
             .iter()
             .zip(places(&model.parameters))
-            .map(|(p, key)| parameter(&scope, &key, p))
+            .map(|(p, key)| parameter(scope, &key, p))
             .collect(),
         list_of_initial_assignments: model
             .initial_assignments
             .iter()
             .zip(places(&model.initial_assignments))
-            .map(|(ia, key)| initial_assignment(&scope, &key, ia))
+            .map(|(ia, key)| initial_assignment(scope, &key, ia))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_rules: rules,
         list_of_constraints: model
             .constraints
             .iter()
             .zip(places(&model.constraints))
-            .map(|(c, key)| constraint(&scope, &key, c))
+            .map(|(c, key)| constraint(scope, &key, c))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_reactions: model
             .reactions
             .iter()
             .zip(places(&model.reactions))
-            .map(|(r, key)| reaction(&scope, &key, level, version, r))
+            .map(|(r, key)| reaction(scope, &key, level, version, r))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_events: model
             .events
             .iter()
             .zip(places(&model.events))
-            .map(|(e, key)| event(&scope, &key, e))
+            .map(|(e, key)| event(scope, &key, e))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_submodels: vec![],
         list_of_ports: vec![],
@@ -812,6 +815,25 @@ fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildEr
 /// filler of the model refuses to hand over: no caller has to handle it, and it is an error rather
 /// than a panic so that no writer of the report unwraps a value a document controls.
 pub fn build(document: &Document) -> Result<Report, BuildError> {
+    let main_key = document.model.as_ref().map(|m| {
+        pk::key(&m.element, || {
+            document
+                .main_model_fallback
+                .clone()
+                .unwrap_or_else(|| MAIN_MODEL_KEY.to_owned())
+        })
+    });
+    let definition_keys = pk::keyed_by_reserved(
+        &document.model_definitions,
+        |m| &m.element,
+        &document
+            .model_definitions
+            .iter()
+            .enumerate()
+            .map(|(i, _)| format!("modelDefinition.{i}"))
+            .collect::<Vec<_>>(),
+        &main_key.as_deref().into_iter().collect::<Vec<_>>(),
+    );
     let mut report = Report {
         document: ReportDocument {
             // the document is the one element whose scope and key are both a fixed name,
@@ -835,15 +857,37 @@ pub fn build(document: &Document) -> Result<Report, BuildError> {
             annotation_xml: document.element.annotation.clone(),
         },
         models: document
-            .model
-            .iter()
-            .map(|m| model(m, document.level, document.version))
+            .models()
+            .enumerate()
+            .map(|(i, m)| {
+                let kind = if document.model.is_some() && i == 0 {
+                    "model"
+                } else {
+                    "modelDefinition"
+                };
+                let fallback = if kind == "model" {
+                    main_key.clone().unwrap_or_default()
+                } else {
+                    definition_keys[i - usize::from(document.model.is_some())].clone()
+                };
+                let scope = pk::key(&m.element, || fallback);
+                model(m, document.level, document.version, &scope, kind)
+            })
             .collect::<Result<Vec<_>, BuildError>>()?,
-        external_model_definitions: vec![],
+        external_model_definitions: crate::packages::external(&document.element),
         link_graph: LinkGraph::default(),
         ode_system: None,
         ode_error: None,
     };
+    for (input, output) in document.models().zip(&mut report.models) {
+        crate::packages::model(
+            input,
+            output,
+            document.packages.iter().any(|p| p.name == "fbc"),
+        );
+    }
+    crate::units::apply(document, &mut report)?;
     report.link_graph = crate::links::build(&report, document);
+    crate::odes::apply(document, &mut report);
     Ok(report)
 }

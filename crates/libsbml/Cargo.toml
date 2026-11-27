@@ -10,6 +10,7 @@ repository.workspace = true
 publish = false
 
 [dependencies]
+sbml4humans-reader = { path = "../reader" }
 sbml4humans-model = { path = "../model" }
 thiserror.workspace = true
 

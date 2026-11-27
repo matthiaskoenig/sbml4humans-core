@@ -1,0 +1,1 @@
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2"><model id="unknown_assignment"><listOfRules><assignmentRule variable="ghost"><math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">1</cn></math></assignmentRule></listOfRules></model></sbml>

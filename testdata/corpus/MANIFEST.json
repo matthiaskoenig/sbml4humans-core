@@ -1,0 +1,357 @@
+{
+  "sbml4humans_commit": "15f8e40243df37ba481f21cd648bb71283d6f82e",
+  "libsbml": "5.21.2",
+  "sbmlode": "0.3.3",
+  "files": [
+    {
+      "origin": "biomodels/BIOMD0000000001.omex#BIOMD0000000001_url.xml",
+      "source": "000.xml.gz",
+      "report": "000.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000001.omex#BIOMD0000000001_urn.xml",
+      "source": "001.xml.gz",
+      "report": "001.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000002.omex#BIOMD0000000002_url.xml",
+      "source": "002.xml.gz",
+      "report": "002.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000003.omex#BIOMD0000000003_url.xml",
+      "source": "003.xml.gz",
+      "report": "003.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000004.omex#BIOMD0000000004_url.xml",
+      "source": "004.xml.gz",
+      "report": "004.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000005.omex#BIOMD0000000005_url.xml",
+      "source": "005.xml.gz",
+      "report": "005.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000006.omex#BIOMD0000000006_url.xml",
+      "source": "006.xml.gz",
+      "report": "006.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000007.omex#BIOMD0000000007_url.xml",
+      "source": "007.xml.gz",
+      "report": "007.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000008.omex#BIOMD0000000008_url.xml",
+      "source": "008.xml.gz",
+      "report": "008.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000009.omex#BIOMD0000000009_url.xml",
+      "source": "009.xml.gz",
+      "report": "009.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000010.omex#BIOMD0000000010_url.xml",
+      "source": "010.xml.gz",
+      "report": "010.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000011.omex#BIOMD0000000011_url.xml",
+      "source": "011.xml.gz",
+      "report": "011.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000012.omex#BIOMD0000000012_url.xml",
+      "source": "012.xml.gz",
+      "report": "012.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000013.omex#BIOMD0000000013_url.xml",
+      "source": "013.xml.gz",
+      "report": "013.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000014.omex#BIOMD0000000014_url.xml",
+      "source": "014.xml.gz",
+      "report": "014.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000015.omex#BIOMD0000000015_url.xml",
+      "source": "015.xml.gz",
+      "report": "015.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000016.omex#BIOMD0000000016_url.xml",
+      "source": "016.xml.gz",
+      "report": "016.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000017.omex#BIOMD0000000017_url.xml",
+      "source": "017.xml.gz",
+      "report": "017.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000018.omex#BIOMD0000000018_url.xml",
+      "source": "018.xml.gz",
+      "report": "018.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000019.omex#BIOMD0000000019_url.xml",
+      "source": "019.xml.gz",
+      "report": "019.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000020.omex#BIOMD0000000020_url.xml",
+      "source": "020.xml.gz",
+      "report": "020.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000021.omex#BIOMD0000000021_url.xml",
+      "source": "021.xml.gz",
+      "report": "021.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000022.omex#BIOMD0000000022_url.xml",
+      "source": "022.xml.gz",
+      "report": "022.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000023.omex#BIOMD0000000023_url.xml",
+      "source": "023.xml.gz",
+      "report": "023.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000024.omex#BIOMD0000000024_url.xml",
+      "source": "024.xml.gz",
+      "report": "024.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000025.omex#BIOMD0000000025_url.xml",
+      "source": "025.xml.gz",
+      "report": "025.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000026.omex#BIOMD0000000026_url.xml",
+      "source": "026.xml.gz",
+      "report": "026.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000027.omex#BIOMD0000000027_url.xml",
+      "source": "027.xml.gz",
+      "report": "027.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000028.omex#BIOMD0000000028_url.xml",
+      "source": "028.xml.gz",
+      "report": "028.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000029.omex#BIOMD0000000029_url.xml",
+      "source": "029.xml.gz",
+      "report": "029.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000030.omex#BIOMD0000000030_url.xml",
+      "source": "030.xml.gz",
+      "report": "030.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000031.omex#BIOMD0000000031_url.xml",
+      "source": "031.xml.gz",
+      "report": "031.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000032.omex#BIOMD0000000032_url.xml",
+      "source": "032.xml.gz",
+      "report": "032.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000033.omex#BIOMD0000000033_url.xml",
+      "source": "033.xml.gz",
+      "report": "033.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000034.omex#BIOMD0000000034_url.xml",
+      "source": "034.xml.gz",
+      "report": "034.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000035.omex#BIOMD0000000035_url.xml",
+      "source": "035.xml.gz",
+      "report": "035.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000036.omex#BIOMD0000000036_url.xml",
+      "source": "036.xml.gz",
+      "report": "036.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000037.omex#BIOMD0000000037_url.xml",
+      "source": "037.xml.gz",
+      "report": "037.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000038.omex#BIOMD0000000038_url.xml",
+      "source": "038.xml.gz",
+      "report": "038.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000039.omex#BIOMD0000000039_url.xml",
+      "source": "039.xml.gz",
+      "report": "039.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000040.omex#BIOMD0000000040_url.xml",
+      "source": "040.xml.gz",
+      "report": "040.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000041.omex#BIOMD0000000041_url.xml",
+      "source": "041.xml.gz",
+      "report": "041.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000042.omex#BIOMD0000000042_url.xml",
+      "source": "042.xml.gz",
+      "report": "042.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000043.omex#BIOMD0000000043_url.xml",
+      "source": "043.xml.gz",
+      "report": "043.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000044.omex#BIOMD0000000044_url.xml",
+      "source": "044.xml.gz",
+      "report": "044.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000045.omex#BIOMD0000000045_url.xml",
+      "source": "045.xml.gz",
+      "report": "045.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000046.omex#BIOMD0000000046_url.xml",
+      "source": "046.xml.gz",
+      "report": "046.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000047.omex#BIOMD0000000047_url.xml",
+      "source": "047.xml.gz",
+      "report": "047.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000048.omex#BIOMD0000000048_url.xml",
+      "source": "048.xml.gz",
+      "report": "048.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000049.omex#BIOMD0000000049_url.xml",
+      "source": "049.xml.gz",
+      "report": "049.json.gz"
+    },
+    {
+      "origin": "models/comp/cyp2d6.xml",
+      "source": "050.xml.gz",
+      "report": "050.json.gz"
+    },
+    {
+      "origin": "models/comp/dex_body.xml",
+      "source": "051.xml.gz",
+      "report": "051.json.gz"
+    },
+    {
+      "origin": "models/comp/dex_body_flat.xml",
+      "source": "052.xml.gz",
+      "report": "052.json.gz"
+    },
+    {
+      "origin": "models/comp/dex_intestine.xml",
+      "source": "053.xml.gz",
+      "report": "053.json.gz"
+    },
+    {
+      "origin": "models/comp/dex_kidney.xml",
+      "source": "054.xml.gz",
+      "report": "054.json.gz"
+    },
+    {
+      "origin": "models/comp/dex_liver.xml",
+      "source": "055.xml.gz",
+      "report": "055.json.gz"
+    },
+    {
+      "origin": "models/comp/icg_body.xml",
+      "source": "056.xml.gz",
+      "report": "056.json.gz"
+    },
+    {
+      "origin": "models/comp/icg_body_flat.xml",
+      "source": "057.xml.gz",
+      "report": "057.json.gz"
+    },
+    {
+      "origin": "models/comp/icg_liver.xml",
+      "source": "058.xml.gz",
+      "report": "058.json.gz"
+    },
+    {
+      "origin": "models/comp/spt_body.xml",
+      "source": "059.xml.gz",
+      "report": "059.json.gz"
+    },
+    {
+      "origin": "models/comp/spt_body_flat.xml",
+      "source": "060.xml.gz",
+      "report": "060.json.gz"
+    },
+    {
+      "origin": "models/comp/spt_intestine.xml",
+      "source": "061.xml.gz",
+      "report": "061.json.gz"
+    },
+    {
+      "origin": "models/comp/spt_kidney.xml",
+      "source": "062.xml.gz",
+      "report": "062.json.gz"
+    },
+    {
+      "origin": "models/comp/spt_liver.xml",
+      "source": "063.xml.gz",
+      "report": "063.json.gz"
+    },
+    {
+      "origin": "models/fbc/Recon3D.xml.gz",
+      "source": "064.xml.gz",
+      "report": "064.json.gz"
+    },
+    {
+      "origin": "models/fbc/e_coli_core.xml.gz",
+      "source": "065.xml.gz",
+      "report": "065.json.gz"
+    },
+    {
+      "origin": "models/glucose/Hepatic_glucose_3.xml",
+      "source": "066.xml.gz",
+      "report": "066.json.gz"
+    },
+    {
+      "origin": "models/qual/Faure2006.sbml",
+      "source": "067.xml.gz",
+      "report": "067.json.gz"
+    },
+    {
+      "origin": "models/qual/ThieffryThomas1995_multivalue.sbml",
+      "source": "068.xml.gz",
+      "report": "068.json.gz"
+    },
+    {
+      "origin": "models/repressilator/BIOMD0000000012_urn.xml",
+      "source": "069.xml.gz",
+      "report": "069.json.gz"
+    }
+  ]
+}

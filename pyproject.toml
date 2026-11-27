@@ -1,0 +1,17 @@
+[build-system]
+requires = ["maturin>=1.16,<2"]
+build-backend = "maturin"
+
+[project]
+name = "sbml4humans-core"
+dynamic = ["version"]
+description = "Native Rust parser and report builder for SBML4Humans"
+requires-python = ">=3.12"
+license = "MIT"
+readme = "README.md"
+
+[tool.maturin]
+manifest-path = "crates/python/Cargo.toml"
+python-source = "python"
+module-name = "sbml4humans_core._core"
+features = ["extension-module"]

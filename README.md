@@ -1,74 +1,112 @@
 # sbml4humans-core
 
-A Rust workspace which reads SBML documents and builds the report of [sbml4humans](https://sbml4humans.de). It is step 1 of porting the report from the python implementation: an owned document model, a temporary filler which fills it through libsbml, the serde types of the report, the builder, and an oracle which gates the result against the report the python implementation produces.
+A pure Rust SBML reader and report builder for [SBML4Humans](https://sbml4humans.de), with a native Python extension and import-free WebAssembly. The CLI, Python extension and browser worker use the same byte-to-report pipeline. Production builds do not link libSBML or run Python. [Native benchmarks](benchmarks/README.md) measure 6.2x faster complete report construction for E. coli core and 11.7x for Recon3D.
 
-The core graph now includes document and model nodes, reaction participants, kinetic laws and local parameters, event children and assignments, unit references and free math references. It uses the report's keys, preserves node and edge order, and keeps global, unit and local parameter namespaces separate. Lambda bindings and numeric units are read from the owned AST without recursion or reparsing formula strings. The oracle corpus compares these graphs against Python, including unresolved references, function calls, local shadowing and Level 2 unit overrides.
+The report includes core objects, controlled RDF annotations and model history, unit rendering and inference, comp/fbc/qual/distrib objects, the complete reference graph, mathematical expressions and linked differential equations. The reader supports SBML Levels 1 through 3, Content MathML and Level 1 formulas, common XML encodings, namespace aliases, and plain or gzipped SBML. Each report preserves the application's `report/1` JSON contract.
 
-The application continues to use Python until full report parity is verified for [sbml4humans issue #126](https://github.com/matthiaskoenig/sbml4humans/issues/126). Unit rendering and inference, package objects and references, and differential equations remain incomplete here; the pure Rust XML reader and native and browser bindings are also pending. A core-only report must not replace the application's complete report.
+This implements the parsing core for [SBML4Humans #126](https://github.com/matthiaskoenig/sbml4humans/issues/126). The application keeps its Python default. These bindings accept one standalone SBML document; COMBINE archive handling, supplied external-document resolution, API envelopes, validation and ODE downloads still belong to the application integration. Internal comp model definitions are expanded for equations. Unavailable external models remain unresolved and produce the report's existing resolution information and equation error.
 
-Controlled RDF annotations and model history now flow through the owned document model and the common report builder. The seven-document oracle corpus checks model and biological qualifiers, nested terms, resource order, creator fields and dates, as well as Python's synthetic SBO relation and deduplication rules. No annotation field is excluded from report parity.
+## Run the CLI
+
+Install the Rust toolchain named in `rust-toolchain.toml`, then:
+
+```bash
+cargo run --release --locked -p sbml4humans-cli -- report testdata/comp_internal.xml
+cargo run --release --locked -p sbml4humans-cli -- report --pretty model.xml.gz
+```
+
+The command writes JSON to stdout. Invalid input produces a message on stderr and exit code 1. An equation analysis failure remains in `odeError`, alongside the rest of the successful report.
+
+## Native Python
+
+Build and install a wheel with Python 3.12 or newer and Maturin:
+
+```bash
+uv tool run maturin build --release --locked --out dist
+uv venv .venv
+uv pip install --python .venv/bin/python dist/*.whl
+```
+
+```python
+import json
+from pathlib import Path
+from sbml4humans_core import report_json
+
+report = json.loads(report_json(Path("model.xml").read_bytes()))
+```
+
+`report_json(bytes) -> bytes` releases the GIL for parsing, analysis and serialization. Calls own their document data and can run concurrently. The ABI3 wheel supports Python 3.12 and later. Invalid XML or gzip raises `ValueError`.
+
+## Browser and Node
+
+```bash
+rustup target add wasm32-unknown-unknown
+cd js
+npm ci
+npm run build
+npm test
+```
+
+The build writes `js/runtime/sbml4humans-core.wasm` and verifies that it has no host imports. The module needs neither Emscripten nor a JavaScript SBML parser. Type declarations and the application's generated report schema ship alongside the loader.
+
+```javascript
+import { createReader } from "./js/index.mjs";
+
+const reader = await createReader();
+try {
+  const report = await reader.report(await file.arrayBuffer());
+  console.log(report.models, report.odeSystem);
+} finally {
+  reader.dispose();
+}
+```
+
+`createReader` initializes a dedicated module worker, in browsers and Node. Inputs are copied by default. Pass `{ transfer: true }` to transfer ownership of a complete `ArrayBuffer`. Pass `{ signal }` to cancel: an active request terminates its worker, and queued requests continue in a fresh instance. `dispose()` terminates the worker and rejects outstanding requests. Errors carry `kind` (`malformed`, `refused` or `internal`). `./js/wasm.mjs` exposes a synchronous instance API for hosts that already own a worker.
+
+To run the browser example, serve the repository root after building WASM:
+
+```bash
+python3 -m http.server 8080
+```
+
+Open <http://localhost:8080/js/example/>. Load the bundled comp example or choose a local SBML file. Reports stay in the browser and can be downloaded as JSON.
+
+## Verification
+
+The complete report is compared field by field against committed Python snapshots for 54 standalone fixtures and 70 corpus models, including Recon3D, with no excluded fields. Both pure Rust and the temporary native oracle are checked. Additional gates cover 6,300 unit factors, 312 inference contexts, 1,834 mathematical expressions, equation formatting, package references, encodings and deep inputs. Node tests exercise the built WASM artifact against every standalone fixture, plain and gzipped. Chromium tests check full report parity, worker responsiveness, cancellation, recovery and the example page.
+
+The temporary `libsbml` crate is oracle scaffolding. Only native oracle and report tests require its prefix; production builds do not. Build the test prefix or point at an existing libSBML 5.21.2 installation:
+
+```bash
+bash scripts/build-libsbml.sh
+export LIBSBML_DIR="$PWD/third_party/prefix"
+cargo fmt --check
+cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace --release --locked
+python -m unittest discover -s python/tests -q
+cd js
+npm test
+npx playwright install chromium
+npm run test:browser
+```
+
+The native binding test must run with the built wheel installed. Regenerating snapshots requires the existing SBML4Humans backend environment; generators in `scripts/` record the source commit and library versions. `scripts/oracle_fixtures.py` regenerates the standalone manifest from all XML paths passed to it; `scripts/corpus_fixtures.py` snapshots the bundled application model corpus. `scripts/sync_contract.py /path/to/sbml4humans --check` verifies that generated frontend types and schema remain synchronized. `scripts/benchmark.py` compares complete native and Python report construction, including JSON serialization, and checks equality outside the timed region.
+
+The default host API accepts at most 100 MiB of XML, including decompressed input. XML entity expansion is disabled. Math, package nesting and comp expansion have explicit limits. The reader and equation resolver perform no filesystem or network access. Schema validation is a separate application concern.
 
 ## Crates
 
-The crates live in `crates/`, each named `sbml4humans-<name>`.
-
 | Crate | Role |
 | --- | --- |
-| `abi` | The wire contract constant of the report. Part of the port. |
-| `model` | The owned document model. Part of the port. |
-| `report` | The serde types of the report and the builder which makes a report of a document. Part of the port. |
-| `libsbml` | TEMPORARY scaffolding. A C++ shim over libsbml which fills the document model. It is deleted once our own reader in pure Rust agrees with it. |
-| `cli` | The binary `sbml4humans-core`, which writes the report of a file as JSON. |
-| `oracles` | The gate. It compares the report built here with the report of the python implementation. A member of the workspace but not a default member. |
+| `model` | Owned SBML data and mathematical AST |
+| `reader` | Pure Rust XML, metadata, package and math reader |
+| `report` | Report objects, units, graphs and equation analysis |
+| `core` | Shared plain/gzip byte-to-report pipeline |
+| `python` | PyO3 native Python extension |
+| `wasm` | Import-free buffer ABI for WebAssembly |
+| `cli` | JSON report command |
+| `abi` | Wire contract identifier |
+| `libsbml` | Temporary C++ oracle adapter, not a production dependency |
+| `oracles` | Independent full report and focused parity gates |
 
-## Building libsbml for the filler
-
-`crates/libsbml` links libsbml, so the workspace does not build without a libsbml prefix (a directory with `include/` and `lib/`). `crates/libsbml/build.rs` reads the prefix from the environment variable `LIBSBML_DIR`, or else from `third_party/prefix`. Without one of them every command which builds `libsbml` fails at build time: the workspace wide commands, and `-p` of any crate which depends on it (`libsbml`, `cli`, `oracles`, and `report`, whose tests read a document of SBML and which therefore carries `sbml4humans-libsbml` as a dev-dependency). That dev-dependency is the one note for the slice which builds for wasm: `report` itself links nothing, but `cargo test -p sbml4humans-report` does not run without the native build of libsbml, so a wasm target has to be given a test which does not go through the filler. `abi` and `model` do not link libsbml, so `cargo test -p sbml4humans-abi` builds without a prefix. Point `LIBSBML_DIR` at an existing prefix:
-
-```bash
-export LIBSBML_DIR=/path/to/prefix
-```
-
-`scripts/build-libsbml.sh` builds a static libsbml 5.21.2 into `third_party/prefix`, with exactly the packages python-libsbml 5.21.2 registers, because the report lists the packages the library knows and the oracle gate compares that list. It was written for continuous integration and other machines and has never been run: this slice used an existing prefix instead, so treat the script as unverified.
-
-libsbml is licensed under the LGPL 2.1, so a binary which links `crates/libsbml` carries the conditions of the LGPL 2.1 next to the MIT license of this workspace. Nothing of this workspace is distributed yet, and the constraint goes with the crate once the reader in pure Rust replaces it.
-
-## Usage
-
-```bash
-cargo run -p sbml4humans-cli -- report model.xml
-cargo run -p sbml4humans-cli -- report --pretty model.xml
-```
-
-`report <path>` writes the JSON of the report to stdout. A file which cannot be read or is no SBML document produces a message on stderr and exit code 1, and for `report` the exit code is 0 only when a report was written. `--help` prints the usage.
-
-## Running the gate
-
-The oracle crate is a member but not a default member, so a plain `cargo test` does not run it and `cargo test --workspace` does.
-
-```bash
-cargo test                # the default members: abi, cli, libsbml, model, report
-cargo test --workspace    # everything, including the gate of the oracles crate
-```
-
-Running the gate needs no python at all, because the fixtures of the python report are committed in `testdata/oracles/`. Regenerating them needs a checkout of sbml4humans and `uv`, and the prefix, whose version and package set the manifest records next to the python ones. The fixture of every document named in one run is written by it, together with the manifest, so all of them are named in one run:
-
-```bash
-LIBSBML_DIR=/path/to/prefix uv run --frozen --project /path/to/sbml4humans/backend python scripts/oracle_fixtures.py testdata/minimal_model.xml testdata/level2_model.xml testdata/core_elements.xml testdata/level2_reactions.xml testdata/core_graph_references.xml testdata/level2_graph_units.xml testdata/sbase_annotations.xml
-```
-
-`testdata/oracles/maths.json`, the fixture of the math gate, is written by a second generator, which harvests the maths of the model corpus of the python package rather than of a document of `testdata/`:
-
-```bash
-LIBSBML_DIR=/path/to/prefix uv run --frozen --project /path/to/sbml4humans/backend python -I scripts/math_fixtures.py
-```
-
-The one command which runs everything is the workspace test command. Clippy and the format check are the other two gates, run as below:
-
-```bash
-LIBSBML_DIR=/path/to/prefix cargo test --workspace --all-features
-LIBSBML_DIR=/path/to/prefix cargo clippy --workspace --all-features --all-targets -- -D warnings
-cargo fmt --check
-```
-
-Licensed under the MIT license, see `LICENSE`.
+MIT licensed. The temporary native oracle links LGPL-2.1 libSBML; the production parser and bindings do not.

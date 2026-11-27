@@ -9,15 +9,9 @@
 /// to two digits, and a trailing `.0` where the fixed form leaves no fractional digit. The upper bound is 16
 /// and not the 17 of python 3.0 and before, so `1e16` is already written as an exponent.
 ///
-/// Rust's `{}` writes the same shortest digits but never the exponent form, so a stoichiometry of `1e-05`
-/// would come out as `0.00001` and the equation would differ from the one of python. The digits here are
-/// therefore the ones Rust writes, from `{:e}`, and only the form is chosen, so that the two
-/// implementations cannot disagree about which representation is the shortest one. The one double they write
-/// differently is the one which lies exactly between two shortest representations, as `1333333333333333.25`
-/// lies between `1333333333333333.2` and `.3`: Rust rounds that half away from zero and the dtoa of CPython
-/// rounds it to even. It takes a step of the double wide enough to leave both of them round tripping, so of
-/// a magnitude of about 1e15 and seventeen significant digits, which no stoichiometry of a model carries,
-/// and writing the digits here instead would cost an arbitrary precision decimal of every double.
+/// The shared JSON float formatter supplies shortest digits with round-to-even
+/// tie breaking. Only presentation is changed here: Python's fixed/exponent
+/// threshold, signed two-digit exponent, and trailing `.0` for whole floats.
 pub(crate) fn python_float(value: f64) -> String {
     if value.is_nan() {
         return "nan".to_owned();
@@ -30,9 +24,31 @@ pub(crate) fn python_float(value: f64) -> String {
     }
     // `{:e}` of a finite double always writes `<mantissa>e<exponent>`; the two fallbacks take anything
     // else as an exponent of zero rather than panicking on it.
-    let shortest = format!("{value:e}");
-    let (mantissa, exponent) = shortest.split_once('e').unwrap_or((shortest.as_str(), "0"));
-    let exponent: i32 = exponent.parse().unwrap_or(0);
+    let json = serde_json::to_string(&value).unwrap_or_else(|_| value.to_string());
+    let (decimal, explicit_exponent) = json.split_once('e').unwrap_or((&json, "0"));
+    let explicit_exponent = explicit_exponent.parse::<i32>().unwrap_or(0);
+    let negative = decimal.starts_with('-');
+    let decimal = decimal.trim_start_matches('-');
+    let integer_digits = decimal.find('.').unwrap_or(decimal.len());
+    let digits = decimal.replace('.', "");
+    let leading = digits.bytes().take_while(|b| *b == b'0').count();
+    let significant = digits[leading..].trim_end_matches('0');
+    let significant = if significant.is_empty() {
+        "0"
+    } else {
+        significant
+    };
+    let exponent = if significant == "0" {
+        0
+    } else {
+        integer_digits as i32 - leading as i32 - 1 + explicit_exponent
+    };
+    let sign = if negative { "-" } else { "" };
+    let mantissa = if significant.len() == 1 {
+        format!("{sign}{significant}")
+    } else {
+        format!("{sign}{}.{}", &significant[..1], &significant[1..])
+    };
     // The place of the decimal point within the digits, the `decpt` of CPython. `{:e}` has normalized the
     // mantissa to one digit before the point, so the exponent form is that mantissa with a written exponent.
     let point = exponent + 1;
@@ -41,7 +57,7 @@ pub(crate) fn python_float(value: f64) -> String {
     }
     let (sign, magnitude) = match mantissa.strip_prefix('-') {
         Some(magnitude) => ("-", magnitude),
-        None => ("", mantissa),
+        None => ("", mantissa.as_str()),
     };
     let digits: String = magnitude.chars().filter(char::is_ascii_digit).collect();
     if point <= 0 {
@@ -92,14 +108,8 @@ mod tests {
         assert_eq!(python_float(f64::NAN), "nan");
     }
 
-    // This pins a divergence from python and not the behaviour python has: it is the test to flip
-    // when the two are made to agree.
     #[test]
-    fn a_double_between_two_shortest_representations_diverges_from_python() {
-        // The double of this literal is exactly 1333333333333333.25, which `1333333333333333.2` and
-        // `1333333333333333.3` both round trip to. Python 3.14 writes the half to even and answers the
-        // first; the digits here are Rust's, which rounds the half away from zero, and the doc comment
-        // says why they stay Rust's.
-        assert_eq!(python_float(1333333333333333.3), "1333333333333333.3");
+    fn a_double_between_two_shortest_representations_rounds_to_even() {
+        assert_eq!(python_float(1333333333333333.3), "1333333333333333.2");
     }
 }

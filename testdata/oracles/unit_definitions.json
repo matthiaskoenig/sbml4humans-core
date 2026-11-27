@@ -1,0 +1,1533 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "unit_definitions/Model:unit_definitions",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "unit_definitions/Model:unit_definitions",
+        "target": "unit_definitions/UnitDefinition:m2",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "unit_definitions/Model:unit_definitions": {
+        "id": "unit_definitions",
+        "model": null,
+        "name": "model with UnitDefinitions",
+        "pk": "unit_definitions/Model:unit_definitions",
+        "sbmlType": "Model"
+      },
+      "unit_definitions/UnitDefinition:cm": {
+        "id": "cm",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "cm",
+        "pk": "unit_definitions/UnitDefinition:cm",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:g_per_mole": {
+        "id": "g_per_mole",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "g/mole",
+        "pk": "unit_definitions/UnitDefinition:g_per_mole",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:hr": {
+        "id": "hr",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "hr",
+        "pk": "unit_definitions/UnitDefinition:hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:kg": {
+        "id": "kg",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "kg",
+        "pk": "unit_definitions/UnitDefinition:kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:l_per_hr": {
+        "id": "l_per_hr",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "l/hr",
+        "pk": "unit_definitions/UnitDefinition:l_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:l_per_kg": {
+        "id": "l_per_kg",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "l/kg",
+        "pk": "unit_definitions/UnitDefinition:l_per_kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:l_per_min": {
+        "id": "l_per_min",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "l/min",
+        "pk": "unit_definitions/UnitDefinition:l_per_min",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:l_per_ml": {
+        "id": "l_per_ml",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "l/ml",
+        "pk": "unit_definitions/UnitDefinition:l_per_ml",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "meter^2",
+        "pk": "unit_definitions/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:m2_per_kg": {
+        "id": "m2_per_kg",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "meter^2/kg",
+        "pk": "unit_definitions/UnitDefinition:m2_per_kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mM": {
+        "id": "mM",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mmole/liter",
+        "pk": "unit_definitions/UnitDefinition:mM",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mg": {
+        "id": "mg",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mg",
+        "pk": "unit_definitions/UnitDefinition:mg",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mg_per_day": {
+        "id": "mg_per_day",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mg/day",
+        "pk": "unit_definitions/UnitDefinition:mg_per_day",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mg_per_g": {
+        "id": "mg_per_g",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mg/g",
+        "pk": "unit_definitions/UnitDefinition:mg_per_g",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mg_per_hr": {
+        "id": "mg_per_hr",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mg/hr",
+        "pk": "unit_definitions/UnitDefinition:mg_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mg_per_l": {
+        "id": "mg_per_l",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mg/l",
+        "pk": "unit_definitions/UnitDefinition:mg_per_l",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mg_per_min": {
+        "id": "mg_per_min",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mg/min",
+        "pk": "unit_definitions/UnitDefinition:mg_per_min",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:min": {
+        "id": "min",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "min",
+        "pk": "unit_definitions/UnitDefinition:min",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:min_per_day": {
+        "id": "min_per_day",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "min/day",
+        "pk": "unit_definitions/UnitDefinition:min_per_day",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:min_per_hr": {
+        "id": "min_per_hr",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "min/hr",
+        "pk": "unit_definitions/UnitDefinition:min_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:ml": {
+        "id": "ml",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "ml",
+        "pk": "unit_definitions/UnitDefinition:ml",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:ml_per_l": {
+        "id": "ml_per_l",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "ml/l",
+        "pk": "unit_definitions/UnitDefinition:ml_per_l",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:ml_per_s": {
+        "id": "ml_per_s",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "ml/s",
+        "pk": "unit_definitions/UnitDefinition:ml_per_s",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:ml_per_s_kg": {
+        "id": "ml_per_s_kg",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "ml/s/kg",
+        "pk": "unit_definitions/UnitDefinition:ml_per_s_kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mmole": {
+        "id": "mmole",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mmole",
+        "pk": "unit_definitions/UnitDefinition:mmole",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mmole_per_hr": {
+        "id": "mmole_per_hr",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mmole/hr",
+        "pk": "unit_definitions/UnitDefinition:mmole_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mmole_per_hr_ml": {
+        "id": "mmole_per_hr_ml",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mmole/hr/ml",
+        "pk": "unit_definitions/UnitDefinition:mmole_per_hr_ml",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mmole_per_min": {
+        "id": "mmole_per_min",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mmole/min",
+        "pk": "unit_definitions/UnitDefinition:mmole_per_min",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mmole_per_min_kg": {
+        "id": "mmole_per_min_kg",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mmole/min/kg",
+        "pk": "unit_definitions/UnitDefinition:mmole_per_min_kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mmole_per_min_l": {
+        "id": "mmole_per_min_l",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "mmole/min/l",
+        "pk": "unit_definitions/UnitDefinition:mmole_per_min_l",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mul_per_g": {
+        "id": "mul_per_g",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "microliter/g",
+        "pk": "unit_definitions/UnitDefinition:mul_per_g",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:mul_per_min_mg": {
+        "id": "mul_per_min_mg",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "microliter/min/mg",
+        "pk": "unit_definitions/UnitDefinition:mul_per_min_mg",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:per_hr": {
+        "id": "per_hr",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "1/hr",
+        "pk": "unit_definitions/UnitDefinition:per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:per_kg": {
+        "id": "per_kg",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "1/kg",
+        "pk": "unit_definitions/UnitDefinition:per_kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:per_min": {
+        "id": "per_min",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "1/min",
+        "pk": "unit_definitions/UnitDefinition:per_min",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:s": {
+        "id": "s",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "second",
+        "pk": "unit_definitions/UnitDefinition:s",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:s_per_hr": {
+        "id": "s_per_hr",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "s/hr",
+        "pk": "unit_definitions/UnitDefinition:s_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "unit_definitions/UnitDefinition:s_per_min": {
+        "id": "s_per_min",
+        "model": "unit_definitions/Model:unit_definitions",
+        "name": "s/min",
+        "pk": "unit_definitions/UnitDefinition:s_per_min",
+        "sbmlType": "UnitDefinition"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_unit_definitions\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mole",
+      "extentUnitsLatex": "mole",
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "unit_definitions",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "metre",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "cm",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "metre",
+              "multiplier": 0.01,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "cm",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:cm",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "cm",
+          "xml": "<unitDefinition id=\"cm\" name=\"cm\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"1\" scale=\"0\" multiplier=\"0.01\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "g_per_mole",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "mole",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "g/mole",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:g_per_mole",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{g}{mol}",
+          "xml": "<unitDefinition id=\"g_per_mole\" name=\"g/mole\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"mole\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "hr",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "hr",
+          "xml": "<unitDefinition id=\"hr\" name=\"hr\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "kg",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "kg",
+          "xml": "<unitDefinition id=\"kg\" name=\"kg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "l_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "l/hr",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:l_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{l}{hr}",
+          "xml": "<unitDefinition id=\"l_per_hr\" name=\"l/hr\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "l_per_kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "l/kg",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:l_per_kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{l}{kg}",
+          "xml": "<unitDefinition id=\"l_per_kg\" name=\"l/kg\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "l_per_min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "l/min",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:l_per_min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{l}{min}",
+          "xml": "<unitDefinition id=\"l_per_min\" name=\"l/min\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "l_per_ml",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "l/ml",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:l_per_ml",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{l}{ml}",
+          "xml": "<unitDefinition id=\"l_per_ml\" name=\"l/ml\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2_per_kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2/kg",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:m2_per_kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{m^2}{kg}",
+          "xml": "<unitDefinition id=\"m2_per_kg\" name=\"meter^2/kg\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mM",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/liter",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mM",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{l}",
+          "xml": "<unitDefinition id=\"mM\" name=\"mmole/liter\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "mg",
+          "xml": "<unitDefinition id=\"mg\" name=\"mg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_day",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 86400.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/day",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mg_per_day",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{day}",
+          "xml": "<unitDefinition id=\"mg_per_day\" name=\"mg/day\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"86400\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_g",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/g",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mg_per_g",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{g}",
+          "xml": "<unitDefinition id=\"mg_per_g\" name=\"mg/g\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/hr",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mg_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{hr}",
+          "xml": "<unitDefinition id=\"mg_per_hr\" name=\"mg/hr\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_l",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/l",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mg_per_l",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{l}",
+          "xml": "<unitDefinition id=\"mg_per_l\" name=\"mg/l\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/min",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mg_per_min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{min}",
+          "xml": "<unitDefinition id=\"mg_per_min\" name=\"mg/min\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "min",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "min",
+          "xml": "<unitDefinition id=\"min\" name=\"min\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "min_per_day",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 86400.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "min/day",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:min_per_day",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{min}{day}",
+          "xml": "<unitDefinition id=\"min_per_day\" name=\"min/day\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"60\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"86400\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "min_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "min/hr",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:min_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{min}{hr}",
+          "xml": "<unitDefinition id=\"min_per_hr\" name=\"min/hr\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"60\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "ml",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "ml",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:ml",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "ml",
+          "xml": "<unitDefinition id=\"ml\" name=\"ml\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "ml_per_l",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "ml/l",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:ml_per_l",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{ml}{l}",
+          "xml": "<unitDefinition id=\"ml_per_l\" name=\"ml/l\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "ml_per_s",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "ml/s",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:ml_per_s",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{ml}{s}",
+          "xml": "<unitDefinition id=\"ml_per_s\" name=\"ml/s\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "ml_per_s_kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "ml/s/kg",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:ml_per_s_kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{ml}{s \\cdot kg}",
+          "xml": "<unitDefinition id=\"ml_per_s_kg\" name=\"ml/s/kg\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mmole",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "mmol",
+          "xml": "<unitDefinition id=\"mmole\" name=\"mmole\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/hr",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mmole_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{hr}",
+          "xml": "<unitDefinition id=\"mmole_per_hr\" name=\"mmole/hr\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_hr_ml",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/hr/ml",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mmole_per_hr_ml",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{hr \\cdot ml}",
+          "xml": "<unitDefinition id=\"mmole_per_hr_ml\" name=\"mmole/hr/ml\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/min",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mmole_per_min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{min}",
+          "xml": "<unitDefinition id=\"mmole_per_min\" name=\"mmole/min\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_min_kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/min/kg",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mmole_per_min_kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{min \\cdot kg}",
+          "xml": "<unitDefinition id=\"mmole_per_min_kg\" name=\"mmole/min/kg\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mmole_per_min_l",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/min/l",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mmole_per_min_l",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{min \\cdot l}",
+          "xml": "<unitDefinition id=\"mmole_per_min_l\" name=\"mmole/min/l\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mul_per_g",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1e-06,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "microliter/g",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mul_per_g",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{μl}{g}",
+          "xml": "<unitDefinition id=\"mul_per_g\" name=\"microliter/g\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1e-06\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mul_per_min_mg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1e-06,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "microliter/min/mg",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:mul_per_min_mg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{μl}{min \\cdot mg}",
+          "xml": "<unitDefinition id=\"mul_per_min_mg\" name=\"microliter/min/mg\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1e-06\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "1/hr",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{1}{hr}",
+          "xml": "<unitDefinition id=\"per_hr\" name=\"1/hr\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "per_kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "1/kg",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:per_kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{1}{kg}",
+          "xml": "<unitDefinition id=\"per_kg\" name=\"1/kg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "per_min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "1/min",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:per_min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{1}{min}",
+          "xml": "<unitDefinition id=\"per_min\" name=\"1/min\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "s",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "second",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:s",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "s",
+          "xml": "<unitDefinition id=\"s\" name=\"second\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "s_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "s/hr",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:s_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{s}{hr}",
+          "xml": "<unitDefinition id=\"s_per_hr\" name=\"s/hr\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "s_per_min",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "s/min",
+          "notes": null,
+          "pk": "unit_definitions/UnitDefinition:s_per_min",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{s}{min}",
+          "xml": "<unitDefinition id=\"s_per_min\" name=\"s/min\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_unit_definitions",
+      "name": "model with UnitDefinitions",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Model with UnitDefinitions</h1>\n    <p>This example demonstrates how to create UnitDefinitions.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "unit_definitions/Model:unit_definitions",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mole",
+      "substanceUnitsLatex": "mole",
+      "timeUnits": "second",
+      "timeUnitsLatex": "s",
+      "uncertainties": [],
+      "volumeUnits": "litre",
+      "volumeUnitsLatex": "l",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [],
+    "reactions": [],
+    "unsupported": []
+  }
+}

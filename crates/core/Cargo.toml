@@ -1,0 +1,22 @@
+[package]
+name = "sbml4humans-core"
+description = "The shared native and browser SBML report pipeline"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish = false
+
+[dependencies]
+flate2.workspace = true
+sbml4humans-reader = { path = "../reader" }
+sbml4humans-report = { path = "../report" }
+sbml4humans-abi = { path = "../abi" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true

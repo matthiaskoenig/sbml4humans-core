@@ -1,0 +1,34 @@
+{
+  "name": "@sbml4humans/core",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./index.d.mts",
+      "import": "./index.mjs"
+    },
+    "./wasm": {
+      "types": "./wasm.d.mts",
+      "import": "./wasm.mjs"
+    }
+  },
+  "files": [
+    "index.mjs",
+    "wasm.mjs",
+    "worker.mjs",
+    "runtime/",
+    "*.d.ts",
+    "report.schema.json",
+    "*.d.mts"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:browser": "node test/browser.mjs"
+  },
+  "types": "./index.d.mts",
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}

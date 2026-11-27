@@ -1,0 +1,432 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": null,
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 2,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "event_size_rate/Model:event_size_rate",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "event_size_rate/RateRule:p",
+        "target": "event_size_rate/Parameter:p",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "event_size_rate/AssignmentRule:c",
+        "target": "event_size_rate/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "event_size_rate/AssignmentRule:c",
+        "target": "event_size_rate/Parameter:p",
+        "targetEntry": null
+      },
+      {
+        "kind": "trigger",
+        "source": "event_size_rate/Event:e",
+        "target": "event_size_rate/Trigger:e.trigger",
+        "targetEntry": null
+      },
+      {
+        "kind": "eventAssignment",
+        "source": "event_size_rate/Event:e",
+        "target": "event_size_rate/EventAssignment:e.q",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "event_size_rate/EventAssignment:e.q",
+        "target": "event_size_rate/Parameter:q",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "event_size_rate/EventAssignment:e.q",
+        "target": "event_size_rate/Compartment:c",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "event_size_rate/AssignmentRule:c": {
+        "id": null,
+        "model": "event_size_rate/Model:event_size_rate",
+        "name": null,
+        "pk": "event_size_rate/AssignmentRule:c",
+        "sbmlType": "AssignmentRule"
+      },
+      "event_size_rate/Compartment:c": {
+        "id": "c",
+        "model": "event_size_rate/Model:event_size_rate",
+        "name": null,
+        "pk": "event_size_rate/Compartment:c",
+        "sbmlType": "Compartment"
+      },
+      "event_size_rate/Event:e": {
+        "id": "e",
+        "model": "event_size_rate/Model:event_size_rate",
+        "name": null,
+        "pk": "event_size_rate/Event:e",
+        "sbmlType": "Event"
+      },
+      "event_size_rate/EventAssignment:e.q": {
+        "id": null,
+        "model": "event_size_rate/Model:event_size_rate",
+        "name": null,
+        "pk": "event_size_rate/EventAssignment:e.q",
+        "sbmlType": "EventAssignment"
+      },
+      "event_size_rate/Model:event_size_rate": {
+        "id": "event_size_rate",
+        "model": null,
+        "name": null,
+        "pk": "event_size_rate/Model:event_size_rate",
+        "sbmlType": "Model"
+      },
+      "event_size_rate/Parameter:p": {
+        "id": "p",
+        "model": "event_size_rate/Model:event_size_rate",
+        "name": null,
+        "pk": "event_size_rate/Parameter:p",
+        "sbmlType": "Parameter"
+      },
+      "event_size_rate/Parameter:q": {
+        "id": "q",
+        "model": "event_size_rate/Model:event_size_rate",
+        "name": null,
+        "pk": "event_size_rate/Parameter:q",
+        "sbmlType": "Parameter"
+      },
+      "event_size_rate/RateRule:p": {
+        "id": null,
+        "model": "event_size_rate/Model:event_size_rate",
+        "name": null,
+        "pk": "event_size_rate/RateRule:p",
+        "sbmlType": "RateRule"
+      },
+      "event_size_rate/Trigger:e.trigger": {
+        "id": null,
+        "model": "event_size_rate/Model:event_size_rate",
+        "name": null,
+        "pk": "event_size_rate/Trigger:e.trigger",
+        "sbmlType": "Trigger"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "event_size_rate",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "c",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "event_size_rate/Compartment:c",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": null,
+          "spatialDimensions": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"c\" constant=\"false\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "delay": null,
+          "history": null,
+          "id": "e",
+          "keyValuePairs": [],
+          "listOfEventAssignments": [
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "math": {
+                "formula": "rateOf(c)",
+                "latex": " \\mathrm{rateOf}\\left(\\mathit{c}\\right)"
+              },
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "event_size_rate/EventAssignment:e.q",
+              "sbmlType": "EventAssignment",
+              "sbo": null,
+              "uncertainties": [],
+              "variable": "q",
+              "xml": "<eventAssignment variable=\"q\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/rateOf\"> rateOf </csymbol>\n      <ci> c </ci>\n    </apply>\n  </math>\n</eventAssignment>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "event_size_rate/Event:e",
+          "priority": null,
+          "sbmlType": "Event",
+          "sbo": null,
+          "trigger": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "initialValue": false,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "time > 1",
+              "latex": " \\mathrm{time}>1"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "persistent": true,
+            "pk": "event_size_rate/Trigger:e.trigger",
+            "sbmlType": "Trigger",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<trigger initialValue=\"false\" persistent=\"true\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <gt/>\n      <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n      <cn type=\"integer\"> 1 </cn>\n    </apply>\n  </math>\n</trigger>"
+          },
+          "uncertainties": [],
+          "useValuesFromTriggerTime": true,
+          "xml": "<event id=\"e\" useValuesFromTriggerTime=\"true\">\n  <trigger initialValue=\"false\" persistent=\"true\">\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <gt/>\n        <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n    </math>\n  </trigger>\n  <listOfEventAssignments>\n    <eventAssignment variable=\"q\">\n      <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n        <apply>\n          <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/rateOf\"> rateOf </csymbol>\n          <ci> c </ci>\n        </apply>\n      </math>\n    </eventAssignment>\n  </listOfEventAssignments>\n</event>"
+        }
+      ],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "p",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "event_size_rate/Parameter:p",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 1.0,
+          "xml": "<parameter id=\"p\" value=\"1\" constant=\"false\"/>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "q",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "event_size_rate/Parameter:q",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.0,
+          "xml": "<parameter id=\"q\" value=\"0\" constant=\"false\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "2",
+            "latex": " 2"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "event_size_rate/RateRule:p",
+          "sbmlType": "RateRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "p",
+          "xml": "<rateRule variable=\"p\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn type=\"integer\"> 2 </cn>\n  </math>\n</rateRule>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "p * p",
+            "latex": " \\mathit{p}\\cdot \\mathit{p}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "event_size_rate/AssignmentRule:c",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "c",
+          "xml": "<assignmentRule variable=\"c\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> p </ci>\n      <ci> p </ci>\n    </apply>\n  </math>\n</assignmentRule>"
+        }
+      ],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "event_size_rate/Model:event_size_rate",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [
+      {
+        "lhs": "\\htmlData{pk=event_size_rate/Compartment:c}{\\frac{\\mathrm{d} c}{\\mathrm{d} t}}",
+        "lines": [
+          "2 \\cdot \\mathopen{}\\left(\\htmlData{pk=event_size_rate/Parameter:p}{p} + \\htmlData{pk=event_size_rate/Parameter:p}{p}\\right)"
+        ],
+        "origin": "size_rate",
+        "variable": "event_size_rate/Compartment:c"
+      },
+      {
+        "lhs": "\\htmlData{pk=event_size_rate/Compartment:c}{c}",
+        "lines": [
+          "\\htmlData{pk=event_size_rate/Parameter:p}{p} \\cdot \\htmlData{pk=event_size_rate/Parameter:p}{p}"
+        ],
+        "origin": "assignment_rule",
+        "variable": "event_size_rate/Compartment:c"
+      }
+    ],
+    "events": [
+      {
+        "assignments": [
+          {
+            "lhs": "\\htmlData{pk=event_size_rate/Parameter:q}{q}",
+            "lines": [
+              "\\htmlData{pk=event_size_rate/Compartment:c}{\\frac{\\mathrm{d} c}{\\mathrm{d} t}}"
+            ],
+            "origin": "event",
+            "variable": "event_size_rate/Parameter:q"
+          }
+        ],
+        "delay": null,
+        "event": "event_size_rate/Event:e",
+        "initialValue": false,
+        "label": "e",
+        "persistent": true,
+        "priority": null,
+        "trigger": "t > 1",
+        "useValuesFromTriggerTime": true
+      }
+    ],
+    "functions": [],
+    "initial": [],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=event_size_rate/Parameter:p}{p}}{\\mathrm{d} t}",
+        "lines": [
+          "2"
+        ],
+        "origin": "rate_rule",
+        "variable": "event_size_rate/Parameter:p"
+      }
+    ],
+    "reactions": [],
+    "unsupported": []
+  }
+}

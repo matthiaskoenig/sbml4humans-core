@@ -17,6 +17,5 @@ path = "src/main.rs"
 workspace = true
 
 [dependencies]
-sbml4humans-libsbml = { path = "../libsbml" }
-sbml4humans-report = { path = "../report" }
+sbml4humans-core = { path = "../core" }
 serde_json.workspace = true
