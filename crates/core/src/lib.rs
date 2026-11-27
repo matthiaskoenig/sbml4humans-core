@@ -8,6 +8,12 @@ mod filesystem;
 #[cfg(not(target_arch = "wasm32"))]
 pub use filesystem::prepare_path;
 pub use sbml4humans_report::normalize_location;
+#[cfg(not(target_arch = "wasm32"))]
+mod host;
+#[cfg(not(target_arch = "wasm32"))]
+pub use host::{
+    ExampleSummary, ReportTransport, encode_report, example_summary, prepare_host_path, report_path,
+};
 mod source;
 pub use source::{
     PreparedEntry, PreparedSource, SourceLimits, SourceManifest, SourceOptions, SourceResponse,
@@ -21,10 +27,23 @@ pub const MAX_INPUT_BYTES: usize = 100 * 1024 * 1024;
 #[derive(Debug, Clone, Serialize, thiserror::Error)]
 #[error("{message}")]
 pub struct ReportError {
-    /// `malformed`, `refused` or `internal`, suitable for host-side routing.
+    /// `malformed`, `refused`, `internal`, or native `memory`, for host routing.
     pub kind: &'static str,
     /// The human-readable cause without an operating-system traceback.
     pub message: String,
+}
+
+impl From<std::io::Error> for ReportError {
+    fn from(error: std::io::Error) -> Self {
+        Self {
+            kind: if error.kind() == std::io::ErrorKind::OutOfMemory {
+                "memory"
+            } else {
+                "malformed"
+            },
+            message: error.to_string(),
+        }
+    }
 }
 
 impl ReportError {

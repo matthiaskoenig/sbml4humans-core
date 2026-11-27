@@ -458,6 +458,7 @@ pub(crate) fn object_value(
             object
                 .math
                 .as_ref()
+                .filter(|_| !context.capture)
                 .and_then(|a| crate::math::math(a).ok())
                 .map(|m| json!(m))
                 .unwrap_or(Value::Null),

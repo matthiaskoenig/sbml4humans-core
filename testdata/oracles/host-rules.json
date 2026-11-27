@@ -1,0 +1,3208 @@
+[
+  {
+    "id": 10216,
+    "package": "core",
+    "severity": "error",
+    "message": "The 'id' value of a <parameter> or <localParameter> defined within a <kineticLaw> can only be used in <ci> elements within the MathML content of that same <kineticLaw>; the identifier is not visible to other parts of the model.",
+    "section": "L3V2 Sections 3.3.1, 3.4.3 and 4.11.5"
+  },
+  {
+    "id": 10301,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the 'id' field on every instance of the following type of object in a model must be unique: <model>, <functionDefinition>, <compartmentType>, <compartment>, <speciesType>, <species>, <reaction>, <speciesReference>, <modifierSpeciesReference>, <event>, and model-wide <parameter>s. Note that <unitDefinition> and parameters defined inside a reaction are treated separately.",
+    "section": "L3V2 Section 3.3"
+  },
+  {
+    "id": 10302,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the 'id' field of every <unitDefinition> must be unique across the set of all <unitDefinition>s in the entire model.",
+    "section": "L3V2 Sections 3.3 and 4.4"
+  },
+  {
+    "id": 10303,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the 'id' field of each parameter defined locally within a <kineticLaw> must be unique across the set of all such parameter definitions in that <kineticLaw>.",
+    "section": "L3V2 Sections 3.3.1 and 4.11.5"
+  },
+  {
+    "id": 10304,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the 'variable' field in all <assignmentRule> and <rateRule> definitions must be unique across the set of all such rule definitions in a model.",
+    "section": "L3V2 Section 4.9.3"
+  },
+  {
+    "id": 10305,
+    "package": "core",
+    "severity": "error",
+    "message": "In each <event>, the value of the 'variable' field within every <eventAssignment> definition must be unique across the set of all <eventAssignment>s within that <event>.",
+    "section": "L3V2 Section 4.12.5"
+  },
+  {
+    "id": 10306,
+    "package": "core",
+    "severity": "error",
+    "message": "An identifier used as the value of 'variable' in an <eventAssignment> cannot also appear as the value of 'variable' in an <assignmentRule>.",
+    "section": "L3V2 Section 4.12.5"
+  },
+  {
+    "id": 10307,
+    "package": "core",
+    "severity": "error",
+    "message": "Every 'metaid' attribute value must be unique across the set of all 'metaid' values in a model.",
+    "section": "L3V2 Sections 3.1.6 and 3.2.3"
+  },
+  {
+    "id": 10308,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of an 'sboTerm' attribute must have the data type 'SBOTerm', which is a string consisting of the characters 'S', 'B', 'O', ':' followed by exactly seven digits.",
+    "section": "L3V2 Section 3.1.12"
+  },
+  {
+    "id": 10309,
+    "package": "core",
+    "severity": "error",
+    "message": "The syntax of 'metaid' attribute values must conform to the syntax of the XML type 'ID'.",
+    "section": "L3V2 Sections 3.2.3 and 3.1.6"
+  },
+  {
+    "id": 10310,
+    "package": "core",
+    "severity": "error",
+    "message": "The syntax of 'id' attribute values must conform to the syntax of the SBML type 'SId'.",
+    "section": "L3V2 Section 3.1.7"
+  },
+  {
+    "id": 10311,
+    "package": "core",
+    "severity": "error",
+    "message": "The syntax of unit identifiers (i.e., the values of the 'id' attribute on UnitDefinition, the 'units' attribute on Compartment, the 'units' attribute on Parameter, and the 'substanceUnits' attribute on Species) must conform to the syntax of the SBML type UnitSId.",
+    "section": "L3V2 Section 3.1.9"
+  },
+  {
+    "id": 10313,
+    "package": "core",
+    "severity": "error",
+    "message": "Unit identifier references (i.e the 'units' attribute on <Compartment>, the 'units' attribute on <Parameter>, and the 'substanceUnits' attribute on <Species>) must be the identifier of a <UnitDefinition> in the <Model>, or the identifier of a predefined unit in SBML.",
+    "section": "L3V2 Section 4.4.2"
+  },
+  {
+    "id": 10401,
+    "package": "core",
+    "severity": "error",
+    "message": "Every top-level element within an annotation element must have a namespace declared.",
+    "section": "L3V2 Section 3.2.6"
+  },
+  {
+    "id": 10402,
+    "package": "core",
+    "severity": "error",
+    "message": "There cannot be more than one top-level element using a given namespace inside a given annotation element.",
+    "section": "L3V2 Section 3.2.6"
+  },
+  {
+    "id": 10403,
+    "package": "core",
+    "severity": "error",
+    "message": "Top-level elements within an annotation element cannot use any SBML namespace, whether explicitly (by declaring the namespace to be one of the URIs \"http://www.sbml.org/sbml/level1\", \"http://www.sbml.org/sbml/level2\", \"http://www.sbml.org/sbml/level2/version2\", or \"http://www.sbml.org/sbml/level2/version3\", or \"http://www.sbml.org/sbml/level2/version4\", or \"http://www.sbml.org/sbml/level2/version5\" or \"http://www.sbml.org/sbml/level3/version1/core\"), or implicitly (by failing to declare any namespace).",
+    "section": "L2V5 Section 3.2.4"
+  },
+  {
+    "id": 10404,
+    "package": "core",
+    "severity": "error",
+    "message": "A given SBML object may contain at most one <annotation> element.",
+    "section": "L3V2 Section 3.2"
+  },
+  {
+    "id": 10601,
+    "package": "core",
+    "severity": "error",
+    "message": "The system of equations created from an SBML model must not be overdetermined.",
+    "section": "L3V2 Section 4.9.5"
+  },
+  {
+    "id": 10701,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <model> is expected to be an SBO identifier (http://www.biomodels.net/SBO/). In SBML Level 2 prior to Version 4 the value is expected to be a term derived from SBO:0000004, \"modeling framework\"; in Version 4 and above it is expected to be a term derived from SBO:0000231 \"occurring entity representation\"",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10702,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <functionDefinition> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a mathematical expression (i.e., terms derived from SBO:0000064, \"mathematical expression\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10703,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <parameter> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a quantitative parameter defined in SBO (i.e., terms derived from SBO:0000002, \"quantitative systems description parameter\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10704,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on an <initialAssignment> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a mathematical expression (i.e., terms derived from SBO:0000064, \"mathematical expression\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10705,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a rule is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a mathematical expression (i.e., terms derived from SBO:0000064, \"mathematical expression\"). Note: This applies to Algebraic Rules in addition to Rate and Assignment Rules.",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10706,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <constraint> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a mathematical expression (i.e., terms derived from SBO:0000064, \"mathematical expression\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10707,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <reaction> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to an occurring entity representation defined in SBO (i.e., terms derived from SBO:0000231, \"occurring entity representation\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10708,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <speciesReference> or <modifierSpeciesReference> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a participant role. The appropriate term depends on whether the object is a reactant, product or modifier. If a reactant, then it should be a term in the SBO:0000010, \"reactant\" hierarchy; if a product, then it should be a term in the SBO:0000011, \"product\" hierarchy; and if a modifier, then it should be a term in the SBO:0000019, \"modifier\" hierarchy.",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10709,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <kineticLaw> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring rate law defined in SBO (i.e., terms derived from SBO:0000001, \"rate law\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10710,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on an <event> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to an occurring entity representation defined in SBO (i.e., terms derived from SBO:0000231, \"occurring entity representation\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10711,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on an <eventAssignment> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a mathematical expression (i.e., terms derived from SBO:0000064, \"mathematical expression\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10712,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <compartment> is expected to be an SBO identifier (http://www.biomodels.net/SBO/). In SBML Level 2 prior to Version 4 it is expected to refer to a participant physical type (i.e., terms derived from SBO:0000236, \"participant physical type\"); in Versions 4 and above it is expected to refer to a material entity (i.e., terms derived from SBO:0000240, \"material entity\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10713,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <species> is expected to be an SBO identifier (http://www.biomodels.net/SBO/). In SBML Level 2 prior to Version 4 it is expected to refer to a participant physical type (i.e., terms derived from SBO:0000236, \"participant physical type\"); in Versions 4 and above it is expected to refer to a material entity (i.e., terms derived from SBO:0000240, \"material entity\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10716,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <trigger> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a mathematical expression (i.e., terms derived from SBO:0000064, \"mathematical expression\").",
+    "section": null
+  },
+  {
+    "id": 10717,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <delay> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a mathematical expression (i.e., terms derived from SBO:0000064, \"mathematical expression\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10718,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on a <localParameter> is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a quantitative parameter (i.e., terms derived from SBO:0000002, \"quantitive systems description parameter\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10719,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'sboTerm' attribute on the <sbml> object is expected to be an SBO identifier (http://www.biomodels.net/SBO/) referring to a modeling framework (i.e., terms derived from SBO:0000004, \"modelling framework\").",
+    "section": "L3V2 Section 5"
+  },
+  {
+    "id": 10801,
+    "package": "core",
+    "severity": "error",
+    "message": "The contents of the <notes> element must be explicitly placed in the XHTML XML namespace.",
+    "section": "L3V2 Section 3.2.5"
+  },
+  {
+    "id": 10802,
+    "package": "core",
+    "severity": "error",
+    "message": "The contents of the <notes> element must not contain an XML declaration (i.e., a string of the form \"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\" or similar).",
+    "section": "L3V2 Section 3.2.5"
+  },
+  {
+    "id": 10803,
+    "package": "core",
+    "severity": "error",
+    "message": "The contents of the <notes> element must not contain an XML DOCTYPE declaration (i.e., a string beginning with the characters \"<!DOCTYPE\".",
+    "section": "L3V2 Section 3.2.5"
+  },
+  {
+    "id": 10804,
+    "package": "core",
+    "severity": "error",
+    "message": "The XHTML content inside a <notes> element can only take one of the following general forms: (1) a complete XHTML document beginning with the element <html> and ending with </html>; (2) the \"body\" portion of a document beginning with the element <body> and ending with </body>; or (3) XHTML content that is permitted within a <body> ... </body> elements.",
+    "section": "L2V5 Section 3.2.3"
+  },
+  {
+    "id": 10805,
+    "package": "core",
+    "severity": "error",
+    "message": "A given SBML object may contain at most one <notes> element.",
+    "section": "L3V2 Section 3.2"
+  },
+  {
+    "id": 20101,
+    "package": "core",
+    "severity": "error",
+    "message": "The <sbml> container element must declare the XML Namespace for SBML, and this declaration must be consistent with the values of the 'level' and 'version' attributes on the <sbml> element.",
+    "section": "L3V2 Section 4.1"
+  },
+  {
+    "id": 20102,
+    "package": "core",
+    "severity": "error",
+    "message": "The <sbml> container element must declare the SBML Level using the attribute 'level', and this declaration must be consistent with the XML Namespace declared for the <sbml> element.",
+    "section": "L3V2 Section 4.1"
+  },
+  {
+    "id": 20103,
+    "package": "core",
+    "severity": "error",
+    "message": "The <sbml> container element must declare the SBML Version using the attribute 'version', and this declaration must be consistent with the XML Namespace declared for the <sbml> element.",
+    "section": "L3V2 Section 4.1"
+  },
+  {
+    "id": 20104,
+    "package": "core",
+    "severity": "error",
+    "message": "The <sbml> container element must declare the XML Namespace for any SBML Level 3 packages used within the SBML document. This declaration must be consistent with the values of the 'level' and 'version' attributes on the <sbml> element.",
+    "section": "L3V2 Section 4.1.3"
+  },
+  {
+    "id": 20105,
+    "package": "core",
+    "severity": "error",
+    "message": "The attribute 'level' on the <sbml> container element must have a value of type 'positiveInteger'.",
+    "section": "L3V2 Section 3.1.4"
+  },
+  {
+    "id": 20106,
+    "package": "core",
+    "severity": "error",
+    "message": "The attribute 'version' on the <sbml> container element must have a value of type 'positiveInteger'.",
+    "section": "L3V2 Section 3.1.4"
+  },
+  {
+    "id": 20108,
+    "package": "core",
+    "severity": "error",
+    "message": "The <sbml> object may only have the optional attributes 'metaid' and 'sboTerm'.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20201,
+    "package": "core",
+    "severity": "error",
+    "message": "An SBML document must contain a <model> element. The <model> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.1"
+  },
+  {
+    "id": 20202,
+    "package": "core",
+    "severity": "error",
+    "message": "The order of subelements within a <model> element must be the following (where any one may be optional, but the ordering must be maintained): <listOfFunctionDefinitions>, <listOfUnitDefinitions>, <listOfCompartmentTypes>, <listOfSpeciesTypes>, <listOfCompartments>, <listOfSpecies>, <listOfParameters>, <listOfInitialAssignments>, <listOfRules>, <listOfConstraints>, <listOfReactions> and <listOfEvents>.",
+    "section": "L2V5 Section 4.2"
+  },
+  {
+    "id": 20203,
+    "package": "core",
+    "severity": "error",
+    "message": "The <listOf___> containers in a <model> are optional, but if present, the lists cannot be empty. Specifically, if any of the following are present in a <model>, they must not be empty: <listOfFunctionDefinitions>, <listOfUnitDefinitions>, <listOfCompartmentTypes>, <listOfSpeciesTypes>, <listOfCompartments>, <listOfSpecies>, <listOfParameters>, <listOfInitialAssignments>, <listOfRules>, <listOfConstraints>, <listOfReactions> and <listOfEvents>.",
+    "section": "L3V1 Section 4.2"
+  },
+  {
+    "id": 20204,
+    "package": "core",
+    "severity": "error",
+    "message": "If a model defines any species, then the model must also define at least one compartment. This is an implication of the fact that the 'compartment' attribute on the <species> element is not optional.",
+    "section": "L3V2 Section 4.6.3"
+  },
+  {
+    "id": 20205,
+    "package": "core",
+    "severity": "error",
+    "message": "There may be at most one instance of each of the following kind of element in a <model> object: ListOfFunctionDefinitions, ListOfUnitDefinitions, ListOfCompartments, ListOfSpecies, ListOfParameters, ListOfInitialAssignments, ListOfRules, ListOfConstraints, ListOfReactions and ListOfEvents.",
+    "section": "L3V2 Section 4.2"
+  },
+  {
+    "id": 20206,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfFunctionDefinitions container object may only contain FunctionDefinition objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20207,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfUnitDefinitions container object may only contain UnitDefinition objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20208,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfCompartments container object may only contain Compartment objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20209,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfSpecies container object may only contain Species objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20210,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfParameters container object may only contain Parameter objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20211,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfInitialAssignments container object may only contain InitialAssignment objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20212,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfRules container object may only contain Rule objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20213,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfConstraints container object may only contain Constraint objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20214,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfReactions container object may only contain Reaction objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20215,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfEvents container object may only contain Event objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20216,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the attribute 'conversionFactor' on a Model object must be the identifier of an existing Parameter object defined in the Model object's ListOfParameters.",
+    "section": "L3V2 Section 4.2"
+  },
+  {
+    "id": 20217,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the attribute 'timeUnits' on a Model object should be either the units 'second', 'dimensionless', or the identifier of a UnitDefinition object based on these units.",
+    "section": "L3V2 Section 4.2.3"
+  },
+  {
+    "id": 20218,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the attribute 'volumeUnits' on a Model object should be either the units 'litre', 'dimensionless', or the identifier of a UnitDefinition object based on these units or a unit derived from 'metre'.",
+    "section": "L3V2 Section 4.2.4"
+  },
+  {
+    "id": 20219,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the attribute 'areaUnits' on a Model object should be either 'dimensionless' or the identifier of a UnitDefinition object based on 'dimensionless' or a unit derived from 'metre'.",
+    "section": "L3V2 Section 4.2.4"
+  },
+  {
+    "id": 20220,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the attribute 'lengthUnits' on a Model object should be either the units 'metre', 'dimensionless', or the identifier of a UnitDefinition object based on these units.",
+    "section": "L3V2 Section 4.2.4"
+  },
+  {
+    "id": 20221,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the attribute extentUnits on a Model object should be either the units 'mole', 'item', 'avogadro', 'dimensionless', 'kilogram', 'gram', or the identifier of a UnitDefinition object based on these units.",
+    "section": "L3V2 Section 4.2.5"
+  },
+  {
+    "id": 20222,
+    "package": "core",
+    "severity": "error",
+    "message": "A Model object may only have the following attributes, all of which are optional: 'metaid', 'sboTerm', 'id', 'name', 'substanceUnits', 'timeUnits', 'volumeUnits', 'areaUnits', 'lengthUnits', 'extentUnits' and 'conversionFactor'. No other attributes from the SBML Level 3 Core namespace are permitted on a Model object.",
+    "section": "L3V2 Section 4.2"
+  },
+  {
+    "id": 20233,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the attribute substanceUnits on a Model object should be either the units 'mole', 'item', 'avogadro', 'dimensionless', 'kilogram', 'gram', or the identifier of a UnitDefinition object based on these units.",
+    "section": "L3V2 Section 4.2.2"
+  },
+  {
+    "id": 20301,
+    "package": "core",
+    "severity": "error",
+    "message": "The top-level element within <math> in a <functionDefinition> is restricted.",
+    "section": "L3V2 Section 4.3.2"
+  },
+  {
+    "id": 20303,
+    "package": "core",
+    "severity": "error",
+    "message": "Inside the <lambda> of a <functionDefinition>, the identifier of that <functionDefinition> cannot appear as the value of a <ci> element. SBML functions are not permitted to be recursive.",
+    "section": "L3V2 Sections 3.4.3 and 4.3.2"
+  },
+  {
+    "id": 20304,
+    "package": "core",
+    "severity": "error",
+    "message": "Inside the <lambda> of a <functionDefinition>, if a <ci> element is not the first element within a MathML <apply>, then the <ci>'s value can only be the value of a <bvar> element declared in that <lambda>. In other words, all model entities referenced inside a function definition must be passed arguments to that function.",
+    "section": "L3V2 Sections 3.4.3 and 4.3.2"
+  },
+  {
+    "id": 20305,
+    "package": "core",
+    "severity": "error",
+    "message": "The value type returned by a <functionDefinition>'s <lambda> must be either Boolean or numeric.",
+    "section": "L3V2 Section 3.4.11"
+  },
+  {
+    "id": 20306,
+    "package": "core",
+    "severity": "error",
+    "message": "A FunctionDefinition object must contain exactly one MathML math element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.3"
+  },
+  {
+    "id": 20307,
+    "package": "core",
+    "severity": "error",
+    "message": "FunctionDefinition object must have the required attribute 'id', and may have the optional attributes 'metaid', 'sboTerm' and 'name'. No other attributes from the SBML Level 3 Core namespace are permitted on a FunctionDefinition object.",
+    "section": "L3V2 Section 4.3"
+  },
+  {
+    "id": 20401,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the 'id' attribute in a <unitDefinition> must be of type 'UnitSId' and not be identical to any unit predefined in SBML.",
+    "section": "L3V2 Section 4.4.2"
+  },
+  {
+    "id": 20410,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the 'kind' attribute of a <unit> can only be one of the base units enumerated by 'UnitKind'; that is, the SBML unit system is not hierarchical and user-defined units cannot be defined using other user-defined units.",
+    "section": "L3V2 Section 4.4.2"
+  },
+  {
+    "id": 20413,
+    "package": "core",
+    "severity": "error",
+    "message": "The ListOfUnits container object in a UnitDefinition object is optional, but if present, it must not be empty.",
+    "section": "L3V1 Section 4.4"
+  },
+  {
+    "id": 20414,
+    "package": "core",
+    "severity": "error",
+    "message": "There may be at most one ListOfUnits container objects in a UnitDefinition object.",
+    "section": "L3V2 Section 4.4"
+  },
+  {
+    "id": 20415,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfUnits container object may only contain Unit objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 20419,
+    "package": "core",
+    "severity": "error",
+    "message": "A UnitDefinition object must have the required attribute 'id' and may have the optional attributes 'metaid', 'sboTerm' and 'name'. No other attributes from the SBML Level 3 Core namespace are permitted on a UnitDefinition object.",
+    "section": "L3V2 Section 4.4"
+  },
+  {
+    "id": 20421,
+    "package": "core",
+    "severity": "error",
+    "message": "A Unit object must have the required attributes 'kind', 'exponent', 'scale' and 'multiplier', and may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a Unit object.",
+    "section": "L3V2 Section 4.4"
+  },
+  {
+    "id": 20501,
+    "package": "core",
+    "severity": "error",
+    "message": "The size of a <compartment> must not be set if the compartment's 'spatialDimensions' attribute has value '0'.",
+    "section": "L2V5 Section 4.7.5"
+  },
+  {
+    "id": 20502,
+    "package": "core",
+    "severity": "error",
+    "message": "If a <compartment> definition has a 'spatialDimensions' value of '0', then its 'units' attribute must not be set. If the compartment has no dimensions, then no units can be associated with a non-existent size.",
+    "section": "L2V5 Section 4.7.5"
+  },
+  {
+    "id": 20503,
+    "package": "core",
+    "severity": "error",
+    "message": "If a <compartment> definition has a 'spatialDimensions' value of '0', then its 'constant' attribute value must either default to or be set to 'true'. If the compartment has no dimensions, then its size can never change.",
+    "section": "L2V5 Section 4.7.6"
+  },
+  {
+    "id": 20511,
+    "package": "core",
+    "severity": "warning",
+    "message": "If the attribute 'units' on a Compartment object having a 'spatialDimensions' attribute value of '1' has not been set, then the unit of measurement associated with the compartment's size is determined by the value of the enclosing Model object's 'lengthUnits' attribute. If neither the Compartment object's 'units' nor the enclosing Model object's 'lengthUnits' attributes are set, the unit of compartment size is undefined.",
+    "section": "L3V2 Section 4.5.4"
+  },
+  {
+    "id": 20512,
+    "package": "core",
+    "severity": "warning",
+    "message": "If the attribute 'units' on a Compartment object having a 'spatialDimensions' attribute value of '2' has not been set, then the unit of measurement associated with the compartment's size is determined by the value of the enclosing Model object's 'areaUnits' attribute. If neither the Compartment object's 'units' nor the enclosing Model object's 'areaUnits' attributes are set, the unit of compartment size is undefined.",
+    "section": "L3V2 Section 4.5.4"
+  },
+  {
+    "id": 20513,
+    "package": "core",
+    "severity": "warning",
+    "message": "If the attribute 'units' on a Compartment object having a 'spatialDimensions' attribute value of '3' has not been set, then the unit of measurement associated with the compartment's size is determined by the value of the enclosing Model object's 'volumeUnits' attribute. If neither the Compartment object's 'units' nor the enclosing Model object's 'volumeUnits' attributes are set, the unit of compartment size is undefined.",
+    "section": "L3V2 Section 4.5.4"
+  },
+  {
+    "id": 20517,
+    "package": "core",
+    "severity": "error",
+    "message": "A Compartment object must have the required attributes 'id' and 'constant', and may have the optional attributes 'metaid', 'sboTerm', 'name', 'spatialDimensions', 'size' and 'units'. No other attributes from the SBML Level 3 Core namespace are permitted on a Compartment object.",
+    "section": "L3V2 Section 4.5"
+  },
+  {
+    "id": 20518,
+    "package": "core",
+    "severity": "warning",
+    "message": "If neither the attribute 'units' nor the attribute 'spatialDimensions' on a Compartment object is set, the unit associated with that compartment's size is undefined.",
+    "section": "L3V2 Section 4.5.4"
+  },
+  {
+    "id": 20601,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of 'compartment' in a <species> definition must be the identifier of an existing <compartment> defined in the model.",
+    "section": "L3V2 Section 4.6.3"
+  },
+  {
+    "id": 20604,
+    "package": "core",
+    "severity": "error",
+    "message": "If a <species> located in a <compartment> whose 'spatialDimensions' is set to '0', then that <species> definition cannot set 'initialConcentration'.",
+    "section": "L2V5 Section 4.8.4"
+  },
+  {
+    "id": 20609,
+    "package": "core",
+    "severity": "error",
+    "message": "A <species> cannot set values for both 'initialConcentration' and 'initialAmount' because they are mutually exclusive.",
+    "section": "L3V2 Section 4.6.4"
+  },
+  {
+    "id": 20610,
+    "package": "core",
+    "severity": "error",
+    "message": "A <species>'s quantity cannot be determined simultaneously by both reactions and rules. More formally, if the identifier of a <species> definition having 'boundaryCondition'='false' and 'constant'='false' is referenced by a <speciesReference> anywhere in a model, then this identifier cannot also appear as the value of a 'variable' in an <assignmentRule> or a <rateRule>.",
+    "section": "L3V2 Section 4.6.6"
+  },
+  {
+    "id": 20611,
+    "package": "core",
+    "severity": "error",
+    "message": "A <species> having boundaryCondition='false' cannot appear as a reactant or product in any reaction if that Species also has constant='true'.",
+    "section": "L3V2 Section 4.6.6"
+  },
+  {
+    "id": 20614,
+    "package": "core",
+    "severity": "error",
+    "message": "The 'compartment' attribute in a <species> is mandatory. A <species> definition in a model must include a value for this attribute.",
+    "section": "L3V2 Section 4.6.3"
+  },
+  {
+    "id": 20616,
+    "package": "core",
+    "severity": "warning",
+    "message": "If the attribute 'substanceUnits' in a Species object has not been set, then the unit of measurement associated with the species' quantity is determined by the value of the enclosing Model object's 'substanceUnits' attribute. If neither the Species object's 'substanceUnits' attribute nor the enclosing Model object's 'substanceUnits' attribute are set, then the unit of that species' quantity is undefined.",
+    "section": "L3V2 Section 4.6.5"
+  },
+  {
+    "id": 20617,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the attribute 'conversionFactor' on a Species object must be the identifier of an existing Parameter object defined in the enclosing Model object.",
+    "section": "L3V2 Section 4.6.7"
+  },
+  {
+    "id": 20623,
+    "package": "core",
+    "severity": "error",
+    "message": "A Species object must have the required attributes 'id', 'compartment', 'hasOnlySubstanceUnits', 'boundaryCondition' and 'constant', and may have the optional attributes 'metaid', 'sboTerm', 'name', 'initialAmount', 'initialConcentration', 'substanceUnits' and 'conversionFactor'. No other attributes from the SBML Level 3 Core namespace are permitted on a Species object.",
+    "section": "L3V2 Section 4.6"
+  },
+  {
+    "id": 20702,
+    "package": "core",
+    "severity": "warning",
+    "message": "If the attribute 'units' on a given Parameter object has not been set, then the unit of measurement associated with that parameter's value is undefined.",
+    "section": "L3V2 Section 4.7.3"
+  },
+  {
+    "id": 20705,
+    "package": "core",
+    "severity": "error",
+    "message": "A Parameter object referenced by the attribute 'conversionFactor' on a Species or Model object must have a value of 'true' for its attribute 'constant'.",
+    "section": "L3V2 Section 4.6.7"
+  },
+  {
+    "id": 20706,
+    "package": "core",
+    "severity": "error",
+    "message": "A Parameter object must have the required attributes 'id' and 'constant', and may have the optional attributes 'metaid', 'sboTerm', 'name', 'value' and 'units'. No other attributes from the SBML Level 3 Core namespace are permitted on a Parameter object.",
+    "section": "L3V2 Section 4.7"
+  },
+  {
+    "id": 20801,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of 'symbol' in an <initialAssignment> definition must be the identifier of an existing <compartment>, <species>, or <parameter> defined in the model or <speciesReference> in Level 3, or in Level 3 Version 2, any identifier in the SId namespace of the model belonging to an element defined by an SBML Level 3 package as having with mathematical meaning.",
+    "section": "L3V2 Section 4.8"
+  },
+  {
+    "id": 20802,
+    "package": "core",
+    "severity": "error",
+    "message": "A given identifier cannot appear as the value of more than one 'symbol' field across the set of <initialAssignment>s in a model.",
+    "section": "L3V2 Section 4.8"
+  },
+  {
+    "id": 20803,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of a 'symbol' field in any <initialAssignment> definition cannot also appear as the value of a 'variable' field in an <assignmentRule>.",
+    "section": "L3V2 Section 4.8"
+  },
+  {
+    "id": 20804,
+    "package": "core",
+    "severity": "error",
+    "message": "An InitialAssignment object must contain exactly one MathML <math> element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.8"
+  },
+  {
+    "id": 20805,
+    "package": "core",
+    "severity": "error",
+    "message": "An InitialAssignment object must have the required attribute 'symbol' and may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on an InitialAssignment object.",
+    "section": "L3V2 Section 4.8"
+  },
+  {
+    "id": 20806,
+    "package": "core",
+    "severity": "error",
+    "message": "The identifier given as the value of a 'symbol' attribute in any <initialAssignment> definition cannot be the identifier of a <compartment> with a 'spatialDimensions' value of 0.",
+    "section": "L2V5 Section 4.7"
+  },
+  {
+    "id": 20901,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of an <assignmentRule>'s 'variable' must be the identifier of an existing <compartment>, <species>, globally-defined <parameter>, or (in Level 3) <speciesReference>, or (in Level 3 Version 2), any identifier in the SId namespace of the model belonging to an element defined by an SBML Level 3 package as having with mathematical meaning.",
+    "section": "L3V2 Section 4.9.3"
+  },
+  {
+    "id": 20902,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of a <rateRule>'s 'variable' must be the identifier of an existing <compartment>, <species>, globally-defined <parameter>, or (in Level 3) <speciesReference>, or (in Level 3 Version 2), any identifier in the SId namespace of the model belonging to an element defined by an SBML Level 3 package as having with mathematical meaning.",
+    "section": "L3V2 Section 4.9.4"
+  },
+  {
+    "id": 20903,
+    "package": "core",
+    "severity": "error",
+    "message": "Any <compartment>, <species>, <parameter>, or (in Level 3) <speciesReference> whose identifier is the value of a 'variable' attribute in an <assignmentRule>, must have a value of 'false' for 'constant'.",
+    "section": "L3V2 Section 4.9.3"
+  },
+  {
+    "id": 20904,
+    "package": "core",
+    "severity": "error",
+    "message": "Any <compartment>, <species>, <parameter>, or (in Level 3) <speciesReference> whose identifier is the value of a 'variable' attribute in an <rateRule>, must have a value of 'false' for 'constant'.",
+    "section": "L3V2 Section 4.9.4"
+  },
+  {
+    "id": 20906,
+    "package": "core",
+    "severity": "error",
+    "message": "There must not be circular dependencies in the combined set of <initialAssignment>, <assignmentRule> and <kineticLaw> definitions in a model. Each of these constructs has the effect of assigning a value to an identifier (i.e. the identifier given in the field 'symbol' in <initialAssignment>, the field 'variable' in <assignmentRule>, and the field 'id' on the <kineticLaw>'s enclosing <reaction>). Each of these constructs computes the value using a mathematical formula. The formula for a given identifier cannot make reference to a second identifier whose own definition depends directly or indirectly on the first identifier.",
+    "section": "L3V2 Section 4.9.5"
+  },
+  {
+    "id": 20907,
+    "package": "core",
+    "severity": "error",
+    "message": "Every AssignmentRule, RateRule and AlgebraicRule object must contain exactly one MathML <math> element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.9"
+  },
+  {
+    "id": 20908,
+    "package": "core",
+    "severity": "error",
+    "message": "An AssignmentRule object must have the required attribute 'variable' and may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on an AssignmentRule object.",
+    "section": "L3V2 Section 4.9"
+  },
+  {
+    "id": 20909,
+    "package": "core",
+    "severity": "error",
+    "message": "A RateRule object must have the required attribute 'variable' and may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a RateRule object.",
+    "section": "L3V2 Section 4.9"
+  },
+  {
+    "id": 20910,
+    "package": "core",
+    "severity": "error",
+    "message": "An AlgebraicRule object may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on an AlgebraicRule object.",
+    "section": "L3V2 Section 4.9"
+  },
+  {
+    "id": 20911,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of a <rateRule> or <assignmentRule>'s 'variable' attribute must not be the identifier of a <compartment> with a 'spatialDimensions' value of 0.",
+    "section": "L2V5 Section 4.11.5"
+  },
+  {
+    "id": 20912,
+    "package": "core",
+    "severity": "error",
+    "message": "There must not be circular dependencies in the combined set of <rateRule> and <kineticLaw> objects in the model. Each of these constructs has the effect of assigning a value to the time derivative of one or more identifiers (i.e., the identifier given in the attribute 'variable' in the <rateRule>, and the identifier of any <species> referenced by a <speciesReference> in the same <reaction> as the <kineticLaw>). Each of these constructs computes the value using a mathematical formula. The formula used to calculate the time derivative of a given identifier cannot make reference to a second identifier whose own definition depends directly or indirectly on a 'rateOf' 'csymbol' for the first identifier.",
+    "section": "L3V2 Section 4.9.5"
+  },
+  {
+    "id": 21001,
+    "package": "core",
+    "severity": "error",
+    "message": "A <constraint>'s <math> expression must evaluate to a value of type Boolean.",
+    "section": "L3V1 Section 4.10"
+  },
+  {
+    "id": 21002,
+    "package": "core",
+    "severity": "error",
+    "message": "The order of subelements within <constraint> must be the following: <math>, <message>. The <message> element is optional, but if present, must follow the <math> element.",
+    "section": "L2V5 Section 4.12"
+  },
+  {
+    "id": 21003,
+    "package": "core",
+    "severity": "error",
+    "message": "The contents of the <message> element in a <constraint> must be explicitly placed in the XHTML XML namespace.",
+    "section": "L2V5 Section 4.12.2"
+  },
+  {
+    "id": 21004,
+    "package": "core",
+    "severity": "error",
+    "message": "The contents of the <message> element must not contain an XML declaration (i.e., a string of the form \"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\" or similar).",
+    "section": "L3V2 Section 4.10.2"
+  },
+  {
+    "id": 21005,
+    "package": "core",
+    "severity": "error",
+    "message": "The contents of the <message> element must not contain an XML DOCTYPE declaration (i.e., a string beginning with the characters \"<!DOCTYPE\".",
+    "section": "L3V2 Section 4.10.2"
+  },
+  {
+    "id": 21006,
+    "package": "core",
+    "severity": "error",
+    "message": "The XHTML content inside a <constraint>'s <message> element can only take one of the following general forms: (1) a complete XHTML document beginning with the element <html> and ending with </html>; (2) the \"body\" portion of a document beginning with the element <body> and ending with </body>; or (3) XHTML content that is permitted within a <body> ... </body> elements.",
+    "section": "L2V5 Section 4.12.2"
+  },
+  {
+    "id": 21007,
+    "package": "core",
+    "severity": "error",
+    "message": "A <constraint> object must contain exactly one MathML <math> element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.10"
+  },
+  {
+    "id": 21008,
+    "package": "core",
+    "severity": "error",
+    "message": "A <constraint> object may contain at most one <message> subobject.",
+    "section": "L3V2 Section 4.10"
+  },
+  {
+    "id": 21009,
+    "package": "core",
+    "severity": "error",
+    "message": "A <constraint> object may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a Constraint object.",
+    "section": "L3V2 Section 4.10"
+  },
+  {
+    "id": 21101,
+    "package": "core",
+    "severity": "error",
+    "message": "A <reaction> definition must contain at least one <speciesReference>, either in its <listOfReactants> or its <listOfProducts>. A reaction without any reactant or product species is not permitted, regardless of whether the reaction has any modifier species.",
+    "section": "L3V1 Section 4.11.3"
+  },
+  {
+    "id": 21102,
+    "package": "core",
+    "severity": "error",
+    "message": "The order of subelements within <reaction> must be the following: <listOfReactants> (optional), <listOfProducts> (optional), <listOfModifiers> (optional), <kineticLaw>.",
+    "section": "L2V5 Section 4.13"
+  },
+  {
+    "id": 21103,
+    "package": "core",
+    "severity": "error",
+    "message": "The following containers are all optional in a <reaction>, but if any is present, it must not be empty: <listOfReactants>, <listOfProducts>, <listOfModifiers>, <kineticLaw>.",
+    "section": "L3V1 Section 4.11"
+  },
+  {
+    "id": 21104,
+    "package": "core",
+    "severity": "error",
+    "message": "The list of reactants (<listOfReactants>) and list of products (<listOfProducts>) in a <reaction> can only contain <speciesReference> elements.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21105,
+    "package": "core",
+    "severity": "error",
+    "message": "The list of modifiers (<listOfModifiers>) in a <reaction> can only contain <modifierSpeciesReference> elements.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21106,
+    "package": "core",
+    "severity": "error",
+    "message": "A <reaction> object may contain at most one of each of the following elements: <listOfReactants>, <listOfProducts>, <listOfModifiers>, and <kineticLaw>.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21107,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the attribute 'compartment' in a <reaction> object is optional, but if present, must be the identifier of an existing Compartment object defined in the model.",
+    "section": "L3V2 Section 4.11.1"
+  },
+  {
+    "id": 21110,
+    "package": "core",
+    "severity": "error",
+    "message": "A <reaction> object must have the required attributes 'id' and 'reversible', and may have the optional attributes 'metaid', 'sboTerm', 'name' and 'compartment'. For SBML Level 3 Version 1 documents only, 'fast' is additionally required. No other attributes from the SBML Level 3 Core namespace are permitted on a Reaction object.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21111,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of a <speciesReference> 'species' attribute must be the identifier of an existing <species> in the model.",
+    "section": "L3V2 Section 4.11.3"
+  },
+  {
+    "id": 21116,
+    "package": "core",
+    "severity": "error",
+    "message": "A <speciesReference> object must have the required attributes 'species' and 'constant', and may have the optional attributes 'metaid', 'sboTerm', 'name' 'id' and 'stoichiometry'. No other attributes from the SBML Level 3 Core namespace are permitted on a <speciesReference> object.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21117,
+    "package": "core",
+    "severity": "error",
+    "message": "A <modifierSpeciesReference> object must have the required attribute 'species' and may have the optional attributes 'metaid', 'sboTerm', 'id' and 'name'. No other attributes from the SBML Level 3 Core namespace are permitted on a <modifierSpeciesReference> object.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21121,
+    "package": "core",
+    "severity": "error",
+    "message": "All species referenced in the <kineticLaw> formula of a given reaction must first be declared using <speciesReference> or <modifierSpeciesReference>. More formally, if a <species> identifier appears in a <ci> element of a <reaction>'s <kineticLaw> formula, that same identifier must also appear in at least one <speciesReference> or <modifierSpeciesReference> in the <reaction> definition.",
+    "section": "L3V2 Section 4.11.5"
+  },
+  {
+    "id": 21122,
+    "package": "core",
+    "severity": "error",
+    "message": "The order of subelements within <kineticLaw> must be the following: <math>, <listOfParameters>. The <listOfParameters> is optional, but if present, must follow <math>.",
+    "section": "L2V5 Section 4.13.5"
+  },
+  {
+    "id": 21123,
+    "package": "core",
+    "severity": "error",
+    "message": "If present, the <listOfParameters> in a <kineticLaw> must not be an empty list.",
+    "section": "L3V1 Section 4.11"
+  },
+  {
+    "id": 21124,
+    "package": "core",
+    "severity": "error",
+    "message": "The 'constant' attribute on a <parameter> local to a <kineticLaw> cannot have a value other than 'true'. The values of parameters local to <kineticLaw> definitions cannot be changed, and therefore they are always constant.",
+    "section": "L2V5 Section 4.9.4"
+  },
+  {
+    "id": 21127,
+    "package": "core",
+    "severity": "error",
+    "message": "A KineticLaw object may contain at most one ListOfLocalParameters container object.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21128,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfLocalParameters container object may only contain LocalParameter objects.",
+    "section": "L3V2 Section 4.2.7"
+  },
+  {
+    "id": 21130,
+    "package": "core",
+    "severity": "error",
+    "message": "A KineticLaw object must contain exactly one MathML <math> element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21132,
+    "package": "core",
+    "severity": "error",
+    "message": "A KineticLaw object may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a KineticLaw object.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21152,
+    "package": "core",
+    "severity": "warning",
+    "message": "The value of the 'fast' attribute should be 'false', as the attribute has been deprecated.",
+    "section": "L3V2 Section 4.11.1"
+  },
+  {
+    "id": 21172,
+    "package": "core",
+    "severity": "error",
+    "message": "A LocalParameter object must have the required attribute 'id' and may have the optional attributes 'metaid', 'sboTerm', 'name', 'value' and 'units'. No other attributes from the SBML Level 3 Core namespace are permitted on a LocalParameter object.",
+    "section": "L3V2 Section 4.11"
+  },
+  {
+    "id": 21173,
+    "package": "core",
+    "severity": "error",
+    "message": "The 'id' attribute of a <localParameter> object must not be the same as the 'species' attribute of any <speciesReference> in the same <reaction>.",
+    "section": "L3V2 Section 4.11.6"
+  },
+  {
+    "id": 21201,
+    "package": "core",
+    "severity": "error",
+    "message": "An <event> object must have a 'trigger'. In SBML Level 3 Version 2 this rule was relaxed to stating that an <event> object must have at most one 'trigger' element.",
+    "section": "L3V2 Section 4.12.2"
+  },
+  {
+    "id": 21202,
+    "package": "core",
+    "severity": "error",
+    "message": "An <event>'s <trigger> expression must evaluate to a value of type Boolean.",
+    "section": "L3V1 Section 4.12.2"
+  },
+  {
+    "id": 21203,
+    "package": "core",
+    "severity": "error",
+    "message": "An <event> object must have at least one <eventAssignment> object in its <listOfEventAssignments>.",
+    "section": "L3V1 Section 4.12"
+  },
+  {
+    "id": 21205,
+    "package": "core",
+    "severity": "error",
+    "message": "The order of subelements within <event> must be the following: <trigger>, <delay>, <listOfEventAssignments>. The <delay> element is optional, but if present, must follow <trigger>.",
+    "section": "L2V5 Section 4.14"
+  },
+  {
+    "id": 21206,
+    "package": "core",
+    "severity": "error",
+    "message": "If an <event>'s 'useValuesFromTriggerTime' attribute has the value 'false', then the <event> must contain a <delay> element. The implication of 'useValuesFromTriggerTime=false' is that there is a delay between the time of trigger and the time of value assignments performed by the <event>.",
+    "section": "L2V5 Section 4.14"
+  },
+  {
+    "id": 21209,
+    "package": "core",
+    "severity": "error",
+    "message": "A Trigger object must contain exactly one MathML <math> element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21210,
+    "package": "core",
+    "severity": "error",
+    "message": "A Delay object must contain exactly one MathML <math> element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21211,
+    "package": "core",
+    "severity": "error",
+    "message": "The value of the attribute 'variable' in an <eventAssignment> can only be the identifier of a <compartment>, <species>, model-wide <parameter> definition, or (in Level 3) <speciesReference>, or (in Level 3 Version 2), any identifier in the SId namespace of the model belonging to an element defined by an SBML Level 3 package as having with mathematical meaning.",
+    "section": "L3V2 Section 4.12.5"
+  },
+  {
+    "id": 21212,
+    "package": "core",
+    "severity": "error",
+    "message": "Any <compartment>, <species>, <parameter>, or (in Level 3) <speciesReference> definition whose identifier is used as the value of 'variable' in an <eventAssignment> must have a value of 'false' for its 'constant' attribute.",
+    "section": "L3V2 Section 4.12.5"
+  },
+  {
+    "id": 21213,
+    "package": "core",
+    "severity": "error",
+    "message": "An EventAssignment object must contain exactly one MathML <math> element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21214,
+    "package": "core",
+    "severity": "error",
+    "message": "An EventAssignment object must have the required attribute 'variable' and may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on an EventAssignment object.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21221,
+    "package": "core",
+    "severity": "error",
+    "message": "An Event object may contain at most one Delay object.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21222,
+    "package": "core",
+    "severity": "error",
+    "message": "An Event object may contain at most one ListOfEventAssignments object.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21223,
+    "package": "core",
+    "severity": "error",
+    "message": "Apart from the general Notes and Annotation subobjects permitted on all SBML components, a ListOfEventAssignments container object may only contain EventAssignment objects.",
+    "section": "L3V2 Section 4.12.5"
+  },
+  {
+    "id": 21225,
+    "package": "core",
+    "severity": "error",
+    "message": "An Event object must have the required attribute 'useValuesFromTriggerTime' and in addition may have the optional attributes 'metaid', 'sboTerm', 'id', and 'name'. No other attributes from the SBML Level 3 Core namespace are permitted on an Event object.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21226,
+    "package": "core",
+    "severity": "error",
+    "message": "A Trigger object must have the required attributes 'persistent' and 'initialValue', and in addition, may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a Trigger object.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21227,
+    "package": "core",
+    "severity": "error",
+    "message": "A Delay object may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a Delay object.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21228,
+    "package": "core",
+    "severity": "error",
+    "message": "The attribute 'persistent' on a Trigger object must have a value of type Boolean.",
+    "section": "L3V2 Section 3.1.2"
+  },
+  {
+    "id": 21229,
+    "package": "core",
+    "severity": "error",
+    "message": "The attribute 'initialValue' on a Trigger object must have a value of type Boolean.",
+    "section": "L3V2 Section 3.1.2"
+  },
+  {
+    "id": 21230,
+    "package": "core",
+    "severity": "error",
+    "message": "An Event object may contain at most one Priority object.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21231,
+    "package": "core",
+    "severity": "error",
+    "message": "An Priority object must contain exactly one MathML <math> element. The <math> element is optional in L3V2 and beyond.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 21232,
+    "package": "core",
+    "severity": "error",
+    "message": "A Priority object may have the optional attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a Priority object.",
+    "section": "L3V2 Section 4.12"
+  },
+  {
+    "id": 80501,
+    "package": "core",
+    "severity": "warning",
+    "message": "As a principle of best modeling practice, the size of a <compartment> should be set to a value rather than be left undefined. Doing so improves the portability of models between different simulation and analysis systems, and helps make it easier to detect potential errors in models.",
+    "section": null
+  },
+  {
+    "id": 80601,
+    "package": "core",
+    "severity": "warning",
+    "message": "As a principle of best modeling practice, the <species> should set an initial value (amount or concentration) rather than be left undefined. Doing so improves the portability of models between different simulation and analysis systems, and helps make it easier to detect potential errors in models.",
+    "section": null
+  },
+  {
+    "id": 80701,
+    "package": "core",
+    "severity": "warning",
+    "message": "As a principle of best modeling practice, the units of a <parameter> should be declared rather than be left undefined. Doing so improves the ability of software to check the consistency of units and helps make it easier to detect potential errors in models.",
+    "section": null
+  },
+  {
+    "id": 80702,
+    "package": "core",
+    "severity": "warning",
+    "message": "As a principle of best modeling practice, the <parameter> should set an initial value rather than be left undefined. Doing so improves the portability of models between different simulation and analysis systems, and helps make it easier to detect potential errors in models.",
+    "section": null
+  },
+  {
+    "id": 99401,
+    "package": "core",
+    "severity": "warning",
+    "message": "In order to follow the general syntax for a standard SBML RDF annotation the first element of RDF element must be a Description element with an 'about' attribute.",
+    "section": "L3V2 Section 6.3"
+  },
+  {
+    "id": 99402,
+    "package": "core",
+    "severity": "warning",
+    "message": "In order to follow the general syntax for a standard SBML RDF annotation, the 'about' attribute of the Description element must be of the form #string.",
+    "section": "L3V2 Section 6.3"
+  },
+  {
+    "id": 99403,
+    "package": "core",
+    "severity": "warning",
+    "message": "In order to follow the general syntax for a standard SBML RDF annotation, the 'about' attribute of the Description element must be of the form #string, where the string component is equal to the value of the metaid attribute of the containing SBML element.",
+    "section": "L3V2 Section 6.3"
+  },
+  {
+    "id": 1010101,
+    "package": "comp",
+    "severity": "error",
+    "message": "To conform to Version 1 of the Hierarchical Model Composition package specification for SBML Level 3, an SBML document must declare the use of the following XML Namespace: 'http://www.sbml.org/sbml/level3/version1/comp/version1'",
+    "section": "L3V1 Comp V1 Section 3.1"
+  },
+  {
+    "id": 1010102,
+    "package": "comp",
+    "severity": "error",
+    "message": "Wherever they appear in an SBML document, elements and attributes from the Hierarchical Model Composition package must be declared either implicitly or explicitly to be in the XML namespace 'http://www.sbml.org/sbml/level3/version1/comp/version1'",
+    "section": "L3V1 Comp V1 Section 3.1"
+  },
+  {
+    "id": 1010301,
+    "package": "comp",
+    "severity": "error",
+    "message": "(Extends validation rule #10301 in the SBML Level 3 Version 1 Core specification.) Within a <model> or <modelDefinition> object, the values of the attributes id and comp:id on every instance of the following classes of objects must be unique across the set of all id and comp:id attribute values of all such objects in a model: the model itself, plus all contained <functionDefinition>, <compartment>, <species>, <reaction>, <speciesReference>, <modifierSpeciesReference>, <event>, and <parameter> objects, plus the <submodel> and <deletion> objects defined by the Hierarchical Model Composition package, plus any objects defined by any other package with 'package:id' attributes defined as falling in the 'SId' namespace.",
+    "section": "L3V1 Comp V1 Section 3.9"
+  },
+  {
+    "id": 1010302,
+    "package": "comp",
+    "severity": "error",
+    "message": "The values of the attributes 'id' and 'comp:id' on every instance of all <model>, <modelDefinition>, and <externalModelDefinition> objects must be unique across the set of all 'id' and 'comp:id' attribute values of such objects in the SBML document to which they belong.",
+    "section": "L3V1 Comp V1 Section 3.9"
+  },
+  {
+    "id": 1010303,
+    "package": "comp",
+    "severity": "error",
+    "message": "Within <model> and <modelDefinition> objects inside an SBML document, the value of the attribute 'comp:id' on every instance of a <port> object must be unique across the set of all 'comp:id' attribute values of all such objects in the model.",
+    "section": "L3V1 Comp V1 Section 3.9"
+  },
+  {
+    "id": 1010308,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:submodelRef' attribute on <replacedElement> and <replacedBy> objects must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1010309,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:deletion' attribute on <replacedElement> objects must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1010310,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:conversionFactor' attribute on <replacedElement> objects must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1010501,
+    "package": "comp",
+    "severity": "warning",
+    "message": "If one element replaces another, whether it is the target of a <replacedBy> element, or whether it has a child <replacedElement>, the units of the replaced element, multiplied by the units of any applicable conversion factor, should equal the units of the replacement element.",
+    "section": "L3V1 Comp V1 Section 3.6.5"
+  },
+  {
+    "id": 1020101,
+    "package": "comp",
+    "severity": "error",
+    "message": "Any object derived from the extended SBase class (defined in the Hierarchical Model Composition package) may contain at most one instance of a <listOfReplacedElements> subobject.",
+    "section": "L3V1 Comp V1 Section 3.6"
+  },
+  {
+    "id": 1020102,
+    "package": "comp",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfReplacedElements> container object may only contain <replacedElement> objects.",
+    "section": "L3V1 Comp V1 Section 3.6"
+  },
+  {
+    "id": 1020104,
+    "package": "comp",
+    "severity": "error",
+    "message": "The <listOfReplacedElements> in an SBase object is optional, but if present, must not be empty.",
+    "section": "L3V1 Comp V1 Section 3.6"
+  },
+  {
+    "id": 1020105,
+    "package": "comp",
+    "severity": "error",
+    "message": "Any object derived from the extended SBase class (defined in the Hierarchical Model Composition package) may contain at most one instance of a <replacedBy> subobject.",
+    "section": "L3V1 Comp V1 Section 3.6"
+  },
+  {
+    "id": 1020201,
+    "package": "comp",
+    "severity": "error",
+    "message": "In all SBML documents using the HierarchicalModel Composition package, the SBML object must include a value for the attribute 'comp:required' attribute.",
+    "section": "L3V1 Core Section 4.1.2"
+  },
+  {
+    "id": 1020202,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of attribute 'comp:required' on the SBML object must be of the data type Boolean.",
+    "section": "L3V1 Core Section 4.1.2"
+  },
+  {
+    "id": 1020205,
+    "package": "comp",
+    "severity": "error",
+    "message": "There may be at most one instance of the <listOfModelDefinitions> within an SBML object that uses the SBML Level 3 Hierarchical Model Composition package.",
+    "section": "L3V1 Comp V1 Section 3.3"
+  },
+  {
+    "id": 1020206,
+    "package": "comp",
+    "severity": "error",
+    "message": "The various 'ListOf' subobjects within an SBML object are optional, but if present, these container objects must not be empty. Specifically, if any of the following classes of objects is present within the SBML object, it must not be empty: <listOfModelDefinitions> and <listOfExternalModelDefinitions>.",
+    "section": "L3V1 Comp V1 Section 3.3"
+  },
+  {
+    "id": 1020207,
+    "package": "comp",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfModelDefinitions> container may only contain <modelDefinition> objects.",
+    "section": "L3V1 Comp V1 Section 3.3"
+  },
+  {
+    "id": 1020208,
+    "package": "comp",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfExternalModelDefinitions> container may only contain <externalModelDefinition> objects.",
+    "section": "L3V1 Comp V1 Section 3.3"
+  },
+  {
+    "id": 1020211,
+    "package": "comp",
+    "severity": "error",
+    "message": "There may be at most one instance of the <listOfExternalModelDefinitions> within an SBML object that uses the SBML Level 3 Hierarchical Model Composition package.",
+    "section": "L3V1 Comp V1 Section 3.3"
+  },
+  {
+    "id": 1020212,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of attribute 'comp:required' on the SBML object must be set to 'true'.",
+    "section": "L3V1 Comp V1 Section 3.1"
+  },
+  {
+    "id": 1020301,
+    "package": "comp",
+    "severity": "error",
+    "message": "An <externalModelDefinition> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on an <externalModelDefinition> object.",
+    "section": "L3V1 Comp V1 Section 3.2"
+  },
+  {
+    "id": 1020302,
+    "package": "comp",
+    "severity": "error",
+    "message": "An <externalModelDefinition> object may have the optional SBML Level 3 Core subobjects for notes and annotation. No other subobjects from the SBML Level 3 Core namespace or the Hierarchical Model Composition namespace are permitted on an <externalModelDefinition> object.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020303,
+    "package": "comp",
+    "severity": "error",
+    "message": "An <externalModelDefinition> object must have the attributes 'comp:id' and 'comp:source', and may have the optional attributes 'comp:name', 'comp:modelRef', and 'comp:md5'. No other attributes from the Hierarchical Model Composition namespace are permitted on an <externalModelDefinition> object.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020304,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of the 'comp:source' attribute on an <externalModelDefinition> object must reference an SBML Level 3 document.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020305,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of the 'comp:modelRef' attribute on an <externalModelDefinition> object must be the value of an id attribute on a <model>, <modelDefinition>, or <externalModelDefinition> object in the SBML document referenced by the 'comp:source' attribute.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020306,
+    "package": "comp",
+    "severity": "warning",
+    "message": "The value of the 'comp:md5' attribute, if present on an <externalModelDefinition> object, should match the calculated MD5 checksum of the SBML document referenced by the 'comp:source' attribute.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020307,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:source' attribute on an <externalModelDefinition> object must always conform to the syntax of the XML Schema 1.0 data type 'anyURI'.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020308,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a comp:modelRef attribute on an <externalModelDefinition> object must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020309,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a comp:md5 attribute on an <externalModelDefinition> object must always conform to the syntax of type string.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020310,
+    "package": "comp",
+    "severity": "error",
+    "message": "An <externalModelDefinition> object must not reference an <externalModelDefinition> in a different SBML document that, in turn, refers back to the original <externalModelDefinition object, whether directly or indirectly through a chain of <externalModelDefinition> objects.",
+    "section": "L3V1 Comp V1 Section 3.3.2"
+  },
+  {
+    "id": 1020501,
+    "package": "comp",
+    "severity": "error",
+    "message": "There may be at most one instance of each of the following kinds of objects within a <model> or <modelDefinition> object using Hierarchical Model Composition: <listOfSubmodels> and <listOfPorts>.",
+    "section": "L3V1 Comp V1 Section 3.4"
+  },
+  {
+    "id": 1020502,
+    "package": "comp",
+    "severity": "error",
+    "message": "The various ListOf subobjects with a <model> object are optional, but if present, these container object must not be empty. Specifically, if any of the following classes of objects are present on the <model>, it must not be empty: <listOfSubmodels> and <listOfPorts>.",
+    "section": "L3V1 Comp V1 Section 3.4"
+  },
+  {
+    "id": 1020503,
+    "package": "comp",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfSubmodels> container object may only contain <submodel> objects.",
+    "section": "L3V1 Comp V1 Section 3.4"
+  },
+  {
+    "id": 1020504,
+    "package": "comp",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfPorts> container object may only contain <port> objects.",
+    "section": "L3V1 Comp V1 Section 3.4"
+  },
+  {
+    "id": 1020601,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <submodel> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a <submodel> object.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 1020602,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <submodel> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on a <submodel> object.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 1020603,
+    "package": "comp",
+    "severity": "error",
+    "message": "There may be at most one <listOfDeletions> container object within a <submodel> object.",
+    "section": "L3V1 Comp V1 Section 3.5"
+  },
+  {
+    "id": 1020604,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <listOfDeletions> container object within a <submodel> object is optional, but if present, must not be empty.",
+    "section": "L3V1 Comp V1 Section 3.5"
+  },
+  {
+    "id": 1020605,
+    "package": "comp",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfDeletions> container object may only contain <deletion> objects.",
+    "section": "L3V1 Comp V1 Section 3.5"
+  },
+  {
+    "id": 1020607,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <submodel> object must have the attributes 'comp:id' and 'comp:modelRef' because they are required, and may also have the optional attributes 'comp:name', 'comp:timeConversionFactor, and/or 'comp:extentConversionFactor'. No other attributes from the Hierarchical Model Composition namespace are permitted on a <submodel> object.",
+    "section": "L3V1 Comp V1 Section 3.5"
+  },
+  {
+    "id": 1020608,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:modelRef' attribute on a <submodel> object must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.5.1"
+  },
+  {
+    "id": 1020613,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:timeConversionFactor' attribute on a <submodel> object must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.5.1"
+  },
+  {
+    "id": 1020614,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:extentConversionFactor' attribute on a <submodel> object must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.5.1"
+  },
+  {
+    "id": 1020615,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.",
+    "section": "L3V1 Comp V1 Section 3.5.1"
+  },
+  {
+    "id": 1020616,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <model> or <modelDefinition> object must not contain a <submodel> which references that model object itself. That is, the value of a 'comp:modelRef' attribute on a <submodel> must not be the value of the parent <model> or <modelDefinition>'s 'id' attribute.",
+    "section": "L3V1 Comp V1 Section 3.5.1"
+  },
+  {
+    "id": 1020617,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <model> object must not contain a <submodel> which references that <model> indirectly. That is, the 'comp:modelRef' attribute of a <submodel> may not point to the 'id' of a <model> containing a <submodel> object that references the original <model> directly or indirectly through a chain of <model>/<submodel> pairs.",
+    "section": "L3V1 Comp V1 Section 3.5.1"
+  },
+  {
+    "id": 1020622,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:timeConversionFactor' attribute on a given <submodel> object must be the identifier of a <parameter> object defined in the same Model containing the <submodel>.",
+    "section": "L3V1 Comp V1 Section 3.5.1"
+  },
+  {
+    "id": 1020623,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:extentConversionFactor' attribute on a given <submodel> object must be the identifier of a <parameter> object defined in the same Model containing the <submodel>.",
+    "section": "L3V1 Comp V1 Section 3.5.1"
+  },
+  {
+    "id": 1020701,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:portRef' attribute on an <sBaseRef> object must be the identifier of a <port> object in the <model> referenced by that <sBaseRef>.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020702,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:idRef' attribute on an <sBaseRef> object must be the identifier of an object contained in (that is, within the SId namespace of) the <model> referenced by that <sBaseRef>. This includes objects with 'id' attributes defined in packages other than SBML Level 3 Core or the Hierarchical Model Composition package.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020703,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:unitRef' attribute on an <sBaseRef> object must be the identifier of a <unitDefinition< object contained in the <model> referenced by that <sBaseRef>.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020704,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:metaIdRef' attribute on an <sBaseRef> object must be the value of a 'comp:metaid' attribute on an element contained in the <model> referenced by that <sBaseRef>.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020705,
+    "package": "comp",
+    "severity": "error",
+    "message": "If an <sBaseRef> object contains an <sBaseRef> child, the parent <sBaseRef> must point to a <submodel> object, or a <port> that itself points to a <submodel> object.",
+    "section": "L3V1 Comp V1 Section 3.7.2"
+  },
+  {
+    "id": 1020706,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:portRef' attribute on an SBaseRef object must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020707,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:idRef' attribute on an SBaseRef object must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020708,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:unitRef' attribute on an SBaseRef object must always conform to the syntax of the SBML data type SId.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020709,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:metaIdRef' attribute on an SBaseRef object must always conform to the syntax of the XML data type ID.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020710,
+    "package": "comp",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, an SBaseRef object may only contain a single <sBaseRef> child.",
+    "section": "L3V1 Comp V1 Section 3.7.2"
+  },
+  {
+    "id": 1020711,
+    "package": "comp",
+    "severity": "warning",
+    "message": "The 'sbaseRef' spelling of an SBaseRef child of an SBaseRef object is considered deprecated, and 'sBaseRef' should be used instead.",
+    "section": "L3V1 Comp V1 Section 3.7.2"
+  },
+  {
+    "id": 1020712,
+    "package": "comp",
+    "severity": "error",
+    "message": "An <sBaseRef> object must point to another object; that is, a <sBaseRef> object must always have a value for one of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef', or 'comp:metaIdRef'.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020713,
+    "package": "comp",
+    "severity": "error",
+    "message": "An <sBaseRef> object can only point to one other object; that is, a given <sBaseRef> object can only have a value for one of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef', or 'comp:metaIdRef'.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020714,
+    "package": "comp",
+    "severity": "error",
+    "message": "Any one SBML object may only be referenced in one of the following ways: referenced by a single <port> object; referenced by a single <deletion> object; referenced by a single <replacedElement>; be the parent of a single <replacedBy> child; be referenced by one or more <replacedBy> objects; or be referenced by one or more <replacedElement> objects all using the 'deletion' attribute. Essentially, once an object has been referenced in one of these ways it cannot be referenced again.",
+    "section": "L3V1 Comp V1 Section 3.7.1"
+  },
+  {
+    "id": 1020801,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <port> object must point to another object; that is, a <port> object must always have a value for one of the attributes 'comp:idRef', 'comp:unitRef', or 'comp:metaIdRef'.",
+    "section": "L3V1 Comp V1 Section 3.4.3"
+  },
+  {
+    "id": 1020802,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <port> object can only point to one other object; that is, a given <port> object can only have a value for one of the attributes 'comp:idRef', 'comp:unitRef', or 'comp:metaIdRef'.",
+    "section": "L3V1 Comp V1 Section 3.4.3"
+  },
+  {
+    "id": 1020803,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <port> object must have a value for the required attribute 'comp:id', and one, and only one, of the attributes 'comp:idRef', 'comp:unitRef', or 'comp:metaIdRef'. No other attributes from the Hierarchical Model Composition namespace are permitted on a <port> object.",
+    "section": "L3V1 Comp V1 Section 3.4.3"
+  },
+  {
+    "id": 1020804,
+    "package": "comp",
+    "severity": "error",
+    "message": "Port definitions must be unique; that is, no two <port> objects in a given Model may reference the same object in that Model.",
+    "section": "L3V1 Comp V1 Section 3.4.3"
+  },
+  {
+    "id": 1020901,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <deletion> object must point to another object; that is, a <deletion> object must always have a value for one of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef', or 'comp:metaIdRef'",
+    "section": "L3V1 Comp V1 Section 3.5.3"
+  },
+  {
+    "id": 1020902,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <deletion> object can only point to one other object; that is, a given <deletion> object can only have a value for one of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef', or 'comp:metaIdRef'",
+    "section": "L3V1 Comp V1 Section 3.5.3"
+  },
+  {
+    "id": 1020903,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <deletion> object must have a value for one, and only one, of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef', and 'comp:metaIdRef'. It may also have the optional attributes 'comp:id' and 'comp:name'. No other attributes from the Hierarchical Model Composition namespace are permitted on a <deletion> object.",
+    "section": "L3V1 Comp V1 Section 3.5.3"
+  },
+  {
+    "id": 1021001,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <replacedElement> object must point to another object; that is, a <replacedElement> object must always have a value for one of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef', 'comp:metaIdRef' or 'comp:deletion'.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1021002,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <replacedElement> object can only point to one other object; that is, a given <replacedElement> object can only have a value for one of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef', 'comp:metaIdRef' or 'comp:deletion'.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1021003,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <replacedElement> object must have a value for the required attribute 'comp:submodelRef', and a value for one, and only one, of the following attributes: 'comp:portRef', 'comp:idRef', 'comp:unitRef', 'comp:metaIdRef', or 'comp:deletion'. It may also have a value for the optional attribute 'comp:conversionFactor'. No other attributes from the HierarchicalModel Composition namespace are permitted on a <replacedElement> object.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1021004,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:submodelRef' attribute on a <replacedElement> object must be the identifier of a <submodel> present in the <replacedElement> object's parent Model.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1021005,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:deletion' attribute on a <replacedElement> object must be the identifier of a <deletion> present in the <replacedElement> object's parent Model.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1021006,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:conversionFactor' attribute on a <replacedElement> object must be the identifier of a <parameter> present in the <replacedElement> object's parent Model",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1021010,
+    "package": "comp",
+    "severity": "error",
+    "message": "No two <replacedElement> objects in the same Model may reference the same object unless that object is a <deletion>",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1021011,
+    "package": "comp",
+    "severity": "error",
+    "message": "If a <replacedElement> uses the 'comp:deletion' attribute, then it should not also use the 'comp:conversionFactor' attribute.",
+    "section": "L3V1 Comp V1 Section 3.6.2"
+  },
+  {
+    "id": 1021101,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <replacedBy> object must point to another object; that is, a <replacedBy> object must always have a value for one of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef' or 'comp:metaIdRef'.",
+    "section": "L3V1 Comp V1 Section 3.6.4"
+  },
+  {
+    "id": 1021102,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <replacedBy> object can only point to one other object; that is, a given <replacedBy> object can only have a value for one of the attributes 'comp:portRef', 'comp:idRef', 'comp:unitRef', or 'comp:metaIdRef'.",
+    "section": "L3V1 Comp V1 Section 3.6.4"
+  },
+  {
+    "id": 1021103,
+    "package": "comp",
+    "severity": "error",
+    "message": "A <replacedBy> object must have a value for the required attribute 'comp:submodelRef', and a value for one, and only one, of the following attributes: 'comp:portRef', 'comp:idRef', 'comp:unitRef' or 'comp:metaIdRef'. No other attributes from the HierarchicalModel Composition namespace are permitted on a <replacedBy> object.",
+    "section": "L3V1 Comp V1 Section 3.6.4"
+  },
+  {
+    "id": 1021104,
+    "package": "comp",
+    "severity": "error",
+    "message": "The value of a 'comp:submodelRef' attribute on a <replacedBy> object must be the identifier of a <submodel> present in the <replacedBy> object's parent Model.",
+    "section": "L3V1 Comp V1 Section 3.6.4"
+  },
+  {
+    "id": 1021201,
+    "package": "comp",
+    "severity": "error",
+    "message": "If one element replaces another, whether it is the target of a <replacedBy> element, or whether it has a child <replacedElement>, the SBML class of the replacement element must match the SBML class of the replaced element, with two exceptions: an element of a derived class may replace an object of its base class (for base classes other than SBase), and any SBML class with mathematical meaning may replace a <parameter>. A base class may not replace a derived class, however, nor may a <parameter> replace some other SBML element with mathematical meaning.",
+    "section": "L3V1 Comp V1 Section 3.6.5"
+  },
+  {
+    "id": 1021202,
+    "package": "comp",
+    "severity": "error",
+    "message": "If one element replaces another, whether it is the target of a <replacedBy> element, or whether it has a child <replacedElement>, if the replaced element has the 'id' attribute set, the replacement !element must also have the 'id' attribute set.",
+    "section": "L3V1 Comp V1 Section 3.6.5"
+  },
+  {
+    "id": 1021203,
+    "package": "comp",
+    "severity": "error",
+    "message": "If one element replaces another, whether it is the target of a <replacedBy> element, or whether it has a child <replacedElement>, if the replaced element has the 'metaid' attribute set, the replacement element must also have the 'metaid' attribute set.",
+    "section": "L3V1 Comp V1 Section 3.6.5"
+  },
+  {
+    "id": 1021204,
+    "package": "comp",
+    "severity": "error",
+    "message": "If one element replaces another, whether it is the target of a <replacedBy> element, or whether it has a child <replacedElement>, if the replaced element has an identifier attribute from some other SBML package set, the replacement element must also have that same identifier attribute set.",
+    "section": "L3V1 Comp V1 Section 3.6.5"
+  },
+  {
+    "id": 1510101,
+    "package": "distrib",
+    "severity": "error",
+    "message": "To conform to the Distributions Package specification for SBML Level 3 Version 1, an SBML document must declare 'http://www.sbml.org/sbml/level3/version1/distrib/version1' as the XMLNamespace to use for elements of this package.",
+    "section": "L3V1 Distrib V1 Section 3.1"
+  },
+  {
+    "id": 1510102,
+    "package": "distrib",
+    "severity": "error",
+    "message": "Wherever they appear in an SBML document, elements and attributes from the Distributions Package must use the 'http://www.sbml.org/sbml/level3/version1/distrib/version1' namespace, declaring so either explicitly or implicitly.",
+    "section": "L3V1 Distrib V1 Section 3.1"
+  },
+  {
+    "id": 1520101,
+    "package": "distrib",
+    "severity": "error",
+    "message": "In all SBML documents using the Distributions Package, the <sbml> object must have the 'distrib:required' attribute.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520102,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The value of attribute 'distrib:required' on the <sbml> object must be of data type 'boolean'.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520103,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The value of attribute 'distrib:required' on the <sbml> object must be set to 'true'.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520201,
+    "package": "distrib",
+    "severity": "error",
+    "message": "A 'SBase' object may contain one and only one instance of the <listOfUncertainties> element. No other elements from the SBML Level 3 Distributions namespaces are permitted on a 'SBase' object.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520202,
+    "package": "distrib",
+    "severity": "error",
+    "message": "Apart from the general notes and annotations subobjects permitted on all SBML objects, a <listOfUncertainties> container object may only contain <uncertainty> objects.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520301,
+    "package": "distrib",
+    "severity": "error",
+    "message": "An <uncertParameter> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespaces are permitted on an <uncertParameter>.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520302,
+    "package": "distrib",
+    "severity": "error",
+    "message": "An <uncertParameter> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on an <uncertParameter>.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520304,
+    "package": "distrib",
+    "severity": "error",
+    "message": "An <uncertParameter> object may contain one and only one instance of the <listOfUncertParameters> element. No other elements from the SBML Level 3 Distributions namespaces are permitted on an <uncertParameter> object.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520305,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The attribute 'distrib:value' on an <uncertParameter> must have a value of data type 'double'.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520306,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The value of the attribute 'distrib:var' of an <uncertParameter> object must be the identifier of an existing object derived from the 'SBase' class and defined in the enclosing <model> object.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520307,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The value of the attribute 'distrib:units' on an <uncertParameter> must have a taken from the following: the identifier of a <unitDefinition> object in the enclosing <model,> or one of the base units in SBML.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520308,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The value of the attribute 'distrib:type' of an <uncertParameter> object must conform to the syntax of SBML data type 'UncertType' and may only take on the allowed values of 'UncertType' defined in SBML; that is, the value must be one of the following: 'distribution', 'externalParameter', 'coeffientOfVariation', 'kurtosis', 'mean', 'median', 'mode', 'sampleSize', 'skewness', 'standardDeviation', 'standardError', 'variance', 'confidenceInterval', 'credibleInterval', 'interquartileRange' or 'range'.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520309,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The attribute 'distrib:definitionURL' on an <uncertParameter> must have a value of data type 'string'.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520310,
+    "package": "distrib",
+    "severity": "error",
+    "message": "Apart from the general notes and annotations subobjects permitted on all SBML objects, a <listOfUncertParameters> container object may only contain <uncertParameter> objects.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520401,
+    "package": "distrib",
+    "severity": "error",
+    "message": "An <uncertainty> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespaces are permitted on an <uncertainty>.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520402,
+    "package": "distrib",
+    "severity": "error",
+    "message": "An <uncertainty> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on an <uncertainty>.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520403,
+    "package": "distrib",
+    "severity": "error",
+    "message": "An <uncertainty> object may contain one and only one instance of the <listOfUncertParameters> element. No other elements from the SBML Level 3 Distributions namespaces are permitted on an <uncertainty> object.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520501,
+    "package": "distrib",
+    "severity": "error",
+    "message": "An <uncertSpan> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespaces are permitted on an <uncertSpan>.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520502,
+    "package": "distrib",
+    "severity": "error",
+    "message": "An <uncertSpan> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on an <uncertSpan>.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520504,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The value of the attribute 'distrib:varLower' of an <uncertSpan> object must be the identifier of an existing object derived from the 'SBase' class and defined in the enclosing <model> object.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520505,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The attribute 'distrib:valueLower' on an <uncertSpan> must have a value of data type 'double'.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520506,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The value of the attribute 'distrib:varUpper' of an <uncertSpan> object must be the identifier of an existing object derived from the 'SBase' class and defined in the enclosing <model> object.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 1520507,
+    "package": "distrib",
+    "severity": "error",
+    "message": "The attribute 'distrib:valueUpper' on an <uncertSpan> must have a value of data type 'double'.",
+    "section": "L3V1 Distrib V1 Section"
+  },
+  {
+    "id": 2010101,
+    "package": "fbc",
+    "severity": "error",
+    "message": "To conform to Version 1 of the Flux Balance Constraints package specification for SBML Level 3, an SBML document must declare the use of the following XML Namespace: 'http://www.sbml.org/sbml/level3/version1/fbc/version1'",
+    "section": "L3V1 Fbc V3 Section 3.1"
+  },
+  {
+    "id": 2010102,
+    "package": "fbc",
+    "severity": "error",
+    "message": "Wherever they appear in an SBML document, elements and attributes from the Flux Balance Constraints package must be declared either implicitly or explicitly to be in the XML namespace 'http://www.sbml.org/sbml/level3/version1/fbc/version1'",
+    "section": "L3V1 Fbc V3 Section 3.1"
+  },
+  {
+    "id": 2010301,
+    "package": "fbc",
+    "severity": "error",
+    "message": "(Extends validation rule #10301 in the SBML Level 3 Version 1 Core specification.) Within a <model> object the values of the attributes id and fbc:id on every instance of the following classes of objects must be unique across the set of all id and fbc:id attribute values of all such objects in a model: the model itself, plus all contained <functionDefinition>, <compartment>, <species>, <reaction>, <speciesReference>, <modifierSpeciesReference>, <event>, and <parameter> objects, plus the <fluxBound>, <objective>, <fluxObjective>, <geneProduct> and <geneProductAssociation> objects defined by the Flux Balance Constraints package.",
+    "section": "L3V1 Fbc V3 Section 3.2"
+  },
+  {
+    "id": 2020101,
+    "package": "fbc",
+    "severity": "error",
+    "message": "In all SBML documents using the Flux Balance Constraints package, the SBML object must include a value for the attribute 'fbc:required'.",
+    "section": "L3V1 Core Section 4.1.2"
+  },
+  {
+    "id": 2020102,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of attribute 'fbc:required' on the SBML object must be of the data type Boolean.",
+    "section": "L3V1 Core Section 4.1.2"
+  },
+  {
+    "id": 2020103,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of attribute 'fbc:required' on the SBML object must be set to 'false'.",
+    "section": "L3V1 Fbc V3 Section 3.1"
+  },
+  {
+    "id": 2020201,
+    "package": "fbc",
+    "severity": "error",
+    "message": "There may be at most one instance of each of the following kinds of objects within a <model> object using Flux Balance Constraints: <listOfFluxBounds> (V1 only), <listOfObjectives> <listOfGeneProducts> (V2 onwards) and <listOfUserDefinedConstraints> (V3).",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020202,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The various ListOf subobjects with a <model> object are optional, but if present, these container object must not be empty. Specifically, if any of the following classes of objects are present on the <model>, it must not be empty: <listOfFluxBounds> (V1 only), <listOfObjectives> and <listOfGeneProducts> (V2).",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020203,
+    "package": "fbc",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfFluxBounds> container object may only contain <fluxBound> objects.",
+    "section": null
+  },
+  {
+    "id": 2020204,
+    "package": "fbc",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfObjectives> container object may only contain <objective> objects.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020206,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <listOfObjectives> object may have the optional attributes 'metaid' and 'sboTerm' defined by SBML Level 3 Core. Additionally the <listOfObjectives> must contain the attribute 'activeObjective'. No other attributes from the SBML Level 3 Core namespace or the Flux Balance Constraints namespace are permitted on a <listOfFluxBounds> object.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020207,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of attribute 'fbc:activeObjective' on the <listOfObjectives> object must be of the data type SIdRef.",
+    "section": "L3V1 Fbc V3 Section 3.3.1"
+  },
+  {
+    "id": 2020208,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of attribute 'fbc:activeObjective' on the <listOfObjectives> object must be the identifier of an existing <objective>.",
+    "section": "L3V1 Fbc V3 Section 3.3.1"
+  },
+  {
+    "id": 2020209,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <model> object must have the required attributes 'strict'. No other attributes from the Flux Balance Constraints namespace are permitted on a <model> object.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020210,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:strict' on the <model> object must have a value of datatype Boolean.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020211,
+    "package": "fbc",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfGeneProducts> container object may only contain <geneProduct> objects.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020213,
+    "package": "fbc",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <ListOfUserDefinedConstraints> container object may only contain <userDefinedConstraint> objects.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020301,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A SBML <species> object may have the optional attributes 'fbc:charge' and 'fbc:chemicalFormula'. No other attributes from the Flux Balance Constraints namespaces are permitted on a <species>.",
+    "section": "L3V1 Fbc V3 Section 3.4"
+  },
+  {
+    "id": 2020302,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of attribute 'fbc:charge' on SBML <species> object must be of the data type integer.",
+    "section": null
+  },
+  {
+    "id": 2020303,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of attribute 'fbc:chemicalFormula' on the SBML <species> object must be set to a string consisting only of atomic names or user defined compounds and their occurrence.",
+    "section": "L3V1 Fbc V3 Section 3.4"
+  },
+  {
+    "id": 2020304,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of attribute 'fbc:charge' on SBML <species> object must be of the data type double.",
+    "section": "L3V1 Fbc V3 Section 3.4"
+  },
+  {
+    "id": 2020401,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <fluxBound> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a <fluxBound>.",
+    "section": null
+  },
+  {
+    "id": 2020402,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <fluxBound> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on a <fluxBound>.",
+    "section": null
+  },
+  {
+    "id": 2020403,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <fluxBound> object must have the required attributes 'fbc:reaction', 'fbc:operation' and 'fbc:value', and may have the optional attributes 'fbc:id' and 'fbc:name'. No other attributes from the SBML Level 3 Flux Balance Constraints namespace are permitted on a <fluxBound> object.",
+    "section": null
+  },
+  {
+    "id": 2020404,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:reaction' of a <fluxBound> must be of the data type SIdRef.",
+    "section": null
+  },
+  {
+    "id": 2020406,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:operation' of a <fluxBound> must be of the data type FbcOperation and thus it's value must be one of 'lessEqual', 'greaterEqual' or 'equal'.",
+    "section": null
+  },
+  {
+    "id": 2020407,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:value' of a <fluxBound> must be of the data type double.",
+    "section": null
+  },
+  {
+    "id": 2020408,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:reaction' of a <fluxBound> object must be the identifier of an existing <reaction> object defined in the enclosing <model> object.",
+    "section": null
+  },
+  {
+    "id": 2020409,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The combined set of all <fluxBound>'s with identical values for 'fbc:reaction' must be consistent. That is while it is possible to define a lower and an upper bound for a reaction, it is not possible to define multiple lower or upper bounds.",
+    "section": null
+  },
+  {
+    "id": 2020501,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <objective> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on an <objective>.",
+    "section": "L3V1 Core, Section 3.2"
+  },
+  {
+    "id": 2020502,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <objective> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on an <objective>.",
+    "section": "L3V1 Core, Section 3.2"
+  },
+  {
+    "id": 2020503,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <objective> object must have the required attributes 'fbc:id' and 'fbc:type' and may have the optional attribute 'fbc:name'. No other attributes from the SBML Level 3 Flux Balance Constraints namespace are permitted on an <objective> object.",
+    "section": "L3V1 Fbc V3, Section 3.6"
+  },
+  {
+    "id": 2020505,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:type' on an <objective> must be of the data type FbcType and thus its value must be one of 'minimize' or 'maximize.",
+    "section": "L3V1 Fbc V3, Section 3.6"
+  },
+  {
+    "id": 2020506,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <objective> object must have one and only one instance of the <listOfFluxObjectives> object.",
+    "section": "L3V1 Fbc V3, Section 3.6"
+  },
+  {
+    "id": 2020507,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The <listOfFluxObjectives> subobject within an <objective> object must not be empty.",
+    "section": "L3V1 Fbc V3, Section 3.6"
+  },
+  {
+    "id": 2020508,
+    "package": "fbc",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfFluxObjectives> container object may only contain <fluxObjective> objects.",
+    "section": "L3V1 Fbc V3, Section 3.6"
+  },
+  {
+    "id": 2020601,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <fluxObjective> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a <fluxObjective>.",
+    "section": "L3V1 Core, Section 3.2"
+  },
+  {
+    "id": 2020602,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <fluxObjective> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on a <fluxObjective>.",
+    "section": "L3V1 Core, Section 3.2"
+  },
+  {
+    "id": 2020603,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <fluxObjective> object must have the required attributes 'fbc:reaction' and 'fbc:coefficient', and may have the optional attributes 'fbc:id' and 'fbc:name'. No other attributes from the SBML Level 3 Flux Balance Constraints namespace are permitted on a <fluxObjective> object.",
+    "section": "L3V1 Fbc V3, Section 3.7"
+  },
+  {
+    "id": 2020605,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:reaction' of a <fluxObjective> object must conform to the syntax of the SBML data type 'SIdRef'.",
+    "section": "L3V1 Fbc V3, Section 3.7"
+  },
+  {
+    "id": 2020606,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:reaction' of a <fluxObjective> object must be the identifier of an existing <reaction> object defined in the enclosing <model> object.",
+    "section": "L3V1 Fbc V3, Section 3.7"
+  },
+  {
+    "id": 2020607,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:coefficient' of a <fluxObjective> object must conform to the syntax of the SBML data type 'double'.",
+    "section": "L3V1 Fbc V3, Section 3.7"
+  },
+  {
+    "id": 2020608,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <model> 'fbc:strict' attribute is true, the value of the attribute 'fbc:coefficient' of a <fluxObjective> object must not be set to 'NaN', 'INF' or '-INF'.",
+    "section": "L3V1 Fbc V3, Section 3.3"
+  },
+  {
+    "id": 2020609,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:variableType' of a <fluxObjective> object must conform to the syntax of SBML data type 'FbcVariableType' and may only take on the allowed values of 'FbcVariableType' defined in SBML; that is, the value must be one of the following: 'linear' or 'quadratic'.",
+    "section": null
+  },
+  {
+    "id": 2020610,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:reaction2' of a <fluxObjective> object must conform to the syntax of the SBML data type 'SIdRef'.",
+    "section": "L3V1 Fbc V3, Section 3.7"
+  },
+  {
+    "id": 2020611,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:reaction2' of a <fluxObjective> object must be the identifier of an existing <reaction> object defined in the enclosing <model> object.",
+    "section": "L3V1 Fbc V3, Section 3.7"
+  },
+  {
+    "id": 2020701,
+    "package": "fbc",
+    "severity": "error",
+    "message": "There may be at most one instance of a <GeneProductAssociation> within a <Reaction> object using Flux BalanceConstraints.",
+    "section": "L3V1 Fbc V3 Section 3.8"
+  },
+  {
+    "id": 2020702,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An SBML <Reaction> object may have the optional attributes 'fbc:lowerFluxBound' and 'fbc:upperFluxBound'. No other attributes from the Flux Balance Constraints namespaces are permitted on a <Reaction>.",
+    "section": "L3V1 Fbc V3 Section 3.8"
+  },
+  {
+    "id": 2020703,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:lowerFluxBound' of a <Reaction> must be of the data type 'SIdRef'.",
+    "section": "L3V1 Fbc V3 Section 3.8"
+  },
+  {
+    "id": 2020704,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:upperFluxBound' of a <Reaction> must be of the data type 'SIdRef'.",
+    "section": "L3V1 Fbc V3 Section 3.8"
+  },
+  {
+    "id": 2020705,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:lowerFluxBound' of a <Reaction> must point to an existing <Parameter> in the model.",
+    "section": "L3V1 Fbc V3 Section 3.8"
+  },
+  {
+    "id": 2020706,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:upperFluxBound' of a <Reaction> must point to an existing <Parameter> in the model.",
+    "section": "L3V1 Fbc V3 Section 3.8"
+  },
+  {
+    "id": 2020707,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', a <Reaction> must define the attributes 'fbc:lowerFluxBound' and 'fbc:upperFluxBound'.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020708,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the <Parameter> objects referred to by the attributes 'fbc:lowerFluxBound' and 'fbc:upperFluxBound' must have their 'constant' attribute set to 'true'.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020709,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the <Parameter> objects referred to by the attributes 'fbc:lowerFluxBound' and 'fbc:upperFluxBound' must have a defined value for their 'value' attribute, which may not be 'NaN'.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020710,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the <Parameter> objects referred to by the attributes 'fbc:lowerFluxBound' and 'fbc:upperFluxBound' may not be targeted by an <InitialAssignment>.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020711,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the <Parameter> objects referred to by the attribute 'fbc:lowerFluxBound' may not have the value 'INF'.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020712,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the <Parameter> object referred to by the attribute 'fbc:upperFluxBound' may not have the value '-INF'.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020713,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the <Parameter> object referred to by the attribute 'fbc:lowerFluxBound' must be less than or equal to the value of the <Parameter> object referred to by the attribute 'fbc:upperFluxBound' .",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020714,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the 'constant' attribute of <SpeciesReference> elements of a <Reaction> must be set to 'true'.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020715,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the value of a <SpeciesReference>'s 'stoichiometry> attribute must not be set to 'NaN', '-INF' or 'INF'.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020716,
+    "package": "fbc",
+    "severity": "error",
+    "message": "When the value of the <Model>s 'fbc:strict' attribute is 'true', the <SpeciesReference> elements of a <Reaction> may not be targeted by an <InitialAssignment>.",
+    "section": "L3V1 Fbc V3 Section 3.3"
+  },
+  {
+    "id": 2020801,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProductAssociation> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a <GeneProductAssociation.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2020802,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProductAssociation> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on a <GeneProductAssociation.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2020803,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProductAssociation> object may have the optional attributes 'fbc:id' and 'fbc:name'. No other attributes from the SBML Level 3 Flux Balance Constraints namespace are permitted on a <GeneProductAssociation> object.",
+    "section": "L3V1 Fbc V3 Section 3.9"
+  },
+  {
+    "id": 2020805,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProductAssociation> object must have one and only one of the concrete <Association> objects: <GeneProductRef>, <And> or <Or>.",
+    "section": "L3V1 Fbc V3 Section 3.9"
+  },
+  {
+    "id": 2020901,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProductRef> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a <GeneProductRef>.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2020902,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProductRef> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on a <GeneProductRef>.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2020903,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProductRef> object must have the required attribute 'fbc:geneProduct' and may have the optional attribute 'fbc:id'. No other attributes from the SBML Level 3 Flux Balance Constraints namespace are permitted on a <> object.",
+    "section": "L3V1 Fbc V3 Section 3.11"
+  },
+  {
+    "id": 2020904,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:geneProduct' on a <GeneProductRef> must be of the data type 'SIdRef'.",
+    "section": "L3V1 Fbc V3 Section 3.11"
+  },
+  {
+    "id": 2020908,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:geneProduct' on a <GeneProductRef> if set, must refer to 'id' of a <GeneProduct> in the <Model>.",
+    "section": "L3V1 Fbc V3 Section 3.11"
+  },
+  {
+    "id": 2021001,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <And> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on an <GeneAnd.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2021002,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <And> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on an <And>.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2021003,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <And> object must have two or more concrete <Association> objects: <GeneProductRef>, <And>, or <Or>. No other elements from the SBML Level 3 Flux Balance Constraints namespace are permitted on an <And> object.",
+    "section": "L3V1 Fbc V3 Section 3.12"
+  },
+  {
+    "id": 2021101,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <Or> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on an <Or>.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2021102,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <Or> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on an <Or>.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2021103,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <Or> object must have two or more concrete <Association> objects: <GeneProductRef>, <And>, or <Or>. No other elements from the SBML Level 3 Flux Balance Constraints namespace are permitted on an <Or> object.",
+    "section": "L3V1 Fbc V3 Section 3.13"
+  },
+  {
+    "id": 2021201,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProduct> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespace are permitted on a <GeneProduct>.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2021202,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProduct> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespace are permitted on a <GeneProduct>.",
+    "section": "L3V1 Core Section 3.2"
+  },
+  {
+    "id": 2021203,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <GeneProduct> object must have the required attributes 'fbc:id' and 'fbc:label' may have the optional attributes 'fbc:name' and 'fbc:associatedSpecies'. No other attributes from the SBML Level 3 Flux Balance Constraints namespace are permitted on a <GeneProduct> object.",
+    "section": "L3V1 Fbc V3 Section 3.5"
+  },
+  {
+    "id": 2021204,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:label' on a <GeneProduct> must be of the data type 'string'.",
+    "section": "L3V1 Fbc V3 Section 3.5"
+  },
+  {
+    "id": 2021205,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:label' on a <GeneProduct> must be unique among the set of all <GeneProduct> elements defined in the <Model>.",
+    "section": "L3V1 Fbc V3 Section 3.5"
+  },
+  {
+    "id": 2021207,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:associatedSpecies' on a <GeneProduct> must be the identifier of an existing <Species> defined in the enclosing <Model>.",
+    "section": "L3V1 Fbc V3 Section 3.5"
+  },
+  {
+    "id": 2021301,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <userDefinedConstraintComponent> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespaces are permitted on an <userDefinedConstraintComponent>.",
+    "section": null
+  },
+  {
+    "id": 2021302,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <userDefinedConstraintComponent> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on an <userDefinedConstraintComponent>.",
+    "section": null
+  },
+  {
+    "id": 2021303,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <userDefinedConstraintComponent> object must have the required attributes 'fbc:coefficient', 'fbc:variable' and 'fbc:variableType', and may have the optional attributes 'fbc:id', 'fbc:name' and 'fbc:variable2'. No other attributes from the SBML Level 3 Flux Balance Constraints namespaces are permitted on an <userDefinedConstraintComponent> object.",
+    "section": null
+  },
+  {
+    "id": 2021304,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:coefficient' of an <userDefinedConstraintComponent> object must be the identifier of an existing <parameter> object defined in the enclosing <model> object.",
+    "section": null
+  },
+  {
+    "id": 2021305,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:variable' of an <userDefinedConstraintComponent> object must be the identifier of an existing <reaction> or <parameter> object defined in the enclosing <model> object.",
+    "section": null
+  },
+  {
+    "id": 2021306,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:variableType' of an <userDefinedConstraintComponent> object must conform to the syntax of SBML data type 'FbcVariableType' and may only take on the allowed values of 'FbcVariableType' defined in SBML; that is, the value must be one of the following: 'linear' or 'quadratic'.",
+    "section": null
+  },
+  {
+    "id": 2021308,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:variable2' of an <userDefinedConstraintComponent> object must be the identifier of an existing <reaction> or <parameter> object defined in the enclosing <model> object.",
+    "section": null
+  },
+  {
+    "id": 2021401,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <userDefinedConstraint> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespaces are permitted on an <userDefinedConstraint>.",
+    "section": null
+  },
+  {
+    "id": 2021402,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <userDefinedConstraint> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on an <userDefinedConstraint>.",
+    "section": null
+  },
+  {
+    "id": 2021403,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <userDefinedConstraint> object must have the required attributes 'fbc:lowerBound' and 'fbc:upperBound', and may have the optional attributes 'fbc:id' and 'fbc:name'. No other attributes from the SBML Level 3 Flux Balance Constraints namespaces are permitted on an <userDefinedConstraint> object.",
+    "section": null
+  },
+  {
+    "id": 2021404,
+    "package": "fbc",
+    "severity": "error",
+    "message": "An <userDefinedConstraint> object must contain one and only one instance of the <listOfUserDefinedConstraintComponents> element. No other elements from the SBML Level 3 Flux Balance Constraints namespaces are permitted on an <userDefinedConstraint> object.",
+    "section": null
+  },
+  {
+    "id": 2021405,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:lowerBound' of an <userDefinedConstraint> object must be the identifier of an existing <parameter> object defined in the enclosing <model> object.",
+    "section": null
+  },
+  {
+    "id": 2021406,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The value of the attribute 'fbc:upperBound' of an <userDefinedConstraint> object must be the identifier of an existing <parameter> object defined in the enclosing <model> object.",
+    "section": null
+  },
+  {
+    "id": 2021408,
+    "package": "fbc",
+    "severity": "error",
+    "message": "Apart from the general notes and annotations subobjects permitted on all SBML objects, a <listOfUserDefinedConstraintComponents> container object may only contain <userDefinedConstraintComponent> objects.",
+    "section": null
+  },
+  {
+    "id": 2021501,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <keyValuePair> object may have the optional SBML Level 3 Core attributes 'metaid' and 'sboTerm'. No other attributes from the SBML Level 3 Core namespaces are permitted on a <keyValuePair>.",
+    "section": null
+  },
+  {
+    "id": 2021502,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <keyValuePair> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on a <keyValuePair>.",
+    "section": null
+  },
+  {
+    "id": 2021503,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <keyValuePair> object must have the required attribute 'fbc:key', and may have the optional attributes 'fbc:id', 'fbc:name', 'fbc:value' and 'fbc:uri'. No other attributes from the SBML Level 3 Flux Balance Constraints namespaces are permitted on a <keyValuePair> object.",
+    "section": null
+  },
+  {
+    "id": 2021504,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:key' on a <keyValuePair> must have a value of data type 'string'.",
+    "section": null
+  },
+  {
+    "id": 2021506,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:value' on a <keyValuePair> must have a value of data type 'string'.",
+    "section": null
+  },
+  {
+    "id": 2021507,
+    "package": "fbc",
+    "severity": "error",
+    "message": "The attribute 'fbc:uri' on a <keyValuePair> must have a value of data type 'string'.",
+    "section": null
+  },
+  {
+    "id": 2021508,
+    "package": "fbc",
+    "severity": "error",
+    "message": "A <ListOfKeyValuePairs> object must have the required attribute 'xmlns'. No other attributes from the SBML Level~3 Flux Balance Constraints namespaces are permitted on a <ListOfKeyValuePairs> object.",
+    "section": null
+  },
+  {
+    "id": 3010101,
+    "package": "qual",
+    "severity": "error",
+    "message": "To conform to Version 1 of the Qualitative Models package specification for SBML Level 3, an SBML document must declare the use of the following XML Namespace: 'http://www.sbml.org/sbml/level3/version1/qual/version1'",
+    "section": "L3V1 Qual V1 Section 3.1"
+  },
+  {
+    "id": 3010102,
+    "package": "qual",
+    "severity": "error",
+    "message": "Wherever they appear in an SBML document, elements and attributes from the Qualitative Models package must be declared either implicitly or explicitly to be in the XML namespace 'http://www.sbml.org/sbml/level3/version1/qual/version1'",
+    "section": "L3V1 Qual V1 Section 3.1"
+  },
+  {
+    "id": 3010201,
+    "package": "qual",
+    "severity": "warning",
+    "message": "The MathML <math> element in a <functionTerm> object should evaluate to a value of type Boolean.",
+    "section": "L3V1 Qual V1 Section 3.6.5"
+  },
+  {
+    "id": 3010202,
+    "package": "qual",
+    "severity": "warning",
+    "message": "The MathML <math> element in a <functionTerm> object should not use the <csymbol> elements 'time' and 'delay' as these explicitly introduce time into the model. As yet time is not considered within the Qualitative Models package specification.",
+    "section": "L3V1 Qual V1 Section 3.6.5"
+  },
+  {
+    "id": 3010301,
+    "package": "qual",
+    "severity": "error",
+    "message": "(Extends validation rule #10301 in the SBML Level 3 Version 1 Core specification.) Within a <model> the values of the attributes 'id' and 'qual:id' on every instance of the following classes of objects must be unique across the set of all 'id' and 'qual:id' attribute values of all such objects in a model: the <model> itself, plus all contained <functionDefinition>, <compartment>, <species>, <reaction>, <speciesReference>, <modifierSpeciesReference>, <event>, and <parameter> objects, plus the <qualitativeSpecies>, <transition>, <input> and <output> objects defined by the Qualitative Models package.",
+    "section": "L3V1 Qual V1 Section 3.7"
+  },
+  {
+    "id": 3020101,
+    "package": "qual",
+    "severity": "error",
+    "message": "In all SBML documents using the Qualitative Models package, the SBML object must include a value for the attribute 'qual:required' attribute.",
+    "section": "L3V1 Core Section 4.1.2"
+  },
+  {
+    "id": 3020102,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of attribute 'qual:required' on the SBML object must be of the data type Boolean.",
+    "section": "L3V1 Core Section 4.1.2"
+  },
+  {
+    "id": 3020103,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of attribute 'qual:required' on the SBML object must be set to 'true' if if the model contains any <transition> objects.",
+    "section": "L3V1 Qual V1 Section 3.1"
+  },
+  {
+    "id": 3020201,
+    "package": "qual",
+    "severity": "error",
+    "message": "There may be at most one instance of each of the following kinds of objects within a <model> object using Qualitative Models: <listOfTransitions> and <listOfQualitativeSpecies>.",
+    "section": "L3V1 Qual V1 Section 3.4"
+  },
+  {
+    "id": 3020202,
+    "package": "qual",
+    "severity": "error",
+    "message": "The various ListOf subobjects with a <model> object are optional, but if present, these container object must not be empty. Specifically, if any of the following classes of objects are present on the <model>, it must not be empty: <listOfQualitativeSpecies> and <listOfTransitions>.",
+    "section": "L3V1 Qual V1 Section 3.4"
+  },
+  {
+    "id": 3020203,
+    "package": "qual",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfTransitions> container object may only contain <transition> objects.",
+    "section": "L3V1 Qual V1 Section 3.4"
+  },
+  {
+    "id": 3020204,
+    "package": "qual",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfQualitativeSpecies> container object may only contain <qualitativeSpecies> objects.",
+    "section": "L3V1 Qual V1 Section 3.4"
+  },
+  {
+    "id": 3020301,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <qualitativeSpecies> object may have the optional 'metaid' and 'sboTerm' defined by SBML Level 3 Core. No other attributes from the SBML Level 3 Core namespace or the Qualitative Models namespace are permitted on a <qualitativeSpecies> object.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020302,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <qualitativeSpecies> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on a <qualitativeSpecies>.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020303,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <qualitativeSpecies> object must have the required attributes 'qual:id', 'qual:compartment' and 'qual:constant', and may have the optional attributes 'qual:name', 'qual:initialLevel' and 'qual:maxLevel'. No other attributes from the SBML Level 3 Qualitative Models namespace are permitted on a <qualitativeSpecies> object.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020304,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:constant' in <qualitativeSpecies> must be of the data type Boolean.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020306,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:initialLevel' in <qualitativeSpecies> must be of the data type integer.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020307,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:maxLevel' in <qualitativeSpecies> must be of the data type integer.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020308,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of the attribute 'qual:compartment' in a <qualitativeSpecies> object must be the identifier of an existing <compartment> object defined in the enclosing <model> object.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020309,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of the attribute 'qual:initialLevel' in a <qualitativeSpecies> object cannot be greater than the value of the 'qual:maxLevel' attribute for the given <qualitativeSpecies> object.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020310,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <qualitativeSpecies> with attribute 'qual:constant' set to 'true' can only be referred to by an <input>. It cannot be the subject of an <output> in a <transition>.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020311,
+    "package": "qual",
+    "severity": "warning",
+    "message": "A <qualitativeSpecies> that is referenced by an <output> with the 'qual:transitionEffect' attribute set to 'assignmentLevel' should not be referenced by any other <output> with the same 'transitionEffect' throughout the set of transitions for the containing model.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020312,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:initialLevel' in <qualitativeSpecies> must not be negative.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020313,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:maxLevel' in <qualitativeSpecies> must not be negative.",
+    "section": "L3V1 Qual V1 Section 3.5"
+  },
+  {
+    "id": 3020401,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <transition> object may have the optional 'metaid' and 'sboTerm' defined by SBML Level 3 Core. No other attributes from the SBML Level 3 Core namespace or the Qualitative Models namespace are permitted on a <transition> object.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020402,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <transition> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on a <transition>.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020403,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <transition> object may have the optional attributes 'qual:name' and 'qual:id'. No other attributes from the SBML Level 3 Qualitative Models namespace are permitted on a <transition> object.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020405,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <transition> must have one and only one instance of the <listOfFunctionTerms> objects and may have at most one instance of the <listOfInputs> and <listOfOutputs> objects from the Qualitative Models namespace.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020406,
+    "package": "qual",
+    "severity": "error",
+    "message": "The <listOfInputs> and <listOfOutputs> subobjects on a <transition> object are optional, but if present, these container object must not be empty.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020407,
+    "package": "qual",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfInputs> container object may only contain <input> objects.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020408,
+    "package": "qual",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfOutputs> container object may only contain <output> objects.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020409,
+    "package": "qual",
+    "severity": "error",
+    "message": "Apart from the general notes and annotation subobjects permitted on all SBML objects, a <listOfFunctionTerms> container object must contain one and only one <defaultTerm> object and then may only contain <functionTerm> objects.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020413,
+    "package": "qual",
+    "severity": "error",
+    "message": "No element of the <listOfFunctionTerms> object may cause the level of a <qualitativeSpecies> to exceed the value 'qual:maxLevel' attribute.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020414,
+    "package": "qual",
+    "severity": "error",
+    "message": "No element of the <listOfFunctionTerms> object may cause the level of a <qualitativeSpecies> to become negative.",
+    "section": "L3V1 Qual V1 Section 3.6"
+  },
+  {
+    "id": 3020501,
+    "package": "qual",
+    "severity": "error",
+    "message": "An <input> object may have the optional 'metaid' and 'sboTerm' defined by SBML Level 3 Core. No other attributes from the SBML Level 3 Core namespace or the Qualitative Models namespace are permitted on an <input> object.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020502,
+    "package": "qual",
+    "severity": "error",
+    "message": "An <input> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on an <input>.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020503,
+    "package": "qual",
+    "severity": "error",
+    "message": "An <input> object must have the required attributes 'qual:qualitativeSpecies' as well as 'qual:transitionEffect' and may have the optional attributes 'qual:id', 'qual:name', 'qual:sign' and 'qual:thresholdLevel'. No other attributes from the SBML Level 3 Qualitative Models namespace are permitted on an <input> object.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020505,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of the attribute 'qual:sign' of an <input> object must conform to the syntax of the SBML data type 'sign' and may only take on the allowed values of 'sign' defined in SBML; that is, the value must be one of the following: 'positive', 'negative', 'dual' or 'unknown'.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020506,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of the attribute 'qual:transitionEffect' of an <input> object must conform to the syntax of the SBML data type 'transitionInputEffect' and may only take on the allowed values of 'transitionInputEffect' defined in SBML; that is, the value must be one of the following: 'none' or 'consumption'.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020507,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:thresholdLevel' in <input> must be of the data type 'integer'.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020508,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of the attribute 'qual:qualitativeSpecies' in an <input> object must be the identifier of an existing <qualitativeSpecies> object defined in the enclosing <model> object.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020509,
+    "package": "qual",
+    "severity": "error",
+    "message": "An <input> that refers to a <qualitativeSpecies> that has a 'qual:constant' attribute set to 'true' cannot have the attribute 'qual:transitionEffect' set to 'consumption'.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020510,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:thresholdLevel' in <input> must not be negative.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020601,
+    "package": "qual",
+    "severity": "error",
+    "message": "An <output> object may have the optional 'metaid' and 'sboTerm' defined by SBML Level 3 Core. No other attributes from the SBML Level 3 Core namespace or the Qualitative Models namespace are permitted on an <output> object.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020602,
+    "package": "qual",
+    "severity": "error",
+    "message": "An <output> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on an <output>.",
+    "section": "L3V1 Qual V1 Section 3.6.1"
+  },
+  {
+    "id": 3020603,
+    "package": "qual",
+    "severity": "error",
+    "message": "An <output> object must have the required attributes 'qual:qualitativeSpecies' as well as 'qual:transitionEffect' and may have the optional attributes 'qual:id', 'qual:name' and 'qual:outputLevel'. No other attributes from the SBML Level 3 Qualitative Models namespace are permitted on an <output> object.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020605,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of the attribute 'qual:transitionEffect' of an <output> object must conform to the syntax of the SBML data type 'transitionOutputEffect' and may only take on the allowed values of 'transitionOutputEffect' defined in SBML; that is, the value must be one of the following: 'production' or 'assignmentLevel'.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020606,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:outputLevel' in <output> must be of the data type 'integer'.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020607,
+    "package": "qual",
+    "severity": "error",
+    "message": "The value of the attribute 'qual:qualitativeSpecies' in an <output> object must be the identifier of an existing <qualitativeSpecies> object defined in the enclosing <model> object.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020608,
+    "package": "qual",
+    "severity": "error",
+    "message": "The <qualitativeSpecies> referred to by the attribute 'qual:qualitativeSpecies' in an <output> object must have the value of its 'qual:constant' attribute set to 'false'.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020609,
+    "package": "qual",
+    "severity": "error",
+    "message": "When the value of the attribute 'qual:transitionEffect' of an <output> object is set to the value 'production' the attribute 'qual:outputLevel' for that particular <output> object must have a value set.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020610,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:outputLevel' in <output> must not be negative.",
+    "section": "L3V1 Qual V1 Section 3.6.2"
+  },
+  {
+    "id": 3020701,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <defaultTerm> object may have the optional 'metaid' and 'sboTerm' defined by SBML Level 3 Core. No other attributes from the SBML Level 3 Core namespace or the Qualitative Models namespace are permitted on a <defaultTerm> object.",
+    "section": "L3V1 Qual V1 Section 3.6.4"
+  },
+  {
+    "id": 3020702,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <defaultTerm> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on a <defaultTerm>.",
+    "section": "L3V1 Qual V1 Section 3.6.4"
+  },
+  {
+    "id": 3020703,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <defaultTerm> object must have the required attributes 'qual:resultLevel'. No other attributes from the SBML Level 3 Qualitative Models namespace are permitted on a <defaultTerm> object.",
+    "section": "L3V1 Qual V1 Section 3.6.4"
+  },
+  {
+    "id": 3020704,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:resultLevel' in <defaultTerm> must be of the data type 'integer'.",
+    "section": "L3V1 Qual V1 Section 3.6.4"
+  },
+  {
+    "id": 3020705,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:resultLevel' in <defaultTerm> must not be negative.",
+    "section": "L3V1 Qual V1 Section 3.6.4"
+  },
+  {
+    "id": 3020801,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <functionTerm> object may have the optional 'metaid' and 'sboTerm' defined by SBML Level 3 Core. No other attributes from the SBML Level 3 Core namespace or the Qualitative Models namespace are permitted on a <functionTerm> object.",
+    "section": "L3V1 Qual V1 Section 3.6.5"
+  },
+  {
+    "id": 3020802,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <functionTerm> object may have the optional SBML Level 3 Core subobjects for notes and annotations. No other elements from the SBML Level 3 Core namespaces are permitted on a <functionTerm>.",
+    "section": "L3V1 Qual V1 Section 3.6.5"
+  },
+  {
+    "id": 3020803,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <functionTerm> object must have the required attributes 'qual:resultLevel'. No other attributes from the SBML Level 3 Qualitative Models namespace are permitted on a <functionTerm> object.",
+    "section": "L3V1 Qual V1 Section 3.6.5"
+  },
+  {
+    "id": 3020804,
+    "package": "qual",
+    "severity": "error",
+    "message": "A <functionTerm> object may contain exactly one MathML <math> element. No other elements from the SBML Level 3 Qualitative Models namespace are permitted on a <functionTerm> object.",
+    "section": "L3V1 Qual V1 Section 3.6.5"
+  },
+  {
+    "id": 3020805,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:resultLevel' in <functionTerm> must be of the data type 'integer'.",
+    "section": "L3V1 Qual V1 Section 3.6.5"
+  },
+  {
+    "id": 3020806,
+    "package": "qual",
+    "severity": "error",
+    "message": "The attribute 'qual:resultLevel' in <functionTerm> must not be negative.",
+    "section": "L3V1 Qual V1 Section 3.6.5"
+  }
+]

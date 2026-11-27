@@ -18,7 +18,7 @@ use crate::{
 /// Per-build source indexing, shared by core and package projections.
 #[derive(Default)]
 pub(crate) struct BuildContext {
-    capture: bool,
+    pub(crate) capture: bool,
     positions: std::cell::RefCell<crate::SourcePositions>,
 }
 
@@ -102,23 +102,31 @@ pub(crate) fn sbase(
         meta_id: element.meta_id.clone(),
         name: element.name.clone(),
         sbo: element.sbo.clone(),
-        notes: element.notes.clone(),
-        xml: element.xml.clone(),
-        cvterms: cvterms(element),
-        history: element.history.as_ref().map(|history| crate::ModelHistory {
-            creators: history
-                .creators
-                .iter()
-                .map(|creator| crate::Creator {
-                    given_name: creator.given_name.clone(),
-                    family_name: creator.family_name.clone(),
-                    organization: creator.organization.clone(),
-                    email: creator.email.clone(),
-                })
-                .collect(),
-            created_date: history.created_date.clone(),
-            modified_dates: history.modified_dates.clone(),
-        }),
+        notes: (!context.capture).then(|| element.notes.clone()).flatten(),
+        xml: (!context.capture).then(|| element.xml.clone()).flatten(),
+        cvterms: if context.capture {
+            vec![]
+        } else {
+            cvterms(element)
+        },
+        history: element
+            .history
+            .as_ref()
+            .filter(|_| !context.capture)
+            .map(|history| crate::ModelHistory {
+                creators: history
+                    .creators
+                    .iter()
+                    .map(|creator| crate::Creator {
+                        given_name: creator.given_name.clone(),
+                        family_name: creator.family_name.clone(),
+                        organization: creator.organization.clone(),
+                        email: creator.email.clone(),
+                    })
+                    .collect(),
+                created_date: history.created_date.clone(),
+                modified_dates: history.modified_dates.clone(),
+            }),
         ..SBase::new(pk::of(scope, sbml_type, key), sbml_type)
     };
     if context.capture && element.line > 0 {
@@ -215,7 +223,14 @@ const fn rule_type(kind: RuleKind) -> &'static str {
 ///
 /// [`BuildError::Math`] for a tree no writer of [`crate::math`] writes, which the filler refuses to
 /// hand over: it exists so that nothing here unwraps a value a document controls.
-fn math_of(ast: Option<&Ast>, pk: &str) -> Result<Option<Math>, BuildError> {
+fn math_of(
+    context: &BuildContext,
+    ast: Option<&Ast>,
+    pk: &str,
+) -> Result<Option<Math>, BuildError> {
+    if context.capture {
+        return Ok(None);
+    }
     ast.map(crate::math::math)
         .transpose()
         .map_err(|source| BuildError::Math {
@@ -321,7 +336,7 @@ fn function_definition(
         &fd.element,
         key,
     );
-    let math = math_of(fd.math.as_ref(), &sbase.pk)?;
+    let math = math_of(context, fd.math.as_ref(), &sbase.pk)?;
     Ok(ReportFunctionDefinition { sbase, math })
 }
 
@@ -360,7 +375,7 @@ fn initial_assignment(
         &ia.element,
         &key,
     );
-    let math = math_of(ia.math.as_ref(), &sbase.pk)?;
+    let math = math_of(context, ia.math.as_ref(), &sbase.pk)?;
     Ok(ReportInitialAssignment {
         sbase,
         symbol: ia.symbol.clone(),
@@ -385,7 +400,7 @@ fn rule(
 ) -> Result<ReportRule, BuildError> {
     let key = key_of_target(&r.element, r.variable.as_deref(), place);
     let sbase = sbase(context, scope, rule_type(r.kind), &r.element, &key);
-    let math = math_of(r.math.as_ref(), &sbase.pk)?;
+    let math = math_of(context, r.math.as_ref(), &sbase.pk)?;
     Ok(ReportRule {
         sbase,
         // the class of the algebraic rule declares no variable, so its object carries no such
@@ -415,7 +430,7 @@ fn constraint(
     c: &Constraint,
 ) -> Result<ReportConstraint, BuildError> {
     let sbase = sbase(context, scope, Constraint::SBML_TYPE, &c.element, key);
-    let math = math_of(c.math.as_ref(), &sbase.pk)?;
+    let math = math_of(context, c.math.as_ref(), &sbase.pk)?;
     Ok(ReportConstraint {
         sbase,
         math,
@@ -584,7 +599,7 @@ fn kinetic_law(
         &law.element,
         &pk::key(&law.element, || derived.clone()),
     );
-    let math = math_of(law.math.as_ref(), &sbase.pk)?;
+    let math = math_of(context, law.math.as_ref(), &sbase.pk)?;
     Ok(ReportKineticLaw {
         sbase,
         math,
@@ -649,7 +664,7 @@ fn trigger(
 ) -> Result<ReportTrigger, BuildError> {
     let key = pk::key(&t.element, || format!("{event_key}.trigger"));
     let sbase = sbase(context, scope, "Trigger", &t.element, &key);
-    let math = math_of(t.math.as_ref(), &sbase.pk)?;
+    let math = math_of(context, t.math.as_ref(), &sbase.pk)?;
     Ok(ReportTrigger {
         sbase,
         math,
@@ -676,7 +691,7 @@ fn math_element(
 ) -> Result<(SBase, Option<Math>), BuildError> {
     let key = pk::key(&element.element, || format!("{event_key}.{name}"));
     let sbase = sbase(context, scope, sbml_type, &element.element, &key);
-    let math = math_of(element.math.as_ref(), &sbase.pk)?;
+    let math = math_of(context, element.math.as_ref(), &sbase.pk)?;
     Ok((sbase, math))
 }
 
@@ -736,7 +751,7 @@ fn event_assignments(
     let mut assignments = Vec::with_capacity(list.len());
     for (ea, key) in list.iter().zip(keys) {
         let sbase = sbase(context, scope, "EventAssignment", &ea.element, &key);
-        let math = math_of(ea.math.as_ref(), &sbase.pk)?;
+        let math = math_of(context, ea.math.as_ref(), &sbase.pk)?;
         assignments.push(ReportEventAssignment {
             sbase,
             variable: ea.variable.clone(),
@@ -999,6 +1014,8 @@ fn with_context(context: &BuildContext, document: &Document) -> Result<Report, B
             document.packages.iter().any(|p| p.name == "fbc"),
         );
     }
-    crate::units::apply(document, &mut report)?;
+    if !context.capture {
+        crate::units::apply(document, &mut report)?;
+    }
     Ok(report)
 }

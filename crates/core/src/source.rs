@@ -85,7 +85,7 @@ fn archive_error(error: pymetadata_core::error::OmexError) -> ReportError {
         message: error.to_string(),
     }
 }
-fn sbml(format: &str) -> bool {
+pub(crate) fn sbml(format: &str) -> bool {
     format.contains("identifiers.org/combine.specifications/sbml")
         || format.contains("identifiers.org/combine.specifications:sbml")
 }
@@ -93,7 +93,7 @@ fn derived(location: &str) -> bool {
     matches!(location, "." | "./manifest.xml")
 }
 type OpenedArchive = (Reader, Vec<Entry>, BTreeMap<String, usize>);
-fn archive_members(
+pub(crate) fn archive_members(
     source: &[u8],
     limits: &SourceLimits,
 ) -> Result<Option<OpenedArchive>, ReportError> {
@@ -291,6 +291,61 @@ pub struct PreparedSource {
     pub unavailable: Vec<String>,
 }
 impl PreparedSource {
+    /// Admit recursively named companions through an explicit, confined source adapter.
+    ///
+    /// # Errors
+    /// Propagates source-adapter failures; unreadable models remain known locations.
+    pub(crate) fn admit_companions(
+        &mut self,
+        options: &SourceOptions,
+        mut load: impl FnMut(&str) -> Result<Option<Vec<u8>>, ReportError>,
+    ) -> Result<(), ReportError> {
+        let mut seen: HashSet<_> = self
+            .entries
+            .iter()
+            .filter_map(|entry| sbml4humans_model::locations::normalize_location(&entry.location))
+            .collect();
+        let mut next = 0;
+        while next < self.entries.len() {
+            let entry = &self.entries[next];
+            let targets: Vec<_> = sbml4humans_model::packages::children(
+                &entry.document.element,
+                "comp",
+                "listOfExternalModelDefinitions",
+            )
+            .into_iter()
+            .filter_map(|definition| {
+                sbml4humans_model::locations::resolve_source(
+                    &entry.location,
+                    sbml4humans_model::packages::attr(definition, "source")?,
+                )
+            })
+            .collect();
+            next += 1;
+            for target in targets {
+                if !seen.insert(target.clone()) {
+                    continue;
+                }
+                let Some(bytes) = load(&target)? else {
+                    continue;
+                };
+                let location = format!("./{target}");
+                let mut options = options.clone();
+                options.location = location.clone();
+                match prepare(&bytes, &options) {
+                    Ok(mut companion) if !companion.archive && companion.entries.len() == 1 => {
+                        self.manifest.push(
+                            Entry::new(&location, lookup_format("sbml"), false)
+                                .map_err(archive_error)?,
+                        );
+                        self.entries.append(&mut companion.entries);
+                    }
+                    _ => self.unavailable.push(location),
+                }
+            }
+        }
+        Ok(())
+    }
     /// Borrow the admitted documents for shared report analysis.
     pub fn documents(&self) -> Vec<SourceDocument<'_>> {
         self.entries

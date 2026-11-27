@@ -398,7 +398,7 @@ pub fn export_model(
         .ok_or("The source has no selected SBML entry.")?;
     let reports = sources
         .iter()
-        .map(|s| crate::build::unlinked(s.document))
+        .map(|s| crate::build::indexed(s.document).map(|(report, _)| report))
         .collect::<Result<Vec<_>, _>>()
         .map_err(|e| e.to_string())?;
     let context = Context::new(sources, &reports, locations, budget);

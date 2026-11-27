@@ -103,11 +103,15 @@ pub(crate) fn validation_source(
     trusted: bool,
     options: &str,
 ) -> PyResult<SourceValidation> {
-    let options = crate::parse_options(options)?;
+    let options = crate::host_options(options)?;
     py.detach(|| {
-        let prepared =
-            sbml4humans_core::prepare_path(std::path::Path::new(path), trusted, &options)
-                .map_err(crate::source_error)?;
+        let prepared = sbml4humans_core::prepare_host_path(
+            std::path::Path::new(path),
+            trusted,
+            &options.source,
+            options.entry.as_deref(),
+        )
+        .map_err(crate::source_error)?;
         let indices = prepared.indices().map_err(crate::source_error)?;
         let locations = prepared
             .entries
@@ -117,12 +121,12 @@ pub(crate) fn validation_source(
         let mut skipped = std::collections::HashSet::new();
         // libSBML's file reader preserves original encoding diagnostics. Keep all
         // temporary files inside the host worker's TMPDIR and remove them after reading.
-        let directory = tempfile::tempdir().map_err(|e| PyValueError::new_err(e.to_string()))?;
+        let directory = tempfile::tempdir().map_err(|e| crate::source_error(e.into()))?;
         let mut sources = Vec::with_capacity(prepared.entries.len());
         for (number, (entry, index)) in prepared.entries.into_iter().zip(indices).enumerate() {
             if index
                 .expanded_size
-                .is_some_and(|size| size > options.max_expanded_elements as u128)
+                .is_some_and(|size| size > options.source.max_expanded_elements as u128)
             {
                 skipped.insert(
                     sbml4humans_core::normalize_location(&entry.location)
@@ -130,7 +134,7 @@ pub(crate) fn validation_source(
                 );
             }
             let path = directory.path().join(format!("{number}.xml"));
-            std::fs::write(&path, entry.xml).map_err(|e| PyValueError::new_err(e.to_string()))?;
+            std::fs::write(&path, entry.xml).map_err(|e| crate::source_error(e.into()))?;
             sources.push(ValidationSource {
                 location: entry.location.clone(),
                 uri: directory
@@ -157,4 +161,22 @@ pub(crate) fn validation_source(
             skipped,
         })
     })
+}
+
+/// Resolve rule documentation through the validator's own tables.
+#[pyfunction]
+pub(crate) fn rule_json<'py>(py: Python<'py>, code: u32) -> PyResult<Bound<'py, PyBytes>> {
+    let output = py
+        .detach(|| {
+            let rule = sbml4humans_libsbml::validation_rule(code)?;
+            serde_json::to_vec(&rule).map_err(|e| ValidationError::Invalid(e.to_string()))
+        })
+        .map_err(error)?;
+    Ok(PyBytes::new(py, &output))
+}
+/// Identify the specification a validation rule belongs to.
+#[pyfunction]
+pub(crate) fn rule_package(py: Python<'_>, code: u32) -> PyResult<String> {
+    py.detach(|| sbml4humans_libsbml::rule_package(code))
+        .map_err(error)
 }

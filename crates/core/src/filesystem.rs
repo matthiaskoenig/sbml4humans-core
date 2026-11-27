@@ -1,11 +1,6 @@
 //! Operator-selected paths use the same source reader with bounded local companions.
 use crate::{PreparedSource, ReportError, SourceOptions, prepare};
-use pymetadata_core::{formats::lookup_format, manifest::Entry};
-use sbml4humans_model::{
-    locations::resolve_source,
-    packages::{attr, children},
-};
-use std::{collections::HashSet, io::Read, path::Path};
+use std::{io::Read, path::Path};
 
 fn input_error(error: impl std::fmt::Display) -> ReportError {
     ReportError {
@@ -38,10 +33,10 @@ pub fn prepare_path(
     }
     let mut source = Vec::new();
     std::fs::File::open(path)
-        .map_err(input_error)?
+        .map_err(ReportError::from)?
         .take((options.limits.max_content_size as u64).saturating_add(1))
         .read_to_end(&mut source)
-        .map_err(input_error)?;
+        .map_err(ReportError::from)?;
     if trusted && source.starts_with(&[0x1f, 0x8b]) {
         options.location = options
             .location
@@ -61,50 +56,15 @@ pub fn prepare_path(
         .parent()
         .unwrap_or(Path::new("."))
         .canonicalize()
-        .map_err(input_error)?;
-    let mut seen: HashSet<_> = prepared
-        .entries
-        .iter()
-        .filter_map(|entry| sbml4humans_model::locations::normalize_location(&entry.location))
-        .collect();
-    let mut next = 0;
-    while next < prepared.entries.len() {
-        let entry = &prepared.entries[next];
-        let companions: Vec<_> = children(
-            &entry.document.element,
-            "comp",
-            "listOfExternalModelDefinitions",
-        )
-        .into_iter()
-        .filter_map(|definition| resolve_source(&entry.location, attr(definition, "source")?))
-        .collect();
-        next += 1;
-        for location in companions {
-            if !seen.insert(location.clone()) {
-                continue;
-            }
-            let Ok(path) = root.join(&location).canonicalize() else {
-                continue;
-            };
-            if !path.starts_with(&root) || !path.is_file() {
-                continue;
-            }
-            let location = format!("./{location}");
-            let mut companion_options = options.clone();
-            companion_options.location = location.clone();
-            let companion = std::fs::read(&path)
-                .map_err(input_error)
-                .and_then(|bytes| prepare(&bytes, &companion_options));
-            match companion {
-                Ok(mut companion) if !companion.archive && companion.entries.len() == 1 => {
-                    prepared.manifest.push(
-                        Entry::new(&location, lookup_format("sbml"), false).map_err(input_error)?,
-                    );
-                    prepared.entries.append(&mut companion.entries);
-                }
-                _ => prepared.unavailable.push(location),
-            }
+        .map_err(ReportError::from)?;
+    prepared.admit_companions(&options, |location| {
+        let Ok(path) = root.join(location).canonicalize() else {
+            return Ok(None);
+        };
+        if !path.starts_with(&root) || !path.is_file() {
+            return Ok(None);
         }
-    }
+        std::fs::read(path).map(Some).map_err(ReportError::from)
+    })?;
     Ok(prepared)
 }
