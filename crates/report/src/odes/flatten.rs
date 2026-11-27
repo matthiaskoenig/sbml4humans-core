@@ -462,6 +462,20 @@ impl<'a> Flatten<'a> {
             }
         }
     }
+    fn converted_assignment(&self, math: &mut Option<Ast>, instance: usize, variable: &str) {
+        let factor = self.instances[instance]
+            .sids
+            .get(variable)
+            .and_then(|target| self.conversion.get(&target.key()));
+        if let Some((parent, factor)) = factor
+            && let Some(rhs) = math.take()
+        {
+            *math = Some(node(
+                AstKind::Times,
+                vec![rhs, name(&self.lookup(*parent, factor, false))],
+            ));
+        }
+    }
     fn keep(&self, instance: usize, element: &Element) -> bool {
         !self
             .removed
@@ -530,16 +544,27 @@ impl<'a> Flatten<'a> {
         }
         for a in &mut out.initial_assignments {
             self.base(&mut a.element, instance, false);
-            a.symbol = self.lookup(instance, &a.symbol, false);
             self.math(&mut a.math, instance, &none);
+            self.converted_assignment(&mut a.math, instance, &a.symbol);
+            a.symbol = self.lookup(instance, &a.symbol, false);
         }
         for r in &mut out.rules {
             self.base(&mut r.element, instance, false);
+            self.math(&mut r.math, instance, &none);
+            if let Some(variable) = &r.variable {
+                self.converted_assignment(&mut r.math, instance, variable);
+            }
             r.variable = r
                 .variable
                 .as_deref()
                 .map(|s| self.lookup(instance, s, false));
-            self.math(&mut r.math, instance, &none);
+            let time = self.factors(instance, "timeConversionFactor");
+            if r.kind == RuleKind::Rate
+                && !time.is_empty()
+                && let Some(math) = r.math.take()
+            {
+                r.math = Some(node(AstKind::Divide, vec![math, product(time)]));
+            }
         }
         for c in &mut out.constraints {
             self.base(&mut c.element, instance, false);
@@ -635,10 +660,17 @@ impl<'a> Flatten<'a> {
             }
             if let Some(d) = &mut e.delay {
                 self.math(&mut d.math, instance, &none);
+                let time = self.factors(instance, "timeConversionFactor");
+                if !time.is_empty()
+                    && let Some(math) = d.math.take()
+                {
+                    d.math = Some(node(AstKind::Times, vec![product(time), math]));
+                }
             }
             for a in &mut e.event_assignments {
-                a.variable = self.lookup(instance, &a.variable, false);
                 self.math(&mut a.math, instance, &none);
+                self.converted_assignment(&mut a.math, instance, &a.variable);
+                a.variable = self.lookup(instance, &a.variable, false);
             }
         }
         out

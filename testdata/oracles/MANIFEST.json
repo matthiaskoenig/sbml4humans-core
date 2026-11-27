@@ -238,6 +238,14 @@
     {
       "source": "level2_spatial_size.xml",
       "fixture": "level2_spatial_size.json"
+    },
+    {
+      "source": "comp_time_rules.xml",
+      "fixture": "comp_time_rules.json"
+    },
+    {
+      "source": "comp_target_conversion.xml",
+      "fixture": "comp_target_conversion.json"
     }
   ]
 }

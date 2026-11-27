@@ -73,7 +73,7 @@ Open <http://localhost:8080/js/example/>. Load the bundled comp example or choos
 
 ## Verification
 
-The complete report is compared field by field against committed Python snapshots for 52 standalone fixtures and 70 corpus models, including Recon3D, with no excluded fields. Both pure Rust and the temporary native oracle are checked. Additional gates cover 6,300 unit factors, 312 inference contexts, 1,834 mathematical expressions, equation formatting, package references, encodings and deep inputs. Node tests exercise the built WASM artifact against every standalone fixture, plain and gzipped. Chromium tests check full report parity, worker responsiveness, cancellation, recovery and the example page.
+The complete report is compared field by field against committed Python snapshots for 54 standalone fixtures and 70 corpus models, including Recon3D, with no excluded fields. Both pure Rust and the temporary native oracle are checked. Additional gates cover 6,300 unit factors, 312 inference contexts, 1,834 mathematical expressions, equation formatting, package references, encodings and deep inputs. Node tests exercise the built WASM artifact against every standalone fixture, plain and gzipped. Chromium tests check full report parity, worker responsiveness, cancellation, recovery and the example page.
 
 The temporary `libsbml` crate is oracle scaffolding. Only native oracle and report tests require its prefix; production builds do not. Build the test prefix or point at an existing libSBML 5.21.2 installation:
 

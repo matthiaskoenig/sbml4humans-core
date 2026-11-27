@@ -1,0 +1,804 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": null,
+    "packages": [
+      {
+        "prefix": "comp",
+        "version": 1
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 2,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "comp_target_conversion/Model:comp_target_conversion",
+        "targetEntry": null
+      },
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "cell/Model:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_target_conversion/Parameter:P",
+        "target": "comp_target_conversion/ReplacedElement:P.replacedElement.sub.p",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_target_conversion/ReplacedElement:P.replacedElement.sub.p",
+        "target": "comp_target_conversion/Submodel:sub",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_target_conversion/ReplacedElement:P.replacedElement.sub.p",
+        "target": "cell/Parameter:p",
+        "targetEntry": null
+      },
+      {
+        "kind": "conversionFactor",
+        "source": "comp_target_conversion/ReplacedElement:P.replacedElement.sub.p",
+        "target": "comp_target_conversion/Parameter:cf",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_target_conversion/Parameter:Q",
+        "target": "comp_target_conversion/ReplacedElement:Q.replacedElement.sub.q",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_target_conversion/ReplacedElement:Q.replacedElement.sub.q",
+        "target": "comp_target_conversion/Submodel:sub",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_target_conversion/ReplacedElement:Q.replacedElement.sub.q",
+        "target": "cell/Parameter:q",
+        "targetEntry": null
+      },
+      {
+        "kind": "conversionFactor",
+        "source": "comp_target_conversion/ReplacedElement:Q.replacedElement.sub.q",
+        "target": "comp_target_conversion/Parameter:cf",
+        "targetEntry": null
+      },
+      {
+        "kind": "modelRef",
+        "source": "comp_target_conversion/Submodel:sub",
+        "target": "cell/Model:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "timeConversionFactor",
+        "source": "comp_target_conversion/Submodel:sub",
+        "target": "comp_target_conversion/Parameter:tc",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "cell/InitialAssignment:p",
+        "target": "cell/Parameter:p",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "cell/AssignmentRule:q",
+        "target": "cell/Parameter:q",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "cell/AssignmentRule:q",
+        "target": "cell/Parameter:p",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "cell/RateRule:p",
+        "target": "cell/Parameter:p",
+        "targetEntry": null
+      },
+      {
+        "kind": "trigger",
+        "source": "cell/Event:e",
+        "target": "cell/Trigger:e.trigger",
+        "targetEntry": null
+      },
+      {
+        "kind": "delay",
+        "source": "cell/Event:e",
+        "target": "cell/Delay:e.delay",
+        "targetEntry": null
+      },
+      {
+        "kind": "eventAssignment",
+        "source": "cell/Event:e",
+        "target": "cell/EventAssignment:e.p",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "cell/EventAssignment:e.p",
+        "target": "cell/Parameter:p",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "cell/AssignmentRule:q": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/AssignmentRule:q",
+        "sbmlType": "AssignmentRule"
+      },
+      "cell/Delay:e.delay": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Delay:e.delay",
+        "sbmlType": "Delay"
+      },
+      "cell/Event:e": {
+        "id": "e",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Event:e",
+        "sbmlType": "Event"
+      },
+      "cell/EventAssignment:e.p": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/EventAssignment:e.p",
+        "sbmlType": "EventAssignment"
+      },
+      "cell/InitialAssignment:p": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/InitialAssignment:p",
+        "sbmlType": "InitialAssignment"
+      },
+      "cell/Model:cell": {
+        "id": "cell",
+        "model": null,
+        "name": null,
+        "pk": "cell/Model:cell",
+        "sbmlType": "Model"
+      },
+      "cell/Parameter:p": {
+        "id": "p",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Parameter:p",
+        "sbmlType": "Parameter"
+      },
+      "cell/Parameter:q": {
+        "id": "q",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Parameter:q",
+        "sbmlType": "Parameter"
+      },
+      "cell/RateRule:p": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/RateRule:p",
+        "sbmlType": "RateRule"
+      },
+      "cell/Trigger:e.trigger": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Trigger:e.trigger",
+        "sbmlType": "Trigger"
+      },
+      "comp_target_conversion/Model:comp_target_conversion": {
+        "id": "comp_target_conversion",
+        "model": null,
+        "name": null,
+        "pk": "comp_target_conversion/Model:comp_target_conversion",
+        "sbmlType": "Model"
+      },
+      "comp_target_conversion/Parameter:P": {
+        "id": "P",
+        "model": "comp_target_conversion/Model:comp_target_conversion",
+        "name": null,
+        "pk": "comp_target_conversion/Parameter:P",
+        "sbmlType": "Parameter"
+      },
+      "comp_target_conversion/Parameter:Q": {
+        "id": "Q",
+        "model": "comp_target_conversion/Model:comp_target_conversion",
+        "name": null,
+        "pk": "comp_target_conversion/Parameter:Q",
+        "sbmlType": "Parameter"
+      },
+      "comp_target_conversion/Parameter:cf": {
+        "id": "cf",
+        "model": "comp_target_conversion/Model:comp_target_conversion",
+        "name": null,
+        "pk": "comp_target_conversion/Parameter:cf",
+        "sbmlType": "Parameter"
+      },
+      "comp_target_conversion/Parameter:tc": {
+        "id": "tc",
+        "model": "comp_target_conversion/Model:comp_target_conversion",
+        "name": null,
+        "pk": "comp_target_conversion/Parameter:tc",
+        "sbmlType": "Parameter"
+      },
+      "comp_target_conversion/ReplacedElement:P.replacedElement.sub.p": {
+        "id": null,
+        "model": "comp_target_conversion/Model:comp_target_conversion",
+        "name": null,
+        "pk": "comp_target_conversion/ReplacedElement:P.replacedElement.sub.p",
+        "sbmlType": "ReplacedElement"
+      },
+      "comp_target_conversion/ReplacedElement:Q.replacedElement.sub.q": {
+        "id": null,
+        "model": "comp_target_conversion/Model:comp_target_conversion",
+        "name": null,
+        "pk": "comp_target_conversion/ReplacedElement:Q.replacedElement.sub.q",
+        "sbmlType": "ReplacedElement"
+      },
+      "comp_target_conversion/Submodel:sub": {
+        "id": "sub",
+        "model": "comp_target_conversion/Model:comp_target_conversion",
+        "name": null,
+        "pk": "comp_target_conversion/Submodel:sub",
+        "sbmlType": "Submodel"
+      },
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "comp_target_conversion",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "tc",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "comp_target_conversion/Parameter:tc",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 60.0,
+          "xml": "<parameter id=\"tc\" value=\"60\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cf",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "comp_target_conversion/Parameter:cf",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 5.0,
+          "xml": "<parameter id=\"cf\" value=\"5\" constant=\"true\"/>"
+        },
+        {
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": "cf",
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": "p",
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "comp_target_conversion/ReplacedElement:P.replacedElement.sub.p",
+                "portRef": null,
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "sub",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement comp:idRef=\"p\" comp:submodelRef=\"sub\" comp:conversionFactor=\"cf\"/>"
+              }
+            ]
+          },
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "P",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "comp_target_conversion/Parameter:P",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 1.0,
+          "xml": "<parameter id=\"P\" value=\"1\" constant=\"false\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement comp:idRef=\"p\" comp:submodelRef=\"sub\" comp:conversionFactor=\"cf\"/>\n  </comp:listOfReplacedElements>\n</parameter>"
+        },
+        {
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": "cf",
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": "q",
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "comp_target_conversion/ReplacedElement:Q.replacedElement.sub.q",
+                "portRef": null,
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "sub",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement comp:idRef=\"q\" comp:submodelRef=\"sub\" comp:conversionFactor=\"cf\"/>"
+              }
+            ]
+          },
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "Q",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "comp_target_conversion/Parameter:Q",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": null,
+          "xml": "<parameter id=\"Q\" constant=\"false\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement comp:idRef=\"q\" comp:submodelRef=\"sub\" comp:conversionFactor=\"cf\"/>\n  </comp:listOfReplacedElements>\n</parameter>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [],
+      "listOfSpecies": [],
+      "listOfSubmodels": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "extentConversionFactor": null,
+          "history": null,
+          "id": "sub",
+          "keyValuePairs": [],
+          "listOfDeletions": [],
+          "lists": [],
+          "metaId": null,
+          "modelRef": "cell",
+          "name": null,
+          "notes": null,
+          "pk": "comp_target_conversion/Submodel:sub",
+          "sbmlType": "Submodel",
+          "sbo": null,
+          "timeConversionFactor": "tc",
+          "uncertainties": [],
+          "xml": "<comp:submodel comp:id=\"sub\" comp:modelRef=\"cell\" comp:timeConversionFactor=\"tc\"/>"
+        }
+      ],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "comp_target_conversion/Model:comp_target_conversion",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    },
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "cell",
+      "keyValuePairs": [],
+      "kind": "modelDefinition",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [],
+      "listOfConstraints": [],
+      "listOfEvents": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "delay": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "3",
+              "latex": " 3"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "cell/Delay:e.delay",
+            "sbmlType": "Delay",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<delay>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn type=\"integer\"> 3 </cn>\n  </math>\n</delay>"
+          },
+          "history": null,
+          "id": "e",
+          "keyValuePairs": [],
+          "listOfEventAssignments": [
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "math": {
+                "formula": "4",
+                "latex": " 4"
+              },
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "cell/EventAssignment:e.p",
+              "sbmlType": "EventAssignment",
+              "sbo": null,
+              "uncertainties": [],
+              "variable": "p",
+              "xml": "<eventAssignment variable=\"p\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn type=\"integer\"> 4 </cn>\n  </math>\n</eventAssignment>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Event:e",
+          "priority": null,
+          "sbmlType": "Event",
+          "sbo": null,
+          "trigger": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "initialValue": false,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "time > 1",
+              "latex": " \\mathrm{time}>1"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "persistent": true,
+            "pk": "cell/Trigger:e.trigger",
+            "sbmlType": "Trigger",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<trigger initialValue=\"false\" persistent=\"true\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <gt/>\n      <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n      <cn type=\"integer\"> 1 </cn>\n    </apply>\n  </math>\n</trigger>"
+          },
+          "uncertainties": [],
+          "useValuesFromTriggerTime": true,
+          "xml": "<event id=\"e\" useValuesFromTriggerTime=\"true\">\n  <trigger initialValue=\"false\" persistent=\"true\">\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <gt/>\n        <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n        <cn type=\"integer\"> 1 </cn>\n      </apply>\n    </math>\n  </trigger>\n  <delay>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <cn type=\"integer\"> 3 </cn>\n    </math>\n  </delay>\n  <listOfEventAssignments>\n    <eventAssignment variable=\"p\">\n      <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n        <cn type=\"integer\"> 4 </cn>\n      </math>\n    </eventAssignment>\n  </listOfEventAssignments>\n</event>"
+        }
+      ],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "7",
+            "latex": " 7"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/InitialAssignment:p",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "p",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"p\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn type=\"integer\"> 7 </cn>\n  </math>\n</initialAssignment>"
+        }
+      ],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "p",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Parameter:p",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 1.0,
+          "xml": "<parameter id=\"p\" value=\"1\" constant=\"false\"/>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "q",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Parameter:q",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": null,
+          "xml": "<parameter id=\"q\" constant=\"false\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "p * 2",
+            "latex": " \\mathit{p}\\cdot 2"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/AssignmentRule:q",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "q",
+          "xml": "<assignmentRule variable=\"q\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> p </ci>\n      <cn type=\"integer\"> 2 </cn>\n    </apply>\n  </math>\n</assignmentRule>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "2",
+            "latex": " 2"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/RateRule:p",
+          "sbmlType": "RateRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "p",
+          "xml": "<rateRule variable=\"p\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn type=\"integer\"> 2 </cn>\n  </math>\n</rateRule>"
+        }
+      ],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "cell/Model:cell",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [
+      {
+        "lhs": "\\htmlData{pk=comp_target_conversion/Parameter:Q}{Q}",
+        "lines": [
+          "\\frac{\\htmlData{pk=comp_target_conversion/Parameter:P}{P}}{\\htmlData{pk=comp_target_conversion/Parameter:cf}{\\mathrm{cf}}} \\cdot 2 \\cdot \\htmlData{pk=comp_target_conversion/Parameter:cf}{\\mathrm{cf}}"
+        ],
+        "origin": "assignment_rule",
+        "variable": "comp_target_conversion/Parameter:Q"
+      }
+    ],
+    "events": [
+      {
+        "assignments": [
+          {
+            "lhs": "\\htmlData{pk=comp_target_conversion/Parameter:P}{P}",
+            "lines": [
+              "4 \\cdot \\htmlData{pk=comp_target_conversion/Parameter:cf}{\\mathrm{cf}}"
+            ],
+            "origin": "event",
+            "variable": "comp_target_conversion/Parameter:P"
+          }
+        ],
+        "delay": "\\htmlData{pk=comp_target_conversion/Parameter:tc}{\\mathrm{tc}} \\cdot 3",
+        "event": null,
+        "initialValue": false,
+        "label": "sub__e",
+        "persistent": true,
+        "priority": null,
+        "trigger": "\\frac{t}{\\htmlData{pk=comp_target_conversion/Parameter:tc}{\\mathrm{tc}}} > 1",
+        "useValuesFromTriggerTime": true
+      }
+    ],
+    "functions": [],
+    "initial": [
+      {
+        "lhs": "\\htmlData{pk=comp_target_conversion/Parameter:P}{P}",
+        "lines": [
+          "7 \\cdot \\htmlData{pk=comp_target_conversion/Parameter:cf}{\\mathrm{cf}}"
+        ],
+        "origin": "initial_assignment",
+        "variable": "comp_target_conversion/Parameter:P"
+      }
+    ],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=comp_target_conversion/Parameter:P}{P}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{2 \\cdot \\htmlData{pk=comp_target_conversion/Parameter:cf}{\\mathrm{cf}}}{\\htmlData{pk=comp_target_conversion/Parameter:tc}{\\mathrm{tc}}}"
+        ],
+        "origin": "rate_rule",
+        "variable": "comp_target_conversion/Parameter:P"
+      }
+    ],
+    "reactions": [],
+    "unsupported": []
+  }
+}

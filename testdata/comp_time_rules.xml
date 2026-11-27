@@ -1,0 +1,17 @@
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" xmlns:comp="http://www.sbml.org/sbml/level3/version1/comp/version1" level="3" version="2" comp:required="true">
+  <model id="comp_time_rules">
+    <listOfParameters><parameter id="tc" value="60" constant="true"/></listOfParameters>
+    <comp:listOfSubmodels><comp:submodel comp:id="sub" comp:modelRef="cell" comp:timeConversionFactor="tc"/></comp:listOfSubmodels>
+  </model>
+  <comp:listOfModelDefinitions>
+    <comp:modelDefinition id="cell">
+      <listOfParameters><parameter id="p" value="1" constant="false"/></listOfParameters>
+      <listOfRules><rateRule variable="p"><math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">2</cn></math></rateRule></listOfRules>
+      <listOfEvents><event id="e" useValuesFromTriggerTime="true">
+        <trigger persistent="true" initialValue="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><gt/><csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time">time</csymbol><cn type="integer">1</cn></apply></math></trigger>
+        <delay><math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">3</cn></math></delay>
+        <listOfEventAssignments><eventAssignment variable="p"><math xmlns="http://www.w3.org/1998/Math/MathML"><cn type="integer">4</cn></math></eventAssignment></listOfEventAssignments>
+      </event></listOfEvents>
+    </comp:modelDefinition>
+  </comp:listOfModelDefinitions>
+</sbml>
