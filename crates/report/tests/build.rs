@@ -28,15 +28,19 @@ fn doc_with(model: Model) -> Document {
     }
 }
 
-/// Every key of every object of `value`, the nested ones included, without recursing.
+/// Every field key, excluding the authored primary keys of the graph's node map.
 fn keys_of(value: &serde_json::Value) -> Vec<String> {
+    let nodes = value.pointer("/linkGraph/nodes");
     let mut keys = Vec::new();
     let mut stack = vec![value];
     while let Some(value) = stack.pop() {
         match value {
             serde_json::Value::Object(fields) => {
+                let identifier_map = nodes.is_some_and(|nodes| std::ptr::eq(value, nodes));
                 for (key, value) in fields {
-                    keys.push(key.clone());
+                    if !identifier_map {
+                        keys.push(key.clone());
+                    }
                     stack.push(value);
                 }
             }
@@ -75,11 +79,23 @@ fn the_json_of_a_whole_report_holds_the_keys_of_the_contract() {
     assert_eq!(json["document"]["sbmlType"], "SBMLDocument");
     assert_eq!(json["models"].as_array().unwrap().len(), 1);
     assert_eq!(json["externalModelDefinitions"], serde_json::json!([]));
-    // the three the later slices fill, each the empty value python writes where it has nothing
+    // The graph is populated; keep its field contract checked alongside the report.
     assert_eq!(
-        json["linkGraph"],
-        serde_json::json!({"nodes": {}, "edges": []})
+        json["linkGraph"]
+            .as_object()
+            .unwrap()
+            .keys()
+            .map(String::as_str)
+            .collect::<Vec<_>>(),
+        ["edges", "nodes"]
     );
+    assert!(
+        json["linkGraph"]["nodes"]
+            .as_object()
+            .unwrap()
+            .contains_key("document/SBMLDocument:document")
+    );
+    // Equations remain a later slice.
     assert_eq!(json["odeSystem"], serde_json::Value::Null);
     assert_eq!(json["odeError"], serde_json::Value::Null);
     // no key of the report holds an underscore: a type whose `rename_all` was forgotten would

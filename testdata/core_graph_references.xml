@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
+  <model id="graph_refs">
+    <listOfFunctionDefinitions>
+      <functionDefinition id="f">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda><bvar><ci>x</ci></bvar><apply><plus/><ci>x</ci><ci>g</ci></apply></lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfUnitDefinitions>
+      <unitDefinition id="u"><listOfUnits><unit kind="second" exponent="1" scale="0" multiplier="1"/></listOfUnits></unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments><compartment id="c" constant="true"/></listOfCompartments>
+    <listOfSpecies>
+      <species id="S" compartment="c" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="dangling" compartment="missing" hasOnlySubstanceUnits="true" boundaryCondition="true" constant="false"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="x" value="1" constant="false" units="u"/>
+      <parameter id="g" value="2" constant="true"/>
+      <parameter id="S2" value="3" constant="true"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="x">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:sbml="http://www.sbml.org/sbml/level3/version2/core">
+          <apply><plus/><apply><ci>f</ci><ci>g</ci></apply><cn sbml:units="u">1</cn><cn sbml:units="second">2</cn><ci>missing</ci><ci>g</ci></apply>
+        </math>
+      </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfReactions>
+      <reaction id="r" reversible="false" compartment="c">
+        <listOfReactants><speciesReference id="sr" species="S" stoichiometry="1" constant="true"/></listOfReactants>
+        <listOfModifiers><modifierSpeciesReference species="missing"/></listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><ci>g</ci><ci>x</ci><apply><ci>f</ci><ci>S</ci></apply><ci>g</ci></apply></math>
+          <listOfLocalParameters><localParameter id="g" value="3" units="u"/></listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+    <listOfEvents>
+      <event id="e" useValuesFromTriggerTime="true">
+        <trigger initialValue="false" persistent="true"><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><gt/><ci>x</ci><cn>0</cn></apply></math></trigger>
+        <priority><math xmlns="http://www.w3.org/1998/Math/MathML"><ci>g</ci></math></priority>
+        <delay><math xmlns="http://www.w3.org/1998/Math/MathML"><ci>x</ci></math></delay>
+        <listOfEventAssignments><eventAssignment variable="x"><math xmlns="http://www.w3.org/1998/Math/MathML"><ci>g</ci></math></eventAssignment></listOfEventAssignments>
+      </event>
+    </listOfEvents>
+  </model>
+</sbml>

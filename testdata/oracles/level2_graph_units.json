@@ -1,0 +1,347 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 2,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": null,
+    "packages": [
+      {
+        "prefix": "layout",
+        "version": 1
+      },
+      {
+        "prefix": "render",
+        "version": 1
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 4,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "l2_units/Model:l2_units",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "l2_units/Model:l2_units",
+        "target": "l2_units/UnitDefinition:time",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "l2_units/Model:l2_units",
+        "target": "l2_units/UnitDefinition:volume",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "l2_units/Compartment:c",
+        "target": "l2_units/UnitDefinition:volume",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "l2_units/Parameter:time",
+        "target": "l2_units/UnitDefinition:time",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "l2_units/AssignmentRule:p",
+        "target": "l2_units/Parameter:p",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "l2_units/AssignmentRule:p",
+        "target": "l2_units/Parameter:time",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "l2_units/AssignmentRule:p": {
+        "id": null,
+        "model": "l2_units/Model:l2_units",
+        "name": null,
+        "pk": "l2_units/AssignmentRule:p",
+        "sbmlType": "AssignmentRule"
+      },
+      "l2_units/Compartment:c": {
+        "id": "c",
+        "model": "l2_units/Model:l2_units",
+        "name": null,
+        "pk": "l2_units/Compartment:c",
+        "sbmlType": "Compartment"
+      },
+      "l2_units/Model:l2_units": {
+        "id": "l2_units",
+        "model": null,
+        "name": null,
+        "pk": "l2_units/Model:l2_units",
+        "sbmlType": "Model"
+      },
+      "l2_units/Parameter:p": {
+        "id": "p",
+        "model": "l2_units/Model:l2_units",
+        "name": null,
+        "pk": "l2_units/Parameter:p",
+        "sbmlType": "Parameter"
+      },
+      "l2_units/Parameter:time": {
+        "id": "time",
+        "model": "l2_units/Model:l2_units",
+        "name": null,
+        "pk": "l2_units/Parameter:time",
+        "sbmlType": "Parameter"
+      },
+      "l2_units/UnitDefinition:time": {
+        "id": "time",
+        "model": "l2_units/Model:l2_units",
+        "name": null,
+        "pk": "l2_units/UnitDefinition:time",
+        "sbmlType": "UnitDefinition"
+      },
+      "l2_units/UnitDefinition:volume": {
+        "id": "volume",
+        "model": "l2_units/Model:l2_units",
+        "name": null,
+        "pk": "l2_units/UnitDefinition:volume",
+        "sbmlType": "UnitDefinition"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "l2_units",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "l",
+          "history": null,
+          "id": "c",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "l2_units/Compartment:c",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": "volume",
+          "unitsLatex": "l",
+          "xml": "<compartment id=\"c\" size=\"1\" units=\"volume\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "min",
+          "history": null,
+          "id": "time",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "l2_units/Parameter:time",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "time",
+          "unitsLatex": "min",
+          "value": 1.0,
+          "xml": "<parameter id=\"time\" value=\"1\" units=\"time\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "s",
+          "history": null,
+          "id": "p",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "l2_units/Parameter:p",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "second",
+          "unitsLatex": "s",
+          "value": 2.0,
+          "xml": "<parameter id=\"p\" value=\"2\" units=\"second\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "min",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "time + time",
+            "latex": " \\mathit{time}+\\mathrm{clock}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "l2_units/AssignmentRule:p",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "p",
+          "xml": "<assignmentRule variable=\"p\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <plus/>\n      <ci> time </ci>\n      <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> clock </csymbol>\n    </apply>\n  </math>\n</assignmentRule>"
+        }
+      ],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "time",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 60.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "l2_units/UnitDefinition:time",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "min",
+          "xml": "<unitDefinition id=\"time\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"60\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "volume",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "l2_units/UnitDefinition:volume",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "l",
+          "xml": "<unitDefinition id=\"volume\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "l2_units/Model:l2_units",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [
+      {
+        "lhs": "\\htmlData{pk=l2_units/Parameter:p}{p}",
+        "lines": [
+          "\\htmlData{pk=l2_units/Parameter:time}{\\mathrm{time}} + t"
+        ],
+        "origin": "assignment_rule",
+        "variable": "l2_units/Parameter:p"
+      }
+    ],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [],
+    "reactions": [],
+    "unsupported": []
+  }
+}

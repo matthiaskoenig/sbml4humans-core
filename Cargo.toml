@@ -13,6 +13,7 @@ repository = "https://github.com/matthiaskoenig/sbml4humans-core"
 
 [workspace.dependencies]
 cc = "1"
+indexmap = { version = "2", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["float_roundtrip"] }
 thiserror = "2"

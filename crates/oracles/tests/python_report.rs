@@ -9,7 +9,7 @@ use sbml4humans_oracles::{compare, names_a_pointer};
 // The rule of the list, so that the next reader applies it rather than deriving it again: an entry
 // belongs here when the port writes a value which **differs** from the one python writes on a
 // document the gate already has, which is what would make the gate red today. The fabricated `-` of
-// `derivedUnits`, the missing `unitsLatex`, the empty `linkGraph` and the lists of a package are
+// `derivedUnits`, the missing `unitsLatex`, the incomplete package graph and lists of a package are
 // those. A value the port does not build which **agrees** with python on every document of the gate
 // is declared below instead and stays compared: silencing an agreement buys nothing and costs the
 // comparison. No field this slice does build belongs here either, for the same reason: such a field
@@ -99,6 +99,8 @@ const EXCLUDED: &[&str] = &[
     // renderer and not a reader, which sets this line apart from `**/derivedUnits` above, where
     // the port cannot ask libsbml what it derives. Removed by the slice which derives units.
     "**/unitsLatex",
+    // Core graphs are compared separately below. The full graph still differs
+    // on the comp ports of minimal_model, which the package reader does not build.
     "/linkGraph",
     "/odeSystem",
     "/odeError",
@@ -141,6 +143,8 @@ macro_rules! gated {
 }
 
 gated! {
+    the_graph_reference_document_equals_the_python_report = "core_graph_references", &[];
+    the_level2_unit_graph_document_equals_the_python_report = "level2_graph_units", &[];
     // The document of the first slice: the compartments, the species and the parameters, with the
     // comp port and the fbc plugin libsbml gives it and the one annotation of the gate.
     the_report_of_minimal_model_equals_the_python_report = "minimal_model", MINIMAL_MODEL_ONLY;
@@ -516,4 +520,43 @@ fn an_empty_exclusion_hides_nothing_rather_than_the_whole_report() {
     let theirs = json!({"a": 2});
     assert_eq!(compare(&ours, &theirs, &[""]).len(), 1);
     assert_eq!(compare(&ours, &theirs, &["**/"]).len(), 1);
+}
+
+// The core graph is complete even while the shared report exclusion still covers
+// package objects. Do not add an edge-index exclusion: an index names different
+// objects in different documents. The one package projection removes only the
+// comp ports the reader has not implemented, and checks what each removal means.
+#[test]
+fn the_core_graph_of_every_document_equals_the_python_graph() {
+    for document in GATED {
+        let (ours, mut theirs) = reports(document.name);
+        if document.name == "minimal_model" {
+            let ports: std::collections::HashSet<String> = theirs["models"][0]["listOfPorts"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|p| p["pk"].as_str().unwrap().to_owned())
+                .collect();
+            assert!(!ports.is_empty(), "the package projection must remain live");
+            let graph = &mut theirs["linkGraph"];
+            for pk in &ports {
+                let node = graph["nodes"].as_object_mut().unwrap().remove(pk).unwrap();
+                assert_eq!(node["sbmlType"], "Port");
+            }
+            graph["edges"].as_array_mut().unwrap().retain(|edge| {
+                let removed = ports.contains(edge["source"].as_str().unwrap())
+                    || ports.contains(edge["target"].as_str().unwrap());
+                if removed {
+                    assert_eq!(edge["kind"], "port");
+                }
+                !removed
+            });
+        }
+        let differences = compare(&ours["linkGraph"], &theirs["linkGraph"], &[]);
+        assert!(
+            differences.is_empty(),
+            "{}: {differences:#?}",
+            document.name
+        );
+    }
 }
