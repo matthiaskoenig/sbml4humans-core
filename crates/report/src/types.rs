@@ -1,7 +1,6 @@
 //! The types of the report, with the field names and the optionality of `model.py` of sbml4humans.
 
 use serde::Serialize;
-use serde_json::Value;
 
 use crate::Double;
 
@@ -133,9 +132,77 @@ pub struct Package {
 #[serde(rename_all = "camelCase")]
 pub struct LinkGraph {
     /// The nodes by pk.
-    pub nodes: std::collections::BTreeMap<String, Value>,
+    pub nodes: indexmap::IndexMap<String, LinkNode>,
     /// The `edges`.
-    pub edges: Vec<serde_json::Value>,
+    pub edges: Vec<LinkEdge>,
+}
+
+/// One SBML object of the report, with the same key as its element.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct LinkNode {
+    /// The primary key of the object.
+    pub pk: String,
+    /// The SBML class of the object.
+    pub sbml_type: &'static str,
+    /// Its authored identifier, without a fabricated identifier for unnamed objects.
+    pub id: Option<String>,
+    /// Its authored name.
+    pub name: Option<String>,
+    /// The key of its containing model, absent for documents and models themselves.
+    pub model: Option<String>,
+}
+
+/// A relation between two objects, using the wire names of the Python report.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub enum EdgeKind {
+    /// The model listed by the document.
+    Model,
+    /// The compartment of a species or reaction.
+    Compartment,
+    /// A reactant of a reaction, or the species of its reference.
+    Reactant,
+    /// A product of a reaction, or the species of its reference.
+    Product,
+    /// A modifier of a reaction, or the species of its reference.
+    Modifier,
+    /// The kinetic law of a reaction.
+    KineticLaw,
+    /// A parameter local to a kinetic law.
+    LocalParameter,
+    /// The trigger of an event.
+    Trigger,
+    /// The priority of an event.
+    Priority,
+    /// The delay of an event.
+    Delay,
+    /// An assignment of an event.
+    EventAssignment,
+    /// The variable set by a rule or an event assignment.
+    Variable,
+    /// The symbol set by an initial assignment.
+    Symbol,
+    /// A unit definition named by an attribute or a number in a math.
+    Units,
+    /// The parameter named as a conversion factor.
+    ConversionFactor,
+    /// A symbol read by a math, including a call of a model function.
+    Math,
+}
+
+/// One directed relation, local to the report unless its target names another entry.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct LinkEdge {
+    /// The key of the object which holds the reference.
+    pub source: String,
+    /// The key of the object the reference names.
+    pub target: String,
+    /// What the reference means.
+    pub kind: EdgeKind,
+    /// The archive entry of a non-local target; absent for core references.
+    pub target_entry: Option<String>,
 }
 
 /// Timing information of a report (`Debug` in python).

@@ -67,6 +67,22 @@ fn a_file_which_is_no_document_fails_with_a_message_and_no_panic() {
 }
 
 #[test]
+fn the_cli_exposes_the_core_graph_of_the_python_report() {
+    let output = run(&["report", "../../testdata/core_graph_references.xml"]);
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let ours: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+    let expected: serde_json::Value = serde_json::from_slice(
+        &std::fs::read("../../testdata/oracles/core_graph_references.json").unwrap(),
+    )
+    .unwrap();
+    assert_eq!(ours["linkGraph"], expected["linkGraph"]);
+}
+
+#[test]
 fn pretty_writes_the_same_report_over_many_lines() {
     let path = "../../testdata/minimal_model.xml";
     let compact = run(&["report", path]);

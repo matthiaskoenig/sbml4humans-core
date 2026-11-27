@@ -5,6 +5,7 @@
 mod build;
 mod double;
 mod equation;
+mod links;
 pub mod math;
 mod number;
 pub mod pk;

@@ -1,0 +1,819 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": null,
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 2,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "graph_refs/Model:graph_refs",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/FunctionDefinition:f",
+        "target": "graph_refs/Parameter:g",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "graph_refs/Species:S",
+        "target": "graph_refs/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "graph_refs/Parameter:x",
+        "target": "graph_refs/UnitDefinition:u",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "graph_refs/InitialAssignment:x",
+        "target": "graph_refs/Parameter:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/InitialAssignment:x",
+        "target": "graph_refs/FunctionDefinition:f",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/InitialAssignment:x",
+        "target": "graph_refs/Parameter:g",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "graph_refs/InitialAssignment:x",
+        "target": "graph_refs/UnitDefinition:u",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "graph_refs/Reaction:r",
+        "target": "graph_refs/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "graph_refs/Reaction:r",
+        "target": "graph_refs/SpeciesReference:sr",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "graph_refs/SpeciesReference:sr",
+        "target": "graph_refs/Species:S",
+        "targetEntry": null
+      },
+      {
+        "kind": "modifier",
+        "source": "graph_refs/Reaction:r",
+        "target": "graph_refs/ModifierSpeciesReference:r.modifier.missing",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "graph_refs/Reaction:r",
+        "target": "graph_refs/KineticLaw:r.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/KineticLaw:r.kineticLaw",
+        "target": "graph_refs/Species:S",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/KineticLaw:r.kineticLaw",
+        "target": "graph_refs/FunctionDefinition:f",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/KineticLaw:r.kineticLaw",
+        "target": "graph_refs/LocalParameter:r.kineticLaw.g",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/KineticLaw:r.kineticLaw",
+        "target": "graph_refs/Parameter:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "localParameter",
+        "source": "graph_refs/KineticLaw:r.kineticLaw",
+        "target": "graph_refs/LocalParameter:r.kineticLaw.g",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "graph_refs/LocalParameter:r.kineticLaw.g",
+        "target": "graph_refs/UnitDefinition:u",
+        "targetEntry": null
+      },
+      {
+        "kind": "trigger",
+        "source": "graph_refs/Event:e",
+        "target": "graph_refs/Trigger:e.trigger",
+        "targetEntry": null
+      },
+      {
+        "kind": "priority",
+        "source": "graph_refs/Event:e",
+        "target": "graph_refs/Priority:e.priority",
+        "targetEntry": null
+      },
+      {
+        "kind": "delay",
+        "source": "graph_refs/Event:e",
+        "target": "graph_refs/Delay:e.delay",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/Trigger:e.trigger",
+        "target": "graph_refs/Parameter:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/Priority:e.priority",
+        "target": "graph_refs/Parameter:g",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/Delay:e.delay",
+        "target": "graph_refs/Parameter:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "eventAssignment",
+        "source": "graph_refs/Event:e",
+        "target": "graph_refs/EventAssignment:e.x",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "graph_refs/EventAssignment:e.x",
+        "target": "graph_refs/Parameter:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "graph_refs/EventAssignment:e.x",
+        "target": "graph_refs/Parameter:g",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "graph_refs/Compartment:c": {
+        "id": "c",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Compartment:c",
+        "sbmlType": "Compartment"
+      },
+      "graph_refs/Delay:e.delay": {
+        "id": null,
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Delay:e.delay",
+        "sbmlType": "Delay"
+      },
+      "graph_refs/Event:e": {
+        "id": "e",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Event:e",
+        "sbmlType": "Event"
+      },
+      "graph_refs/EventAssignment:e.x": {
+        "id": null,
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/EventAssignment:e.x",
+        "sbmlType": "EventAssignment"
+      },
+      "graph_refs/FunctionDefinition:f": {
+        "id": "f",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/FunctionDefinition:f",
+        "sbmlType": "FunctionDefinition"
+      },
+      "graph_refs/InitialAssignment:x": {
+        "id": null,
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/InitialAssignment:x",
+        "sbmlType": "InitialAssignment"
+      },
+      "graph_refs/KineticLaw:r.kineticLaw": {
+        "id": null,
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/KineticLaw:r.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "graph_refs/LocalParameter:r.kineticLaw.g": {
+        "id": "g",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/LocalParameter:r.kineticLaw.g",
+        "sbmlType": "LocalParameter"
+      },
+      "graph_refs/Model:graph_refs": {
+        "id": "graph_refs",
+        "model": null,
+        "name": null,
+        "pk": "graph_refs/Model:graph_refs",
+        "sbmlType": "Model"
+      },
+      "graph_refs/ModifierSpeciesReference:r.modifier.missing": {
+        "id": null,
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/ModifierSpeciesReference:r.modifier.missing",
+        "sbmlType": "ModifierSpeciesReference"
+      },
+      "graph_refs/Parameter:S2": {
+        "id": "S2",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Parameter:S2",
+        "sbmlType": "Parameter"
+      },
+      "graph_refs/Parameter:g": {
+        "id": "g",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Parameter:g",
+        "sbmlType": "Parameter"
+      },
+      "graph_refs/Parameter:x": {
+        "id": "x",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Parameter:x",
+        "sbmlType": "Parameter"
+      },
+      "graph_refs/Priority:e.priority": {
+        "id": null,
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Priority:e.priority",
+        "sbmlType": "Priority"
+      },
+      "graph_refs/Reaction:r": {
+        "id": "r",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Reaction:r",
+        "sbmlType": "Reaction"
+      },
+      "graph_refs/Species:S": {
+        "id": "S",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Species:S",
+        "sbmlType": "Species"
+      },
+      "graph_refs/Species:dangling": {
+        "id": "dangling",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Species:dangling",
+        "sbmlType": "Species"
+      },
+      "graph_refs/SpeciesReference:sr": {
+        "id": "sr",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/SpeciesReference:sr",
+        "sbmlType": "SpeciesReference"
+      },
+      "graph_refs/Trigger:e.trigger": {
+        "id": null,
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/Trigger:e.trigger",
+        "sbmlType": "Trigger"
+      },
+      "graph_refs/UnitDefinition:u": {
+        "id": "u",
+        "model": "graph_refs/Model:graph_refs",
+        "name": null,
+        "pk": "graph_refs/UnitDefinition:u",
+        "sbmlType": "UnitDefinition"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "graph_refs",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "c",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/Compartment:c",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": null,
+          "spatialDimensions": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"c\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "delay": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "x",
+              "latex": " \\mathit{x}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "graph_refs/Delay:e.delay",
+            "sbmlType": "Delay",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<delay>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> x </ci>\n  </math>\n</delay>"
+          },
+          "history": null,
+          "id": "e",
+          "keyValuePairs": [],
+          "listOfEventAssignments": [
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "math": {
+                "formula": "g",
+                "latex": " \\mathit{g}"
+              },
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "graph_refs/EventAssignment:e.x",
+              "sbmlType": "EventAssignment",
+              "sbo": null,
+              "uncertainties": [],
+              "variable": "x",
+              "xml": "<eventAssignment variable=\"x\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> g </ci>\n  </math>\n</eventAssignment>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/Event:e",
+          "priority": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "g",
+              "latex": " \\mathit{g}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "graph_refs/Priority:e.priority",
+            "sbmlType": "Priority",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<priority>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> g </ci>\n  </math>\n</priority>"
+          },
+          "sbmlType": "Event",
+          "sbo": null,
+          "trigger": {
+            "comp": null,
+            "cvterms": [],
+            "history": null,
+            "id": null,
+            "initialValue": false,
+            "keyValuePairs": [],
+            "lists": [],
+            "math": {
+              "formula": "x > 0",
+              "latex": " \\mathit{x}>0"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "persistent": true,
+            "pk": "graph_refs/Trigger:e.trigger",
+            "sbmlType": "Trigger",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<trigger initialValue=\"false\" persistent=\"true\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <gt/>\n      <ci> x </ci>\n      <cn> 0 </cn>\n    </apply>\n  </math>\n</trigger>"
+          },
+          "uncertainties": [],
+          "useValuesFromTriggerTime": true,
+          "xml": "<event id=\"e\" useValuesFromTriggerTime=\"true\">\n  <trigger initialValue=\"false\" persistent=\"true\">\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <gt/>\n        <ci> x </ci>\n        <cn> 0 </cn>\n      </apply>\n    </math>\n  </trigger>\n  <delay>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <ci> x </ci>\n    </math>\n  </delay>\n  <priority>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <ci> g </ci>\n    </math>\n  </priority>\n  <listOfEventAssignments>\n    <eventAssignment variable=\"x\">\n      <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n        <ci> g </ci>\n      </math>\n    </eventAssignment>\n  </listOfEventAssignments>\n</event>"
+        }
+      ],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "f",
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "lambda(x, x + g)",
+            "latex": " \\lambda(\\mathit{x}) =\\left(\\mathit{x}+\\mathit{g}\\right)"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/FunctionDefinition:f",
+          "sbmlType": "FunctionDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<functionDefinition id=\"f\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <lambda>\n      <bvar>\n        <ci> x </ci>\n      </bvar>\n      <apply>\n        <plus/>\n        <ci> x </ci>\n        <ci> g </ci>\n      </apply>\n    </lambda>\n  </math>\n</functionDefinition>"
+        }
+      ],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "f(g) + 1 u + 2 second + missing + g",
+            "latex": " \\mathit{f}\\left(\\mathit{g}\\right)+1+2+\\mathit{missing}+\\mathit{g}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/InitialAssignment:x",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "x",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"x\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" xmlns:sbml=\"http://www.sbml.org/sbml/level3/version2/core\">\n    <apply>\n      <plus/>\n      <apply>\n        <ci> f </ci>\n        <ci> g </ci>\n      </apply>\n      <cn sbml:units=\"u\"> 1 </cn>\n      <cn sbml:units=\"second\"> 2 </cn>\n      <ci> missing </ci>\n      <ci> g </ci>\n    </apply>\n  </math>\n</initialAssignment>"
+        }
+      ],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "s",
+          "history": null,
+          "id": "x",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/Parameter:x",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "u",
+          "unitsLatex": "s",
+          "value": 1.0,
+          "xml": "<parameter id=\"x\" value=\"1\" units=\"u\" constant=\"false\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "g",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/Parameter:g",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 2.0,
+          "xml": "<parameter id=\"g\" value=\"2\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "S2",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/Parameter:S2",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 3.0,
+          "xml": "<parameter id=\"S2\" value=\"3\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": "c",
+          "cvterms": [],
+          "equation": "S ➞ ",
+          "fast": null,
+          "fbc": null,
+          "history": null,
+          "id": "r",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "s",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [
+              {
+                "comp": null,
+                "cvterms": [],
+                "derivedUnits": "s",
+                "history": null,
+                "id": "g",
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "name": null,
+                "notes": null,
+                "pk": "graph_refs/LocalParameter:r.kineticLaw.g",
+                "sbmlType": "LocalParameter",
+                "sbo": null,
+                "uncertainties": [],
+                "units": "u",
+                "unitsLatex": "s",
+                "value": 3.0,
+                "xml": "<localParameter id=\"g\" value=\"3\" units=\"u\"/>"
+              }
+            ],
+            "lists": [],
+            "math": {
+              "formula": "g + x + f(S) + g",
+              "latex": " \\mathit{g}+\\mathit{x}+\\mathit{f}\\left(\\mathit{S}\\right)+\\mathit{g}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "graph_refs/KineticLaw:r.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <plus/>\n      <ci> g </ci>\n      <ci> x </ci>\n      <apply>\n        <ci> f </ci>\n        <ci> S </ci>\n      </apply>\n      <ci> g </ci>\n    </apply>\n  </math>\n  <listOfLocalParameters>\n    <localParameter id=\"g\" value=\"3\" units=\"u\"/>\n  </listOfLocalParameters>\n</kineticLaw>"
+          },
+          "listOfModifiers": [
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "graph_refs/ModifierSpeciesReference:r.modifier.missing",
+              "sbmlType": "ModifierSpeciesReference",
+              "sbo": null,
+              "species": "missing",
+              "uncertainties": [],
+              "xml": "<modifierSpeciesReference species=\"missing\"/>"
+            }
+          ],
+          "listOfProducts": [],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": "sr",
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "graph_refs/SpeciesReference:sr",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference id=\"sr\" species=\"S\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/Reaction:r",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"r\" reversible=\"false\" compartment=\"c\">\n  <listOfReactants>\n    <speciesReference id=\"sr\" species=\"S\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfModifiers>\n    <modifierSpeciesReference species=\"missing\"/>\n  </listOfModifiers>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <plus/>\n        <ci> g </ci>\n        <ci> x </ci>\n        <apply>\n          <ci> f </ci>\n          <ci> S </ci>\n        </apply>\n        <ci> g </ci>\n      </apply>\n    </math>\n    <listOfLocalParameters>\n      <localParameter id=\"g\" value=\"3\" units=\"u\"/>\n    </listOfLocalParameters>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "c",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": true,
+          "history": null,
+          "id": "S",
+          "initialAmount": null,
+          "initialConcentration": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/Species:S",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S\" compartment=\"c\" hasOnlySubstanceUnits=\"true\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "missing",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": true,
+          "history": null,
+          "id": "dangling",
+          "initialAmount": null,
+          "initialConcentration": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/Species:dangling",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"dangling\" compartment=\"missing\" hasOnlySubstanceUnits=\"true\" boundaryCondition=\"true\" constant=\"false\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "u",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "graph_refs/UnitDefinition:u",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "s",
+          "xml": "<unitDefinition id=\"u\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "graph_refs/Model:graph_refs",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": "'missing'",
+  "odeSystem": null
+}

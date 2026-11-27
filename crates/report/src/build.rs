@@ -753,7 +753,7 @@ fn model(model: &Model, level: u32, version: u32) -> Result<ReportModel, BuildEr
 /// filler of the model refuses to hand over: no caller has to handle it, and it is an error rather
 /// than a panic so that no writer of the report unwraps a value a document controls.
 pub fn build(document: &Document) -> Result<Report, BuildError> {
-    Ok(Report {
+    let mut report = Report {
         document: ReportDocument {
             // the document is the one element whose scope and key are both a fixed name,
             // python writes `document/SBMLDocument:document`
@@ -784,5 +784,7 @@ pub fn build(document: &Document) -> Result<Report, BuildError> {
         link_graph: LinkGraph::default(),
         ode_system: None,
         ode_error: None,
-    })
+    };
+    report.link_graph = crate::links::build(&report, document);
+    Ok(report)
 }

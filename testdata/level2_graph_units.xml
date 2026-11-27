@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model id="l2_units">
+    <listOfUnitDefinitions>
+      <unitDefinition id="time"><listOfUnits><unit kind="second" exponent="1" scale="0" multiplier="60"/></listOfUnits></unitDefinition>
+      <unitDefinition id="volume"><listOfUnits><unit kind="litre" exponent="1" scale="0" multiplier="1"/></listOfUnits></unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments><compartment id="c" size="1" units="volume"/></listOfCompartments>
+    <listOfParameters><parameter id="time" value="1" units="time"/><parameter id="p" value="2" units="second"/></listOfParameters>
+    <listOfRules><assignmentRule variable="p"><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><ci>time</ci><csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time">clock</csymbol></apply></math></assignmentRule></listOfRules>
+  </model>
+</sbml>
