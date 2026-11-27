@@ -369,6 +369,22 @@ pub fn source_indices(
         .collect::<Result<Vec<_>, _>>()?
         .into_iter()
         .unzip();
+    // Without instances there is nothing to expand. Keep the canonical key
+    // projection, but avoid constructing graphs and a resolution context.
+    if reports.iter().all(|report| {
+        report
+            .models
+            .iter()
+            .all(|model| model.list_of_submodels.is_empty())
+    }) {
+        return Ok(positions
+            .into_iter()
+            .map(|positions| SourceIndex {
+                positions,
+                expanded_size: None,
+            })
+            .collect());
+    }
     let context = Context::new(sources, &reports, locations, usize::MAX);
     let graphs = crate::links::build_many(&reports, sources);
     Ok(positions

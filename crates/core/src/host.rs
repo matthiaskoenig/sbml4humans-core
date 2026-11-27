@@ -1,7 +1,7 @@
 //! Native source summaries and compressed report transport.
 use crate::{ReportError, SourceOptions, SourceResponse};
 use serde::Serialize;
-use std::{io::Write, path::Path};
+use std::{io::BufWriter, path::Path};
 
 /// Serialized report data and small diagnostics, without host-side JSON traversal.
 pub struct ReportTransport {
@@ -25,10 +25,14 @@ pub fn encode_report(
         .map(|message| message.split_whitespace().collect::<Vec<_>>().join(" "))
         .collect();
     let content = if gzip {
-        let mut encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::new(5));
-        serde_json::to_writer(&mut encoder, response).map_err(internal)?;
-        encoder.flush().map_err(internal)?;
-        encoder.finish().map_err(internal)?
+        let encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::new(5));
+        let mut buffered = BufWriter::with_capacity(64 * 1024, encoder);
+        serde_json::to_writer(&mut buffered, response).map_err(internal)?;
+        buffered
+            .into_inner()
+            .map_err(internal)?
+            .finish()
+            .map_err(internal)?
     } else {
         serde_json::to_vec(response).map_err(internal)?
     };

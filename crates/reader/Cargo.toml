@@ -10,7 +10,7 @@ repository.workspace = true
 publish = false
 
 [dependencies]
-sbmlsim-reader = { git = "https://github.com/matthiaskoenig/sbmlsim-core.git", rev = "b37a7921a35b44f216fc84ad517a707be63b30af" }
+sbmlsim-reader = { git = "https://github.com/matthiaskoenig/sbmlsim-core.git", rev = "0ab8b628becc739b1a4117dd689ce6660be33732" }
 
 [lints]
 workspace = true
