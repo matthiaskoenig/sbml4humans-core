@@ -91,3 +91,13 @@ test("complete OMEX envelopes preserve manifest, external links and equations", 
     assert.deepEqual(await reader.report(source), oracle);
   } finally { reader.dispose(); }
 });
+
+test("text encoding stays in the worker rather than blocking its caller", async () => {
+  const reader = await createReader({ source: module });
+  const Encoder = globalThis.TextEncoder;
+  globalThis.TextEncoder = class { encode() { throw new Error("Main-thread text encoding"); } };
+  try {
+    const result = await reader.source(source.toString("utf8"));
+    assert.deepEqual(result.reports["./model.xml"].report, oracle);
+  } finally { globalThis.TextEncoder = Encoder; reader.dispose(); }
+});

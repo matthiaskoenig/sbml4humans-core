@@ -1,7 +1,7 @@
 //! The command line of the report of sbml4humans: `sbml4humans-core report <path>`.
 
 use std::ffi::OsString;
-use std::io::{BufWriter, Write};
+use std::io::{BufWriter, Read, Write};
 use std::process::ExitCode;
 
 const USAGE: &str = "\
@@ -68,8 +68,15 @@ fn write_stdout(bytes: &[u8]) -> Result<(), String> {
 
 /// Reads the file, builds the report and writes it to stdout.
 fn report(path: &OsString, pretty: bool, source_envelope: bool) -> Result<(), String> {
-    let source =
-        std::fs::read(path).map_err(|e| format!("cannot read {}: {e}", path.to_string_lossy()))?;
+    let file = std::fs::File::open(path)
+        .map_err(|e| format!("cannot read {}: {e}", path.to_string_lossy()))?;
+    let mut source = Vec::new();
+    file.take(sbml4humans_core::MAX_INPUT_BYTES as u64 + 1)
+        .read_to_end(&mut source)
+        .map_err(|e| format!("cannot read {}: {e}", path.to_string_lossy()))?;
+    if source.len() > sbml4humans_core::MAX_INPUT_BYTES {
+        return Err("The source exceeds the input size limit.".into());
+    }
     if source_envelope {
         let report = sbml4humans_core::source(&source, &sbml4humans_core::SourceOptions::default())
             .map_err(|e| e.to_string())?;
