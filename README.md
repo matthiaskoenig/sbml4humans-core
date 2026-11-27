@@ -40,7 +40,13 @@ response = json.loads(source_json(Path("models.omex").read_bytes()))
 
 `source_path_json(path, trusted=False)` exposes `source-path/1` and reads through the same source pipeline without copying the input through Python. With `trusted=True`, standalone models keep their filename and admit comp companions below the selected directory, including recursive references. Canonical paths and symlinks must stay inside that directory. Archives never gain directory companions.
 
-`ode_path_json(path, format, location=None, trusted=False, simulator=False)` exposes `ode-source/1`. It selects the explicit entry, first master model or first SBML entry, applies the shared comp expansion budget and calls the sbmlsim-core generator. The JSON bytes contain `filename` and `content` for Python, Diffrax, Julia, R, LaTeX, Markdown or Typst.
+`ode_path_json(path, format, location=None, trusted=False, simulator=False, source_entry=None)` exposes `ode-source/1`. It selects the explicit entry, first master model or first SBML entry, applies the shared comp expansion budget and calls the sbmlsim-core generator. The JSON bytes contain `filename` and `content` for Python, Diffrax, Julia, R, LaTeX, Markdown or Typst.
+
+`HOST_CONTRACT = "host/1"` adds `report_path(path, trusted=False, entry=None, gzip=False, ...) -> (bytes, list[str])`. With `gzip=True`, JSON serializes directly into the compressor at level 5; equation diagnostics travel separately, so a host never needs to decode the report for logging. `example_json(path, mode="sbml", example_id=None)` reads lightweight example metadata without building reports. Modes `archive` and `biomodel` inspect COMBINE manifests and preserve main-model selection. A selected `entry` admits companions only inside its archive directory, using the same confined traversal as trusted filesystem sources. ODE and validation APIs accept the equivalent `source_entry` argument independently of the entry being exported or validated.
+
+Validation and ODE preparation use the shared canonical key builder's lightweight projection. It retains identities, package objects and expansion counts while skipping rendered math, unit inference and copied XML. Validation-enabled wheels also expose `rule_package(code)` and `rule_json(code)` through native libSBML rule tables. Python does not need its own SBML parser or libSBML bindings. All 458 rules used by the application are checked against independent fixtures.
+
+Build with `SBML4HUMANS_CORE_REVISION=$(git rev-parse HEAD)` to stamp `SOURCE_REVISION`; unversioned development builds report `unversioned`. Hosts can reject binaries that do not match their source pin. `LIBSBML_BUILD_ROOT` selects an external native dependency build/cache directory, and `CMAKE_BUILD_PARALLEL_LEVEL` bounds compilation jobs.
 
 Server builds enable native validation explicitly:
 
