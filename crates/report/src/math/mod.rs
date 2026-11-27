@@ -12,8 +12,8 @@
 //! the model and for a csymbol, which are the three the MathML carries the text
 //! of, and keys everything else off the kind of the node: libsbml answers its
 //! own built-in name for every other node, so a node of the kind
-//! [`AstKind::FunctionAbs`] carries the name `abs` and one of the kind
-//! [`AstKind::ConstantPi`] carries `pi`, and a writer which fell back to the
+//! [`sbml4humans_model::AstKind::FunctionAbs`] carries the name `abs` and one of the kind
+//! [`sbml4humans_model::AstKind::ConstantPi`] carries `pi`, and a writer which fell back to the
 //! name would be right on those and wrong wherever libsbml names a node
 //! differently from the way a formula or a latex writes it. A csymbol is
 //! typeset by the text the document gave it, so one which spells the time
@@ -23,18 +23,17 @@
 //! for WebAssembly, where a panic traps the instance and takes the report of
 //! every other document of the process with it.
 
-mod formula;
 mod latex;
 mod references;
 
-pub use formula::formula;
 pub use latex::latex;
 pub use references::free_symbols;
+pub use sbml4humans_model::formatting::{MathError, formula};
 
 use latex::{MAX_MATHML_DEPTH, holds_a_childless_lambda, mathml_depth};
 
 use crate::types::Math;
-use sbml4humans_model::{Ast, AstKind, MAX_AST_DEPTH};
+use sbml4humans_model::Ast;
 
 /// The math of an element: its latex and its Level 3 formula.
 ///
@@ -55,7 +54,7 @@ use sbml4humans_model::{Ast, AstKind, MAX_AST_DEPTH};
 /// # Errors
 ///
 /// What [`latex`] and [`formula`] answer: [`MathError::TooDeep`] for a tree
-/// nested deeper than [`MAX_AST_DEPTH`] and [`MathError::UnknownKind`] for one
+/// nested deeper than [`sbml4humans_model::MAX_AST_DEPTH`] and [`MathError::UnknownKind`] for one
 /// which holds a node of a kind the libsbml shim does not map.
 pub fn math(ast: &Ast) -> Result<Math, MathError> {
     // the formula first, as the python implementation writes it first: a tree
@@ -70,30 +69,10 @@ pub fn math(ast: &Ast) -> Result<Math, MathError> {
     Ok(Math { latex, formula })
 }
 
-/// Why the math of an element could not be written.
-#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
-pub enum MathError {
-    /// The syntax tree is nested deeper than [`MAX_AST_DEPTH`].
-    #[error("the math is nested deeper than {MAX_AST_DEPTH} levels")]
-    TooDeep,
-    /// The tree holds a node of a kind no writer knows, which only
-    /// [`AstKind::Other`] is: the kind the libsbml shim answers for a type it
-    /// does not map, a node of a package this crate does not write.
-    #[error("the math holds a node of the kind {0:?}, which no writer writes")]
-    UnknownKind(AstKind),
-    /// A node lacks a child a writer of its kind reads.
-    ///
-    /// Every writer asks for a child of a node whose shape it has established,
-    /// so a tree the libsbml shim filled never answers this; it is here so that
-    /// no writer indexes into the children of a node and panics instead.
-    #[error("a node of the math lacks a child its writer reads")]
-    MissingChild,
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sbml4humans_model::AstNumber;
+    use sbml4humans_model::{AstKind, AstNumber, MAX_AST_DEPTH};
 
     /// An inner node of `kind` with `children`.
     fn node(kind: AstKind, children: Vec<Ast>) -> Ast {
