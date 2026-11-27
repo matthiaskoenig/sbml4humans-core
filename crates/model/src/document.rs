@@ -55,6 +55,8 @@ pub struct Compartment {
 /// A species of a model.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Species {
+    /// The parameter named as this species' conversion factor.
+    pub conversion_factor: Option<String>,
     /// The fields every SBML object shares.
     pub element: Element,
     /// The id of the compartment of the species.
@@ -65,6 +67,8 @@ pub struct Species {
     pub initial_concentration: Option<f64>,
     /// The `substanceUnits` attribute.
     pub substance_units: Option<String>,
+    /// Legacy Level 2 concentration size unit override.
+    pub spatial_size_units: Option<String>,
     /// The `hasOnlySubstanceUnits` attribute.
     pub has_only_substance_units: Option<bool>,
     /// The `boundaryCondition` attribute.
@@ -170,6 +174,8 @@ pub struct SpeciesReference {
     /// A reference of Level 1 or Level 2 with a `stoichiometryMath` has no
     /// stoichiometry of its own, however the default of its level reads.
     pub stoichiometry_math: bool,
+    /// Level 1/2 mathematical stoichiometry, promoted to a rule for equation analysis.
+    pub stoichiometry_math_ast: Option<Ast>,
     /// The `constant` attribute.
     pub constant: Option<bool>,
 }
@@ -290,9 +296,30 @@ pub struct Event {
     pub event_assignments: Vec<EventAssignment>,
 }
 
+/// The six model-level default unit attributes of Level 3.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct ModelUnits {
+    /// Default substance units.
+    pub substance: Option<String>,
+    /// Default time units.
+    pub time: Option<String>,
+    /// Default volume units.
+    pub volume: Option<String>,
+    /// Default area units.
+    pub area: Option<String>,
+    /// Default length units.
+    pub length: Option<String>,
+    /// Default extent units.
+    pub extent: Option<String>,
+}
+
 /// The model of a document.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Model {
+    /// The model's default unit identifiers.
+    pub units: ModelUnits,
+    /// The parameter named as the model conversion factor.
+    pub conversion_factor: Option<String>,
     /// The fields every SBML object shares.
     pub element: Element,
     /// The function definitions, in the order of the document.
@@ -320,6 +347,8 @@ pub struct Model {
 /// An SBML package a document uses.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Package {
+    /// Canonical package name, independent of an authored namespace alias.
+    pub name: String,
     /// The prefix of the package namespace, such as `comp`.
     pub prefix: String,
     /// The version of the package.
@@ -331,6 +360,10 @@ pub struct Package {
 /// An SBML document.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Document {
+    /// Canonical XML digest used only when an anonymous main model collides with a definition.
+    pub main_model_fallback: Option<String>,
+    /// Internal comp model definitions, in document order.
+    pub model_definitions: Vec<Model>,
     /// The SBML level.
     pub level: u32,
     /// The SBML version within the level.
@@ -341,4 +374,107 @@ pub struct Document {
     pub element: Element,
     /// The model, when the document has one.
     pub model: Option<Model>,
+}
+
+impl Document {
+    /// Models in report order: the main model, then internal definitions.
+    pub fn models(&self) -> impl Iterator<Item = &Model> {
+        self.model.iter().chain(&self.model_definitions)
+    }
+
+    /// Visit every core SBase without cloning the owned document.
+    pub fn elements(&self) -> impl Iterator<Item = &Element> {
+        let mut elements = Vec::new();
+
+        elements.push(&self.element);
+        for model in self.models() {
+            elements.push(&model.element);
+            macro_rules! each {
+                ($list:expr) => {
+                    for child in $list {
+                        elements.push(&child.element);
+                    }
+                };
+            }
+            each!(&model.function_definitions);
+            each!(&model.unit_definitions);
+            each!(&model.compartments);
+            each!(&model.species);
+            each!(&model.parameters);
+            each!(&model.initial_assignments);
+            each!(&model.rules);
+            each!(&model.constraints);
+            for reaction in &model.reactions {
+                elements.push(&reaction.element);
+                each!(&reaction.reactants);
+                each!(&reaction.products);
+                each!(&reaction.modifiers);
+                if let Some(law) = &reaction.kinetic_law {
+                    elements.push(&law.element);
+                    each!(&law.local_parameters);
+                }
+            }
+            for event in &model.events {
+                elements.push(&event.element);
+                if let Some(trigger) = &event.trigger {
+                    elements.push(&trigger.element);
+                }
+                if let Some(priority) = &event.priority {
+                    elements.push(&priority.element);
+                }
+                if let Some(delay) = &event.delay {
+                    elements.push(&delay.element);
+                }
+                each!(&event.event_assignments);
+            }
+        }
+
+        elements.into_iter()
+    }
+
+    /// Visit every core SBase once, excluding package objects and list metadata.
+    pub fn visit_elements_mut(&mut self, mut visit: impl FnMut(&mut Element)) {
+        visit(&mut self.element);
+        for model in self.model.iter_mut().chain(&mut self.model_definitions) {
+            visit(&mut model.element);
+            macro_rules! each {
+                ($list:expr) => {
+                    for child in $list {
+                        visit(&mut child.element);
+                    }
+                };
+            }
+            each!(&mut model.function_definitions);
+            each!(&mut model.unit_definitions);
+            each!(&mut model.compartments);
+            each!(&mut model.species);
+            each!(&mut model.parameters);
+            each!(&mut model.initial_assignments);
+            each!(&mut model.rules);
+            each!(&mut model.constraints);
+            for reaction in &mut model.reactions {
+                visit(&mut reaction.element);
+                each!(&mut reaction.reactants);
+                each!(&mut reaction.products);
+                each!(&mut reaction.modifiers);
+                if let Some(law) = &mut reaction.kinetic_law {
+                    visit(&mut law.element);
+                    each!(&mut law.local_parameters);
+                }
+            }
+            for event in &mut model.events {
+                visit(&mut event.element);
+                if let Some(trigger) = &mut event.trigger {
+                    visit(&mut trigger.element);
+                }
+                if let Some(priority) = &mut event.priority {
+                    visit(&mut priority.element);
+                }
+                if let Some(delay) = &mut event.delay {
+                    visit(&mut delay.element);
+                }
+                each!(&mut event.event_assignments);
+            }
+        }
+    }
 }

@@ -144,7 +144,7 @@ pub struct LinkNode {
     /// The primary key of the object.
     pub pk: String,
     /// The SBML class of the object.
-    pub sbml_type: &'static str,
+    pub sbml_type: String,
     /// Its authored identifier, without a fabricated identifier for unnamed objects.
     pub id: Option<String>,
     /// Its authored name.
@@ -187,6 +187,73 @@ pub enum EdgeKind {
     Units,
     /// The parameter named as a conversion factor.
     ConversionFactor,
+    /// A metadata-bearing list container.
+    ListOf,
+    /// A comp package reference.
+    Port,
+    /// A comp model definition reference.
+    ModelRef,
+    /// A comp external model definition.
+    ExternalModelDefinition,
+    /// A replaced-by relation.
+    ReplacedBy,
+    /// A replaced element.
+    ReplacedElement,
+    /// A nested comp reference.
+    #[serde(rename = "sBaseRef")]
+    SbaseRef,
+    /// A comp deletion.
+    Deletion,
+    /// A submodel time conversion factor.
+    TimeConversionFactor,
+    /// A submodel extent conversion factor.
+    ExtentConversionFactor,
+    /// A species associated with a gene.
+    AssociatedSpecies,
+    /// The active fbc objective.
+    ActiveObjective,
+    /// A flux objective term.
+    FluxObjective,
+    /// The second reaction in a quadratic term.
+    Reaction2,
+    /// An fbc version 1 flux bound.
+    FluxBound,
+    /// A lower flux bound parameter.
+    LowerFluxBound,
+    /// An upper flux bound parameter.
+    UpperFluxBound,
+    /// A gene product association tree.
+    GeneProductAssociation,
+    /// A gene product reference.
+    GeneProduct,
+    /// A user constraint lower bound.
+    LowerBound,
+    /// A user constraint upper bound.
+    UpperBound,
+    /// A constraint component.
+    ConstraintComponent,
+    /// The second variable of a component.
+    Variable2,
+    /// A component coefficient.
+    Coefficient,
+    /// A qualitative input.
+    Input,
+    /// A qualitative output.
+    Output,
+    /// A qualitative function term.
+    FunctionTerm,
+    /// A qualitative default term.
+    DefaultTerm,
+    /// A distribution uncertainty.
+    Uncertainty,
+    /// A measure of an uncertainty.
+    UncertParameter,
+    /// A variable describing an uncertainty.
+    Var,
+    /// A lower uncertainty variable.
+    VarLower,
+    /// An upper uncertainty variable.
+    VarUpper,
     /// A symbol read by a math, including a call of a model function.
     Math,
 }
@@ -705,7 +772,7 @@ pub struct Report {
     pub external_model_definitions: Vec<serde_json::Value>,
     /// The link graph.
     pub link_graph: LinkGraph,
-    /// The `ode_system`, `null` when the equations of the model are not computed, which this slice never does.
+    /// The `ode_system`, `null` when there is no main model or its equations cannot be derived.
     pub ode_system: Option<serde_json::Value>,
     /// The `ode_error`, the message of a failure to compute the equations, `null` when none failed.
     pub ode_error: Option<String>,

@@ -19,7 +19,7 @@ from pathlib import Path
 
 import libsbml
 import sbml4humans
-from sbml4humans.report import report_for_path
+from sbml4humans.report import report_for_sbml
 
 ROOT = Path(__file__).resolve().parent.parent
 ORACLES = ROOT / "testdata" / "oracles"
@@ -90,11 +90,7 @@ def report_json(path: Path) -> dict:
     file `serde_json` refuses as soon as a document of fbc, whose flux bounds are valued
     `INF` and `-INF`, is gated.
     """
-    response = report_for_path(path, trusted=True)
-    entries = response.reports
-    if len(entries) != 1:
-        raise ValueError(f"{path} has {len(entries)} entries, expected one")
-    entry = next(iter(entries.values()))
+    entry = report_for_sbml(path.read_text(encoding="utf-8"))
     return json.loads(entry.model_dump_json(by_alias=True))["report"]
 
 

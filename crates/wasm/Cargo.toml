@@ -1,0 +1,20 @@
+[package]
+name = "sbml4humans-wasm"
+description = "An import-free WebAssembly host of the shared report pipeline"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+sbml4humans-core = { path = "../core" }
+serde_json.workspace = true
+
+[lints]
+workspace = true

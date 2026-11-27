@@ -20,6 +20,8 @@ fn report_of(source: &[u8]) -> serde_json::Value {
 
 fn doc_with(model: Model) -> Document {
     Document {
+        model_definitions: vec![],
+        main_model_fallback: None,
         level: 3,
         version: 1,
         packages: vec![],
@@ -95,9 +97,11 @@ fn the_json_of_a_whole_report_holds_the_keys_of_the_contract() {
             .unwrap()
             .contains_key("document/SBMLDocument:document")
     );
-    // Equations remain a later slice.
     assert_eq!(json["odeSystem"], serde_json::Value::Null);
-    assert_eq!(json["odeError"], serde_json::Value::Null);
+    assert_eq!(
+        json["odeError"],
+        "The id '' is not an SId and cannot be typeset."
+    );
     // no key of the report holds an underscore: a type whose `rename_all` was forgotten would
     // write `sbml_type` and `list_of_species`, which no component of the frontend reads
     let snake: Vec<String> = keys_of(&json)

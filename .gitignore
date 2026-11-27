@@ -2,3 +2,8 @@ target/
 third_party/
 .superpowers/
 __pycache__/
+node_modules/
+js/runtime/
+dist/
+.venv/
+*.egg-info/

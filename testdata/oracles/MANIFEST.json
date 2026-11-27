@@ -32,32 +32,212 @@
   },
   "files": [
     {
-      "source": "minimal_model.xml",
-      "fixture": "minimal_model.json"
+      "source": "algebraic_rule.xml",
+      "fixture": "algebraic_rule.json"
     },
     {
-      "source": "level2_model.xml",
-      "fixture": "level2_model.json"
+      "source": "annotation.xml",
+      "fixture": "annotation.json"
+    },
+    {
+      "source": "anonymous_model_collision.xml",
+      "fixture": "anonymous_model_collision.json"
+    },
+    {
+      "source": "assignment.xml",
+      "fixture": "assignment.json"
+    },
+    {
+      "source": "comp_deleted.xml",
+      "fixture": "comp_deleted.json"
+    },
+    {
+      "source": "comp_deletion.xml",
+      "fixture": "comp_deletion.json"
+    },
+    {
+      "source": "comp_factors.xml",
+      "fixture": "comp_factors.json"
+    },
+    {
+      "source": "comp_internal.xml",
+      "fixture": "comp_internal.json"
+    },
+    {
+      "source": "comp_replaced_by.xml",
+      "fixture": "comp_replaced_by.json"
+    },
+    {
+      "source": "comp_replacement.xml",
+      "fixture": "comp_replacement.json"
+    },
+    {
+      "source": "constraint_event.xml",
+      "fixture": "constraint_event.json"
     },
     {
       "source": "core_elements.xml",
       "fixture": "core_elements.json"
     },
     {
-      "source": "level2_reactions.xml",
-      "fixture": "level2_reactions.json"
-    },
-    {
       "source": "core_graph_references.xml",
       "fixture": "core_graph_references.json"
+    },
+    {
+      "source": "definition_key_collision.xml",
+      "fixture": "definition_key_collision.json"
+    },
+    {
+      "source": "distrib_comp.xml",
+      "fixture": "distrib_comp.json"
+    },
+    {
+      "source": "distrib_comp_flat.xml",
+      "fixture": "distrib_comp_flat.json"
+    },
+    {
+      "source": "distrib_distributions.xml",
+      "fixture": "distrib_distributions.json"
+    },
+    {
+      "source": "distrib_spans.xml",
+      "fixture": "distrib_spans.json"
+    },
+    {
+      "source": "distrib_uncertainties.xml",
+      "fixture": "distrib_uncertainties.json"
+    },
+    {
+      "source": "fbc_bounds_v1.xml",
+      "fixture": "fbc_bounds_v1.json"
+    },
+    {
+      "source": "fbc_constraints_v3.xml",
+      "fixture": "fbc_constraints_v3.json"
+    },
+    {
+      "source": "fbc_example.xml",
+      "fixture": "fbc_example.json"
+    },
+    {
+      "source": "fbc_mass_charge.xml",
+      "fixture": "fbc_mass_charge.json"
+    },
+    {
+      "source": "level1_power.xml",
+      "fixture": "level1_power.json"
     },
     {
       "source": "level2_graph_units.xml",
       "fixture": "level2_graph_units.json"
     },
     {
+      "source": "level2_model.xml",
+      "fixture": "level2_model.json"
+    },
+    {
+      "source": "level2_reactions.xml",
+      "fixture": "level2_reactions.json"
+    },
+    {
+      "source": "linear_chain.xml",
+      "fixture": "linear_chain.json"
+    },
+    {
+      "source": "list_of.xml",
+      "fixture": "list_of.json"
+    },
+    {
+      "source": "minimal_model.xml",
+      "fixture": "minimal_model.json"
+    },
+    {
+      "source": "minimal_model_comp.xml",
+      "fixture": "minimal_model_comp.json"
+    },
+    {
+      "source": "minimal_model_comp_flat.xml",
+      "fixture": "minimal_model_comp_flat.json"
+    },
+    {
+      "source": "mixed_annotations.xml",
+      "fixture": "mixed_annotations.json"
+    },
+    {
+      "source": "model_composition.xml",
+      "fixture": "model_composition.json"
+    },
+    {
+      "source": "model_definitions.xml",
+      "fixture": "model_definitions.json"
+    },
+    {
+      "source": "multiple_substance_units.xml",
+      "fixture": "multiple_substance_units.json"
+    },
+    {
+      "source": "namespace_aliases.xml",
+      "fixture": "namespace_aliases.json"
+    },
+    {
+      "source": "notes.xml",
+      "fixture": "notes.json"
+    },
+    {
+      "source": "parameter.xml",
+      "fixture": "parameter.json"
+    },
+    {
+      "source": "qual_example.xml",
+      "fixture": "qual_example.json"
+    },
+    {
+      "source": "random_network.xml",
+      "fixture": "random_network.json"
+    },
+    {
+      "source": "reaction.xml",
+      "fixture": "reaction.json"
+    },
+    {
+      "source": "reaction_with_units.xml",
+      "fixture": "reaction_with_units.json"
+    },
+    {
       "source": "sbase_annotations.xml",
       "fixture": "sbase_annotations.json"
+    },
+    {
+      "source": "species.xml",
+      "fixture": "species.json"
+    },
+    {
+      "source": "unit_definitions.xml",
+      "fixture": "unit_definitions.json"
+    },
+    {
+      "source": "units_namespace.xml",
+      "fixture": "units_namespace.json"
+    },
+    {
+      "source": "unknown_assignment.xml",
+      "fixture": "unknown_assignment.json"
+    },
+    {
+      "source": "validation.xml",
+      "fixture": "validation.json"
+    },
+    {
+      "source": "variable_compartment.xml",
+      "fixture": "variable_compartment.json"
+    },
+    {
+      "source": "event_size_rate.xml",
+      "fixture": "event_size_rate.json"
+    },
+    {
+      "source": "level2_spatial_size.xml",
+      "fixture": "level2_spatial_size.json"
     }
   ]
 }

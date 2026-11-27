@@ -1,7 +1,7 @@
 [workspace]
 resolver = "3"
-members = ["crates/abi", "crates/cli", "crates/libsbml", "crates/model", "crates/oracles", "crates/report"]
-default-members = ["crates/abi", "crates/cli", "crates/libsbml", "crates/model", "crates/report"]
+members = ["crates/core", "crates/wasm", "crates/python", "crates/reader", "crates/abi", "crates/cli", "crates/libsbml", "crates/model", "crates/oracles", "crates/report"]
+default-members = ["crates/core", "crates/reader", "crates/abi", "crates/cli", "crates/model", "crates/report"]
 
 [workspace.package]
 version = "0.1.0"
@@ -17,6 +17,15 @@ indexmap = { version = "2", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["float_roundtrip"] }
 thiserror = "2"
+flate2 = { version = "1", default-features = false, features = ["zlib-rs"] }
 
 [workspace.lints.rust]
 missing_docs = "warn"
+
+[profile.wasm]
+inherits = "release"
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

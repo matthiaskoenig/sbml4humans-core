@@ -1,0 +1,418 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [
+      {
+        "prefix": "distrib",
+        "version": 1
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "distrib_comp/Model:distrib_comp",
+        "targetEntry": null
+      },
+      {
+        "kind": "uncertainty",
+        "source": "distrib_comp/Parameter:p1",
+        "target": "distrib_comp/Uncertainty:p1.uncertainty.0",
+        "targetEntry": null
+      },
+      {
+        "kind": "uncertParameter",
+        "source": "distrib_comp/Uncertainty:p1.uncertainty.0",
+        "target": "distrib_comp/UncertSpan:p1.uncertainty.0.range",
+        "targetEntry": null
+      },
+      {
+        "kind": "uncertParameter",
+        "source": "distrib_comp/Uncertainty:p1.uncertainty.0",
+        "target": "distrib_comp/UncertParameter:p1.uncertainty.0.mean",
+        "targetEntry": null
+      },
+      {
+        "kind": "uncertParameter",
+        "source": "distrib_comp/Uncertainty:p1.uncertainty.0",
+        "target": "distrib_comp/UncertParameter:p1.uncertainty.0.standardDeviation",
+        "targetEntry": null
+      },
+      {
+        "kind": "uncertParameter",
+        "source": "distrib_comp/Uncertainty:p1.uncertainty.0",
+        "target": "distrib_comp/UncertParameter:p1.uncertainty.0.distribution",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "distrib_comp/Model:distrib_comp",
+        "target": "distrib_comp/UnitDefinition:hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "distrib_comp/Model:distrib_comp",
+        "target": "distrib_comp/UnitDefinition:m2",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "distrib_comp/Model:distrib_comp": {
+        "id": "distrib_comp",
+        "model": null,
+        "name": "model combining distrib and comp",
+        "pk": "distrib_comp/Model:distrib_comp",
+        "sbmlType": "Model"
+      },
+      "distrib_comp/Parameter:p1": {
+        "id": "p1",
+        "model": "distrib_comp/Model:distrib_comp",
+        "name": null,
+        "pk": "distrib_comp/Parameter:p1",
+        "sbmlType": "Parameter"
+      },
+      "distrib_comp/UncertParameter:p1.uncertainty.0.distribution": {
+        "id": null,
+        "model": "distrib_comp/Model:distrib_comp",
+        "name": null,
+        "pk": "distrib_comp/UncertParameter:p1.uncertainty.0.distribution",
+        "sbmlType": "UncertParameter"
+      },
+      "distrib_comp/UncertParameter:p1.uncertainty.0.mean": {
+        "id": null,
+        "model": "distrib_comp/Model:distrib_comp",
+        "name": null,
+        "pk": "distrib_comp/UncertParameter:p1.uncertainty.0.mean",
+        "sbmlType": "UncertParameter"
+      },
+      "distrib_comp/UncertParameter:p1.uncertainty.0.standardDeviation": {
+        "id": null,
+        "model": "distrib_comp/Model:distrib_comp",
+        "name": null,
+        "pk": "distrib_comp/UncertParameter:p1.uncertainty.0.standardDeviation",
+        "sbmlType": "UncertParameter"
+      },
+      "distrib_comp/UncertSpan:p1.uncertainty.0.range": {
+        "id": null,
+        "model": "distrib_comp/Model:distrib_comp",
+        "name": null,
+        "pk": "distrib_comp/UncertSpan:p1.uncertainty.0.range",
+        "sbmlType": "UncertSpan"
+      },
+      "distrib_comp/Uncertainty:p1.uncertainty.0": {
+        "id": null,
+        "model": "distrib_comp/Model:distrib_comp",
+        "name": null,
+        "pk": "distrib_comp/Uncertainty:p1.uncertainty.0",
+        "sbmlType": "Uncertainty"
+      },
+      "distrib_comp/UnitDefinition:hr": {
+        "id": "hr",
+        "model": "distrib_comp/Model:distrib_comp",
+        "name": "hr",
+        "pk": "distrib_comp/UnitDefinition:hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "distrib_comp/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "distrib_comp/Model:distrib_comp",
+        "name": "meter^2",
+        "pk": "distrib_comp/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_distrib_comp\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mole",
+      "extentUnitsLatex": "mole",
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "distrib_comp",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "metre",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "mol",
+          "history": null,
+          "id": "p1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "distrib_comp/Parameter:p1",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [
+            {
+              "comp": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "distrib_comp/Uncertainty:p1.uncertainty.0",
+              "sbmlType": "Uncertainty",
+              "sbo": null,
+              "uncertParameters": [
+                {
+                  "comp": null,
+                  "cvterms": [],
+                  "definitionUrl": null,
+                  "history": null,
+                  "id": null,
+                  "keyValuePairs": [],
+                  "lists": [],
+                  "math": null,
+                  "metaId": null,
+                  "name": null,
+                  "notes": null,
+                  "pk": "distrib_comp/UncertSpan:p1.uncertainty.0.range",
+                  "sbmlType": "UncertSpan",
+                  "sbo": null,
+                  "type": "range",
+                  "uncertParameters": [],
+                  "uncertainties": [],
+                  "units": null,
+                  "value": null,
+                  "valueLower": 1.0,
+                  "valueUpper": 4.0,
+                  "var": null,
+                  "varLower": null,
+                  "varUpper": null,
+                  "xml": "<distrib:uncertSpan distrib:type=\"range\" distrib:valueLower=\"1\" distrib:valueUpper=\"4\"/>"
+                },
+                {
+                  "comp": null,
+                  "cvterms": [],
+                  "definitionUrl": null,
+                  "history": null,
+                  "id": null,
+                  "keyValuePairs": [],
+                  "lists": [],
+                  "math": null,
+                  "metaId": null,
+                  "name": null,
+                  "notes": null,
+                  "pk": "distrib_comp/UncertParameter:p1.uncertainty.0.mean",
+                  "sbmlType": "UncertParameter",
+                  "sbo": null,
+                  "type": "mean",
+                  "uncertParameters": [],
+                  "uncertainties": [],
+                  "units": null,
+                  "value": 2.0,
+                  "var": null,
+                  "xml": "<distrib:uncertParameter distrib:value=\"2\" distrib:type=\"mean\"/>"
+                },
+                {
+                  "comp": null,
+                  "cvterms": [],
+                  "definitionUrl": null,
+                  "history": null,
+                  "id": null,
+                  "keyValuePairs": [],
+                  "lists": [],
+                  "math": null,
+                  "metaId": null,
+                  "name": null,
+                  "notes": null,
+                  "pk": "distrib_comp/UncertParameter:p1.uncertainty.0.standardDeviation",
+                  "sbmlType": "UncertParameter",
+                  "sbo": null,
+                  "type": "standardDeviation",
+                  "uncertParameters": [],
+                  "uncertainties": [],
+                  "units": null,
+                  "value": 2.0,
+                  "var": null,
+                  "xml": "<distrib:uncertParameter distrib:value=\"2\" distrib:type=\"standardDeviation\"/>"
+                },
+                {
+                  "comp": null,
+                  "cvterms": [],
+                  "definitionUrl": "http://www.sbml.org/sbml/symbols/distrib/normal",
+                  "history": null,
+                  "id": null,
+                  "keyValuePairs": [],
+                  "lists": [],
+                  "math": {
+                    "formula": "normal(2, 2)",
+                    "latex": " \\mathrm{normal}\\left(2,2\\right)"
+                  },
+                  "metaId": null,
+                  "name": null,
+                  "notes": null,
+                  "pk": "distrib_comp/UncertParameter:p1.uncertainty.0.distribution",
+                  "sbmlType": "UncertParameter",
+                  "sbo": null,
+                  "type": "distribution",
+                  "uncertParameters": [],
+                  "uncertainties": [],
+                  "units": null,
+                  "value": null,
+                  "var": null,
+                  "xml": "<distrib:uncertParameter distrib:type=\"distribution\" distrib:definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\"> normal </csymbol>\n      <cn> 2 </cn>\n      <cn> 2 </cn>\n    </apply>\n  </math>\n</distrib:uncertParameter>"
+                }
+              ],
+              "uncertainties": [],
+              "xml": "<distrib:uncertainty>\n  <distrib:uncertSpan distrib:type=\"range\" distrib:valueLower=\"1\" distrib:valueUpper=\"4\"/>\n  <distrib:uncertParameter distrib:value=\"2\" distrib:type=\"mean\"/>\n  <distrib:uncertParameter distrib:value=\"2\" distrib:type=\"standardDeviation\"/>\n  <distrib:uncertParameter distrib:type=\"distribution\" distrib:definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\">\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\"> normal </csymbol>\n        <cn> 2 </cn>\n        <cn> 2 </cn>\n      </apply>\n    </math>\n  </distrib:uncertParameter>\n</distrib:uncertainty>"
+            }
+          ],
+          "units": "mole",
+          "unitsLatex": "mole",
+          "value": 1.0,
+          "xml": "<parameter id=\"p1\" value=\"1\" units=\"mole\" constant=\"true\">\n  <distrib:listOfUncertainties>\n    <distrib:uncertainty>\n      <distrib:uncertSpan distrib:type=\"range\" distrib:valueLower=\"1\" distrib:valueUpper=\"4\"/>\n      <distrib:uncertParameter distrib:value=\"2\" distrib:type=\"mean\"/>\n      <distrib:uncertParameter distrib:value=\"2\" distrib:type=\"standardDeviation\"/>\n      <distrib:uncertParameter distrib:type=\"distribution\" distrib:definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\">\n        <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n          <apply>\n            <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/distrib/normal\"> normal </csymbol>\n            <cn> 2 </cn>\n            <cn> 2 </cn>\n          </apply>\n        </math>\n      </distrib:uncertParameter>\n    </distrib:uncertainty>\n  </distrib:listOfUncertainties>\n</parameter>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "hr",
+          "notes": null,
+          "pk": "distrib_comp/UnitDefinition:hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "hr",
+          "xml": "<unitDefinition id=\"hr\" name=\"hr\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "distrib_comp/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_distrib_comp",
+      "name": "model combining distrib and comp",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Example model using distrib and comp packages</h1>\n    <p>Example creating distrib model with distribution elements.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "distrib_comp/Model:distrib_comp",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mole",
+      "substanceUnitsLatex": "mole",
+      "timeUnits": "hr",
+      "timeUnitsLatex": "hr",
+      "uncertainties": [],
+      "volumeUnits": "litre",
+      "volumeUnitsLatex": "l",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [],
+    "reactions": [],
+    "unsupported": []
+  }
+}

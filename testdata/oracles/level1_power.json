@@ -1,0 +1,451 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 1,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": null,
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 2,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "level1_power/Model:level1_power",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "level1_power/Species:S1",
+        "target": "level1_power/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "level1_power/Species:S2",
+        "target": "level1_power/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "level1_power/Reaction:J0",
+        "target": "level1_power/SpeciesReference:J0.reactant.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "level1_power/SpeciesReference:J0.reactant.S1",
+        "target": "level1_power/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "level1_power/Reaction:J0",
+        "target": "level1_power/SpeciesReference:J0.product.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "level1_power/SpeciesReference:J0.product.S2",
+        "target": "level1_power/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "level1_power/Reaction:J0",
+        "target": "level1_power/KineticLaw:J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "level1_power/KineticLaw:J0.kineticLaw",
+        "target": "level1_power/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "level1_power/KineticLaw:J0.kineticLaw",
+        "target": "level1_power/Parameter:k1",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "level1_power/Compartment:cell": {
+        "id": "cell",
+        "model": "level1_power/Model:level1_power",
+        "name": "cell",
+        "pk": "level1_power/Compartment:cell",
+        "sbmlType": "Compartment"
+      },
+      "level1_power/KineticLaw:J0.kineticLaw": {
+        "id": null,
+        "model": "level1_power/Model:level1_power",
+        "name": null,
+        "pk": "level1_power/KineticLaw:J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "level1_power/Model:level1_power": {
+        "id": "level1_power",
+        "model": null,
+        "name": "level1_power",
+        "pk": "level1_power/Model:level1_power",
+        "sbmlType": "Model"
+      },
+      "level1_power/Parameter:k1": {
+        "id": "k1",
+        "model": "level1_power/Model:level1_power",
+        "name": "k1",
+        "pk": "level1_power/Parameter:k1",
+        "sbmlType": "Parameter"
+      },
+      "level1_power/Reaction:J0": {
+        "id": "J0",
+        "model": "level1_power/Model:level1_power",
+        "name": "J0",
+        "pk": "level1_power/Reaction:J0",
+        "sbmlType": "Reaction"
+      },
+      "level1_power/Species:S1": {
+        "id": "S1",
+        "model": "level1_power/Model:level1_power",
+        "name": "S1",
+        "pk": "level1_power/Species:S1",
+        "sbmlType": "Species"
+      },
+      "level1_power/Species:S2": {
+        "id": "S2",
+        "model": "level1_power/Model:level1_power",
+        "name": "S2",
+        "pk": "level1_power/Species:S2",
+        "sbmlType": "Species"
+      },
+      "level1_power/SpeciesReference:J0.product.S2": {
+        "id": null,
+        "model": "level1_power/Model:level1_power",
+        "name": null,
+        "pk": "level1_power/SpeciesReference:J0.product.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "level1_power/SpeciesReference:J0.reactant.S1": {
+        "id": null,
+        "model": "level1_power/Model:level1_power",
+        "name": null,
+        "pk": "level1_power/SpeciesReference:J0.reactant.S1",
+        "sbmlType": "SpeciesReference"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "level1_power",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": null,
+          "cvterms": [],
+          "derivedUnits": "l",
+          "history": null,
+          "id": "cell",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "cell",
+          "notes": null,
+          "pk": "level1_power/Compartment:cell",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment name=\"cell\" volume=\"1\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "k1",
+          "notes": null,
+          "pk": "level1_power/Parameter:k1",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter name=\"k1\" value=\"0.1\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S1 ➞ S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "\\frac{mol^2}{l^2}",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k1 * S1^2",
+              "latex": " \\mathit{k1}\\cdot {\\mathit{S1}}^{2}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "level1_power/KineticLaw:J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw formula=\"k1 * S1^2\"/>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "level1_power/SpeciesReference:J0.product.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": null,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "level1_power/SpeciesReference:J0.reactant.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "J0",
+          "notes": null,
+          "pk": "level1_power/Reaction:J0",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction name=\"J0\" reversible=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S1\" stoichiometry=\"1\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S2\" stoichiometry=\"1\"/>\n  </listOfProducts>\n  <kineticLaw formula=\"k1 * S1^2\"/>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": null,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": null,
+          "history": null,
+          "id": "S1",
+          "initialAmount": 10.0,
+          "initialConcentration": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "S1",
+          "notes": null,
+          "pk": "level1_power/Species:S1",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species name=\"S1\" compartment=\"cell\" initialAmount=\"10\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": null,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mol}{l}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": null,
+          "history": null,
+          "id": "S2",
+          "initialAmount": 0.0,
+          "initialConcentration": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "S2",
+          "notes": null,
+          "pk": "level1_power/Species:S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species name=\"S2\" compartment=\"cell\" initialAmount=\"0\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": "level1_power",
+      "notes": null,
+      "pk": "level1_power/Model:level1_power",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [
+      {
+        "lhs": "\\htmlData{pk=level1_power/Species:S1}{S_{1}}",
+        "lines": [
+          "\\frac{10}{\\htmlData{pk=level1_power/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "initial_value",
+        "variable": "level1_power/Species:S1"
+      },
+      {
+        "lhs": "\\htmlData{pk=level1_power/Species:S2}{S_{2}}",
+        "lines": [
+          "\\frac{0}{\\htmlData{pk=level1_power/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "initial_value",
+        "variable": "level1_power/Species:S2"
+      }
+    ],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=level1_power/Species:S1}{S_{1}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-\\htmlData{pk=level1_power/Reaction:J0}{v_{\\mathrm{J0}}}}{\\htmlData{pk=level1_power/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "level1_power/Species:S1"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=level1_power/Species:S2}{S_{2}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=level1_power/Reaction:J0}{v_{\\mathrm{J0}}}}{\\htmlData{pk=level1_power/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "level1_power/Species:S2"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=level1_power/Reaction:J0}{v_{\\mathrm{J0}}}",
+        "lines": [
+          "\\htmlData{pk=level1_power/Parameter:k1}{k_{1}} \\cdot \\htmlData{pk=level1_power/Species:S1}{S_{1}}^{2}"
+        ],
+        "origin": "reaction",
+        "variable": "level1_power/Reaction:J0"
+      }
+    ],
+    "unsupported": []
+  }
+}

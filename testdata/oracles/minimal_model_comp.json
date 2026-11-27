@@ -1,0 +1,1960 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [
+      {
+        "prefix": "comp",
+        "version": 1
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [
+    {
+      "comp": null,
+      "cvterms": [],
+      "history": null,
+      "id": "emd0",
+      "keyValuePairs": [],
+      "lists": [],
+      "md5": null,
+      "metaId": null,
+      "modelRef": "minimal_model",
+      "name": null,
+      "notes": null,
+      "pk": "document/ExternalModelDefinition:emd0",
+      "resolution": {
+        "entry": null,
+        "md5Matches": null,
+        "model": null,
+        "status": "notFound"
+      },
+      "sbmlType": "ExternalModelDefinition",
+      "sbo": null,
+      "source": "minimal_model.xml",
+      "uncertainties": [],
+      "xml": "<comp:externalModelDefinition comp:id=\"emd0\" comp:source=\"minimal_model.xml\" comp:modelRef=\"minimal_model\"/>"
+    },
+    {
+      "comp": null,
+      "cvterms": [],
+      "history": null,
+      "id": "emd1",
+      "keyValuePairs": [],
+      "lists": [],
+      "md5": null,
+      "metaId": null,
+      "modelRef": "minimal_model",
+      "name": null,
+      "notes": null,
+      "pk": "document/ExternalModelDefinition:emd1",
+      "resolution": {
+        "entry": null,
+        "md5Matches": null,
+        "model": null,
+        "status": "notFound"
+      },
+      "sbmlType": "ExternalModelDefinition",
+      "sbo": null,
+      "source": "minimal_model.xml",
+      "uncertainties": [],
+      "xml": "<comp:externalModelDefinition comp:id=\"emd1\" comp:source=\"minimal_model.xml\" comp:modelRef=\"minimal_model\"/>"
+    },
+    {
+      "comp": null,
+      "cvterms": [],
+      "history": null,
+      "id": "emd2",
+      "keyValuePairs": [],
+      "lists": [],
+      "md5": null,
+      "metaId": null,
+      "modelRef": "minimal_model",
+      "name": null,
+      "notes": null,
+      "pk": "document/ExternalModelDefinition:emd2",
+      "resolution": {
+        "entry": null,
+        "md5Matches": null,
+        "model": null,
+        "status": "notFound"
+      },
+      "sbmlType": "ExternalModelDefinition",
+      "sbo": null,
+      "source": "minimal_model.xml",
+      "uncertainties": [],
+      "xml": "<comp:externalModelDefinition comp:id=\"emd2\" comp:source=\"minimal_model.xml\" comp:modelRef=\"minimal_model\"/>"
+    },
+    {
+      "comp": null,
+      "cvterms": [],
+      "history": null,
+      "id": "emd3",
+      "keyValuePairs": [],
+      "lists": [],
+      "md5": null,
+      "metaId": null,
+      "modelRef": "minimal_model",
+      "name": null,
+      "notes": null,
+      "pk": "document/ExternalModelDefinition:emd3",
+      "resolution": {
+        "entry": null,
+        "md5Matches": null,
+        "model": null,
+        "status": "notFound"
+      },
+      "sbmlType": "ExternalModelDefinition",
+      "sbo": null,
+      "source": "minimal_model.xml",
+      "uncertainties": [],
+      "xml": "<comp:externalModelDefinition comp:id=\"emd3\" comp:source=\"minimal_model.xml\" comp:modelRef=\"minimal_model\"/>"
+    },
+    {
+      "comp": null,
+      "cvterms": [],
+      "history": null,
+      "id": "emd4",
+      "keyValuePairs": [],
+      "lists": [],
+      "md5": null,
+      "metaId": null,
+      "modelRef": "minimal_model",
+      "name": null,
+      "notes": null,
+      "pk": "document/ExternalModelDefinition:emd4",
+      "resolution": {
+        "entry": null,
+        "md5Matches": null,
+        "model": null,
+        "status": "notFound"
+      },
+      "sbmlType": "ExternalModelDefinition",
+      "sbo": null,
+      "source": "minimal_model.xml",
+      "uncertainties": [],
+      "xml": "<comp:externalModelDefinition comp:id=\"emd4\" comp:source=\"minimal_model.xml\" comp:modelRef=\"minimal_model\"/>"
+    }
+  ],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "minimal_model_comp/Model:minimal_model_comp",
+        "targetEntry": null
+      },
+      {
+        "kind": "externalModelDefinition",
+        "source": "document/SBMLDocument:document",
+        "target": "document/ExternalModelDefinition:emd0",
+        "targetEntry": null
+      },
+      {
+        "kind": "externalModelDefinition",
+        "source": "document/SBMLDocument:document",
+        "target": "document/ExternalModelDefinition:emd1",
+        "targetEntry": null
+      },
+      {
+        "kind": "externalModelDefinition",
+        "source": "document/SBMLDocument:document",
+        "target": "document/ExternalModelDefinition:emd2",
+        "targetEntry": null
+      },
+      {
+        "kind": "externalModelDefinition",
+        "source": "document/SBMLDocument:document",
+        "target": "document/ExternalModelDefinition:emd3",
+        "targetEntry": null
+      },
+      {
+        "kind": "externalModelDefinition",
+        "source": "document/SBMLDocument:document",
+        "target": "document/ExternalModelDefinition:emd4",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Compartment:cell0",
+        "target": "minimal_model_comp/ReplacedElement:cell0_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:cell0_RE",
+        "target": "minimal_model_comp/Submodel:submodel0",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Compartment:cell1",
+        "target": "minimal_model_comp/ReplacedElement:cell1_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:cell1_RE",
+        "target": "minimal_model_comp/Submodel:submodel1",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Compartment:cell2",
+        "target": "minimal_model_comp/ReplacedElement:cell2_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:cell2_RE",
+        "target": "minimal_model_comp/Submodel:submodel2",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Compartment:cell3",
+        "target": "minimal_model_comp/ReplacedElement:cell3_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:cell3_RE",
+        "target": "minimal_model_comp/Submodel:submodel3",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Compartment:cell4",
+        "target": "minimal_model_comp/ReplacedElement:cell4_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:cell4_RE",
+        "target": "minimal_model_comp/Submodel:submodel4",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Species:S0",
+        "target": "minimal_model_comp/ReplacedElement:S0_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:S0_RE",
+        "target": "minimal_model_comp/Submodel:submodel0",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Species:S1",
+        "target": "minimal_model_comp/ReplacedElement:S1_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:S1_RE",
+        "target": "minimal_model_comp/Submodel:submodel1",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Species:S2",
+        "target": "minimal_model_comp/ReplacedElement:S2_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:S2_RE",
+        "target": "minimal_model_comp/Submodel:submodel2",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Species:S3",
+        "target": "minimal_model_comp/ReplacedElement:S3_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:S3_RE",
+        "target": "minimal_model_comp/Submodel:submodel3",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/Species:S4",
+        "target": "minimal_model_comp/ReplacedElement:S4_RE",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "minimal_model_comp/ReplacedElement:S4_RE",
+        "target": "minimal_model_comp/Submodel:submodel4",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S0",
+        "target": "minimal_model_comp/Compartment:cell0",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S1",
+        "target": "minimal_model_comp/Compartment:cell1",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S2",
+        "target": "minimal_model_comp/Compartment:cell2",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S3",
+        "target": "minimal_model_comp/Compartment:cell3",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "minimal_model_comp/Species:S4",
+        "target": "minimal_model_comp/Compartment:cell4",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:J0",
+        "target": "minimal_model_comp/SpeciesReference:J0.reactant.S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:J0.reactant.S0",
+        "target": "minimal_model_comp/Species:S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:J0",
+        "target": "minimal_model_comp/SpeciesReference:J0.product.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:J0.product.S1",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:J0",
+        "target": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "target": "minimal_model_comp/Parameter:D",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S0",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:J1",
+        "target": "minimal_model_comp/SpeciesReference:J1.reactant.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:J1.reactant.S1",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:J1",
+        "target": "minimal_model_comp/SpeciesReference:J1.product.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:J1.product.S2",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:J1",
+        "target": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "target": "minimal_model_comp/Parameter:D",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "target": "minimal_model_comp/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:J2",
+        "target": "minimal_model_comp/SpeciesReference:J2.reactant.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:J2.reactant.S2",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:J2",
+        "target": "minimal_model_comp/SpeciesReference:J2.product.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:J2.product.S3",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:J2",
+        "target": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "target": "minimal_model_comp/Parameter:D",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "target": "minimal_model_comp/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/Reaction:J3",
+        "target": "minimal_model_comp/SpeciesReference:J3.reactant.S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "minimal_model_comp/SpeciesReference:J3.reactant.S3",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/Reaction:J3",
+        "target": "minimal_model_comp/SpeciesReference:J3.product.S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "minimal_model_comp/SpeciesReference:J3.product.S4",
+        "target": "minimal_model_comp/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "minimal_model_comp/Reaction:J3",
+        "target": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "target": "minimal_model_comp/Parameter:D",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "target": "minimal_model_comp/Species:S3",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "target": "minimal_model_comp/Species:S4",
+        "targetEntry": null
+      },
+      {
+        "kind": "modelRef",
+        "source": "minimal_model_comp/Submodel:submodel0",
+        "target": "document/ExternalModelDefinition:emd0",
+        "targetEntry": null
+      },
+      {
+        "kind": "modelRef",
+        "source": "minimal_model_comp/Submodel:submodel1",
+        "target": "document/ExternalModelDefinition:emd1",
+        "targetEntry": null
+      },
+      {
+        "kind": "modelRef",
+        "source": "minimal_model_comp/Submodel:submodel2",
+        "target": "document/ExternalModelDefinition:emd2",
+        "targetEntry": null
+      },
+      {
+        "kind": "modelRef",
+        "source": "minimal_model_comp/Submodel:submodel3",
+        "target": "document/ExternalModelDefinition:emd3",
+        "targetEntry": null
+      },
+      {
+        "kind": "modelRef",
+        "source": "minimal_model_comp/Submodel:submodel4",
+        "target": "document/ExternalModelDefinition:emd4",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/ExternalModelDefinition:emd0": {
+        "id": "emd0",
+        "model": null,
+        "name": null,
+        "pk": "document/ExternalModelDefinition:emd0",
+        "sbmlType": "ExternalModelDefinition"
+      },
+      "document/ExternalModelDefinition:emd1": {
+        "id": "emd1",
+        "model": null,
+        "name": null,
+        "pk": "document/ExternalModelDefinition:emd1",
+        "sbmlType": "ExternalModelDefinition"
+      },
+      "document/ExternalModelDefinition:emd2": {
+        "id": "emd2",
+        "model": null,
+        "name": null,
+        "pk": "document/ExternalModelDefinition:emd2",
+        "sbmlType": "ExternalModelDefinition"
+      },
+      "document/ExternalModelDefinition:emd3": {
+        "id": "emd3",
+        "model": null,
+        "name": null,
+        "pk": "document/ExternalModelDefinition:emd3",
+        "sbmlType": "ExternalModelDefinition"
+      },
+      "document/ExternalModelDefinition:emd4": {
+        "id": "emd4",
+        "model": null,
+        "name": null,
+        "pk": "document/ExternalModelDefinition:emd4",
+        "sbmlType": "ExternalModelDefinition"
+      },
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "minimal_model_comp/Compartment:cell0": {
+        "id": "cell0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell0",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/Compartment:cell1": {
+        "id": "cell1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell1",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/Compartment:cell2": {
+        "id": "cell2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell2",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/Compartment:cell3": {
+        "id": "cell3",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell3",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/Compartment:cell4": {
+        "id": "cell4",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Compartment:cell4",
+        "sbmlType": "Compartment"
+      },
+      "minimal_model_comp/KineticLaw:J0.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:J1.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:J2.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/KineticLaw:J3.kineticLaw": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "minimal_model_comp/Model:minimal_model_comp": {
+        "id": "minimal_model_comp",
+        "model": null,
+        "name": null,
+        "pk": "minimal_model_comp/Model:minimal_model_comp",
+        "sbmlType": "Model"
+      },
+      "minimal_model_comp/Parameter:D": {
+        "id": "D",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Parameter:D",
+        "sbmlType": "Parameter"
+      },
+      "minimal_model_comp/Reaction:J0": {
+        "id": "J0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:J0",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:J1": {
+        "id": "J1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:J1",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:J2": {
+        "id": "J2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:J2",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/Reaction:J3": {
+        "id": "J3",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Reaction:J3",
+        "sbmlType": "Reaction"
+      },
+      "minimal_model_comp/ReplacedElement:S0_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:S0_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:S1_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:S1_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:S2_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:S2_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:S3_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:S3_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:S4_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:S4_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:cell0_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:cell0_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:cell1_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:cell1_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:cell2_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:cell2_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:cell3_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:cell3_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/ReplacedElement:cell4_RE": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/ReplacedElement:cell4_RE",
+        "sbmlType": "ReplacedElement"
+      },
+      "minimal_model_comp/Species:S0": {
+        "id": "S0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S0",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:S1": {
+        "id": "S1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S1",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:S2": {
+        "id": "S2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S2",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:S3": {
+        "id": "S3",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S3",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/Species:S4": {
+        "id": "S4",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Species:S4",
+        "sbmlType": "Species"
+      },
+      "minimal_model_comp/SpeciesReference:J0.product.S1": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J0.product.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J0.reactant.S0": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J0.reactant.S0",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J1.product.S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J1.product.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J1.reactant.S1": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J1.reactant.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J2.product.S3": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J2.product.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J2.reactant.S2": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J2.reactant.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J3.product.S4": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J3.product.S4",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/SpeciesReference:J3.reactant.S3": {
+        "id": null,
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/SpeciesReference:J3.reactant.S3",
+        "sbmlType": "SpeciesReference"
+      },
+      "minimal_model_comp/Submodel:submodel0": {
+        "id": "submodel0",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Submodel:submodel0",
+        "sbmlType": "Submodel"
+      },
+      "minimal_model_comp/Submodel:submodel1": {
+        "id": "submodel1",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Submodel:submodel1",
+        "sbmlType": "Submodel"
+      },
+      "minimal_model_comp/Submodel:submodel2": {
+        "id": "submodel2",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Submodel:submodel2",
+        "sbmlType": "Submodel"
+      },
+      "minimal_model_comp/Submodel:submodel3": {
+        "id": "submodel3",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Submodel:submodel3",
+        "sbmlType": "Submodel"
+      },
+      "minimal_model_comp/Submodel:submodel4": {
+        "id": "submodel4",
+        "model": "minimal_model_comp/Model:minimal_model_comp",
+        "name": null,
+        "pk": "minimal_model_comp/Submodel:submodel4",
+        "sbmlType": "Submodel"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "minimal_model_comp",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "cell0_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:cell0_RE",
+                "portRef": "cell_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel0",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"cell0_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel0\"/>"
+              }
+            ]
+          },
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell0",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell0",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell0\" spatialDimensions=\"3\" size=\"1\" constant=\"true\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"cell0_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel0\"/>\n  </comp:listOfReplacedElements>\n</compartment>"
+        },
+        {
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "cell1_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:cell1_RE",
+                "portRef": "cell_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel1",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"cell1_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel1\"/>"
+              }
+            ]
+          },
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell1",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell1\" spatialDimensions=\"3\" size=\"1\" constant=\"true\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"cell1_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel1\"/>\n  </comp:listOfReplacedElements>\n</compartment>"
+        },
+        {
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "cell2_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:cell2_RE",
+                "portRef": "cell_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel2",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"cell2_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel2\"/>"
+              }
+            ]
+          },
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell2",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell2",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell2\" spatialDimensions=\"3\" size=\"1\" constant=\"true\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"cell2_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel2\"/>\n  </comp:listOfReplacedElements>\n</compartment>"
+        },
+        {
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "cell3_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:cell3_RE",
+                "portRef": "cell_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel3",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"cell3_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel3\"/>"
+              }
+            ]
+          },
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell3",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell3",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell3\" spatialDimensions=\"3\" size=\"1\" constant=\"true\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"cell3_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel3\"/>\n  </comp:listOfReplacedElements>\n</compartment>"
+        },
+        {
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "cell4_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:cell4_RE",
+                "portRef": "cell_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel4",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"cell4_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel4\"/>"
+              }
+            ]
+          },
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell4",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Compartment:cell4",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell4\" spatialDimensions=\"3\" size=\"1\" constant=\"true\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"cell4_RE\" comp:portRef=\"cell_port\" comp:submodelRef=\"submodel4\"/>\n  </comp:listOfReplacedElements>\n</compartment>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "D",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Parameter:D",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.01,
+          "xml": "<parameter id=\"D\" value=\"0.01\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S0 ⇆ S1",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "D * (S0 - S1)",
+              "latex": " \\mathit{D}\\cdot (\\mathit{S0}-\\mathit{S1})"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> D </ci>\n      <apply>\n        <minus/>\n        <ci> S0 </ci>\n        <ci> S1 </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J0.product.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J0.reactant.S0",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S0",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S0\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:J0",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J0\" reversible=\"true\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S0\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> D </ci>\n        <apply>\n          <minus/>\n          <ci> S0 </ci>\n          <ci> S1 </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S1 ⇆ S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J1",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "D * (S1 - S2)",
+              "latex": " \\mathit{D}\\cdot (\\mathit{S1}-\\mathit{S2})"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:J1.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> D </ci>\n      <apply>\n        <minus/>\n        <ci> S1 </ci>\n        <ci> S2 </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J1.product.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J1.reactant.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:J1",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J1\" reversible=\"true\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> D </ci>\n        <apply>\n          <minus/>\n          <ci> S1 </ci>\n          <ci> S2 </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S2 ⇆ S3",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J2",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "D * (S2 - S3)",
+              "latex": " \\mathit{D}\\cdot (\\mathit{S2}-\\mathit{S3})"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:J2.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> D </ci>\n      <apply>\n        <minus/>\n        <ci> S2 </ci>\n        <ci> S3 </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J2.product.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J2.reactant.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:J2",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J2\" reversible=\"true\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> D </ci>\n        <apply>\n          <minus/>\n          <ci> S2 </ci>\n          <ci> S3 </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S3 ⇆ S4",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J3",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "D * (S3 - S4)",
+              "latex": " \\mathit{D}\\cdot (\\mathit{S3}-\\mathit{S4})"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "minimal_model_comp/KineticLaw:J3.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> D </ci>\n      <apply>\n        <minus/>\n        <ci> S3 </ci>\n        <ci> S4 </ci>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J3.product.S4",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S4",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "minimal_model_comp/SpeciesReference:J3.reactant.S3",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S3",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Reaction:J3",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J3\" reversible=\"true\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S3\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S4\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> D </ci>\n        <apply>\n          <minus/>\n          <ci> S3 </ci>\n          <ci> S4 </ci>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "S0_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:S0_RE",
+                "portRef": "S1_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel0",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"S0_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel0\"/>"
+              }
+            ]
+          },
+          "compartment": "cell0",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S0",
+          "initialAmount": null,
+          "initialConcentration": 10.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S0",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S0\" compartment=\"cell0\" initialConcentration=\"10\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"S0_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel0\"/>\n  </comp:listOfReplacedElements>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "S1_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:S1_RE",
+                "portRef": "S1_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel1",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"S1_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel1\"/>"
+              }
+            ]
+          },
+          "compartment": "cell1",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S1",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S1",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S1\" compartment=\"cell1\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"S1_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel1\"/>\n  </comp:listOfReplacedElements>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "S2_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:S2_RE",
+                "portRef": "S1_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel2",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"S2_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel2\"/>"
+              }
+            ]
+          },
+          "compartment": "cell2",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S2\" compartment=\"cell2\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"S2_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel2\"/>\n  </comp:listOfReplacedElements>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "S3_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:S3_RE",
+                "portRef": "S1_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel3",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"S3_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel3\"/>"
+              }
+            ]
+          },
+          "compartment": "cell3",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S3",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S3",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S3\" compartment=\"cell3\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"S3_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel3\"/>\n  </comp:listOfReplacedElements>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": "S4_RE",
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "minimal_model_comp/ReplacedElement:S4_RE",
+                "portRef": "S1_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "submodel4",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement metaid=\"S4_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel4\"/>"
+              }
+            ]
+          },
+          "compartment": "cell4",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S4",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Species:S4",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S4\" compartment=\"cell4\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement metaid=\"S4_RE\" comp:portRef=\"S1_port\" comp:submodelRef=\"submodel4\"/>\n  </comp:listOfReplacedElements>\n</species>"
+        }
+      ],
+      "listOfSubmodels": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "extentConversionFactor": null,
+          "history": null,
+          "id": "submodel0",
+          "keyValuePairs": [],
+          "listOfDeletions": [],
+          "lists": [],
+          "metaId": null,
+          "modelRef": "emd0",
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Submodel:submodel0",
+          "sbmlType": "Submodel",
+          "sbo": null,
+          "timeConversionFactor": null,
+          "uncertainties": [],
+          "xml": "<comp:submodel comp:id=\"submodel0\" comp:modelRef=\"emd0\"/>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "extentConversionFactor": null,
+          "history": null,
+          "id": "submodel1",
+          "keyValuePairs": [],
+          "listOfDeletions": [],
+          "lists": [],
+          "metaId": null,
+          "modelRef": "emd1",
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Submodel:submodel1",
+          "sbmlType": "Submodel",
+          "sbo": null,
+          "timeConversionFactor": null,
+          "uncertainties": [],
+          "xml": "<comp:submodel comp:id=\"submodel1\" comp:modelRef=\"emd1\"/>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "extentConversionFactor": null,
+          "history": null,
+          "id": "submodel2",
+          "keyValuePairs": [],
+          "listOfDeletions": [],
+          "lists": [],
+          "metaId": null,
+          "modelRef": "emd2",
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Submodel:submodel2",
+          "sbmlType": "Submodel",
+          "sbo": null,
+          "timeConversionFactor": null,
+          "uncertainties": [],
+          "xml": "<comp:submodel comp:id=\"submodel2\" comp:modelRef=\"emd2\"/>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "extentConversionFactor": null,
+          "history": null,
+          "id": "submodel3",
+          "keyValuePairs": [],
+          "listOfDeletions": [],
+          "lists": [],
+          "metaId": null,
+          "modelRef": "emd3",
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Submodel:submodel3",
+          "sbmlType": "Submodel",
+          "sbo": null,
+          "timeConversionFactor": null,
+          "uncertainties": [],
+          "xml": "<comp:submodel comp:id=\"submodel3\" comp:modelRef=\"emd3\"/>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "extentConversionFactor": null,
+          "history": null,
+          "id": "submodel4",
+          "keyValuePairs": [],
+          "listOfDeletions": [],
+          "lists": [],
+          "metaId": null,
+          "modelRef": "emd4",
+          "name": null,
+          "notes": null,
+          "pk": "minimal_model_comp/Submodel:submodel4",
+          "sbmlType": "Submodel",
+          "sbo": null,
+          "timeConversionFactor": null,
+          "uncertainties": [],
+          "xml": "<comp:submodel comp:id=\"submodel4\" comp:modelRef=\"emd4\"/>"
+        }
+      ],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Hierarchical model reusing the minimal model in composite model coupling.</p>\n  </body>\n</notes>",
+      "pk": "minimal_model_comp/Model:minimal_model_comp",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": "SBML could not be flattened due to errors:\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd0': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel0' because the external model definition it referenced (model 'emd0') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd1': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel1' because the external model definition it referenced (model 'emd1') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd2': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel2' because the external model definition it referenced (model 'emd2') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd3': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel3' because the external model definition it referenced (model 'emd3') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd4': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel4' because the external model definition it referenced (model 'emd4') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd0': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel0' because the external model definition it referenced (model 'emd0') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd1': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel1' because the external model definition it referenced (model 'emd1') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd2': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel2' because the external model definition it referenced (model 'emd2') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd3': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel3' because the external model definition it referenced (model 'emd3') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd4': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel4' because the external model definition it referenced (model 'emd4') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd0': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel0' because the external model definition it referenced (model 'emd0') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd1': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel1' because the external model definition it referenced (model 'emd1') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd2': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel2' because the external model definition it referenced (model 'emd2') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd3': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel3' because the external model definition it referenced (model 'emd3') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd4': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel4' because the external model definition it referenced (model 'emd4') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd0': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel0' because the external model definition it referenced (model 'emd0') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd1': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel1' because the external model definition it referenced (model 'emd1') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd2': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel2' because the external model definition it referenced (model 'emd2') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd3': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel3' because the external model definition it referenced (model 'emd3') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n In ExternalModelDefinition::getReferencedModel, unable to resolve the external model definition 'emd4': could not the resolve 'source' attribute 'minimal_model.xml' as a valid SBML Document.\n  E1020615: The value of a 'comp:modelRef' attribute on a <submodel> must be the identifier of a <model>, <modelDefinition>, or <externalModelDefinition> object in the same SBML object as the <submodel>.\nReference: L3V1 Comp V1 Section 3.5.1\n In Submodel::instantiate, unable to instantiate submodel 'submodel4' because the external model definition it referenced (model 'emd4') could not be resolved.\n  E1090101: The external model referenced in this model could not be resolved. \n The <externalModelDefinition> with the id 'emd0' refers to a source 'minimal_model.xml' that cannot be accessed from here. Further checks relating to this document cannot be performed.\n  E1090101: The external model referenced in this model could not be resolved. \n The <externalModelDefinition> with the id 'emd1' refers to a source 'minimal_model.xml' that cannot be accessed from here. Further checks relating to this document cannot be performed.\n  E1090101: The external model referenced in this model could not be resolved. \n The <externalModelDefinition> with the id 'emd2' refers to a source 'minimal_model.xml' that cannot be accessed from here. Further checks relating to this document cannot be performed.\n  E1090101: The external model referenced in this model could not be resolved. \n The <externalModelDefinition> with the id 'emd3' refers to a source 'minimal_model.xml' that cannot be accessed from here. Further checks relating to this document cannot be performed.\n  E1090101: The external model referenced in this model could not be resolved. \n The <externalModelDefinition> with the id 'emd4' refers to a source 'minimal_model.xml' that cannot be accessed from here. Further checks relating to this document cannot be performed.",
+  "odeSystem": null
+}

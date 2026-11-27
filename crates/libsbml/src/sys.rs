@@ -56,6 +56,8 @@ pub(crate) struct ModelCreator {
 pub(crate) struct Package {
     /// The prefix of the namespace of the package, null when there is none.
     pub(crate) prefix: *const c_char,
+    /// The canonical package name.
+    pub(crate) name: *const c_char,
     /// The version of the package.
     pub(crate) version: c_uint,
     /// Whether the document declares the package as required.
@@ -110,6 +112,14 @@ unsafe extern "C" {
     pub(crate) fn s4h_sbase_line(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_sbase_column(sbase: *mut SBase) -> c_uint;
 
+    pub(crate) fn s4h_model_substance_units(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_model_time_units(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_model_volume_units(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_model_area_units(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_model_length_units(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_model_extent_units(sbase: *mut SBase) -> *const c_char;
+    pub(crate) fn s4h_conversion_factor(sbase: *mut SBase) -> *const c_char;
+
     pub(crate) fn s4h_model_num_function_definitions(sbase: *mut SBase) -> c_uint;
     pub(crate) fn s4h_model_function_definition(sbase: *mut SBase, n: c_uint) -> *mut SBase;
     pub(crate) fn s4h_model_num_unit_definitions(sbase: *mut SBase) -> c_uint;
@@ -155,6 +165,7 @@ unsafe extern "C" {
         sbase: *mut SBase,
         value: *mut c_double,
     ) -> c_int;
+    pub(crate) fn s4h_species_spatial_size_units(sbase: *mut SBase) -> *const c_char;
     pub(crate) fn s4h_species_substance_units(sbase: *mut SBase) -> *const c_char;
     pub(crate) fn s4h_species_has_only_substance_units(
         sbase: *mut SBase,
@@ -194,6 +205,7 @@ unsafe extern "C" {
         value: *mut c_double,
     ) -> c_int;
     pub(crate) fn s4h_species_reference_stoichiometry_set(sbase: *mut SBase) -> c_int;
+    pub(crate) fn s4h_species_reference_math(sbase: *mut SBase) -> *const ASTNode;
     pub(crate) fn s4h_species_reference_stoichiometry_math(sbase: *mut SBase) -> c_int;
     pub(crate) fn s4h_species_reference_constant(sbase: *mut SBase, value: *mut c_int) -> c_int;
 

@@ -71,17 +71,31 @@ pub fn key(element: &Element, fallback: impl FnOnce() -> String) -> String {
 /// and whose key its keys have to stay clear of nonetheless. The model of a document is the one
 /// such element, reserved against the list of the comp model definitions, and it is owed by the
 /// slice which reads comp.
-fn keyed_by<'a, T>(
+pub(crate) fn keyed_by<'a, T>(
     children: &'a [T],
     element_of: impl Fn(&'a T) -> &'a Element,
     candidates: &[String],
+) -> Vec<String> {
+    keyed_by_reserved(children, element_of, candidates, &[])
+}
+
+pub(crate) fn keyed_by_reserved<'a, T>(
+    children: &'a [T],
+    element_of: impl Fn(&'a T) -> &'a Element,
+    candidates: &[String],
+    reserved: &[&str],
 ) -> Vec<String> {
     debug_assert_eq!(children.len(), candidates.len());
     let own: Vec<Option<&str>> = children
         .iter()
         .map(|child| own_key(element_of(child)))
         .collect();
-    let reserved: Vec<&str> = own.iter().copied().flatten().collect();
+    let reserved: Vec<&str> = own
+        .iter()
+        .copied()
+        .flatten()
+        .chain(reserved.iter().copied())
+        .collect();
     let numbered: Vec<String> = candidates
         .iter()
         .zip(&own)

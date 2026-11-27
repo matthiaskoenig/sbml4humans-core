@@ -81,6 +81,8 @@ extern "C" {
 struct S4hPackage {
     /// The prefix of the namespace of the package, null when there is none.
     const char* prefix;
+    /// The canonical package name.
+    const char* name;
     /// The version of the package.
     unsigned int version;
     /// Whether the document declares the package as required.
@@ -174,7 +176,7 @@ unsigned int s4h_document_num_plugins(SBMLDocument* doc) {
 /// of a package: libsbml implements the math of Level 3 Version 2 as a plugin
 /// of the document which carries the namespace of core itself.
 S4hPackage s4h_document_package(SBMLDocument* doc, unsigned int n) {
-    S4hPackage package = {nullptr, 0, 0};
+    S4hPackage package = {nullptr, nullptr, 0, 0};
     try {
         SBasePlugin* plugin = doc->getPlugin(n);
         if (plugin == nullptr) {
@@ -187,6 +189,7 @@ S4hPackage s4h_document_package(SBMLDocument* doc, unsigned int n) {
             return package;
         }
         package.prefix = prefix.c_str();
+        package.name = plugin->getPackageName().c_str();
         package.version = plugin->getPackageVersion();
         package.required = doc->getPackageRequired(plugin->getPackageName()) ? 1 : 0;
         return package;
@@ -263,6 +266,30 @@ unsigned int s4h_history_num_modified(ModelHistory* history) { return history->g
 const char* s4h_history_modified(ModelHistory* history, unsigned int n) {
     auto* date = history->getModifiedDate(n);
     return date ? date->getDateAsString().c_str() : nullptr;
+}
+
+/* -------------------------------------------------------- default unit ids */
+#define S4H_MODEL_UNITS(name, Name) \
+const char* s4h_model_##name##_units(SBase* sbase) { \
+    auto* model = dynamic_cast<Model*>(sbase); \
+    return model ? borrowed(model->isSet##Name##Units(), model->get##Name##Units()) : nullptr; \
+}
+S4H_MODEL_UNITS(substance, Substance)
+S4H_MODEL_UNITS(time, Time)
+S4H_MODEL_UNITS(volume, Volume)
+S4H_MODEL_UNITS(area, Area)
+S4H_MODEL_UNITS(length, Length)
+S4H_MODEL_UNITS(extent, Extent)
+#undef S4H_MODEL_UNITS
+
+const char* s4h_conversion_factor(SBase* sbase) {
+    if (auto* model = dynamic_cast<Model*>(sbase)) {
+        return borrowed(model->isSetConversionFactor(), model->getConversionFactor());
+    }
+    if (auto* species = dynamic_cast<Species*>(sbase)) {
+        return borrowed(species->isSetConversionFactor(), species->getConversionFactor());
+    }
+    return nullptr;
 }
 
 /* ----------------------------------------------------------------- element */
@@ -637,6 +664,11 @@ const char* s4h_species_substance_units(SBase* sbase) {
 }
 
 /// The `hasOnlySubstanceUnits` of a species.
+const char* s4h_species_spatial_size_units(SBase* sbase) {
+    auto* species = dynamic_cast<Species*>(sbase);
+    return species ? borrowed(species->isSetSpatialSizeUnits(), species->getSpatialSizeUnits()) : nullptr;
+}
+
 int s4h_species_has_only_substance_units(SBase* sbase, int* value) {
     Species* species = dynamic_cast<Species*>(sbase);
     if (species == nullptr || !species->isSetHasOnlySubstanceUnits()) {
@@ -926,6 +958,11 @@ int s4h_species_reference_stoichiometry_set(SBase* sbase) {
 }
 
 /// Whether a reference carries a `stoichiometryMath`, which Level 3 dropped.
+const ASTNode* s4h_species_reference_math(SBase* sbase) {
+  SpeciesReference* reference = dynamic_cast<SpeciesReference*>(sbase);
+  return reference && reference->isSetStoichiometryMath() ? reference->getStoichiometryMath()->getMath() : nullptr;
+}
+
 int s4h_species_reference_stoichiometry_math(SBase* sbase) {
     SpeciesReference* reference = dynamic_cast<SpeciesReference*>(sbase);
     return reference != nullptr && reference->isSetStoichiometryMath() ? 1 : 0;

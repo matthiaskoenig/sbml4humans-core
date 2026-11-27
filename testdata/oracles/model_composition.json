@@ -1,0 +1,694 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [
+      {
+        "prefix": "fbc",
+        "version": 2
+      },
+      {
+        "prefix": "comp",
+        "version": 1
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "model_composition/Model:model_composition",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "model_composition/Species:S1",
+        "target": "model_composition/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "model_composition/Species:S2",
+        "target": "model_composition/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "model_composition/Reaction:J0",
+        "target": "model_composition/SpeciesReference:J0.reactant.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "model_composition/SpeciesReference:J0.reactant.S1",
+        "target": "model_composition/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "model_composition/Reaction:J0",
+        "target": "model_composition/SpeciesReference:J0.product.S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "model_composition/SpeciesReference:J0.product.S2",
+        "target": "model_composition/Species:S2",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "model_composition/Reaction:J0",
+        "target": "model_composition/KineticLaw:J0.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "model_composition/KineticLaw:J0.kineticLaw",
+        "target": "model_composition/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "model_composition/KineticLaw:J0.kineticLaw",
+        "target": "model_composition/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "model_composition/Reaction:J1",
+        "target": "model_composition/SpeciesReference:J1.product.S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "model_composition/SpeciesReference:J1.product.S1",
+        "target": "model_composition/Species:S1",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "model_composition/Reaction:J1",
+        "target": "model_composition/KineticLaw:J1.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "model_composition/KineticLaw:J1.kineticLaw",
+        "target": "model_composition/Parameter:k2",
+        "targetEntry": null
+      },
+      {
+        "kind": "port",
+        "source": "model_composition/Port:cell_port",
+        "target": "model_composition/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "port",
+        "source": "model_composition/Port:S1_port",
+        "target": "model_composition/Species:S1",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "model_composition/Compartment:cell": {
+        "id": "cell",
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/Compartment:cell",
+        "sbmlType": "Compartment"
+      },
+      "model_composition/KineticLaw:J0.kineticLaw": {
+        "id": null,
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/KineticLaw:J0.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "model_composition/KineticLaw:J1.kineticLaw": {
+        "id": null,
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/KineticLaw:J1.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "model_composition/Model:model_composition": {
+        "id": "model_composition",
+        "model": null,
+        "name": "model composition from multiple models",
+        "pk": "model_composition/Model:model_composition",
+        "sbmlType": "Model"
+      },
+      "model_composition/Parameter:k1": {
+        "id": "k1",
+        "model": "model_composition/Model:model_composition",
+        "name": "rate constant for J0",
+        "pk": "model_composition/Parameter:k1",
+        "sbmlType": "Parameter"
+      },
+      "model_composition/Parameter:k2": {
+        "id": "k2",
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/Parameter:k2",
+        "sbmlType": "Parameter"
+      },
+      "model_composition/Port:S1_port": {
+        "id": "S1_port",
+        "model": "model_composition/Model:model_composition",
+        "name": "Port of S1",
+        "pk": "model_composition/Port:S1_port",
+        "sbmlType": "Port"
+      },
+      "model_composition/Port:cell_port": {
+        "id": "cell_port",
+        "model": "model_composition/Model:model_composition",
+        "name": "Port of cell",
+        "pk": "model_composition/Port:cell_port",
+        "sbmlType": "Port"
+      },
+      "model_composition/Reaction:J0": {
+        "id": "J0",
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/Reaction:J0",
+        "sbmlType": "Reaction"
+      },
+      "model_composition/Reaction:J1": {
+        "id": "J1",
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/Reaction:J1",
+        "sbmlType": "Reaction"
+      },
+      "model_composition/Species:S1": {
+        "id": "S1",
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/Species:S1",
+        "sbmlType": "Species"
+      },
+      "model_composition/Species:S2": {
+        "id": "S2",
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/Species:S2",
+        "sbmlType": "Species"
+      },
+      "model_composition/SpeciesReference:J0.product.S2": {
+        "id": null,
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/SpeciesReference:J0.product.S2",
+        "sbmlType": "SpeciesReference"
+      },
+      "model_composition/SpeciesReference:J0.reactant.S1": {
+        "id": null,
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/SpeciesReference:J0.reactant.S1",
+        "sbmlType": "SpeciesReference"
+      },
+      "model_composition/SpeciesReference:J1.product.S1": {
+        "id": null,
+        "model": "model_composition/Model:model_composition",
+        "name": null,
+        "pk": "model_composition/SpeciesReference:J1.product.S1",
+        "sbmlType": "SpeciesReference"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_model_composition\">\n      <bqbiol:is>\n        <rdf:Bag>\n          <rdf:li rdf:resource=\"https://identifiers.org/taxonomy/911\"/>\n        </rdf:Bag>\n      </bqbiol:is>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [
+        {
+          "nested": [],
+          "qualifier": "BQB_IS",
+          "resources": [
+            "https://identifiers.org/taxonomy/911"
+          ]
+        }
+      ],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": {
+        "activeObjective": null,
+        "strict": false
+      },
+      "history": null,
+      "id": "model_composition",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "model_composition/Compartment:cell",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"cell\" spatialDimensions=\"3\" size=\"1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_k1",
+          "name": "rate constant for J0",
+          "notes": null,
+          "pk": "model_composition/Parameter:k1",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter metaid=\"meta_k1\" sboTerm=\"SBO:0000002\" id=\"k1\" name=\"rate constant for J0\" value=\"0.1\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_k1\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000002\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k2",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "model_composition/Parameter:k2",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k2\" value=\"0.1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [
+        {
+          "comp": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000599"
+              ]
+            }
+          ],
+          "history": null,
+          "id": "cell_port",
+          "idRef": "cell",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "cell_port",
+          "metaIdRef": null,
+          "name": "Port of cell",
+          "notes": null,
+          "pk": "model_composition/Port:cell_port",
+          "portRef": null,
+          "sbaseRef": null,
+          "sbmlType": "Port",
+          "sbo": "SBO:0000599",
+          "uncertainties": [],
+          "unitRef": null,
+          "xml": "<comp:port metaid=\"cell_port\" sboTerm=\"SBO:0000599\" comp:idRef=\"cell\" comp:id=\"cell_port\" comp:name=\"Port of cell\"/>"
+        },
+        {
+          "comp": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000599"
+              ]
+            }
+          ],
+          "history": null,
+          "id": "S1_port",
+          "idRef": "S1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "S1_port",
+          "metaIdRef": null,
+          "name": "Port of S1",
+          "notes": null,
+          "pk": "model_composition/Port:S1_port",
+          "portRef": null,
+          "sbaseRef": null,
+          "sbmlType": "Port",
+          "sbo": "SBO:0000599",
+          "uncertainties": [],
+          "unitRef": null,
+          "xml": "<comp:port metaid=\"S1_port\" sboTerm=\"SBO:0000599\" comp:idRef=\"S1\" comp:id=\"S1_port\" comp:name=\"Port of S1\"/>"
+        }
+      ],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "S1 ➞ S2",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J0",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k1 * S1",
+              "latex": " \\mathit{k1}\\cdot \\mathit{S1}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "model_composition/KineticLaw:J0.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k1 </ci>\n      <ci> S1 </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "model_composition/SpeciesReference:J0.product.S2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S2",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "model_composition/SpeciesReference:J0.reactant.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "model_composition/Reaction:J0",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J0\" reversible=\"false\" fast=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"S2\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k1 </ci>\n        <ci> S1 </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": " ➞ S1",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "J1",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k2",
+              "latex": " \\mathit{k2}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "model_composition/KineticLaw:J1.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> k2 </ci>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "model_composition/SpeciesReference:J1.product.S1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "S1",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "model_composition/Reaction:J1",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"J1\" reversible=\"false\" fast=\"false\">\n  <listOfProducts>\n    <speciesReference species=\"S1\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <ci> k2 </ci>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S1",
+          "initialAmount": null,
+          "initialConcentration": 10.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "model_composition/Species:S1",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S1\" compartment=\"cell\" initialConcentration=\"10\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "S2",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "model_composition/Species:S2",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species id=\"S2\" compartment=\"cell\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_model_composition",
+      "name": "model composition from multiple models",
+      "notes": null,
+      "pk": "model_composition/Model:model_composition",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=model_composition/Species:S1}{S_{1}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{-\\htmlData{pk=model_composition/Reaction:J0}{v_{\\mathrm{J0}}} + \\htmlData{pk=model_composition/Reaction:J1}{v_{\\mathrm{J1}}}}{\\htmlData{pk=model_composition/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "model_composition/Species:S1"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=model_composition/Species:S2}{S_{2}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=model_composition/Reaction:J0}{v_{\\mathrm{J0}}}}{\\htmlData{pk=model_composition/Compartment:cell}{\\mathrm{cell}}}"
+        ],
+        "origin": "reactions",
+        "variable": "model_composition/Species:S2"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=model_composition/Reaction:J0}{v_{\\mathrm{J0}}}",
+        "lines": [
+          "\\htmlData{pk=model_composition/Parameter:k1}{k_{1}} \\cdot \\htmlData{pk=model_composition/Species:S1}{S_{1}}"
+        ],
+        "origin": "reaction",
+        "variable": "model_composition/Reaction:J0"
+      },
+      {
+        "lhs": "\\htmlData{pk=model_composition/Reaction:J1}{v_{\\mathrm{J1}}}",
+        "lines": [
+          "\\htmlData{pk=model_composition/Parameter:k2}{k_{2}}"
+        ],
+        "origin": "reaction",
+        "variable": "model_composition/Reaction:J1"
+      }
+    ],
+    "unsupported": []
+  }
+}

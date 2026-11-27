@@ -4,15 +4,19 @@ use sbml4humans_model::{Document, Element, Model, Package, Rule, RuleKind};
 #[test]
 fn a_document_keeps_its_level_version_packages_and_model() {
     let doc = Document {
+        model_definitions: vec![],
+        main_model_fallback: None,
         level: 3,
         version: 1,
         packages: vec![
             Package {
+                name: "comp".into(),
                 prefix: "comp".into(),
                 version: 1,
                 required: true,
             },
             Package {
+                name: "fbc".into(),
                 prefix: "fbc".into(),
                 version: 2,
                 required: false,

@@ -1,0 +1,232 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": null,
+    "packages": [
+      {
+        "prefix": "f",
+        "version": 2
+      },
+      {
+        "prefix": "c",
+        "version": 1
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 2,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "namespace_aliases/Model:namespace_aliases",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "namespace_aliases/Species:x",
+        "target": "namespace_aliases/Compartment:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "port",
+        "source": "namespace_aliases/Port:cell_port",
+        "target": "namespace_aliases/Compartment:cell",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "namespace_aliases/Compartment:cell": {
+        "id": "cell",
+        "model": "namespace_aliases/Model:namespace_aliases",
+        "name": null,
+        "pk": "namespace_aliases/Compartment:cell",
+        "sbmlType": "Compartment"
+      },
+      "namespace_aliases/Model:namespace_aliases": {
+        "id": "namespace_aliases",
+        "model": null,
+        "name": null,
+        "pk": "namespace_aliases/Model:namespace_aliases",
+        "sbmlType": "Model"
+      },
+      "namespace_aliases/Port:cell_port": {
+        "id": "cell_port",
+        "model": "namespace_aliases/Model:namespace_aliases",
+        "name": null,
+        "pk": "namespace_aliases/Port:cell_port",
+        "sbmlType": "Port"
+      },
+      "namespace_aliases/Species:x": {
+        "id": "x",
+        "model": "namespace_aliases/Model:namespace_aliases",
+        "name": null,
+        "pk": "namespace_aliases/Species:x",
+        "sbmlType": "Species"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": {
+        "activeObjective": null,
+        "strict": false
+      },
+      "history": null,
+      "id": "namespace_aliases",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "cell",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "namespace_aliases/Compartment:cell",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<s:compartment id=\"cell\" size=\"1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [],
+      "listOfPorts": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "cell_port",
+          "idRef": "cell",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "metaIdRef": null,
+          "name": null,
+          "notes": null,
+          "pk": "namespace_aliases/Port:cell_port",
+          "portRef": null,
+          "sbaseRef": null,
+          "sbmlType": "Port",
+          "sbo": null,
+          "uncertainties": [],
+          "unitRef": null,
+          "xml": "<c:port c:idRef=\"cell\" c:id=\"cell_port\"/>"
+        }
+      ],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cell",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "fbc": {
+            "charge": -1.0,
+            "chemicalFormula": "H"
+          },
+          "hasOnlySubstanceUnits": true,
+          "history": null,
+          "id": "x",
+          "initialAmount": 1.0,
+          "initialConcentration": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "namespace_aliases/Species:x",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<s:species id=\"x\" compartment=\"cell\" initialAmount=\"1\" hasOnlySubstanceUnits=\"true\" boundaryCondition=\"false\" constant=\"false\" f:charge=\"-1\" f:chemicalFormula=\"H\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "namespace_aliases/Model:namespace_aliases",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [],
+    "reactions": [],
+    "unsupported": []
+  }
+}

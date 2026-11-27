@@ -1,0 +1,19 @@
+[package]
+name = "sbml4humans-reader"
+description = "A lossless, namespace-aware SBML reader in pure Rust"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish = false
+
+[dependencies]
+sbml4humans-model = { path = "../model" }
+roxmltree = "0.21"
+sha1 = "0.11"
+thiserror.workspace = true
+
+[lints]
+workspace = true

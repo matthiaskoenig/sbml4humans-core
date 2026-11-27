@@ -1,0 +1,782 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": null,
+    "packages": [
+      {
+        "prefix": "comp",
+        "version": 1
+      }
+    ],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 2,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "comp_replacement/Model:comp_replacement",
+        "targetEntry": null
+      },
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "cell/Model:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_replacement/Compartment:C",
+        "target": "comp_replacement/ReplacedElement:C.replacedElement.sub.c_port",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_replacement/ReplacedElement:C.replacedElement.sub.c_port",
+        "target": "comp_replacement/Submodel:sub",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_replacement/ReplacedElement:C.replacedElement.sub.c_port",
+        "target": "cell/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_replacement/Species:A",
+        "target": "comp_replacement/ReplacedElement:A.replacedElement.sub.x_port",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_replacement/ReplacedElement:A.replacedElement.sub.x_port",
+        "target": "comp_replacement/Submodel:sub",
+        "targetEntry": null
+      },
+      {
+        "kind": "replacedElement",
+        "source": "comp_replacement/ReplacedElement:A.replacedElement.sub.x_port",
+        "target": "cell/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "comp_replacement/Species:A",
+        "target": "comp_replacement/Compartment:C",
+        "targetEntry": null
+      },
+      {
+        "kind": "modelRef",
+        "source": "comp_replacement/Submodel:sub",
+        "target": "cell/Model:cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "cell/Species:x",
+        "target": "cell/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "cell/Species:y",
+        "target": "cell/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "cell/Reaction:r",
+        "target": "cell/SpeciesReference:r.reactant.x",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "cell/SpeciesReference:r.reactant.x",
+        "target": "cell/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "cell/Reaction:r",
+        "target": "cell/SpeciesReference:r.product.y",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "cell/SpeciesReference:r.product.y",
+        "target": "cell/Species:y",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "cell/Reaction:r",
+        "target": "cell/KineticLaw:r.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "cell/KineticLaw:r.kineticLaw",
+        "target": "cell/Parameter:k",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "cell/KineticLaw:r.kineticLaw",
+        "target": "cell/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "port",
+        "source": "cell/Port:c_port",
+        "target": "cell/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "port",
+        "source": "cell/Port:x_port",
+        "target": "cell/Species:x",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "cell/Compartment:c": {
+        "id": "c",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Compartment:c",
+        "sbmlType": "Compartment"
+      },
+      "cell/KineticLaw:r.kineticLaw": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/KineticLaw:r.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "cell/Model:cell": {
+        "id": "cell",
+        "model": null,
+        "name": null,
+        "pk": "cell/Model:cell",
+        "sbmlType": "Model"
+      },
+      "cell/Parameter:k": {
+        "id": "k",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Parameter:k",
+        "sbmlType": "Parameter"
+      },
+      "cell/Port:c_port": {
+        "id": "c_port",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Port:c_port",
+        "sbmlType": "Port"
+      },
+      "cell/Port:x_port": {
+        "id": "x_port",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Port:x_port",
+        "sbmlType": "Port"
+      },
+      "cell/Reaction:r": {
+        "id": "r",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Reaction:r",
+        "sbmlType": "Reaction"
+      },
+      "cell/Species:x": {
+        "id": "x",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Species:x",
+        "sbmlType": "Species"
+      },
+      "cell/Species:y": {
+        "id": "y",
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/Species:y",
+        "sbmlType": "Species"
+      },
+      "cell/SpeciesReference:r.product.y": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/SpeciesReference:r.product.y",
+        "sbmlType": "SpeciesReference"
+      },
+      "cell/SpeciesReference:r.reactant.x": {
+        "id": null,
+        "model": "cell/Model:cell",
+        "name": null,
+        "pk": "cell/SpeciesReference:r.reactant.x",
+        "sbmlType": "SpeciesReference"
+      },
+      "comp_replacement/Compartment:C": {
+        "id": "C",
+        "model": "comp_replacement/Model:comp_replacement",
+        "name": null,
+        "pk": "comp_replacement/Compartment:C",
+        "sbmlType": "Compartment"
+      },
+      "comp_replacement/Model:comp_replacement": {
+        "id": "comp_replacement",
+        "model": null,
+        "name": null,
+        "pk": "comp_replacement/Model:comp_replacement",
+        "sbmlType": "Model"
+      },
+      "comp_replacement/ReplacedElement:A.replacedElement.sub.x_port": {
+        "id": null,
+        "model": "comp_replacement/Model:comp_replacement",
+        "name": null,
+        "pk": "comp_replacement/ReplacedElement:A.replacedElement.sub.x_port",
+        "sbmlType": "ReplacedElement"
+      },
+      "comp_replacement/ReplacedElement:C.replacedElement.sub.c_port": {
+        "id": null,
+        "model": "comp_replacement/Model:comp_replacement",
+        "name": null,
+        "pk": "comp_replacement/ReplacedElement:C.replacedElement.sub.c_port",
+        "sbmlType": "ReplacedElement"
+      },
+      "comp_replacement/Species:A": {
+        "id": "A",
+        "model": "comp_replacement/Model:comp_replacement",
+        "name": null,
+        "pk": "comp_replacement/Species:A",
+        "sbmlType": "Species"
+      },
+      "comp_replacement/Submodel:sub": {
+        "id": "sub",
+        "model": "comp_replacement/Model:comp_replacement",
+        "name": null,
+        "pk": "comp_replacement/Submodel:sub",
+        "sbmlType": "Submodel"
+      },
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mole",
+      "extentUnitsLatex": "mole",
+      "fbc": null,
+      "history": null,
+      "id": "comp_replacement",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "comp_replacement/ReplacedElement:C.replacedElement.sub.c_port",
+                "portRef": "c_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "sub",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement comp:portRef=\"c_port\" comp:submodelRef=\"sub\"/>"
+              }
+            ]
+          },
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "C",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "comp_replacement/Compartment:C",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"C\" size=\"1\" constant=\"true\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement comp:portRef=\"c_port\" comp:submodelRef=\"sub\"/>\n  </comp:listOfReplacedElements>\n</compartment>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": {
+            "replacedBy": null,
+            "replacedElements": [
+              {
+                "comp": null,
+                "conversionFactor": null,
+                "cvterms": [],
+                "deletion": null,
+                "history": null,
+                "id": null,
+                "idRef": null,
+                "keyValuePairs": [],
+                "lists": [],
+                "metaId": null,
+                "metaIdRef": null,
+                "name": null,
+                "notes": null,
+                "pk": "comp_replacement/ReplacedElement:A.replacedElement.sub.x_port",
+                "portRef": "x_port",
+                "sbaseRef": null,
+                "sbmlType": "ReplacedElement",
+                "sbo": null,
+                "submodelRef": "sub",
+                "uncertainties": [],
+                "unitRef": null,
+                "xml": "<comp:replacedElement comp:portRef=\"x_port\" comp:submodelRef=\"sub\"/>"
+              }
+            ]
+          },
+          "compartment": "C",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "mol",
+          "fbc": null,
+          "hasOnlySubstanceUnits": true,
+          "history": null,
+          "id": "A",
+          "initialAmount": 1.0,
+          "initialConcentration": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "comp_replacement/Species:A",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species id=\"A\" compartment=\"C\" initialAmount=\"1\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"true\" boundaryCondition=\"false\" constant=\"false\">\n  <comp:listOfReplacedElements>\n    <comp:replacedElement comp:portRef=\"x_port\" comp:submodelRef=\"sub\"/>\n  </comp:listOfReplacedElements>\n</species>"
+        }
+      ],
+      "listOfSubmodels": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "extentConversionFactor": null,
+          "history": null,
+          "id": "sub",
+          "keyValuePairs": [],
+          "listOfDeletions": [],
+          "lists": [],
+          "metaId": null,
+          "modelRef": "cell",
+          "name": null,
+          "notes": null,
+          "pk": "comp_replacement/Submodel:sub",
+          "sbmlType": "Submodel",
+          "sbo": null,
+          "timeConversionFactor": null,
+          "uncertainties": [],
+          "xml": "<comp:submodel comp:id=\"sub\" comp:modelRef=\"cell\"/>"
+        }
+      ],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "comp_replacement/Model:comp_replacement",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": "second",
+      "timeUnitsLatex": "s",
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    },
+    {
+      "annotationXml": null,
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": null,
+      "id": "cell",
+      "keyValuePairs": [],
+      "kind": "modelDefinition",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "c",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Compartment:c",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": 1.0,
+          "spatialDimensions": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"c\" size=\"1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Parameter:k",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 0.1,
+          "xml": "<parameter id=\"k\" value=\"0.1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "c_port",
+          "idRef": "c",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "metaIdRef": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Port:c_port",
+          "portRef": null,
+          "sbaseRef": null,
+          "sbmlType": "Port",
+          "sbo": null,
+          "uncertainties": [],
+          "unitRef": null,
+          "xml": "<comp:port comp:idRef=\"c\" comp:id=\"c_port\"/>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "x_port",
+          "idRef": "x",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "metaIdRef": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Port:x_port",
+          "portRef": null,
+          "sbaseRef": null,
+          "sbmlType": "Port",
+          "sbo": null,
+          "uncertainties": [],
+          "unitRef": null,
+          "xml": "<comp:port comp:idRef=\"x\" comp:id=\"x_port\"/>"
+        }
+      ],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": null,
+          "cvterms": [],
+          "equation": "x ➞ y",
+          "fast": null,
+          "fbc": null,
+          "history": null,
+          "id": "r",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "mol",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k * x",
+              "latex": " \\mathit{k}\\cdot \\mathit{x}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "cell/KineticLaw:r.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k </ci>\n      <ci> x </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "cell/SpeciesReference:r.product.y",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "y",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"y\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "cell/SpeciesReference:r.reactant.x",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "x",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"x\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Reaction:r",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"r\" reversible=\"false\">\n  <listOfReactants>\n    <speciesReference species=\"x\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"y\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k </ci>\n        <ci> x </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "c",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "mol",
+          "fbc": null,
+          "hasOnlySubstanceUnits": true,
+          "history": null,
+          "id": "x",
+          "initialAmount": 1.0,
+          "initialConcentration": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Species:x",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species id=\"x\" compartment=\"c\" initialAmount=\"1\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"true\" boundaryCondition=\"false\" constant=\"false\"/>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "c",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [],
+          "derivedUnits": "mol",
+          "fbc": null,
+          "hasOnlySubstanceUnits": true,
+          "history": null,
+          "id": "y",
+          "initialAmount": 1.0,
+          "initialConcentration": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "cell/Species:y",
+          "sbmlType": "Species",
+          "sbo": null,
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species id=\"y\" compartment=\"c\" initialAmount=\"1\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"true\" boundaryCondition=\"false\" constant=\"false\"/>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": null,
+      "name": null,
+      "notes": null,
+      "pk": "cell/Model:cell",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=comp_replacement/Species:A}{A}}{\\mathrm{d} t}",
+        "lines": [
+          "-v_{\\mathrm{sub\\_\\_r}}"
+        ],
+        "origin": "reactions",
+        "variable": "comp_replacement/Species:A"
+      },
+      {
+        "lhs": "\\frac{\\mathrm{d} \\,\\mathrm{sub}_{\\mathrm{\\_y}}}{\\mathrm{d} t}",
+        "lines": [
+          "v_{\\mathrm{sub\\_\\_r}}"
+        ],
+        "origin": "reactions",
+        "variable": null
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "v_{\\mathrm{sub\\_\\_r}}",
+        "lines": [
+          "\\mathrm{sub}_{\\mathrm{\\_k}} \\cdot \\htmlData{pk=comp_replacement/Species:A}{A}"
+        ],
+        "origin": "reaction",
+        "variable": null
+      }
+    ],
+    "unsupported": []
+  }
+}

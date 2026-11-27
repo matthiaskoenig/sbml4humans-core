@@ -3,6 +3,8 @@
 //! Keys come from the finished report and math references from the owned AST. Keeping
 //! those inputs separate preserves both identifier namespaces and the owner of each math.
 
+mod extension;
+
 use std::collections::{BTreeSet, HashMap, HashSet};
 
 use sbml4humans_model::{Ast, AstKind, Document};
@@ -18,57 +20,10 @@ struct References {
 
 type Maths = HashMap<String, References>;
 
-/// Collect free names with explicit lambda entry/exit frames, independent of call-stack depth.
-fn symbols(root: &Ast, names: &mut BTreeSet<String>) {
-    enum Frame<'a> {
-        Enter(&'a Ast),
-        Leave(Vec<&'a str>),
-    }
-    let mut bound: HashMap<&str, usize> = HashMap::new();
-    let mut stack = vec![Frame::Enter(root)];
-    while let Some(frame) = stack.pop() {
-        match frame {
-            Frame::Leave(variables) => {
-                for name in variables {
-                    if let Some(count) = bound.get_mut(name) {
-                        *count -= 1;
-                        if *count == 0 {
-                            bound.remove(name);
-                        }
-                    }
-                }
-            }
-            Frame::Enter(node) => {
-                if node.kind == AstKind::Lambda
-                    && let Some((body, variables)) = node.children.split_last()
-                {
-                    let variables: Vec<_> =
-                        variables.iter().filter_map(|v| v.name.as_deref()).collect();
-                    for &name in &variables {
-                        *bound.entry(name).or_default() += 1;
-                    }
-                    stack.push(Frame::Leave(variables));
-                    stack.push(Frame::Enter(body));
-                    continue;
-                }
-                if matches!(
-                    node.kind,
-                    AstKind::Name | AstKind::NameTime | AstKind::NameAvogadro | AstKind::Function
-                ) && let Some(name) = node.name.as_deref()
-                    && !bound.contains_key(name)
-                {
-                    names.insert(name.to_owned());
-                }
-                stack.extend(node.children.iter().rev().map(Frame::Enter));
-            }
-        }
-    }
-}
-
 fn add_math(maths: &mut Maths, owner: &SBase, ast: Option<&Ast>) {
     let Some(ast) = ast else { return };
     let refs = maths.entry(owner.pk.clone()).or_default();
-    symbols(ast, &mut refs.symbols);
+    refs.symbols.extend(crate::math::free_symbols(ast));
     // Units are collected independently: lambda binder subtrees do not reference names,
     // but the Python report still visits their numbers when collecting units.
     let mut stack = vec![ast];
@@ -93,7 +48,7 @@ fn maths(report: &Report, document: &Document) -> Maths {
             }
         };
     }
-    for (input, output) in document.model.iter().zip(&report.models) {
+    for (input, output) in document.models().zip(&report.models) {
         collect!(
             &input.function_definitions,
             &output.list_of_function_definitions
@@ -165,6 +120,22 @@ impl<'a> ModelIndex<'a> {
                 sids.entry(id).or_insert(element.pk.as_str());
             }
         }
+        for object in extension::global(model) {
+            if let Some(id) = object.id() {
+                sids.entry(id).or_insert(object.pk());
+            }
+        }
+        for root in extension::roots(model) {
+            for object in extension::with_extensions(root) {
+                if matches!(
+                    object.type_(),
+                    "Uncertainty" | "UncertParameter" | "UncertSpan" | "ListOf"
+                ) && let Some(id) = object.id()
+                {
+                    sids.entry(id).or_insert(object.pk());
+                }
+            }
+        }
         let units = model
             .list_of_unit_definitions
             .iter()
@@ -207,21 +178,12 @@ struct Builder {
 }
 
 impl Builder {
-    fn node(&mut self, object: &SBase, model: Option<&str>) {
-        self.graph.nodes.insert(
-            object.pk.clone(),
-            LinkNode {
-                pk: object.pk.clone(),
-                sbml_type: object.sbml_type,
-                id: object.id.clone(),
-                name: object.name.clone(),
-                model: model.filter(|m| *m != object.pk).map(str::to_owned),
-            },
-        );
+    fn edge(&mut self, source: &SBase, target: &str, kind: EdgeKind) {
+        self.edge_pk(&source.pk, target, kind);
     }
 
-    fn edge(&mut self, source: &SBase, target: &str, kind: EdgeKind) {
-        let Some(source_index) = self.graph.nodes.get_index_of(&source.pk) else {
+    fn edge_pk(&mut self, source: &str, target: &str, kind: EdgeKind) {
+        let Some(source_index) = self.graph.nodes.get_index_of(source) else {
             return;
         };
         let Some(target_index) = self.graph.nodes.get_index_of(target) else {
@@ -229,7 +191,7 @@ impl Builder {
         };
         if self.seen.insert((source_index, target_index, kind)) {
             self.graph.edges.push(LinkEdge {
-                source: source.pk.clone(),
+                source: source.to_owned(),
                 target: target.to_owned(),
                 kind,
                 target_entry: None,
@@ -262,8 +224,7 @@ impl Builder {
         }
     }
 
-    fn model(&mut self, model: &ReportModel, level: i64, maths: &Maths) {
-        let index = ModelIndex::new(model);
+    fn model(&mut self, model: &ReportModel, level: i64, maths: &Maths, index: &ModelIndex) {
         for units in [
             &model.substance_units,
             &model.time_units,
@@ -272,11 +233,11 @@ impl Builder {
             &model.length_units,
             &model.extent_units,
         ] {
-            self.units(&model.sbase, units.as_deref(), &index);
+            self.units(&model.sbase, units.as_deref(), index);
         }
         if level < 3 {
             for units in ["substance", "time", "volume", "area", "length"] {
-                self.units(&model.sbase, Some(units), &index);
+                self.units(&model.sbase, Some(units), index);
             }
         }
         if let Some(factor) = &model.conversion_factor {
@@ -284,57 +245,52 @@ impl Builder {
                 &model.sbase,
                 Some(&factor.sid),
                 EdgeKind::ConversionFactor,
-                &index,
+                index,
             );
         }
         for f in &model.list_of_function_definitions {
-            self.math(&f.sbase, maths, &index, None);
+            self.math(&f.sbase, maths, index, None);
         }
         for c in &model.list_of_compartments {
-            self.units(&c.sbase, c.units.as_deref(), &index);
+            self.units(&c.sbase, c.units.as_deref(), index);
         }
         for s in &model.list_of_species {
-            self.reference(
-                &s.sbase,
-                Some(&s.compartment),
-                EdgeKind::Compartment,
-                &index,
-            );
-            self.units(&s.sbase, s.substance_units.as_deref(), &index);
+            self.reference(&s.sbase, Some(&s.compartment), EdgeKind::Compartment, index);
+            self.units(&s.sbase, s.substance_units.as_deref(), index);
             if let Some(factor) = &s.conversion_factor {
                 self.reference(
                     &s.sbase,
                     Some(&factor.sid),
                     EdgeKind::ConversionFactor,
-                    &index,
+                    index,
                 );
             }
         }
         for p in &model.list_of_parameters {
-            self.units(&p.sbase, p.units.as_deref(), &index);
+            self.units(&p.sbase, p.units.as_deref(), index);
         }
         for a in &model.list_of_initial_assignments {
-            self.reference(&a.sbase, Some(&a.symbol), EdgeKind::Symbol, &index);
-            self.math(&a.sbase, maths, &index, None);
+            self.reference(&a.sbase, Some(&a.symbol), EdgeKind::Symbol, index);
+            self.math(&a.sbase, maths, index, None);
         }
         for rule in &model.list_of_rules {
             self.reference(
                 &rule.sbase,
                 rule.variable.as_deref(),
                 EdgeKind::Variable,
-                &index,
+                index,
             );
-            self.math(&rule.sbase, maths, &index, None);
+            self.math(&rule.sbase, maths, index, None);
         }
         for c in &model.list_of_constraints {
-            self.math(&c.sbase, maths, &index, None);
+            self.math(&c.sbase, maths, index, None);
         }
         for r in &model.list_of_reactions {
             self.reference(
                 &r.sbase,
                 r.compartment.as_deref(),
                 EdgeKind::Compartment,
-                &index,
+                index,
             );
             for (base, species, kind) in r
                 .list_of_reactants
@@ -352,14 +308,15 @@ impl Builder {
                 )
             {
                 self.edge(&r.sbase, &base.pk, kind);
-                self.reference(base, Some(species), kind, &index);
+                self.reference(base, Some(species), kind, index);
             }
+            extension::reaction_edges(self, r, index);
             if let Some(law) = &r.kinetic_law {
                 self.edge(&r.sbase, &law.sbase.pk, EdgeKind::KineticLaw);
-                self.math(&law.sbase, maths, &index, Some(&law.sbase.pk));
+                self.math(&law.sbase, maths, index, Some(&law.sbase.pk));
                 for p in &law.list_of_local_parameters {
                     self.edge(&law.sbase, &p.sbase.pk, EdgeKind::LocalParameter);
-                    self.units(&p.sbase, p.units.as_deref(), &index);
+                    self.units(&p.sbase, p.units.as_deref(), index);
                 }
             }
         }
@@ -380,7 +337,7 @@ impl Builder {
                 self.edge(&event.sbase, &child.pk, kind);
             }
             for &(child, _) in &children {
-                self.math(child, maths, &index, None);
+                self.math(child, maths, index, None);
             }
             for assignment in &event.list_of_event_assignments {
                 self.edge(
@@ -392,41 +349,37 @@ impl Builder {
                     &assignment.sbase,
                     Some(&assignment.variable),
                     EdgeKind::Variable,
-                    &index,
+                    index,
                 );
-                self.math(&assignment.sbase, maths, &index, None);
+                self.math(&assignment.sbase, maths, index, None);
             }
         }
     }
 }
 
 pub(crate) fn build(report: &Report, document: &Document) -> LinkGraph {
-    let maths = maths(report, document);
+    let mut maths = maths(report, document);
+    extension::package_maths(report, document, &mut maths);
     let mut builder = Builder::default();
-    builder.node(&report.document.sbase, None);
-    for model in &report.models {
-        builder.node(&model.sbase, Some(&model.sbase.pk));
-        for unit in &model.list_of_unit_definitions {
-            builder.node(&unit.sbase, Some(&model.sbase.pk));
-        }
-        for element in elements(model) {
-            builder.node(element, Some(&model.sbase.pk));
-        }
-        for law in model
-            .list_of_reactions
-            .iter()
-            .filter_map(|r| r.kinetic_law.as_ref())
-        {
-            for parameter in &law.list_of_local_parameters {
-                builder.node(&parameter.sbase, Some(&model.sbase.pk));
-            }
-        }
-    }
+    extension::nodes(&mut builder, report);
+    extension::document_edges(&mut builder, report);
     for model in &report.models {
         builder.edge(&report.document.sbase, &model.sbase.pk, EdgeKind::Model);
     }
-    for model in &report.models {
-        builder.model(model, report.document.level, &maths);
+    for emd in &report.external_model_definitions {
+        if let Some(pk) = emd.get("pk").and_then(serde_json::Value::as_str) {
+            builder.edge(
+                &report.document.sbase,
+                pk,
+                EdgeKind::ExternalModelDefinition,
+            );
+        }
+    }
+    let universe = extension::Universe::new(report);
+    for (i, model) in report.models.iter().enumerate() {
+        extension::metadata_edges(&mut builder, &universe, model, i, &maths);
+        builder.model(model, report.document.level, &maths, universe.index(i));
+        extension::model_edges(&mut builder, &universe, model, i, &maths);
     }
     builder.graph
 }
@@ -478,7 +431,7 @@ mod tests {
         );
         let root = ast(AstKind::Plus, None, vec![outer, name("x")]);
         let mut found = BTreeSet::new();
-        symbols(&root, &mut found);
+        found.extend(crate::math::free_symbols(&root));
         assert_eq!(found, BTreeSet::from(["f".into(), "g".into(), "x".into()]));
     }
 
@@ -503,7 +456,7 @@ mod tests {
             root = ast(AstKind::Lambda, None, vec![name("x"), root]);
         }
         let mut found = BTreeSet::new();
-        symbols(&root, &mut found);
+        found.extend(crate::math::free_symbols(&root));
         assert_eq!(found, BTreeSet::from(["outside".into()]));
     }
 

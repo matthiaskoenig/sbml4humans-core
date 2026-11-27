@@ -1,0 +1,124 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "notes/Model:notes",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "notes/Model:notes": {
+        "id": "notes",
+        "model": null,
+        "name": "model with notes showcase",
+        "pk": "notes/Model:notes",
+        "sbmlType": "Model"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_notes\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "notes",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_notes",
+      "name": "model with notes showcase",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Model with notes</h1>\n    <h2>Description</h2>\n    <p>All model objects and the model itself can be documented via <code>notes</code>.\nNotes can either be HTML or Markdown or a combination of both. The notes on\nthis model demonstrate the possible features.</p>\n    <h2>Markdown cheatsheet</h2>\n    <p>adapted from <a href=\"https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet\">https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet</a></p>\n    <hr/>\n    <h3>Headings</h3>\n    <pre>\n      <code># H1\n## H2\n### H3\n#### H4\n##### H5\n###### H6\n</code>\n    </pre>\n    <h1>H1</h1>\n    <h2>H2</h2>\n    <h3>H3</h3>\n    <h4>H4</h4>\n    <h5>H5</h5>\n    <h6>H6</h6>\n    <hr/>\n    <h3>Emphasis</h3>\n    <pre>\n      <code>Emphasis, aka italics, with *asterisks* or _underscores_.\n\nStrong emphasis, aka bold, with **asterisks** or __underscores__.\n\nCombined emphasis with **asterisks and _underscores_**.\n</code>\n    </pre>\n    <p>Emphasis, aka italics, with <em>asterisks</em> or <em>underscores</em>.</p>\n    <p>Strong emphasis, aka bold, with <strong>asterisks</strong> or <strong>underscores</strong>.</p>\n    <p>Combined emphasis with <strong>asterisks and <em>underscores</em></strong>.</p>\n    <hr/>\n    <h3>Lists</h3>\n    <p>(In this example, leading and trailing spaces are shown with with dots: ⋅)</p>\n    <pre>\n      <code>1. First ordered list item\n2. Another item\n⋅⋅* Unordered sub-list.\n1. Actual numbers don&apos;t matter, just that it&apos;s a number\n⋅⋅1. Ordered sub-list\n4. And another item.\n\n⋅⋅⋅You can have properly indented paragraphs within list items. Notice the blank line above, and the leading spaces (at least one, but we&apos;ll use three here to also align the raw Markdown).\n\n⋅⋅⋅To have a line break without a paragraph, you will need to use two trailing spaces.⋅⋅\n⋅⋅⋅Note that this line is separate, but within the same paragraph.⋅⋅\n⋅⋅⋅(This is contrary to the typical GFM line break behaviour, where trailing spaces are not required.)\n\n* Unordered list can use asterisks\n- Or minuses\n+ Or pluses\n</code>\n    </pre>\n    <ol>\n      <li>First ordered list item</li>\n      <li>Another item</li>\n    </ol>\n    <ul>\n      <li>Unordered sub-list.</li>\n    </ul>\n    <ol>\n      <li>\n        <p>Actual numbers don&apos;t matter, just that it&apos;s a number</p>\n      </li>\n      <li>\n        <p>Ordered sub-list</p>\n      </li>\n      <li>\n        <p>And another item.</p>\n        <p>You can have properly indented paragraphs within list items. Notice the blank line above, and the leading spaces (at least one, but we&apos;ll use three here to also align the raw Markdown).</p>\n        <p>To have a line break without a paragraph, you will need to use two trailing spaces.⋅⋅\nNote that this line is separate, but within the same paragraph.⋅⋅\n(This is contrary to the typical GFM line break behaviour, where trailing spaces are not required.)</p>\n      </li>\n    </ol>\n    <ul>\n      <li>Unordered list can use asterisks</li>\n    </ul>\n    <ul>\n      <li>Or minuses</li>\n    </ul>\n    <ul>\n      <li>Or pluses</li>\n    </ul>\n    <hr/>\n    <h3>Links</h3>\n    <p>There are two ways to create links.</p>\n    <pre>\n      <code>[I&apos;m an inline-style link](https://www.google.com)\n\n[I&apos;m an inline-style link with title](https://www.google.com &quot;Google&apos;s Homepage&quot;)\n\n[I&apos;m a reference-style link][Arbitrary case-insensitive reference text]\n\n[I&apos;m a relative reference to a repository file](../blob/master/LICENSE)\n\n[You can use numbers for reference-style link definitions][1]\n\nOr leave it empty and use the [link text itself].\n\nURLs and URLs in angle brackets will automatically get turned into links.\nhttp://www.example.com or &lt;http://www.example.com&gt; and sometimes\nexample.com (but not on Github, for example).\n\nSome text to show that the reference links can follow later.\n\n[arbitrary case-insensitive reference text]: https://www.mozilla.org\n[1]: http://slashdot.org\n[link text itself]: http://www.reddit.com\n</code>\n    </pre>\n    <p>\n      <a href=\"https://www.google.com\">I&apos;m an inline-style link</a>\n    </p>\n    <p>\n      <a href=\"https://www.google.com\" title=\"Google&apos;s Homepage\">I&apos;m an inline-style link with title</a>\n    </p>\n    <p>\n      <a href=\"https://www.mozilla.org\">I&apos;m a reference-style link</a>\n    </p>\n    <p>\n      <a href=\"../blob/master/LICENSE\">I&apos;m a relative reference to a repository file</a>\n    </p>\n    <p>\n      <a href=\"http://slashdot.org\">You can use numbers for reference-style link definitions</a>\n    </p>\n    <p>Or leave it empty and use the <a href=\"http://www.reddit.com\">link text itself</a>.</p>\n    <p>URLs and URLs in angle brackets will automatically get turned into links.\nhttp://www.example.com or <a href=\"http://www.example.com\">http://www.example.com</a> and sometimes\nexample.com (but not on Github, for example).</p>\n    <p>Some text to show that the reference links can follow later.</p>\n    <hr/>\n    <h3>Images</h3>\n    <pre>\n      <code>Here&apos;s our logo (hover to see the title text):\n\nInline-style:\n![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png &quot;Logo Title Text 1&quot;)\n\nReference-style:\n![alt text][logo]\n\n[logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png &quot;Logo Title Text 2&quot;\n</code>\n    </pre>\n    <p>Here&apos;s our logo (hover to see the title text):</p>\n    <p>Inline-style:\n<img src=\"https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png\" alt=\"alt text\" title=\"Logo Title Text 1\"/></p>\n    <p>Reference-style:\n<img src=\"https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png\" alt=\"alt text\" title=\"Logo Title Text 2\"/></p>\n    <hr/>\n    <h3>Code</h3>\n    <p>Code blocks are part of the Markdown spec, but syntax highlighting isn&apos;t. However,\nmany renderers -- like Github&apos;s and Markdown Here -- support syntax highlighting.\nWhich languages are supported and how those language names should be written will vary from renderer\nto renderer. Markdown Here supports highlighting for dozens of languages\n(and not-really-languages, like diffs and HTTP headers); to see the complete list,\nand how to write the language names, see the <a href=\"http://softwaremaniacs.org/media/soft/highlight/test.html\">highlight.js</a> demo page.</p>\n    <pre>\n      <code>Inline `code` has `back-ticks around` it.\n</code>\n    </pre>\n    <p>Inline <code>code</code> has <code>back-ticks around</code> it.</p>\n    <p>Blocks of code are either fenced by lines with three back-ticks ```, or are indented with four spaces.\nI recommend only using the fenced code blocks -- they&apos;re easier and only they support syntax highlighting.</p>\n    <pre>\n      <code>```javascript\nvar s = &quot;JavaScript syntax highlighting&quot;;\nalert(s);\n</code>\n    </pre>\n    <pre>\n      <code class=\"language-python\">s = &quot;Python syntax highlighting&quot;\nprint s\n</code>\n    </pre>\n    <pre>\n      <code>No language indicated, so no syntax highlighting.\nBut let&apos;s throw in a &lt;b&gt;tag&lt;/b&gt;.\n</code>\n    </pre>\n    <pre>\n      <code>\n```javascript\nvar s = &quot;JavaScript syntax highlighting&quot;;\nalert(s);\n</code>\n    </pre>\n    <pre>\n      <code class=\"language-python\">s = &quot;Python syntax highlighting&quot;\nprint s\n</code>\n    </pre>\n    <pre>\n      <code>No language indicated, so no syntax highlighting.\nBut let&apos;s throw in a &lt;b&gt;tag&lt;/b&gt;.\n</code>\n    </pre>\n    <hr/>\n    <h3>Blockquotes</h3>\n    <pre>\n      <code>&gt; Blockquotes are very handy in email to emulate reply text.\n&gt; This line is part of the same quote.\n\nQuote break.\n\n&gt; This is a very long line that will still be quoted properly when it wraps. Oh boy let&apos;s keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can *put* **Markdown** into a blockquote.\n</code>\n    </pre>\n    <blockquote>\n      <p>Blockquotes are very handy in email to emulate reply text.\nThis line is part of the same quote.</p>\n    </blockquote>\n    <p>Quote break.</p>\n    <blockquote>\n      <p>This is a very long line that will still be quoted properly when it wraps. Oh boy let&apos;s keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can <em>put</em>\n      <strong>Markdown</strong> into a blockquote.</p>\n    </blockquote>\n    <hr/>\n    <h3>Inline HTML</h3>\n    <p>You can also use raw HTML in your Markdown, and it&apos;ll mostly work pretty well.</p>\n    <pre>\n      <code>&lt;dl&gt;\n  &lt;dt&gt;Definition list&lt;/dt&gt;\n  &lt;dd&gt;Is something people use sometimes.&lt;/dd&gt;\n\n  &lt;dt&gt;Markdown in HTML&lt;/dt&gt;\n  &lt;dd&gt;Does *not* work **very** well. Use HTML &lt;em&gt;tags&lt;/em&gt;.&lt;/dd&gt;\n&lt;/dl&gt;\n</code>\n    </pre>\n    <dl>\n      <dt>Definition list</dt>\n      <dd>Is something people use sometimes.</dd>\n      <dt>Markdown in HTML</dt>\n      <dd>Does *not* work **very** well. Use HTML <em>tags</em>.</dd>\n    </dl>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "notes/Model:notes",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [],
+    "reactions": [],
+    "unsupported": []
+  }
+}

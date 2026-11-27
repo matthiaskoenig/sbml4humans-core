@@ -17,6 +17,9 @@ serde.workspace = true
 serde_json.workspace = true
 
 [dev-dependencies]
+flate2.workspace = true
+sbml4humans-core = { path = "../core" }
+sbml4humans-reader = { path = "../reader" }
 sbml4humans-libsbml = { path = "../libsbml" }
 sbml4humans-report = { path = "../report" }
 sbml4humans-model = { path = "../model" }

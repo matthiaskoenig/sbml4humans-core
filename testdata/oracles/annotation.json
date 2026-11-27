@@ -1,0 +1,1209 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "annotation/Model:annotation",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Model:annotation",
+        "target": "annotation/UnitDefinition:m3",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Model:annotation",
+        "target": "annotation/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Compartment:ext",
+        "target": "annotation/UnitDefinition:m3",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Compartment:cyto",
+        "target": "annotation/UnitDefinition:m3",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Compartment:pm",
+        "target": "annotation/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "annotation/Species:e__gal",
+        "target": "annotation/Compartment:ext",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "annotation/Species:c__gal",
+        "target": "annotation/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Parameter:Vol_e",
+        "target": "annotation/UnitDefinition:m3",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Parameter:A_m",
+        "target": "annotation/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Parameter:GLUT2_Vmax",
+        "target": "annotation/UnitDefinition:mole_per_s",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Parameter:GLUT2_k_gal",
+        "target": "annotation/UnitDefinition:mM",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "annotation/Parameter:Vol_c",
+        "target": "annotation/UnitDefinition:m3",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "annotation/InitialAssignment:ext",
+        "target": "annotation/Compartment:ext",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/InitialAssignment:ext",
+        "target": "annotation/Parameter:Vol_e",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "annotation/InitialAssignment:pm",
+        "target": "annotation/Compartment:pm",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/InitialAssignment:pm",
+        "target": "annotation/Parameter:A_m",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "annotation/InitialAssignment:Vol_c",
+        "target": "annotation/Parameter:Vol_c",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/InitialAssignment:Vol_c",
+        "target": "annotation/Parameter:x_cell",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "annotation/AssignmentRule:cyto",
+        "target": "annotation/Compartment:cyto",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/AssignmentRule:cyto",
+        "target": "annotation/Parameter:Vol_c",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "annotation/Reaction:e__GLUT2_GAL",
+        "target": "annotation/Compartment:pm",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "annotation/Reaction:e__GLUT2_GAL",
+        "target": "annotation/SpeciesReference:e__GLUT2_GAL.reactant.e__gal",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "annotation/SpeciesReference:e__GLUT2_GAL.reactant.e__gal",
+        "target": "annotation/Species:e__gal",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "annotation/Reaction:e__GLUT2_GAL",
+        "target": "annotation/SpeciesReference:e__GLUT2_GAL.product.c__gal",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "annotation/SpeciesReference:e__GLUT2_GAL.product.c__gal",
+        "target": "annotation/Species:c__gal",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "annotation/Reaction:e__GLUT2_GAL",
+        "target": "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw",
+        "target": "annotation/Parameter:GLUT2_Vmax",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw",
+        "target": "annotation/Parameter:GLUT2_k_gal",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw",
+        "target": "annotation/Parameter:GLUT2_keq",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw",
+        "target": "annotation/Species:c__gal",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw",
+        "target": "annotation/Species:e__gal",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "annotation/AssignmentRule:cyto": {
+        "id": null,
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/AssignmentRule:cyto",
+        "sbmlType": "AssignmentRule"
+      },
+      "annotation/Compartment:cyto": {
+        "id": "cyto",
+        "model": "annotation/Model:annotation",
+        "name": "cytosol",
+        "pk": "annotation/Compartment:cyto",
+        "sbmlType": "Compartment"
+      },
+      "annotation/Compartment:ext": {
+        "id": "ext",
+        "model": "annotation/Model:annotation",
+        "name": "external",
+        "pk": "annotation/Compartment:ext",
+        "sbmlType": "Compartment"
+      },
+      "annotation/Compartment:pm": {
+        "id": "pm",
+        "model": "annotation/Model:annotation",
+        "name": "membrane",
+        "pk": "annotation/Compartment:pm",
+        "sbmlType": "Compartment"
+      },
+      "annotation/InitialAssignment:Vol_c": {
+        "id": null,
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/InitialAssignment:Vol_c",
+        "sbmlType": "InitialAssignment"
+      },
+      "annotation/InitialAssignment:ext": {
+        "id": null,
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/InitialAssignment:ext",
+        "sbmlType": "InitialAssignment"
+      },
+      "annotation/InitialAssignment:pm": {
+        "id": null,
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/InitialAssignment:pm",
+        "sbmlType": "InitialAssignment"
+      },
+      "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw": {
+        "id": null,
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "annotation/Model:annotation": {
+        "id": "annotation",
+        "model": null,
+        "name": "model with inline annotations",
+        "pk": "annotation/Model:annotation",
+        "sbmlType": "Model"
+      },
+      "annotation/Parameter:A_m": {
+        "id": "A_m",
+        "model": "annotation/Model:annotation",
+        "name": "membrane area",
+        "pk": "annotation/Parameter:A_m",
+        "sbmlType": "Parameter"
+      },
+      "annotation/Parameter:GLUT2_Vmax": {
+        "id": "GLUT2_Vmax",
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/Parameter:GLUT2_Vmax",
+        "sbmlType": "Parameter"
+      },
+      "annotation/Parameter:GLUT2_k_gal": {
+        "id": "GLUT2_k_gal",
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/Parameter:GLUT2_k_gal",
+        "sbmlType": "Parameter"
+      },
+      "annotation/Parameter:GLUT2_keq": {
+        "id": "GLUT2_keq",
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/Parameter:GLUT2_keq",
+        "sbmlType": "Parameter"
+      },
+      "annotation/Parameter:Vol_c": {
+        "id": "Vol_c",
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/Parameter:Vol_c",
+        "sbmlType": "Parameter"
+      },
+      "annotation/Parameter:Vol_e": {
+        "id": "Vol_e",
+        "model": "annotation/Model:annotation",
+        "name": "external volume",
+        "pk": "annotation/Parameter:Vol_e",
+        "sbmlType": "Parameter"
+      },
+      "annotation/Parameter:x_cell": {
+        "id": "x_cell",
+        "model": "annotation/Model:annotation",
+        "name": "cell diameter",
+        "pk": "annotation/Parameter:x_cell",
+        "sbmlType": "Parameter"
+      },
+      "annotation/Reaction:e__GLUT2_GAL": {
+        "id": "e__GLUT2_GAL",
+        "model": "annotation/Model:annotation",
+        "name": "galactose transport [e__]",
+        "pk": "annotation/Reaction:e__GLUT2_GAL",
+        "sbmlType": "Reaction"
+      },
+      "annotation/Species:c__gal": {
+        "id": "c__gal",
+        "model": "annotation/Model:annotation",
+        "name": "D-galactose",
+        "pk": "annotation/Species:c__gal",
+        "sbmlType": "Species"
+      },
+      "annotation/Species:e__gal": {
+        "id": "e__gal",
+        "model": "annotation/Model:annotation",
+        "name": "D-galactose",
+        "pk": "annotation/Species:e__gal",
+        "sbmlType": "Species"
+      },
+      "annotation/SpeciesReference:e__GLUT2_GAL.product.c__gal": {
+        "id": null,
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/SpeciesReference:e__GLUT2_GAL.product.c__gal",
+        "sbmlType": "SpeciesReference"
+      },
+      "annotation/SpeciesReference:e__GLUT2_GAL.reactant.e__gal": {
+        "id": null,
+        "model": "annotation/Model:annotation",
+        "name": null,
+        "pk": "annotation/SpeciesReference:e__GLUT2_GAL.reactant.e__gal",
+        "sbmlType": "SpeciesReference"
+      },
+      "annotation/UnitDefinition:kg": {
+        "id": "kg",
+        "model": "annotation/Model:annotation",
+        "name": "kg",
+        "pk": "annotation/UnitDefinition:kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "annotation/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "annotation/Model:annotation",
+        "name": "meter^2",
+        "pk": "annotation/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "annotation/UnitDefinition:m3": {
+        "id": "m3",
+        "model": "annotation/Model:annotation",
+        "name": "meter^3",
+        "pk": "annotation/UnitDefinition:m3",
+        "sbmlType": "UnitDefinition"
+      },
+      "annotation/UnitDefinition:mM": {
+        "id": "mM",
+        "model": "annotation/Model:annotation",
+        "name": "mmole/l",
+        "pk": "annotation/UnitDefinition:mM",
+        "sbmlType": "UnitDefinition"
+      },
+      "annotation/UnitDefinition:mole_per_s": {
+        "id": "mole_per_s",
+        "model": "annotation/Model:annotation",
+        "name": "mole/s",
+        "pk": "annotation/UnitDefinition:mole_per_s",
+        "sbmlType": "UnitDefinition"
+      },
+      "annotation/UnitDefinition:per_s": {
+        "id": "per_s",
+        "model": "annotation/Model:annotation",
+        "name": "1/s",
+        "pk": "annotation/UnitDefinition:per_s",
+        "sbmlType": "UnitDefinition"
+      },
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_annotation\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mole",
+      "extentUnitsLatex": "mole",
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "annotation",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "metre",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000290",
+                "https://identifiers.org/BTO:0000089"
+              ]
+            }
+          ],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": "ext",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_ext",
+          "name": "external",
+          "notes": null,
+          "pk": "annotation/Compartment:ext",
+          "sbmlType": "Compartment",
+          "sbo": "SBO:0000290",
+          "size": null,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": "m3",
+          "unitsLatex": "m^3",
+          "xml": "<compartment metaid=\"meta_ext\" sboTerm=\"SBO:0000290\" id=\"ext\" name=\"external\" spatialDimensions=\"3\" units=\"m3\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_ext\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000290\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/BTO:0000089\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</compartment>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000290",
+                "https://identifiers.org/GO:0005829",
+                "https://en.wikipedia.org/wiki/Cytosol"
+              ]
+            }
+          ],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": "cyto",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_cyto",
+          "name": "cytosol",
+          "notes": null,
+          "pk": "annotation/Compartment:cyto",
+          "sbmlType": "Compartment",
+          "sbo": "SBO:0000290",
+          "size": null,
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": "m3",
+          "unitsLatex": "m^3",
+          "xml": "<compartment metaid=\"meta_cyto\" sboTerm=\"SBO:0000290\" id=\"cyto\" name=\"cytosol\" spatialDimensions=\"3\" units=\"m3\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_cyto\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000290\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/GO:0005829\"/>\n            <rdf:li rdf:resource=\"https://en.wikipedia.org/wiki/Cytosol\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</compartment>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000290",
+                "https://identifiers.org/GO:0005886"
+              ]
+            }
+          ],
+          "derivedUnits": "m^2",
+          "history": null,
+          "id": "pm",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_pm",
+          "name": "membrane",
+          "notes": null,
+          "pk": "annotation/Compartment:pm",
+          "sbmlType": "Compartment",
+          "sbo": "SBO:0000290",
+          "size": null,
+          "spatialDimensions": 2.0,
+          "uncertainties": [],
+          "units": "m2",
+          "unitsLatex": "m^2",
+          "xml": "<compartment metaid=\"meta_pm\" sboTerm=\"SBO:0000290\" id=\"pm\" name=\"membrane\" spatialDimensions=\"2\" units=\"m2\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_pm\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000290\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/GO:0005886\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</compartment>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "Vol_e",
+            "latex": " \\mathit{Vol_{e}}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotation/InitialAssignment:ext",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "ext",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"ext\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> Vol_e </ci>\n  </math>\n</initialAssignment>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "m^2",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "A_m",
+            "latex": " \\mathit{A_{m}}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotation/InitialAssignment:pm",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "pm",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"pm\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> A_m </ci>\n  </math>\n</initialAssignment>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "x_cell * x_cell * x_cell",
+            "latex": " \\mathit{x_{cell}}\\cdot \\mathit{x_{cell}}\\cdot \\mathit{x_{cell}}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotation/InitialAssignment:Vol_c",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "Vol_c",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"Vol_c\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> x_cell </ci>\n      <ci> x_cell </ci>\n      <ci> x_cell </ci>\n    </apply>\n  </math>\n</initialAssignment>"
+        }
+      ],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "m",
+          "history": null,
+          "id": "x_cell",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "cell diameter",
+          "notes": null,
+          "pk": "annotation/Parameter:x_cell",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "metre",
+          "unitsLatex": "m",
+          "value": 2.5e-05,
+          "xml": "<parameter id=\"x_cell\" name=\"cell diameter\" value=\"2.5e-05\" units=\"metre\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": "Vol_e",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "external volume",
+          "notes": null,
+          "pk": "annotation/Parameter:Vol_e",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "m3",
+          "unitsLatex": "m^3",
+          "value": 1e-12,
+          "xml": "<parameter id=\"Vol_e\" name=\"external volume\" value=\"1e-12\" units=\"m3\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "m^2",
+          "history": null,
+          "id": "A_m",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "membrane area",
+          "notes": null,
+          "pk": "annotation/Parameter:A_m",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "m2",
+          "unitsLatex": "m^2",
+          "value": 1.0,
+          "xml": "<parameter id=\"A_m\" name=\"membrane area\" value=\"1\" units=\"m2\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mol}{s}",
+          "history": null,
+          "id": "GLUT2_Vmax",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotation/Parameter:GLUT2_Vmax",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mole_per_s",
+          "unitsLatex": "\\frac{mol}{s}",
+          "value": 1e-13,
+          "xml": "<parameter id=\"GLUT2_Vmax\" value=\"1e-13\" units=\"mole_per_s\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "\\frac{mmol}{l}",
+          "history": null,
+          "id": "GLUT2_k_gal",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotation/Parameter:GLUT2_k_gal",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mM",
+          "unitsLatex": "\\frac{mmol}{l}",
+          "value": 1.0,
+          "xml": "<parameter id=\"GLUT2_k_gal\" value=\"1\" units=\"mM\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "dimensionless",
+          "history": null,
+          "id": "GLUT2_keq",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotation/Parameter:GLUT2_keq",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "dimensionless",
+          "unitsLatex": "-",
+          "value": 1.0,
+          "xml": "<parameter id=\"GLUT2_keq\" value=\"1\" units=\"dimensionless\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": "Vol_c",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotation/Parameter:Vol_c",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "m3",
+          "unitsLatex": "m^3",
+          "value": "NaN",
+          "xml": "<parameter id=\"Vol_c\" value=\"NaN\" units=\"m3\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": "pm",
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000284"
+              ]
+            }
+          ],
+          "equation": "e__gal ⇆ c__gal",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "e__GLUT2_GAL",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "\\frac{l \\cdot mol}{ms \\cdot m^3}",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "(GLUT2_Vmax / GLUT2_k_gal) * (e__gal - c__gal / GLUT2_keq) / (1 dimensionless + c__gal / GLUT2_k_gal + e__gal / GLUT2_k_gal)",
+              "latex": " \\frac{\\frac{\\mathit{GLUT2_{Vmax}}}{\\mathit{GLUT2\\_k\\_gal}}\\cdot (\\mathit{e\\_\\_gal}-\\frac{\\mathit{c\\_\\_gal}}{\\mathit{GLUT2_{keq}}})}{1+\\frac{\\mathit{c\\_\\_gal}}{\\mathit{GLUT2\\_k\\_gal}}+\\frac{\\mathit{e\\_\\_gal}}{\\mathit{GLUT2\\_k\\_gal}}}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "annotation/KineticLaw:e__GLUT2_GAL.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" xmlns:sbml=\"http://www.sbml.org/sbml/level3/version1/core\">\n    <apply>\n      <divide/>\n      <apply>\n        <times/>\n        <apply>\n          <divide/>\n          <ci> GLUT2_Vmax </ci>\n          <ci> GLUT2_k_gal </ci>\n        </apply>\n        <apply>\n          <minus/>\n          <ci> e__gal </ci>\n          <apply>\n            <divide/>\n            <ci> c__gal </ci>\n            <ci> GLUT2_keq </ci>\n          </apply>\n        </apply>\n      </apply>\n      <apply>\n        <plus/>\n        <cn sbml:units=\"dimensionless\" type=\"integer\"> 1 </cn>\n        <apply>\n          <divide/>\n          <ci> c__gal </ci>\n          <ci> GLUT2_k_gal </ci>\n        </apply>\n        <apply>\n          <divide/>\n          <ci> e__gal </ci>\n          <ci> GLUT2_k_gal </ci>\n        </apply>\n      </apply>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "annotation/SpeciesReference:e__GLUT2_GAL.product.c__gal",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "c__gal",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"c__gal\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "annotation/SpeciesReference:e__GLUT2_GAL.reactant.e__gal",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "e__gal",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"e__gal\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": "meta_e__GLUT2_GAL",
+          "name": "galactose transport [e__]",
+          "notes": null,
+          "pk": "annotation/Reaction:e__GLUT2_GAL",
+          "reversible": true,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction metaid=\"meta_e__GLUT2_GAL\" id=\"e__GLUT2_GAL\" name=\"galactose transport [e__]\" reversible=\"true\" fast=\"false\" compartment=\"pm\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_e__GLUT2_GAL\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000284\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n  <listOfReactants>\n    <speciesReference species=\"e__gal\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"c__gal\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\" xmlns:sbml=\"http://www.sbml.org/sbml/level3/version1/core\">\n      <apply>\n        <divide/>\n        <apply>\n          <times/>\n          <apply>\n            <divide/>\n            <ci> GLUT2_Vmax </ci>\n            <ci> GLUT2_k_gal </ci>\n          </apply>\n          <apply>\n            <minus/>\n            <ci> e__gal </ci>\n            <apply>\n              <divide/>\n              <ci> c__gal </ci>\n              <ci> GLUT2_keq </ci>\n            </apply>\n          </apply>\n        </apply>\n        <apply>\n          <plus/>\n          <cn sbml:units=\"dimensionless\" type=\"integer\"> 1 </cn>\n          <apply>\n            <divide/>\n            <ci> c__gal </ci>\n            <ci> GLUT2_k_gal </ci>\n          </apply>\n          <apply>\n            <divide/>\n            <ci> e__gal </ci>\n            <ci> GLUT2_k_gal </ci>\n          </apply>\n        </apply>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "m^3",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "Vol_c",
+            "latex": " \\mathit{Vol_{c}}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotation/AssignmentRule:cyto",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "cyto",
+          "xml": "<assignmentRule variable=\"cyto\">\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <ci> Vol_c </ci>\n  </math>\n</assignmentRule>"
+        }
+      ],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "ext",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247",
+                "https://identifiers.org/bigg.metabolite/gal",
+                "https://identifiers.org/CHEBI:28061",
+                "https://identifiers.org/vmhmetabolite/gal"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mol}{m^3}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "e__gal",
+          "initialAmount": null,
+          "initialConcentration": 3.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_e__gal",
+          "name": "D-galactose",
+          "notes": null,
+          "pk": "annotation/Species:e__gal",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species metaid=\"meta_e__gal\" sboTerm=\"SBO:0000247\" id=\"e__gal\" name=\"D-galactose\" compartment=\"ext\" initialConcentration=\"3\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"true\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_e__gal\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/bigg.metabolite/gal\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/CHEBI:28061\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/vmhmetabolite/gal\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "cyto",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247"
+              ]
+            }
+          ],
+          "derivedUnits": "\\frac{mol}{m^3}",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "c__gal",
+          "initialAmount": null,
+          "initialConcentration": 0.00012,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_c__gal",
+          "name": "D-galactose",
+          "notes": null,
+          "pk": "annotation/Species:c__gal",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": "mole",
+          "uncertainties": [],
+          "unitsLatex": "mole",
+          "xml": "<species metaid=\"meta_c__gal\" sboTerm=\"SBO:0000247\" id=\"c__gal\" name=\"D-galactose\" compartment=\"cyto\" initialConcentration=\"0.00012\" substanceUnits=\"mole\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_c__gal\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "kg",
+          "notes": null,
+          "pk": "annotation/UnitDefinition:kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "kg",
+          "xml": "<unitDefinition id=\"kg\" name=\"kg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "annotation/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m3",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 3.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^3",
+          "notes": null,
+          "pk": "annotation/UnitDefinition:m3",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^3",
+          "xml": "<unitDefinition id=\"m3\" name=\"meter^3\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"3\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mM",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mmole/l",
+          "notes": null,
+          "pk": "annotation/UnitDefinition:mM",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mmol}{l}",
+          "xml": "<unitDefinition id=\"mM\" name=\"mmole/l\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mole_per_s",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "mole",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mole/s",
+          "notes": null,
+          "pk": "annotation/UnitDefinition:mole_per_s",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mol}{s}",
+          "xml": "<unitDefinition id=\"mole_per_s\" name=\"mole/s\">\n  <listOfUnits>\n    <unit kind=\"mole\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "per_s",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "1/s",
+          "notes": null,
+          "pk": "annotation/UnitDefinition:per_s",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{1}{s}",
+          "xml": "<unitDefinition id=\"per_s\" name=\"1/s\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_annotation",
+      "name": "model with inline annotations",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Model with inline annotations</h1>\n    <p>Test model demonstrating inline annotations.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "annotation/Model:annotation",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mole",
+      "substanceUnitsLatex": "mole",
+      "timeUnits": "second",
+      "timeUnitsLatex": "s",
+      "uncertainties": [],
+      "volumeUnits": "m3",
+      "volumeUnitsLatex": "m^3",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [
+      {
+        "lhs": "\\htmlData{pk=annotation/Compartment:cyto}{\\mathrm{cyto}}",
+        "lines": [
+          "\\htmlData{pk=annotation/Parameter:Vol_c}{\\mathrm{Vol}_{\\mathrm{c}}}"
+        ],
+        "origin": "assignment_rule",
+        "variable": "annotation/Compartment:cyto"
+      }
+    ],
+    "events": [],
+    "functions": [],
+    "initial": [
+      {
+        "lhs": "\\htmlData{pk=annotation/Compartment:ext}{\\mathrm{ext}}",
+        "lines": [
+          "\\htmlData{pk=annotation/Parameter:Vol_e}{\\mathrm{Vol}_{\\mathrm{e}}}"
+        ],
+        "origin": "initial_assignment",
+        "variable": "annotation/Compartment:ext"
+      },
+      {
+        "lhs": "\\htmlData{pk=annotation/Compartment:pm}{\\mathrm{pm}}",
+        "lines": [
+          "\\htmlData{pk=annotation/Parameter:A_m}{A_{\\mathrm{m}}}"
+        ],
+        "origin": "initial_assignment",
+        "variable": "annotation/Compartment:pm"
+      },
+      {
+        "lhs": "\\htmlData{pk=annotation/Parameter:Vol_c}{\\mathrm{Vol}_{\\mathrm{c}}}",
+        "lines": [
+          "\\htmlData{pk=annotation/Parameter:x_cell}{x_{\\mathrm{cell}}} \\cdot \\htmlData{pk=annotation/Parameter:x_cell}{x_{\\mathrm{cell}}} \\cdot \\htmlData{pk=annotation/Parameter:x_cell}{x_{\\mathrm{cell}}}"
+        ],
+        "origin": "initial_assignment",
+        "variable": "annotation/Parameter:Vol_c"
+      }
+    ],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=annotation/Species:c__gal}{c_{\\mathrm{\\_gal}}}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=annotation/Reaction:e__GLUT2_GAL}{v_{\\mathrm{e\\_\\_GLUT2\\_GAL}}}}{\\htmlData{pk=annotation/Compartment:cyto}{\\mathrm{cyto}}}"
+        ],
+        "origin": "reactions",
+        "variable": "annotation/Species:c__gal"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=annotation/Reaction:e__GLUT2_GAL}{v_{\\mathrm{e\\_\\_GLUT2\\_GAL}}}",
+        "lines": [
+          "\\frac{\\frac{\\htmlData{pk=annotation/Parameter:GLUT2_Vmax}{\\mathrm{GLUT2}_{\\mathrm{Vmax}}}}{\\htmlData{pk=annotation/Parameter:GLUT2_k_gal}{\\mathrm{GLUT2}_{\\mathrm{k\\_gal}}}} \\cdot \\mathopen{}\\left(\\htmlData{pk=annotation/Species:e__gal}{e_{\\mathrm{\\_gal}}} - \\frac{\\htmlData{pk=annotation/Species:c__gal}{c_{\\mathrm{\\_gal}}}}{\\htmlData{pk=annotation/Parameter:GLUT2_keq}{\\mathrm{GLUT2}_{\\mathrm{keq}}}}\\right)}{1 + \\frac{\\htmlData{pk=annotation/Species:c__gal}{c_{\\mathrm{\\_gal}}}}{\\htmlData{pk=annotation/Parameter:GLUT2_k_gal}{\\mathrm{GLUT2}_{\\mathrm{k\\_gal}}}} + \\frac{\\htmlData{pk=annotation/Species:e__gal}{e_{\\mathrm{\\_gal}}}}{\\htmlData{pk=annotation/Parameter:GLUT2_k_gal}{\\mathrm{GLUT2}_{\\mathrm{k\\_gal}}}}}"
+        ],
+        "origin": "reaction",
+        "variable": "annotation/Reaction:e__GLUT2_GAL"
+      }
+    ],
+    "unsupported": []
+  }
+}

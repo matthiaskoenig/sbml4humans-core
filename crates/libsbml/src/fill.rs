@@ -122,7 +122,13 @@ pub fn read(source: &[u8]) -> Result<Document, ReadError> {
             "libsbml read no document of the source".to_owned(),
         ));
     }
-    unsafe { document(reading.0) }
+    let mut filled = unsafe { document(reading.0) }?;
+    sbml4humans_reader::supplement(source, &mut filled)
+        .map_err(|e| ReadError::Libsbml(e.to_string()))?;
+    if filled.model.is_none() && filled.model_definitions.is_empty() {
+        return Err(ReadError::NoModel(unsafe { error_log(reading.0) }));
+    }
+    Ok(filled)
 }
 
 /// The document and its model.
@@ -136,7 +142,7 @@ unsafe fn document(doc: *mut sys::SBMLDocument) -> Result<Document, ReadError> {
             return Err(ReadError::Libsbml(error_log(doc)));
         }
         let sbase = sys::s4h_document_model(doc);
-        if sbase.is_null() {
+        if sbase.is_null() && sys::s4h_document_num_errors(doc) > 0 {
             let log = error_log(doc);
             // a source libsbml logged errors of is no document, whatever it holds
             return Err(if sys::s4h_document_num_errors(doc) > 0 {
@@ -152,7 +158,13 @@ unsafe fn document(doc: *mut sys::SBMLDocument) -> Result<Document, ReadError> {
             // the serialized XML of the document is the whole source and the
             // one of the model nearly all of it, so neither carries it
             element: element(sys::s4h_document_sbase(doc))?,
-            model: Some(model(sbase)?),
+            model: if sbase.is_null() {
+                None
+            } else {
+                Some(model(sbase)?)
+            },
+            model_definitions: vec![],
+            main_model_fallback: None,
         })
     }
 }
@@ -183,6 +195,7 @@ unsafe fn packages(doc: *mut sys::SBMLDocument) -> Vec<Package> {
         let package = unsafe { sys::s4h_document_package(doc, n) };
         if let Some(prefix) = unsafe { strings::borrowed(package.prefix) } {
             packages.push(Package {
+                name: unsafe { strings::borrowed(package.name) }.unwrap_or_else(|| prefix.clone()),
                 prefix,
                 version: package.version,
                 required: package.required != 0,
@@ -204,6 +217,15 @@ unsafe fn packages(doc: *mut sys::SBMLDocument) -> Vec<Package> {
 unsafe fn model(sbase: *mut sys::SBase) -> Result<Model, ReadError> {
     unsafe {
         Ok(Model {
+            units: sbml4humans_model::ModelUnits {
+                substance: strings::borrowed(sys::s4h_model_substance_units(sbase)),
+                time: strings::borrowed(sys::s4h_model_time_units(sbase)),
+                volume: strings::borrowed(sys::s4h_model_volume_units(sbase)),
+                area: strings::borrowed(sys::s4h_model_area_units(sbase)),
+                length: strings::borrowed(sys::s4h_model_length_units(sbase)),
+                extent: strings::borrowed(sys::s4h_model_extent_units(sbase)),
+            },
+            conversion_factor: strings::borrowed(sys::s4h_conversion_factor(sbase)),
             element: element(sbase)?,
             function_definitions: elements(
                 sbase,
@@ -375,11 +397,13 @@ unsafe fn compartment(sbase: *mut sys::SBase) -> Result<Compartment, ReadError> 
 unsafe fn species(sbase: *mut sys::SBase) -> Result<Species, ReadError> {
     unsafe {
         Ok(Species {
+            conversion_factor: strings::borrowed(sys::s4h_conversion_factor(sbase)),
             element: element_with_xml(sbase)?,
             compartment: strings::borrowed(sys::s4h_species_compartment(sbase)).unwrap_or_default(),
             initial_amount: number(sbase, sys::s4h_species_initial_amount),
             initial_concentration: number(sbase, sys::s4h_species_initial_concentration),
             substance_units: strings::borrowed(sys::s4h_species_substance_units(sbase)),
+            spatial_size_units: strings::borrowed(sys::s4h_species_spatial_size_units(sbase)),
             has_only_substance_units: flag(sbase, sys::s4h_species_has_only_substance_units),
             boundary_condition: flag(sbase, sys::s4h_species_boundary_condition),
             constant: flag(sbase, sys::s4h_species_constant),
@@ -543,6 +567,7 @@ unsafe fn species_reference(sbase: *mut sys::SBase) -> Result<SpeciesReference, 
                 .unwrap_or(f64::NAN),
             stoichiometry_set: sys::s4h_species_reference_stoichiometry_set(sbase) != 0,
             stoichiometry_math: sys::s4h_species_reference_stoichiometry_math(sbase) != 0,
+            stoichiometry_math_ast: math(sbase, sys::s4h_species_reference_math)?,
             constant: flag(sbase, sys::s4h_species_reference_constant),
         })
     }
@@ -720,6 +745,7 @@ unsafe fn element(sbase: *mut sys::SBase) -> Result<Element, ReadError> {
             xml: None,
             line: sys::s4h_sbase_line(sbase),
             column: sys::s4h_sbase_column(sbase),
+            ..Element::default()
         })
     }
 }

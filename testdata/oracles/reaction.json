@@ -1,0 +1,1147 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "reaction/Model:reaction",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction/Species:x",
+        "target": "reaction/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction/Species:y",
+        "target": "reaction/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "reaction/InitialAssignment:v4_x",
+        "target": "reaction/SpeciesReference:v4_x",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "reaction/InitialAssignment:v4_y",
+        "target": "reaction/SpeciesReference:v4_y",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "reaction/AssignmentRule:f1",
+        "target": "reaction/SpeciesReference:f1",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "reaction/AssignmentRule:f2",
+        "target": "reaction/SpeciesReference:f2",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction/Reaction:v1",
+        "target": "reaction/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction/Reaction:v1",
+        "target": "reaction/SpeciesReference:v1.reactant.x",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction/SpeciesReference:v1.reactant.x",
+        "target": "reaction/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction/Reaction:v1",
+        "target": "reaction/SpeciesReference:v1.product.y",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction/SpeciesReference:v1.product.y",
+        "target": "reaction/Species:y",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "reaction/Reaction:v1",
+        "target": "reaction/KineticLaw:v1.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction/KineticLaw:v1.kineticLaw",
+        "target": "reaction/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction/KineticLaw:v1.kineticLaw",
+        "target": "reaction/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction/Reaction:v2",
+        "target": "reaction/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction/Reaction:v2",
+        "target": "reaction/SpeciesReference:v2.reactant.x",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction/SpeciesReference:v2.reactant.x",
+        "target": "reaction/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction/Reaction:v2",
+        "target": "reaction/SpeciesReference:v2.product.y",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction/SpeciesReference:v2.product.y",
+        "target": "reaction/Species:y",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "reaction/Reaction:v2",
+        "target": "reaction/KineticLaw:v2.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction/KineticLaw:v2.kineticLaw",
+        "target": "reaction/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction/KineticLaw:v2.kineticLaw",
+        "target": "reaction/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction/Reaction:v3",
+        "target": "reaction/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction/Reaction:v3",
+        "target": "reaction/SpeciesReference:f1",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction/SpeciesReference:f1",
+        "target": "reaction/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction/Reaction:v3",
+        "target": "reaction/SpeciesReference:f2",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction/SpeciesReference:f2",
+        "target": "reaction/Species:y",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "reaction/Reaction:v3",
+        "target": "reaction/KineticLaw:v3.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction/KineticLaw:v3.kineticLaw",
+        "target": "reaction/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction/KineticLaw:v3.kineticLaw",
+        "target": "reaction/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "compartment",
+        "source": "reaction/Reaction:v4",
+        "target": "reaction/Compartment:c",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction/Reaction:v4",
+        "target": "reaction/SpeciesReference:v4_x",
+        "targetEntry": null
+      },
+      {
+        "kind": "reactant",
+        "source": "reaction/SpeciesReference:v4_x",
+        "target": "reaction/Species:x",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction/Reaction:v4",
+        "target": "reaction/SpeciesReference:v4_y",
+        "targetEntry": null
+      },
+      {
+        "kind": "product",
+        "source": "reaction/SpeciesReference:v4_y",
+        "target": "reaction/Species:y",
+        "targetEntry": null
+      },
+      {
+        "kind": "kineticLaw",
+        "source": "reaction/Reaction:v4",
+        "target": "reaction/KineticLaw:v4.kineticLaw",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction/KineticLaw:v4.kineticLaw",
+        "target": "reaction/Parameter:k1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "reaction/KineticLaw:v4.kineticLaw",
+        "target": "reaction/Species:x",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "reaction/AssignmentRule:f1": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/AssignmentRule:f1",
+        "sbmlType": "AssignmentRule"
+      },
+      "reaction/AssignmentRule:f2": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/AssignmentRule:f2",
+        "sbmlType": "AssignmentRule"
+      },
+      "reaction/Compartment:c": {
+        "id": "c",
+        "model": "reaction/Model:reaction",
+        "name": "cytosol",
+        "pk": "reaction/Compartment:c",
+        "sbmlType": "Compartment"
+      },
+      "reaction/InitialAssignment:v4_x": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/InitialAssignment:v4_x",
+        "sbmlType": "InitialAssignment"
+      },
+      "reaction/InitialAssignment:v4_y": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/InitialAssignment:v4_y",
+        "sbmlType": "InitialAssignment"
+      },
+      "reaction/KineticLaw:v1.kineticLaw": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/KineticLaw:v1.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "reaction/KineticLaw:v2.kineticLaw": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/KineticLaw:v2.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "reaction/KineticLaw:v3.kineticLaw": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/KineticLaw:v3.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "reaction/KineticLaw:v4.kineticLaw": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/KineticLaw:v4.kineticLaw",
+        "sbmlType": "KineticLaw"
+      },
+      "reaction/Model:reaction": {
+        "id": "reaction",
+        "model": null,
+        "name": "model with reaction",
+        "pk": "reaction/Model:reaction",
+        "sbmlType": "Model"
+      },
+      "reaction/Parameter:k1": {
+        "id": "k1",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/Parameter:k1",
+        "sbmlType": "Parameter"
+      },
+      "reaction/Reaction:v1": {
+        "id": "v1",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/Reaction:v1",
+        "sbmlType": "Reaction"
+      },
+      "reaction/Reaction:v2": {
+        "id": "v2",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/Reaction:v2",
+        "sbmlType": "Reaction"
+      },
+      "reaction/Reaction:v3": {
+        "id": "v3",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/Reaction:v3",
+        "sbmlType": "Reaction"
+      },
+      "reaction/Reaction:v4": {
+        "id": "v4",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/Reaction:v4",
+        "sbmlType": "Reaction"
+      },
+      "reaction/Species:x": {
+        "id": "x",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/Species:x",
+        "sbmlType": "Species"
+      },
+      "reaction/Species:y": {
+        "id": "y",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/Species:y",
+        "sbmlType": "Species"
+      },
+      "reaction/SpeciesReference:f1": {
+        "id": "f1",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/SpeciesReference:f1",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction/SpeciesReference:f2": {
+        "id": "f2",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/SpeciesReference:f2",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction/SpeciesReference:v1.product.y": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/SpeciesReference:v1.product.y",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction/SpeciesReference:v1.reactant.x": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/SpeciesReference:v1.reactant.x",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction/SpeciesReference:v2.product.y": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/SpeciesReference:v2.product.y",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction/SpeciesReference:v2.reactant.x": {
+        "id": null,
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/SpeciesReference:v2.reactant.x",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction/SpeciesReference:v4_x": {
+        "id": "v4_x",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/SpeciesReference:v4_x",
+        "sbmlType": "SpeciesReference"
+      },
+      "reaction/SpeciesReference:v4_y": {
+        "id": "v4_y",
+        "model": "reaction/Model:reaction",
+        "name": null,
+        "pk": "reaction/SpeciesReference:v4_y",
+        "sbmlType": "SpeciesReference"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_reaction\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "reaction",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "c",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": "cytosol",
+          "notes": null,
+          "pk": "reaction/Compartment:c",
+          "sbmlType": "Compartment",
+          "sbo": null,
+          "size": "NaN",
+          "spatialDimensions": 3.0,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "xml": "<compartment id=\"c\" name=\"cytosol\" spatialDimensions=\"3\" size=\"NaN\" constant=\"true\"/>"
+        }
+      ],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "2.5",
+            "latex": " 2.5"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>InitialAssignment for reactant stoichiometry in v4.</p>\n  </body>\n</notes>",
+          "pk": "reaction/InitialAssignment:v4_x",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "v4_x",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"v4_x\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>InitialAssignment for reactant stoichiometry in v4.</p>\n    </body>\n  </notes>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn> 2.5 </cn>\n  </math>\n</initialAssignment>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "5",
+            "latex": " 5"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>InitialAssignment for product stoichiometry in v4.</p>\n  </body>\n</notes>",
+          "pk": "reaction/InitialAssignment:v4_y",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "v4_y",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"v4_y\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>InitialAssignment for product stoichiometry in v4.</p>\n    </body>\n  </notes>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <cn> 5 </cn>\n  </math>\n</initialAssignment>"
+        }
+      ],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "k1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "reaction/Parameter:k1",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 1.0,
+          "xml": "<parameter id=\"k1\" value=\"1\" constant=\"true\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [
+        {
+          "comp": null,
+          "compartment": "c",
+          "cvterms": [],
+          "equation": "x ➞ y",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "v1",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k1 * x",
+              "latex": " \\mathit{k1}\\cdot \\mathit{x}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "reaction/KineticLaw:v1.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k1 </ci>\n      <ci> x </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction/SpeciesReference:v1.product.y",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "y",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"y\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction/SpeciesReference:v1.reactant.x",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "x",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"x\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Reaction with constant stoichiometry 1.0.</p>\n  </body>\n</notes>",
+          "pk": "reaction/Reaction:v1",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"v1\" reversible=\"false\" fast=\"false\" compartment=\"c\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Reaction with constant stoichiometry 1.0.</p>\n    </body>\n  </notes>\n  <listOfReactants>\n    <speciesReference species=\"x\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"y\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k1 </ci>\n        <ci> x </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": "c",
+          "cvterms": [],
+          "equation": "x ➞ 2.0 y",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "v2",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k1 * x",
+              "latex": " \\mathit{k1}\\cdot \\mathit{x}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "reaction/KineticLaw:v2.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k1 </ci>\n      <ci> x </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction/SpeciesReference:v2.product.y",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "y",
+              "stoichiometry": 2.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"y\" stoichiometry=\"2\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": null,
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction/SpeciesReference:v2.reactant.x",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "x",
+              "stoichiometry": 1.0,
+              "uncertainties": [],
+              "xml": "<speciesReference species=\"x\" stoichiometry=\"1\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Reaction with constant stoichiometry.</p>\n  </body>\n</notes>",
+          "pk": "reaction/Reaction:v2",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"v2\" reversible=\"false\" fast=\"false\" compartment=\"c\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Reaction with constant stoichiometry.</p>\n    </body>\n  </notes>\n  <listOfReactants>\n    <speciesReference species=\"x\" stoichiometry=\"1\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference species=\"y\" stoichiometry=\"2\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k1 </ci>\n        <ci> x </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": "c",
+          "cvterms": [],
+          "equation": "f1 x ➞ f2 y",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "v3",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k1 * x",
+              "latex": " \\mathit{k1}\\cdot \\mathit{x}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "reaction/KineticLaw:v3.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k1 </ci>\n      <ci> x </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": false,
+              "cvterms": [],
+              "history": null,
+              "id": "f2",
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction/SpeciesReference:f2",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "y",
+              "stoichiometry": null,
+              "uncertainties": [],
+              "xml": "<speciesReference id=\"f2\" species=\"y\" constant=\"false\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": false,
+              "cvterms": [],
+              "history": null,
+              "id": "f1",
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction/SpeciesReference:f1",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "x",
+              "stoichiometry": null,
+              "uncertainties": [],
+              "xml": "<speciesReference id=\"f1\" species=\"x\" constant=\"false\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Reaction with variable stoichiometry set via AssignmentRules.</p>\n  </body>\n</notes>",
+          "pk": "reaction/Reaction:v3",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"v3\" reversible=\"false\" fast=\"false\" compartment=\"c\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Reaction with variable stoichiometry set via AssignmentRules.</p>\n    </body>\n  </notes>\n  <listOfReactants>\n    <speciesReference id=\"f1\" species=\"x\" constant=\"false\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference id=\"f2\" species=\"y\" constant=\"false\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k1 </ci>\n        <ci> x </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        },
+        {
+          "comp": null,
+          "compartment": "c",
+          "cvterms": [],
+          "equation": "v4_x x ➞ v4_y y",
+          "fast": false,
+          "fbc": null,
+          "history": null,
+          "id": "v4",
+          "keyValuePairs": [],
+          "kineticLaw": {
+            "comp": null,
+            "cvterms": [],
+            "derivedUnits": "-",
+            "history": null,
+            "id": null,
+            "keyValuePairs": [],
+            "listOfLocalParameters": [],
+            "lists": [],
+            "math": {
+              "formula": "k1 * x",
+              "latex": " \\mathit{k1}\\cdot \\mathit{x}"
+            },
+            "metaId": null,
+            "name": null,
+            "notes": null,
+            "pk": "reaction/KineticLaw:v4.kineticLaw",
+            "sbmlType": "KineticLaw",
+            "sbo": null,
+            "uncertainties": [],
+            "xml": "<kineticLaw>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <ci> k1 </ci>\n      <ci> x </ci>\n    </apply>\n  </math>\n</kineticLaw>"
+          },
+          "listOfModifiers": [],
+          "listOfProducts": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": "v4_y",
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction/SpeciesReference:v4_y",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "y",
+              "stoichiometry": "NaN",
+              "uncertainties": [],
+              "xml": "<speciesReference id=\"v4_y\" species=\"y\" stoichiometry=\"NaN\" constant=\"true\"/>"
+            }
+          ],
+          "listOfReactants": [
+            {
+              "comp": null,
+              "constant": true,
+              "cvterms": [],
+              "history": null,
+              "id": "v4_x",
+              "keyValuePairs": [],
+              "lists": [],
+              "metaId": null,
+              "name": null,
+              "notes": null,
+              "pk": "reaction/SpeciesReference:v4_x",
+              "sbmlType": "SpeciesReference",
+              "sbo": null,
+              "species": "x",
+              "stoichiometry": "NaN",
+              "uncertainties": [],
+              "xml": "<speciesReference id=\"v4_x\" species=\"x\" stoichiometry=\"NaN\" constant=\"true\"/>"
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Reaction with initial assignment of stoichiometry.</p>\n  </body>\n</notes>",
+          "pk": "reaction/Reaction:v4",
+          "reversible": false,
+          "sbmlType": "Reaction",
+          "sbo": null,
+          "uncertainties": [],
+          "xml": "<reaction id=\"v4\" reversible=\"false\" fast=\"false\" compartment=\"c\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Reaction with initial assignment of stoichiometry.</p>\n    </body>\n  </notes>\n  <listOfReactants>\n    <speciesReference id=\"v4_x\" species=\"x\" stoichiometry=\"NaN\" constant=\"true\"/>\n  </listOfReactants>\n  <listOfProducts>\n    <speciesReference id=\"v4_y\" species=\"y\" stoichiometry=\"NaN\" constant=\"true\"/>\n  </listOfProducts>\n  <kineticLaw>\n    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n      <apply>\n        <times/>\n        <ci> k1 </ci>\n        <ci> x </ci>\n      </apply>\n    </math>\n  </kineticLaw>\n</reaction>"
+        }
+      ],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "1 * time",
+            "latex": " 1\\cdot \\mathrm{time}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Time dependent variable stoichiometry.</p>\n  </body>\n</notes>",
+          "pk": "reaction/AssignmentRule:f1",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "f1",
+          "xml": "<assignmentRule variable=\"f1\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Time dependent variable stoichiometry.</p>\n    </body>\n  </notes>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <cn> 1 </cn>\n      <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n    </apply>\n  </math>\n</assignmentRule>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "2 * time",
+            "latex": " 2\\cdot \\mathrm{time}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Time dependent variable stoichiometry.</p>\n  </body>\n</notes>",
+          "pk": "reaction/AssignmentRule:f2",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "f2",
+          "xml": "<assignmentRule variable=\"f2\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Time dependent variable stoichiometry.</p>\n    </body>\n  </notes>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <times/>\n      <cn> 2 </cn>\n      <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n    </apply>\n  </math>\n</assignmentRule>"
+        }
+      ],
+      "listOfSpecies": [
+        {
+          "boundaryCondition": true,
+          "comp": null,
+          "compartment": "c",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "x",
+          "initialAmount": null,
+          "initialConcentration": 10.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_x",
+          "name": null,
+          "notes": null,
+          "pk": "reaction/Species:x",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species metaid=\"meta_x\" sboTerm=\"SBO:0000247\" id=\"x\" compartment=\"c\" initialConcentration=\"10\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"true\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_x\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        },
+        {
+          "boundaryCondition": false,
+          "comp": null,
+          "compartment": "c",
+          "constant": false,
+          "conversionFactor": null,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000247"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "fbc": null,
+          "hasOnlySubstanceUnits": false,
+          "history": null,
+          "id": "y",
+          "initialAmount": null,
+          "initialConcentration": 0.0,
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_y",
+          "name": null,
+          "notes": null,
+          "pk": "reaction/Species:y",
+          "sbmlType": "Species",
+          "sbo": "SBO:0000247",
+          "substanceUnits": null,
+          "uncertainties": [],
+          "unitsLatex": null,
+          "xml": "<species metaid=\"meta_y\" sboTerm=\"SBO:0000247\" id=\"y\" compartment=\"c\" initialConcentration=\"0\" hasOnlySubstanceUnits=\"false\" boundaryCondition=\"false\" constant=\"false\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_y\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000247\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</species>"
+        }
+      ],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_reaction",
+      "name": "model with reaction",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Reaction definition</h1>\n    <p>This example demonstrates the creation of reactions with constant or\nvariable stoichiometry.</p>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "reaction/Model:reaction",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [
+      {
+        "lhs": "\\htmlData{pk=reaction/SpeciesReference:f1}{f_{1}}",
+        "lines": [
+          "1 \\cdot t"
+        ],
+        "origin": "assignment_rule",
+        "variable": "reaction/SpeciesReference:f1"
+      },
+      {
+        "lhs": "\\htmlData{pk=reaction/SpeciesReference:f2}{f_{2}}",
+        "lines": [
+          "2 \\cdot t"
+        ],
+        "origin": "assignment_rule",
+        "variable": "reaction/SpeciesReference:f2"
+      }
+    ],
+    "events": [],
+    "functions": [],
+    "initial": [
+      {
+        "lhs": "\\htmlData{pk=reaction/SpeciesReference:v4_x}{\\mathrm{v4}_{\\mathrm{x}}}",
+        "lines": [
+          "2.5"
+        ],
+        "origin": "initial_assignment",
+        "variable": "reaction/SpeciesReference:v4_x"
+      },
+      {
+        "lhs": "\\htmlData{pk=reaction/SpeciesReference:v4_y}{\\mathrm{v4}_{\\mathrm{y}}}",
+        "lines": [
+          "5"
+        ],
+        "origin": "initial_assignment",
+        "variable": "reaction/SpeciesReference:v4_y"
+      }
+    ],
+    "odes": [
+      {
+        "lhs": "\\frac{\\mathrm{d} \\htmlData{pk=reaction/Species:y}{y}}{\\mathrm{d} t}",
+        "lines": [
+          "\\frac{\\htmlData{pk=reaction/Reaction:v1}{v_{\\mathrm{v1}}} + 2 \\cdot \\htmlData{pk=reaction/Reaction:v2}{v_{\\mathrm{v2}}} + \\htmlData{pk=reaction/SpeciesReference:f2}{f_{2}} \\cdot \\htmlData{pk=reaction/Reaction:v3}{v_{\\mathrm{v3}}} + \\htmlData{pk=reaction/SpeciesReference:v4_y}{\\mathrm{v4}_{\\mathrm{y}}} \\cdot \\htmlData{pk=reaction/Reaction:v4}{v_{\\mathrm{v4}}}}{\\htmlData{pk=reaction/Compartment:c}{c}}"
+        ],
+        "origin": "reactions",
+        "variable": "reaction/Species:y"
+      }
+    ],
+    "reactions": [
+      {
+        "lhs": "\\htmlData{pk=reaction/Reaction:v1}{v_{\\mathrm{v1}}}",
+        "lines": [
+          "\\htmlData{pk=reaction/Parameter:k1}{k_{1}} \\cdot \\htmlData{pk=reaction/Species:x}{x}"
+        ],
+        "origin": "reaction",
+        "variable": "reaction/Reaction:v1"
+      },
+      {
+        "lhs": "\\htmlData{pk=reaction/Reaction:v2}{v_{\\mathrm{v2}}}",
+        "lines": [
+          "\\htmlData{pk=reaction/Parameter:k1}{k_{1}} \\cdot \\htmlData{pk=reaction/Species:x}{x}"
+        ],
+        "origin": "reaction",
+        "variable": "reaction/Reaction:v2"
+      },
+      {
+        "lhs": "\\htmlData{pk=reaction/Reaction:v3}{v_{\\mathrm{v3}}}",
+        "lines": [
+          "\\htmlData{pk=reaction/Parameter:k1}{k_{1}} \\cdot \\htmlData{pk=reaction/Species:x}{x}"
+        ],
+        "origin": "reaction",
+        "variable": "reaction/Reaction:v3"
+      },
+      {
+        "lhs": "\\htmlData{pk=reaction/Reaction:v4}{v_{\\mathrm{v4}}}",
+        "lines": [
+          "\\htmlData{pk=reaction/Parameter:k1}{k_{1}} \\cdot \\htmlData{pk=reaction/Species:x}{x}"
+        ],
+        "origin": "reaction",
+        "variable": "reaction/Reaction:v4"
+      }
+    ],
+    "unsupported": []
+  }
+}

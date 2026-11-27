@@ -1,0 +1,807 @@
+{
+  "document": {
+    "annotationXml": null,
+    "comp": null,
+    "cvterms": [],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": null,
+    "name": null,
+    "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Created with <a href=\"https://github.com/matthiaskoenig/sbmlutils\">https://github.com/matthiaskoenig/sbmlutils</a>.\n<a href=\"https://doi.org/10.5281/zenodo.5525390\">\n      <img src=\"https://zenodo.org/badge/DOI/10.5281/zenodo.5525390.svg\" alt=\"DOI\"/></a></p>\n    </body>\n  </notes>",
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 1,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "parameter/Model:parameter",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Model:parameter",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Model:parameter",
+        "target": "parameter/UnitDefinition:hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Model:parameter",
+        "target": "parameter/UnitDefinition:m2",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Parameter:p1",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Parameter:p2",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Parameter:p3",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Parameter:p4",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Parameter:dose",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/Parameter:p5",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "symbol",
+        "source": "parameter/InitialAssignment:p3",
+        "target": "parameter/Parameter:p3",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "parameter/InitialAssignment:p3",
+        "target": "parameter/Parameter:p1",
+        "targetEntry": null
+      },
+      {
+        "kind": "math",
+        "source": "parameter/InitialAssignment:p3",
+        "target": "parameter/Parameter:p2",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "parameter/AssignmentRule:p4",
+        "target": "parameter/Parameter:p4",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/AssignmentRule:p4",
+        "target": "parameter/UnitDefinition:hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/AssignmentRule:p4",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      },
+      {
+        "kind": "variable",
+        "source": "parameter/AssignmentRule:p5",
+        "target": "parameter/Parameter:p5",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/AssignmentRule:p5",
+        "target": "parameter/UnitDefinition:hr",
+        "targetEntry": null
+      },
+      {
+        "kind": "units",
+        "source": "parameter/AssignmentRule:p5",
+        "target": "parameter/UnitDefinition:mg",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      },
+      "parameter/AssignmentRule:p4": {
+        "id": null,
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/AssignmentRule:p4",
+        "sbmlType": "AssignmentRule"
+      },
+      "parameter/AssignmentRule:p5": {
+        "id": null,
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/AssignmentRule:p5",
+        "sbmlType": "AssignmentRule"
+      },
+      "parameter/InitialAssignment:p3": {
+        "id": null,
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/InitialAssignment:p3",
+        "sbmlType": "InitialAssignment"
+      },
+      "parameter/Model:parameter": {
+        "id": "parameter",
+        "model": null,
+        "name": "model with parameters",
+        "pk": "parameter/Model:parameter",
+        "sbmlType": "Model"
+      },
+      "parameter/Parameter:dose": {
+        "id": "dose",
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/Parameter:dose",
+        "sbmlType": "Parameter"
+      },
+      "parameter/Parameter:p1": {
+        "id": "p1",
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/Parameter:p1",
+        "sbmlType": "Parameter"
+      },
+      "parameter/Parameter:p2": {
+        "id": "p2",
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/Parameter:p2",
+        "sbmlType": "Parameter"
+      },
+      "parameter/Parameter:p3": {
+        "id": "p3",
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/Parameter:p3",
+        "sbmlType": "Parameter"
+      },
+      "parameter/Parameter:p4": {
+        "id": "p4",
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/Parameter:p4",
+        "sbmlType": "Parameter"
+      },
+      "parameter/Parameter:p5": {
+        "id": "p5",
+        "model": "parameter/Model:parameter",
+        "name": null,
+        "pk": "parameter/Parameter:p5",
+        "sbmlType": "Parameter"
+      },
+      "parameter/UnitDefinition:hr": {
+        "id": "hr",
+        "model": "parameter/Model:parameter",
+        "name": "hr",
+        "pk": "parameter/UnitDefinition:hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "parameter/UnitDefinition:kg": {
+        "id": "kg",
+        "model": "parameter/Model:parameter",
+        "name": "kg",
+        "pk": "parameter/UnitDefinition:kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "parameter/UnitDefinition:l_per_hr": {
+        "id": "l_per_hr",
+        "model": "parameter/Model:parameter",
+        "name": "liter/hr",
+        "pk": "parameter/UnitDefinition:l_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "parameter/UnitDefinition:l_per_kg": {
+        "id": "l_per_kg",
+        "model": "parameter/Model:parameter",
+        "name": "liter/kg",
+        "pk": "parameter/UnitDefinition:l_per_kg",
+        "sbmlType": "UnitDefinition"
+      },
+      "parameter/UnitDefinition:m2": {
+        "id": "m2",
+        "model": "parameter/Model:parameter",
+        "name": "meter^2",
+        "pk": "parameter/UnitDefinition:m2",
+        "sbmlType": "UnitDefinition"
+      },
+      "parameter/UnitDefinition:mg": {
+        "id": "mg",
+        "model": "parameter/Model:parameter",
+        "name": "mg",
+        "pk": "parameter/UnitDefinition:mg",
+        "sbmlType": "UnitDefinition"
+      },
+      "parameter/UnitDefinition:mg_per_hr": {
+        "id": "mg_per_hr",
+        "model": "parameter/Model:parameter",
+        "name": "mg/hr",
+        "pk": "parameter/UnitDefinition:mg_per_hr",
+        "sbmlType": "UnitDefinition"
+      },
+      "parameter/UnitDefinition:mg_per_l": {
+        "id": "mg_per_l",
+        "model": "parameter/Model:parameter",
+        "name": "mg/liter",
+        "pk": "parameter/UnitDefinition:mg_per_l",
+        "sbmlType": "UnitDefinition"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_parameter\">\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>koenigmx@hu-berlin.de</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Humboldt-University Berlin, Institute for Theoretical Biology</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>1900-01-01T00:00:00Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": "m2",
+      "areaUnitsLatex": "m^2",
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [],
+      "extentUnits": "mg",
+      "extentUnitsLatex": "mg",
+      "fbc": null,
+      "history": {
+        "createdDate": "1900-01-01T00:00:00Z",
+        "creators": [
+          {
+            "email": "koenigmx@hu-berlin.de",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Humboldt-University Berlin, Institute for Theoretical Biology"
+          }
+        ],
+        "modifiedDates": [
+          "1900-01-01T00:00:00Z"
+        ]
+      },
+      "id": "parameter",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": "metre",
+      "lengthUnitsLatex": "m",
+      "listOfCompartments": [],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "p1 + p2",
+            "latex": " \\mathit{p1}+\\mathit{p2}"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Sets the initial value of p3 as the sum of p1 and p2.</p>\n  </body>\n</notes>",
+          "pk": "parameter/InitialAssignment:p3",
+          "sbmlType": "InitialAssignment",
+          "sbo": null,
+          "symbol": "p3",
+          "uncertainties": [],
+          "xml": "<initialAssignment symbol=\"p3\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Sets the initial value of p3 as the sum of p1 and p2.</p>\n    </body>\n  </notes>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n    <apply>\n      <plus/>\n      <ci> p1 </ci>\n      <ci> p2 </ci>\n    </apply>\n  </math>\n</initialAssignment>"
+        }
+      ],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "p1",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Constant parameter with value.</p>\n  </body>\n</notes>",
+          "pk": "parameter/Parameter:p1",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": 1.0,
+          "xml": "<parameter id=\"p1\" value=\"1\" units=\"mg\" constant=\"true\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Constant parameter with value.</p>\n    </body>\n  </notes>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "p2",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Constant parameter with value in E notation.</p>\n  </body>\n</notes>",
+          "pk": "parameter/Parameter:p2",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": 2e-05,
+          "xml": "<parameter id=\"p2\" value=\"2e-05\" units=\"mg\" constant=\"true\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Constant parameter with value in E notation.</p>\n    </body>\n  </notes>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "p3",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Constant parameter with value set via InitialAssignment.</p>\n  </body>\n</notes>",
+          "pk": "parameter/Parameter:p3",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": "NaN",
+          "xml": "<parameter id=\"p3\" value=\"NaN\" units=\"mg\" constant=\"true\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Constant parameter with value set via InitialAssignment.</p>\n    </body>\n  </notes>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "p4",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Parameter set via time-dependent AssignmentRule.</p>\n  </body>\n</notes>",
+          "pk": "parameter/Parameter:p4",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": "NaN",
+          "xml": "<parameter id=\"p4\" value=\"NaN\" units=\"mg\" constant=\"false\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Parameter set via time-dependent AssignmentRule.</p>\n    </body>\n  </notes>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000002",
+                "https://identifiers.org/ncit/C25488",
+                "https://identifiers.org/efo/0000428"
+              ]
+            }
+          ],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "dose",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_dose",
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Parameter with SBOTerm and annotations.</p>\n  </body>\n</notes>",
+          "pk": "parameter/Parameter:dose",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": 10.0,
+          "xml": "<parameter metaid=\"meta_dose\" sboTerm=\"SBO:0000002\" id=\"dose\" value=\"10\" units=\"mg\" constant=\"true\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Parameter with SBOTerm and annotations.</p>\n    </body>\n  </notes>\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_dose\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000002\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/ncit/C25488\"/>\n            <rdf:li rdf:resource=\"https://identifiers.org/efo/0000428\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": false,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": "p5",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "parameter/Parameter:p5",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": "mg",
+          "unitsLatex": "mg",
+          "value": "NaN",
+          "xml": "<parameter id=\"p5\" value=\"NaN\" units=\"mg\" constant=\"false\"/>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "10 mg + 2 mg * sin(time / 1 hr)",
+            "latex": " 10+2\\cdot \\mathrm{sin}\\left(\\frac{\\mathrm{time}}{1}\\right)"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Sets p4 as a time dependent parameter via an assignment rule.</p>\n  </body>\n</notes>",
+          "pk": "parameter/AssignmentRule:p4",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "p4",
+          "xml": "<assignmentRule variable=\"p4\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Sets p4 as a time dependent parameter via an assignment rule.</p>\n    </body>\n  </notes>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" xmlns:sbml=\"http://www.sbml.org/sbml/level3/version1/core\">\n    <apply>\n      <plus/>\n      <cn sbml:units=\"mg\" type=\"integer\"> 10 </cn>\n      <apply>\n        <times/>\n        <cn sbml:units=\"mg\"> 2 </cn>\n        <apply>\n          <sin/>\n          <apply>\n            <divide/>\n            <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n            <cn sbml:units=\"hr\" type=\"integer\"> 1 </cn>\n          </apply>\n        </apply>\n      </apply>\n    </apply>\n  </math>\n</assignmentRule>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "derivedUnits": "mg",
+          "history": null,
+          "id": null,
+          "keyValuePairs": [],
+          "lists": [],
+          "math": {
+            "formula": "10 mg + 2 mg * sin(time / 1 hr)",
+            "latex": " 10+2\\cdot \\mathrm{sin}\\left(\\frac{\\mathrm{time}}{1}\\right)"
+          },
+          "metaId": null,
+          "name": null,
+          "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>Creates parameter p5 and sets it via a time dependent assignment rule.</p>\n  </body>\n</notes>",
+          "pk": "parameter/AssignmentRule:p5",
+          "sbmlType": "AssignmentRule",
+          "sbo": null,
+          "uncertainties": [],
+          "variable": "p5",
+          "xml": "<assignmentRule variable=\"p5\">\n  <notes>\n    <body xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Creates parameter p5 and sets it via a time dependent assignment rule.</p>\n    </body>\n  </notes>\n  <math xmlns=\"http://www.w3.org/1998/Math/MathML\" xmlns:sbml=\"http://www.sbml.org/sbml/level3/version1/core\">\n    <apply>\n      <plus/>\n      <cn sbml:units=\"mg\" type=\"integer\"> 10 </cn>\n      <apply>\n        <times/>\n        <cn sbml:units=\"mg\"> 2 </cn>\n        <apply>\n          <sin/>\n          <apply>\n            <divide/>\n            <csymbol encoding=\"text\" definitionURL=\"http://www.sbml.org/sbml/symbols/time\"> time </csymbol>\n            <cn sbml:units=\"hr\" type=\"integer\"> 1 </cn>\n          </apply>\n        </apply>\n      </apply>\n    </apply>\n  </math>\n</assignmentRule>"
+        }
+      ],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "hr",
+          "notes": null,
+          "pk": "parameter/UnitDefinition:hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "hr",
+          "xml": "<unitDefinition id=\"hr\" name=\"hr\">\n  <listOfUnits>\n    <unit kind=\"second\" exponent=\"1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "kg",
+          "notes": null,
+          "pk": "parameter/UnitDefinition:kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "kg",
+          "xml": "<unitDefinition id=\"kg\" name=\"kg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "l_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "liter/hr",
+          "notes": null,
+          "pk": "parameter/UnitDefinition:l_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{l}{hr}",
+          "xml": "<unitDefinition id=\"l_per_hr\" name=\"liter/hr\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "l_per_kg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "gram",
+              "multiplier": 1000.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "liter/kg",
+          "notes": null,
+          "pk": "parameter/UnitDefinition:l_per_kg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{l}{kg}",
+          "xml": "<unitDefinition id=\"l_per_kg\" name=\"liter/kg\">\n  <listOfUnits>\n    <unit kind=\"litre\" exponent=\"1\" scale=\"0\" multiplier=\"1\"/>\n    <unit kind=\"gram\" exponent=\"-1\" scale=\"0\" multiplier=\"1000\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "m2",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 2.0,
+              "kind": "metre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "meter^2",
+          "notes": null,
+          "pk": "parameter/UnitDefinition:m2",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "m^2",
+          "xml": "<unitDefinition id=\"m2\" name=\"meter^2\">\n  <listOfUnits>\n    <unit kind=\"metre\" exponent=\"2\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg",
+          "notes": null,
+          "pk": "parameter/UnitDefinition:mg",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "mg",
+          "xml": "<unitDefinition id=\"mg\" name=\"mg\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_hr",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "second",
+              "multiplier": 3600.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/hr",
+          "notes": null,
+          "pk": "parameter/UnitDefinition:mg_per_hr",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{hr}",
+          "xml": "<unitDefinition id=\"mg_per_hr\" name=\"mg/hr\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"second\" exponent=\"-1\" scale=\"0\" multiplier=\"3600\"/>\n  </listOfUnits>\n</unitDefinition>"
+        },
+        {
+          "comp": null,
+          "cvterms": [],
+          "history": null,
+          "id": "mg_per_l",
+          "keyValuePairs": [],
+          "listOfUnits": [
+            {
+              "exponent": 1.0,
+              "kind": "gram",
+              "multiplier": 0.001,
+              "scale": 0
+            },
+            {
+              "exponent": -1.0,
+              "kind": "litre",
+              "multiplier": 1.0,
+              "scale": 0
+            }
+          ],
+          "lists": [],
+          "metaId": null,
+          "name": "mg/liter",
+          "notes": null,
+          "pk": "parameter/UnitDefinition:mg_per_l",
+          "sbmlType": "UnitDefinition",
+          "sbo": null,
+          "uncertainties": [],
+          "unitsLatex": "\\frac{mg}{l}",
+          "xml": "<unitDefinition id=\"mg_per_l\" name=\"mg/liter\">\n  <listOfUnits>\n    <unit kind=\"gram\" exponent=\"1\" scale=\"0\" multiplier=\"0.001\"/>\n    <unit kind=\"litre\" exponent=\"-1\" scale=\"0\" multiplier=\"1\"/>\n  </listOfUnits>\n</unitDefinition>"
+        }
+      ],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_parameter",
+      "name": "model with parameters",
+      "notes": "<notes>\n  <body xmlns=\"http://www.w3.org/1999/xhtml\">\n    <h1>Example model demonstrating <code>Parameter</code>.</h1>\n    <h2>Terms of use</h2>\n    <p>The content of this model has been carefully created in a manual research effort.\nThis file has been created by <a href=\"https://livermetabolism.com\">Matthias König</a>\nusing <a href=\"https://github.com/matthiaskoenig/sbmlutils\">sbmlutils</a>.\nFor questions contact <a href=\"mailto:koenigmx@hu-berlin.de\">koenigmx@hu-berlin.de</a>. Copyright © 2022 Matthias König.</p>\n    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">\n      <img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/>\n    </a>\n    <br/>This work is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International License</a>.\n<p>Redistribution and use of any part of this model, with or without modification,\nare permitted provided that the following conditions are met:</p>\n    <ol>\n      <li>Redistributions of this SBML file must retain the above copyright notice, this\nlist of conditions and the following disclaimer.</li>\n      <li>Redistributions in a different form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.</li>\n    </ol>\n    <p>This model is distributed in the hope that it will be useful, but WITHOUT ANY\nWARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS\nFOR A PARTICULAR PURPOSE.</p></body>\n  </notes>",
+      "pk": "parameter/Model:parameter",
+      "sbmlType": "Model",
+      "sbo": null,
+      "substanceUnits": "mg",
+      "substanceUnitsLatex": "mg",
+      "timeUnits": "hr",
+      "timeUnitsLatex": "hr",
+      "uncertainties": [],
+      "volumeUnits": "litre",
+      "volumeUnitsLatex": "l",
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [
+      {
+        "lhs": "\\htmlData{pk=parameter/Parameter:p4}{p_{4}}",
+        "lines": [
+          "10 + 2 \\cdot \\sin\\mathopen{}\\left(\\frac{t}{1}\\right)"
+        ],
+        "origin": "assignment_rule",
+        "variable": "parameter/Parameter:p4"
+      },
+      {
+        "lhs": "\\htmlData{pk=parameter/Parameter:p5}{p_{5}}",
+        "lines": [
+          "10 + 2 \\cdot \\sin\\mathopen{}\\left(\\frac{t}{1}\\right)"
+        ],
+        "origin": "assignment_rule",
+        "variable": "parameter/Parameter:p5"
+      }
+    ],
+    "events": [],
+    "functions": [],
+    "initial": [
+      {
+        "lhs": "\\htmlData{pk=parameter/Parameter:p3}{p_{3}}",
+        "lines": [
+          "\\htmlData{pk=parameter/Parameter:p1}{p_{1}} + \\htmlData{pk=parameter/Parameter:p2}{p_{2}}"
+        ],
+        "origin": "initial_assignment",
+        "variable": "parameter/Parameter:p3"
+      }
+    ],
+    "odes": [],
+    "reactions": [],
+    "unsupported": []
+  }
+}

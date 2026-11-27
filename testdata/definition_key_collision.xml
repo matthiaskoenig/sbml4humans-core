@@ -1,0 +1,1 @@
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" xmlns:comp="http://www.sbml.org/sbml/level3/version1/comp/version1" level="3" version="2" comp:required="true"><model metaid="modelDefinition.0"/><comp:listOfModelDefinitions><comp:modelDefinition/><comp:modelDefinition metaid="modelDefinition.1"/></comp:listOfModelDefinitions></sbml>

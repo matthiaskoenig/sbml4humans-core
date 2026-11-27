@@ -25,9 +25,11 @@
 
 mod formula;
 mod latex;
+mod references;
 
 pub use formula::formula;
 pub use latex::latex;
+pub use references::free_symbols;
 
 use latex::{MAX_MATHML_DEPTH, holds_a_childless_lambda, mathml_depth};
 
