@@ -1,8 +1,26 @@
-"""The native Rust report reader.
+"""Native Rust report construction, with host-generated request identities."""
+import json
+import uuid
+from ._core import REPORT_CONTRACT, SOURCE_CONTRACT, __version__, report_json, _source_json
 
-The application keeps its current Python report implementation until the full
-report parity gate passes for every supported feature and input type.
-"""
-from ._core import REPORT_CONTRACT, __version__, report_json
+__all__ = ["REPORT_CONTRACT", "SOURCE_CONTRACT", "__version__", "report_json", "source_json"]
 
-__all__ = ["REPORT_CONTRACT", "__version__", "report_json"]
+
+def source_json(
+    source: bytes,
+    *,
+    uid: str | None = None,
+    location: str = "./model.xml",
+    max_expanded_elements: int = 10000,
+    limits: dict[str, int] | None = None,
+) -> bytes:
+    """Build a complete source response from plain/gzip SBML or COMBINE bytes.
+
+    Validation and downloads remain independent application operations. External
+    documents resolve only within the supplied archive. No files are fetched.
+    """
+    options = {"uid": uuid.uuid4().hex if uid is None else uid,
+               "location": location, "maxExpandedElements": max_expanded_elements}
+    if limits is not None:
+        options["limits"] = limits
+    return _source_json(source, json.dumps(options))

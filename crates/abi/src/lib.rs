@@ -28,3 +28,6 @@ pub fn check_contract(found: &str, expected: &str) -> Result<(), ContractError> 
         })
     }
 }
+
+/// The complete source envelope and manifest contract.
+pub const SOURCE_CONTRACT: &str = "source/1";

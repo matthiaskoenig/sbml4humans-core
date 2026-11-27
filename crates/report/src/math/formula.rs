@@ -519,7 +519,9 @@ fn value_of(node: &Ast) -> f64 {
     match node.number {
         Some(AstNumber::Integer(integer)) => integer as f64,
         Some(AstNumber::Real(real)) => real,
-        Some(AstNumber::RealE { mantissa, exponent }) => mantissa * 10f64.powf(exponent as f64),
+        Some(AstNumber::RealE { mantissa, exponent }) => {
+            sbml4humans_model::scientific_value(mantissa, exponent)
+        }
         Some(AstNumber::Rational {
             numerator,
             denominator,

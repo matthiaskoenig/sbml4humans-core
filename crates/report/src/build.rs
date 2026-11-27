@@ -815,6 +815,12 @@ fn model(
 /// filler of the model refuses to hand over: no caller has to handle it, and it is an error rather
 /// than a panic so that no writer of the report unwraps a value a document controls.
 pub fn build(document: &Document) -> Result<Report, BuildError> {
+    let mut report = unlinked(document)?;
+    report.link_graph = crate::links::build(&report, document);
+    crate::odes::apply(document, &mut report);
+    Ok(report)
+}
+pub(crate) fn unlinked(document: &Document) -> Result<Report, BuildError> {
     let main_key = document.model.as_ref().map(|m| {
         pk::key(&m.element, || {
             document
@@ -887,7 +893,5 @@ pub fn build(document: &Document) -> Result<Report, BuildError> {
         );
     }
     crate::units::apply(document, &mut report)?;
-    report.link_graph = crate::links::build(&report, document);
-    crate::odes::apply(document, &mut report);
     Ok(report)
 }

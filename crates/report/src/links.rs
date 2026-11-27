@@ -173,6 +173,8 @@ impl<'a> ModelIndex<'a> {
 #[derive(Default)]
 struct Builder {
     graph: LinkGraph,
+    location: Option<String>,
+    external_seen: HashSet<(usize, String, String, EdgeKind)>,
     // Node positions identify edges without retaining a second copy of every key.
     seen: HashSet<(usize, usize, EdgeKind)>,
 }
@@ -199,6 +201,26 @@ impl Builder {
         }
     }
 
+    fn edge_in(&mut self, source: &str, target: &str, kind: EdgeKind, location: Option<&str>) {
+        let Some(location) = location else {
+            self.edge_pk(source, target, kind);
+            return;
+        };
+        let Some(source_index) = self.graph.nodes.get_index_of(source) else {
+            return;
+        };
+        if self
+            .external_seen
+            .insert((source_index, location.to_owned(), target.to_owned(), kind))
+        {
+            self.graph.edges.push(LinkEdge {
+                source: source.to_owned(),
+                target: target.to_owned(),
+                kind,
+                target_entry: Some(location.to_owned()),
+            });
+        }
+    }
     fn reference(&mut self, source: &SBase, sid: Option<&str>, kind: EdgeKind, index: &ModelIndex) {
         if let Some(target) = sid.and_then(|sid| index.resolve(sid, None)) {
             self.edge(source, target, kind);
@@ -358,9 +380,44 @@ impl Builder {
 }
 
 pub(crate) fn build(report: &Report, document: &Document) -> LinkGraph {
+    let universe = extension::Universe::new(report);
+    build_in(report, document, &universe, 0, None)
+}
+pub(crate) fn build_many(
+    reports: &[Report],
+    sources: &[crate::source::SourceDocument<'_>],
+) -> Vec<LinkGraph> {
+    let borrowed: Vec<_> = reports.iter().collect();
+    let locations: Vec<_> = sources.iter().map(|s| Some(s.location)).collect();
+    let universe = extension::Universe::new_many(&borrowed, &locations);
+    reports
+        .iter()
+        .zip(sources)
+        .enumerate()
+        .map(|(entry, (report, source))| {
+            build_in(
+                report,
+                source.document,
+                &universe,
+                entry,
+                Some(source.location),
+            )
+        })
+        .collect()
+}
+fn build_in(
+    report: &Report,
+    document: &Document,
+    universe: &extension::Universe,
+    entry: usize,
+    location: Option<&str>,
+) -> LinkGraph {
     let mut maths = maths(report, document);
     extension::package_maths(report, document, &mut maths);
-    let mut builder = Builder::default();
+    let mut builder = Builder {
+        location: location.map(str::to_owned),
+        ..Builder::default()
+    };
     extension::nodes(&mut builder, report);
     extension::document_edges(&mut builder, report);
     for model in &report.models {
@@ -374,12 +431,13 @@ pub(crate) fn build(report: &Report, document: &Document) -> LinkGraph {
                 EdgeKind::ExternalModelDefinition,
             );
         }
+        universe.external_edge(&mut builder, emd, entry);
     }
-    let universe = extension::Universe::new(report);
     for (i, model) in report.models.iter().enumerate() {
-        extension::metadata_edges(&mut builder, &universe, model, i, &maths);
+        let i = universe.home(entry, i);
+        extension::metadata_edges(&mut builder, universe, model, i, &maths);
         builder.model(model, report.document.level, &maths, universe.index(i));
-        extension::model_edges(&mut builder, &universe, model, i, &maths);
+        extension::model_edges(&mut builder, universe, model, i, &maths);
     }
     builder.graph
 }

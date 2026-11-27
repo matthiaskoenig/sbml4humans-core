@@ -792,7 +792,7 @@ fn number(node: &Ast) -> Option<f64> {
         AstNumber::Integer(x) => Some(*x as f64),
         AstNumber::Real(x) => Some(*x),
         AstNumber::RealE { mantissa, exponent } => {
-            Some(*mantissa * 10.0_f64.powf(*exponent as f64))
+            Some(sbml4humans_model::scientific_value(*mantissa, *exponent))
         }
         AstNumber::Rational {
             numerator,

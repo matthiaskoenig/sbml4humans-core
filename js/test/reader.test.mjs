@@ -71,3 +71,23 @@ test("every standalone oracle matches through the real WASM worker, plain and gz
     assert.deepEqual(await reader.report(source), oracle);
   } finally { reader.dispose(); }
 });
+
+test("complete OMEX envelopes preserve manifest, external links and equations", async () => {
+  const manifest = JSON.parse(await readFile(new URL("../../testdata/sources/MANIFEST.json", import.meta.url)));
+  const { gunzipSync } = await import("node:zlib");
+  const reader = await createReader({ source: module });
+  try {
+    for (const entry of manifest.files) {
+      const input = await readFile(new URL(`../../testdata/sources/${entry.source}`, import.meta.url));
+      const expected = JSON.parse(gunzipSync(await readFile(new URL(`../../testdata/sources/${entry.report}`, import.meta.url))));
+      const result = await reader.source(input, { uid: "", ...(entry.budget === undefined ? {} : { maxExpandedElements: entry.budget }) });
+      for (const value of Object.values(result.reports)) value.debug.jsonReportTime = "0.0 [s]";
+      assert.deepEqual(result, expected, entry.origin);
+    }
+    await assert.rejects(reader.source(source, { limits: { maxContentSize: 1 } }), { kind: "refused" });
+    const result = await reader.source(source);
+    assert.match(result.uid, /^[a-f0-9]{32}$/);
+    assert.deepEqual(result.reports["./model.xml"].report, oracle);
+    assert.deepEqual(await reader.report(source), oracle);
+  } finally { reader.dispose(); }
+});

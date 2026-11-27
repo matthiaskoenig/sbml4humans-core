@@ -5,9 +5,9 @@ use std::io::{BufWriter, Write};
 use std::process::ExitCode;
 
 const USAGE: &str = "\
-Usage: sbml4humans-core report [--pretty] <path>
+Usage: sbml4humans-core <report|source> [--pretty] <path>
 
-Reads the SBML document at <path> and writes the JSON of its report to stdout.
+Reads SBML or an OMEX archive. report writes one document; source writes the complete envelope.
 
 Options:
   --pretty    indent the JSON
@@ -19,7 +19,11 @@ enum Command {
     /// Print the help to stdout.
     Help,
     /// Write the report of the file at `path`.
-    Report { path: OsString, pretty: bool },
+    Report {
+        path: OsString,
+        pretty: bool,
+        source: bool,
+    },
 }
 
 /// Parses the arguments after the program name, or returns the message of the first problem.
@@ -41,8 +45,12 @@ fn parse(args: impl IntoIterator<Item = OsString>) -> Result<Command, String> {
         }
     }
     match command.as_deref() {
-        Some("report") => match path {
-            Some(path) => Ok(Command::Report { path, pretty }),
+        Some("report" | "source") => match path {
+            Some(path) => Ok(Command::Report {
+                path,
+                pretty,
+                source: command.as_deref() == Some("source"),
+            }),
             None => Err("report needs the path of a file".to_owned()),
         },
         Some(other) => Err(format!("unknown command {other}")),
@@ -59,10 +67,18 @@ fn write_stdout(bytes: &[u8]) -> Result<(), String> {
 }
 
 /// Reads the file, builds the report and writes it to stdout.
-fn report(path: &OsString, pretty: bool) -> Result<(), String> {
+fn report(path: &OsString, pretty: bool, source_envelope: bool) -> Result<(), String> {
     let source =
         std::fs::read(path).map_err(|e| format!("cannot read {}: {e}", path.to_string_lossy()))?;
+    if source_envelope {
+        let report = sbml4humans_core::source(&source, &sbml4humans_core::SourceOptions::default())
+            .map_err(|e| e.to_string())?;
+        return write_json(&report, pretty);
+    }
     let report = sbml4humans_core::report(&source).map_err(|e| e.to_string())?;
+    write_json(&report, pretty)
+}
+fn write_json(report: &impl serde::Serialize, pretty: bool) -> Result<(), String> {
     let mut out = BufWriter::new(std::io::stdout().lock());
     let written = if pretty {
         serde_json::to_writer_pretty(&mut out, &report)
@@ -78,7 +94,11 @@ fn report(path: &OsString, pretty: bool) -> Result<(), String> {
 fn main() -> ExitCode {
     let result = match parse(std::env::args_os().skip(1)) {
         Ok(Command::Help) => write_stdout(USAGE.as_bytes()),
-        Ok(Command::Report { path, pretty }) => report(&path, pretty),
+        Ok(Command::Report {
+            path,
+            pretty,
+            source,
+        }) => report(&path, pretty, source),
         Err(message) => Err(format!("{message}\n\n{USAGE}")),
     };
     match result {

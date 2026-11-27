@@ -32,7 +32,7 @@ pub(super) fn value(ast: &Ast) -> Option<f64> {
         Some(AstNumber::Integer(n)) => Some(*n as f64),
         Some(AstNumber::Real(n)) => Some(*n),
         Some(AstNumber::RealE { mantissa, exponent }) => {
-            Some(*mantissa * 10.0_f64.powf(*exponent as f64))
+            Some(sbml4humans_model::scientific_value(*mantissa, *exponent))
         }
         Some(AstNumber::Rational {
             numerator,

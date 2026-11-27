@@ -1311,6 +1311,13 @@ impl Analysis<'_> {
 }
 
 pub(crate) fn apply(document: &Document, report: &mut Report) {
+    apply_in(document, report, None);
+}
+pub(crate) fn apply_in<'a>(
+    document: &'a Document,
+    report: &mut Report,
+    context: Option<(&crate::source::Context<'a>, usize)>,
+) {
     let Some(original) = document.model.as_ref() else {
         return;
     };
@@ -1320,7 +1327,7 @@ pub(crate) fn apply(document: &Document, report: &mut Report) {
     let flattened;
     let model =
         if !crate::packages::children(&original.element, "comp", "listOfSubmodels").is_empty() {
-            match flatten::flatten(document) {
+            match flatten::flatten(document, context) {
                 Ok(model) => {
                     flattened = model;
                     &flattened
