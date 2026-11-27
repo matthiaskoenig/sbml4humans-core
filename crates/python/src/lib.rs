@@ -1,6 +1,6 @@
 //! Native byte-to-byte parsing keeps Python out of the per-element report loop.
 
-use pyo3::exceptions::PyValueError;
+use pyo3::exceptions::{PyMemoryError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 
@@ -60,6 +60,9 @@ fn parse_options(options: &str) -> PyResult<sbml4humans_core::SourceOptions> {
     serde_json::from_str(options).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 fn source_error(error: sbml4humans_core::ReportError) -> PyErr {
+    if error.kind == "memory" {
+        return PyMemoryError::new_err(error.message);
+    }
     let exception = PyValueError::new_err(error.message);
     Python::attach(|py| {
         let _ = exception.value(py).setattr("kind", error.kind);

@@ -72,7 +72,7 @@ pub fn example_summary(
     mode: &str,
     example_id: Option<&str>,
 ) -> Result<ExampleSummary, ReportError> {
-    let bytes = std::fs::read(path).map_err(malformed)?;
+    let bytes = std::fs::read(path).map_err(ReportError::from)?;
     let filename = path
         .file_name()
         .and_then(|name| name.to_str())
@@ -198,7 +198,7 @@ pub fn prepare_host_path(
             "Selecting an example entry requires a trusted source.",
         ));
     }
-    let bytes = std::fs::read(path).map_err(malformed)?;
+    let bytes = std::fs::read(path).map_err(ReportError::from)?;
     let mut options = options.clone();
     options.limits = crate::SourceLimits {
         max_content_size: usize::MAX,

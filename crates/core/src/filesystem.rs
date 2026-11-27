@@ -33,10 +33,10 @@ pub fn prepare_path(
     }
     let mut source = Vec::new();
     std::fs::File::open(path)
-        .map_err(input_error)?
+        .map_err(ReportError::from)?
         .take((options.limits.max_content_size as u64).saturating_add(1))
         .read_to_end(&mut source)
-        .map_err(input_error)?;
+        .map_err(ReportError::from)?;
     if trusted && source.starts_with(&[0x1f, 0x8b]) {
         options.location = options
             .location
@@ -56,7 +56,7 @@ pub fn prepare_path(
         .parent()
         .unwrap_or(Path::new("."))
         .canonicalize()
-        .map_err(input_error)?;
+        .map_err(ReportError::from)?;
     prepared.admit_companions(&options, |location| {
         let Ok(path) = root.join(location).canonicalize() else {
             return Ok(None);
@@ -64,7 +64,7 @@ pub fn prepare_path(
         if !path.starts_with(&root) || !path.is_file() {
             return Ok(None);
         }
-        std::fs::read(path).map(Some).map_err(input_error)
+        std::fs::read(path).map(Some).map_err(ReportError::from)
     })?;
     Ok(prepared)
 }

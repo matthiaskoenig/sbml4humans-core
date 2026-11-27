@@ -27,10 +27,23 @@ pub const MAX_INPUT_BYTES: usize = 100 * 1024 * 1024;
 #[derive(Debug, Clone, Serialize, thiserror::Error)]
 #[error("{message}")]
 pub struct ReportError {
-    /// `malformed`, `refused` or `internal`, suitable for host-side routing.
+    /// `malformed`, `refused`, `internal`, or native `memory`, for host routing.
     pub kind: &'static str,
     /// The human-readable cause without an operating-system traceback.
     pub message: String,
+}
+
+impl From<std::io::Error> for ReportError {
+    fn from(error: std::io::Error) -> Self {
+        Self {
+            kind: if error.kind() == std::io::ErrorKind::OutOfMemory {
+                "memory"
+            } else {
+                "malformed"
+            },
+            message: error.to_string(),
+        }
+    }
 }
 
 impl ReportError {

@@ -121,7 +121,7 @@ pub(crate) fn validation_source(
         let mut skipped = std::collections::HashSet::new();
         // libSBML's file reader preserves original encoding diagnostics. Keep all
         // temporary files inside the host worker's TMPDIR and remove them after reading.
-        let directory = tempfile::tempdir().map_err(|e| PyValueError::new_err(e.to_string()))?;
+        let directory = tempfile::tempdir().map_err(|e| crate::source_error(e.into()))?;
         let mut sources = Vec::with_capacity(prepared.entries.len());
         for (number, (entry, index)) in prepared.entries.into_iter().zip(indices).enumerate() {
             if index
@@ -134,7 +134,7 @@ pub(crate) fn validation_source(
                 );
             }
             let path = directory.path().join(format!("{number}.xml"));
-            std::fs::write(&path, entry.xml).map_err(|e| PyValueError::new_err(e.to_string()))?;
+            std::fs::write(&path, entry.xml).map_err(|e| crate::source_error(e.into()))?;
             sources.push(ValidationSource {
                 location: entry.location.clone(),
                 uri: directory

@@ -154,3 +154,12 @@ fn selected_example_entries_reuse_confined_companion_admission_without_extractio
     assert!(prepare_host_path(&path, false, &options, Some("./models/main.xml")).is_err());
     assert!(prepare_host_path(&path, true, &options, Some("./missing.xml")).is_err());
 }
+#[test]
+fn native_io_memory_errors_keep_their_resource_category() {
+    let memory =
+        sbml4humans_core::ReportError::from(std::io::Error::from(std::io::ErrorKind::OutOfMemory));
+    assert_eq!(memory.kind, "memory");
+    let missing =
+        sbml4humans_core::ReportError::from(std::io::Error::from(std::io::ErrorKind::NotFound));
+    assert_eq!(missing.kind, "malformed");
+}
