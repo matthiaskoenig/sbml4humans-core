@@ -1,5 +1,5 @@
 {
-  "sbml4humans_commit": "06de11eaf8e7628cd2113082c5583f9e3140e6cd",
+  "sbml4humans_commit": "15f8e40243df37ba481f21cd648bb71283d6f82e",
   "python_libsbml": {
     "version": "5.21.2",
     "packages": [
@@ -54,6 +54,10 @@
     {
       "source": "level2_graph_units.xml",
       "fixture": "level2_graph_units.json"
+    },
+    {
+      "source": "sbase_annotations.xml",
+      "fixture": "sbase_annotations.json"
     }
   ]
 }

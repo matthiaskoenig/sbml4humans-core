@@ -4,7 +4,9 @@ A Rust workspace which reads SBML documents and builds the report of [sbml4human
 
 The core graph now includes document and model nodes, reaction participants, kinetic laws and local parameters, event children and assignments, unit references and free math references. It uses the report's keys, preserves node and edge order, and keeps global, unit and local parameter namespaces separate. Lambda bindings and numeric units are read from the owned AST without recursion or reparsing formula strings. The oracle corpus compares these graphs against Python, including unresolved references, function calls, local shadowing and Level 2 unit overrides.
 
-The application continues to use Python until full report parity is verified for [sbml4humans issue #126](https://github.com/matthiaskoenig/sbml4humans/issues/126). Unit rendering and inference, RDF annotations and history, package objects and references, and differential equations remain incomplete here; the pure Rust XML reader and native and browser bindings are also pending. A core-only report must not replace the application's complete report.
+The application continues to use Python until full report parity is verified for [sbml4humans issue #126](https://github.com/matthiaskoenig/sbml4humans/issues/126). Unit rendering and inference, package objects and references, and differential equations remain incomplete here; the pure Rust XML reader and native and browser bindings are also pending. A core-only report must not replace the application's complete report.
+
+Controlled RDF annotations and model history now flow through the owned document model and the common report builder. The seven-document oracle corpus checks model and biological qualifiers, nested terms, resource order, creator fields and dates, as well as Python's synthetic SBO relation and deduplication rules. No annotation field is excluded from report parity.
 
 ## Crates
 
@@ -52,7 +54,7 @@ cargo test --workspace    # everything, including the gate of the oracles crate
 Running the gate needs no python at all, because the fixtures of the python report are committed in `testdata/oracles/`. Regenerating them needs a checkout of sbml4humans and `uv`, and the prefix, whose version and package set the manifest records next to the python ones. The fixture of every document named in one run is written by it, together with the manifest, so all of them are named in one run:
 
 ```bash
-LIBSBML_DIR=/path/to/prefix uv run --frozen --project /path/to/sbml4humans/backend python scripts/oracle_fixtures.py testdata/minimal_model.xml testdata/level2_model.xml testdata/core_elements.xml testdata/level2_reactions.xml testdata/core_graph_references.xml testdata/level2_graph_units.xml
+LIBSBML_DIR=/path/to/prefix uv run --frozen --project /path/to/sbml4humans/backend python scripts/oracle_fixtures.py testdata/minimal_model.xml testdata/level2_model.xml testdata/core_elements.xml testdata/level2_reactions.xml testdata/core_graph_references.xml testdata/level2_graph_units.xml testdata/sbase_annotations.xml
 ```
 
 `testdata/oracles/maths.json`, the fixture of the math gate, is written by a second generator, which harvests the maths of the model corpus of the python package rather than of a document of `testdata/`:

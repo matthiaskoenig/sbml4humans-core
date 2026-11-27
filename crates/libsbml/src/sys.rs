@@ -35,6 +35,22 @@ pub(crate) struct ASTNode {
     _opaque: [u8; 0],
 }
 
+/// A controlled annotation owned by its SBML document.
+#[repr(C)]
+pub(crate) struct CVTerm {
+    _opaque: [u8; 0],
+}
+/// A model history owned by its SBML document.
+#[repr(C)]
+pub(crate) struct ModelHistory {
+    _opaque: [u8; 0],
+}
+/// A creator owned by its model history.
+#[repr(C)]
+pub(crate) struct ModelCreator {
+    _opaque: [u8; 0],
+}
+
 /// The package of an SBML Level 3 extension a document declares.
 #[repr(C)]
 pub(crate) struct Package {
@@ -63,6 +79,25 @@ unsafe extern "C" {
     pub(crate) fn s4h_document_num_errors(doc: *mut SBMLDocument) -> c_uint;
     pub(crate) fn s4h_document_num_plugins(doc: *mut SBMLDocument) -> c_uint;
     pub(crate) fn s4h_document_package(doc: *mut SBMLDocument, n: c_uint) -> Package;
+
+    pub(crate) fn s4h_sbase_num_cvterms(sbase: *mut SBase) -> c_uint;
+    pub(crate) fn s4h_sbase_cvterm(sbase: *mut SBase, n: c_uint) -> *mut CVTerm;
+    pub(crate) fn s4h_cvterm_qualifier_type(term: *mut CVTerm) -> c_int;
+    pub(crate) fn s4h_cvterm_qualifier(term: *mut CVTerm) -> *const c_char;
+    pub(crate) fn s4h_cvterm_num_resources(term: *mut CVTerm) -> c_uint;
+    pub(crate) fn s4h_cvterm_resource(term: *mut CVTerm, n: c_uint) -> *mut c_char;
+    pub(crate) fn s4h_cvterm_num_nested(term: *mut CVTerm) -> c_uint;
+    pub(crate) fn s4h_cvterm_nested(term: *mut CVTerm, n: c_uint) -> *mut CVTerm;
+    pub(crate) fn s4h_sbase_history(sbase: *mut SBase) -> *mut ModelHistory;
+    pub(crate) fn s4h_history_num_creators(history: *mut ModelHistory) -> c_uint;
+    pub(crate) fn s4h_history_creator(history: *mut ModelHistory, n: c_uint) -> *mut ModelCreator;
+    pub(crate) fn s4h_creator_given_name(creator: *mut ModelCreator) -> *const c_char;
+    pub(crate) fn s4h_creator_family_name(creator: *mut ModelCreator) -> *const c_char;
+    pub(crate) fn s4h_creator_organization(creator: *mut ModelCreator) -> *const c_char;
+    pub(crate) fn s4h_creator_email(creator: *mut ModelCreator) -> *const c_char;
+    pub(crate) fn s4h_history_created(history: *mut ModelHistory) -> *const c_char;
+    pub(crate) fn s4h_history_num_modified(history: *mut ModelHistory) -> c_uint;
+    pub(crate) fn s4h_history_modified(history: *mut ModelHistory, n: c_uint) -> *const c_char;
 
     pub(crate) fn s4h_sbase_id(sbase: *mut SBase) -> *const c_char;
     pub(crate) fn s4h_sbase_id_attribute(sbase: *mut SBase) -> *const c_char;

@@ -17,6 +17,7 @@
 //! since libsbml keeps global state. None of them panics, whatever the source
 //! holds.
 
+mod annotations;
 mod fill;
 mod math;
 mod strings;

@@ -99,8 +99,67 @@ fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key: &str) -> 
         sbo: element.sbo.clone(),
         notes: element.notes.clone(),
         xml: element.xml.clone(),
+        cvterms: cvterms(element),
+        history: element.history.as_ref().map(|history| crate::ModelHistory {
+            creators: history
+                .creators
+                .iter()
+                .map(|creator| crate::Creator {
+                    given_name: creator.given_name.clone(),
+                    family_name: creator.family_name.clone(),
+                    organization: creator.organization.clone(),
+                    email: creator.email.clone(),
+                })
+                .collect(),
+            created_date: history.created_date.clone(),
+            modified_dates: history.modified_dates.clone(),
+        }),
         ..SBase::new(pk::of(scope, sbml_type, key), sbml_type)
     }
+}
+
+/// Copy a qualified relation without using a call frame for every nested qualifier.
+fn cvterm(term: &sbml4humans_model::CvTerm) -> crate::CVTerm {
+    fn shallow(term: &sbml4humans_model::CvTerm) -> crate::CVTerm {
+        crate::CVTerm {
+            qualifier: term.qualifier.clone(),
+            resources: term.resources.clone(),
+            nested: vec![],
+        }
+    }
+    let mut stack = vec![(term, 0, shallow(term))];
+    while let Some((source, next, result)) = stack.pop() {
+        if let Some(child) = source.nested.get(next) {
+            stack.push((source, next + 1, result));
+            stack.push((child, 0, shallow(child)));
+        } else if let Some(parent) = stack.last_mut() {
+            parent.2.nested.push(result);
+        } else {
+            return result;
+        }
+    }
+    crate::CVTerm::default()
+}
+
+/// The authored annotations, with the same synthetic SBO relation as Python.
+fn cvterms(element: &Element) -> Vec<crate::CVTerm> {
+    let mut terms: Vec<_> = element.cvterms.iter().map(cvterm).collect();
+    if let Some(sbo) = &element.sbo
+        && !terms
+            .iter()
+            .flat_map(|term| &term.resources)
+            .any(|resource| resource.contains(sbo))
+    {
+        terms.insert(
+            0,
+            crate::CVTerm {
+                qualifier: "BQB_IS".to_owned(),
+                resources: vec![format!("https://identifiers.org/{sbo}")],
+                nested: vec![],
+            },
+        );
+    }
+    terms
 }
 
 /// The key of an element whose aliased id names what it sets: an initial assignment or a rule.

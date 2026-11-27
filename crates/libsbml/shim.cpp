@@ -196,6 +196,75 @@ S4hPackage s4h_document_package(SBMLDocument* doc, unsigned int n) {
     }
 }
 
+
+/* -------------------------------------------------------------- annotations */
+
+unsigned int s4h_sbase_num_cvterms(SBase* sbase) {
+    return sbase->isSetAnnotation() ? sbase->getNumCVTerms() : 0;
+}
+CVTerm* s4h_sbase_cvterm(SBase* sbase, unsigned int n) { return sbase->getCVTerm(n); }
+int s4h_cvterm_qualifier_type(CVTerm* term) { return term->getQualifierType(); }
+
+// These are the qualifier names of the report, not the RDF tag names. The
+// unknown subtype is part of each valid qualifier enumeration; an unknown
+// qualifier class is a reader error, just as it is in the Python implementation.
+const char* s4h_cvterm_qualifier(CVTerm* term) {
+    if (term->getQualifierType() == BIOLOGICAL_QUALIFIER) {
+        switch (term->getBiologicalQualifierType()) {
+#define S4H_QUALIFIER(name) case name: return #name;
+            S4H_QUALIFIER(BQB_IS)
+            S4H_QUALIFIER(BQB_HAS_PART)
+            S4H_QUALIFIER(BQB_IS_PART_OF)
+            S4H_QUALIFIER(BQB_IS_VERSION_OF)
+            S4H_QUALIFIER(BQB_HAS_VERSION)
+            S4H_QUALIFIER(BQB_IS_HOMOLOG_TO)
+            S4H_QUALIFIER(BQB_IS_DESCRIBED_BY)
+            S4H_QUALIFIER(BQB_IS_ENCODED_BY)
+            S4H_QUALIFIER(BQB_ENCODES)
+            S4H_QUALIFIER(BQB_OCCURS_IN)
+            S4H_QUALIFIER(BQB_HAS_PROPERTY)
+            S4H_QUALIFIER(BQB_IS_PROPERTY_OF)
+            S4H_QUALIFIER(BQB_HAS_TAXON)
+            S4H_QUALIFIER(BQB_UNKNOWN)
+        }
+    } else if (term->getQualifierType() == MODEL_QUALIFIER) {
+        switch (term->getModelQualifierType()) {
+            S4H_QUALIFIER(BQM_IS)
+            S4H_QUALIFIER(BQM_IS_DESCRIBED_BY)
+            S4H_QUALIFIER(BQM_IS_DERIVED_FROM)
+            S4H_QUALIFIER(BQM_IS_INSTANCE_OF)
+            S4H_QUALIFIER(BQM_HAS_INSTANCE)
+            S4H_QUALIFIER(BQM_UNKNOWN)
+#undef S4H_QUALIFIER
+        }
+    }
+    return nullptr;
+}
+unsigned int s4h_cvterm_num_resources(CVTerm* term) { return term->getNumResources(); }
+char* s4h_cvterm_resource(CVTerm* term, unsigned int n) {
+    try { return handed_over(term->getResourceURI(n)); } catch (...) { return nullptr; }
+}
+unsigned int s4h_cvterm_num_nested(CVTerm* term) { return term->getNumNestedCVTerms(); }
+CVTerm* s4h_cvterm_nested(CVTerm* term, unsigned int n) { return term->getNestedCVTerm(n); }
+ModelHistory* s4h_sbase_history(SBase* sbase) {
+    return sbase->isSetModelHistory() ? sbase->getModelHistory() : nullptr;
+}
+unsigned int s4h_history_num_creators(ModelHistory* history) { return history->getNumCreators(); }
+ModelCreator* s4h_history_creator(ModelHistory* history, unsigned int n) { return history->getCreator(n); }
+const char* s4h_creator_given_name(ModelCreator* creator) { return borrowed(creator->isSetGivenName(), creator->getGivenName()); }
+const char* s4h_creator_family_name(ModelCreator* creator) { return borrowed(creator->isSetFamilyName(), creator->getFamilyName()); }
+const char* s4h_creator_organization(ModelCreator* creator) { return borrowed(creator->isSetOrganization(), creator->getOrganization()); }
+const char* s4h_creator_email(ModelCreator* creator) { return borrowed(creator->isSetEmail(), creator->getEmail()); }
+const char* s4h_history_created(ModelHistory* history) {
+    auto* date = history->isSetCreatedDate() ? history->getCreatedDate() : nullptr;
+    return date ? date->getDateAsString().c_str() : nullptr;
+}
+unsigned int s4h_history_num_modified(ModelHistory* history) { return history->getNumModifiedDates(); }
+const char* s4h_history_modified(ModelHistory* history, unsigned int n) {
+    auto* date = history->getModifiedDate(n);
+    return date ? date->getDateAsString().c_str() : nullptr;
+}
+
 /* ----------------------------------------------------------------- element */
 
 /// The `id` of an element, null when it is not set.
