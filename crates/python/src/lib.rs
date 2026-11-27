@@ -4,6 +4,9 @@ use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 
+#[cfg(feature = "validation")]
+mod validation;
+
 /// Build report JSON while releasing the Python interpreter lock.
 #[pyfunction]
 fn report_json<'py>(
@@ -57,5 +60,10 @@ fn _core(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(report_json, module)?)?;
     module.add_function(wrap_pyfunction!(source_json, module)?)?;
     module.add("SOURCE_CONTRACT", "source/1")?;
+    #[cfg(feature = "validation")]
+    {
+        module.add_class::<validation::ValidationSession>()?;
+        module.add("VALIDATION_CONTRACT", "validation/1")?;
+    }
     Ok(())
 }

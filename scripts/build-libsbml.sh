@@ -53,7 +53,8 @@ cmake -S "$SOURCE" -B "$BUILD" \
     -DENABLE_DYN=OFF \
     -DENABLE_REQUIREDELEMENTS=OFF
 
-cmake --build "$BUILD" --parallel "$(nproc)"
+# A caller may allocate more jobs explicitly; never expand to all host CPUs.
+cmake --build "$BUILD" --parallel "${CMAKE_BUILD_PARALLEL_LEVEL:-2}"
 cmake --install "$BUILD"
 
 echo "libsbml $VERSION is installed in $PREFIX"

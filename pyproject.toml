@@ -8,6 +8,7 @@ dynamic = ["version"]
 description = "Native Rust parser and report builder for SBML4Humans"
 requires-python = ">=3.12"
 license = "MIT"
+license-files = ["LICENSE", "python/sbml4humans_core/licenses/*.txt"]
 readme = "README.md"
 
 [tool.maturin]
