@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2" metaid="meta_document">
+  <annotation>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+      <rdf:Description rdf:about="#meta_document"><bqmodel:is><rdf:Bag><rdf:li rdf:resource="https://identifiers.org/biomodels.db/BIOMD0000000012"/></rdf:Bag></bqmodel:is></rdf:Description>
+    </rdf:RDF>
+  </annotation>
+  <model id="annotations" metaid="meta_model" sboTerm="SBO:0000004">
+    <annotation>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqmodel="http://biomodels.net/model-qualifiers/" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+        <rdf:Description rdf:about="#meta_model">
+          <bqmodel:isDescribedBy><rdf:Bag><rdf:li rdf:resource="https://identifiers.org/pubmed/31219795"/><rdf:li rdf:resource="https://identifiers.org/pubmed/00000001"/></rdf:Bag></bqmodel:isDescribedBy>
+          <bqbiol:hasTaxon><rdf:Bag><rdf:li rdf:resource="https://identifiers.org/taxonomy/9606"/><bqbiol:isDescribedBy><rdf:Bag><rdf:li rdf:resource="https://identifiers.org/pubmed/31219795"/></rdf:Bag></bqbiol:isDescribedBy></rdf:Bag></bqbiol:hasTaxon>
+          <dcterms:creator><rdf:Bag>
+            <rdf:li rdf:parseType="Resource"><vCard:N rdf:parseType="Resource"><vCard:Family>König</vCard:Family><vCard:Given>Matthias</vCard:Given></vCard:N><vCard:EMAIL>model@example.org</vCard:EMAIL><vCard:ORG rdf:parseType="Resource"><vCard:Orgname>Biology Institute</vCard:Orgname></vCard:ORG></rdf:li>
+            <rdf:li rdf:parseType="Resource"><vCard:N rdf:parseType="Resource"><vCard:Family>Curie</vCard:Family><vCard:Given>Marie</vCard:Given></vCard:N></rdf:li>
+          </rdf:Bag></dcterms:creator>
+          <dcterms:created rdf:parseType="Resource"><dcterms:W3CDTF>2018-01-02T03:04:05+02:00</dcterms:W3CDTF></dcterms:created>
+          <dcterms:modified rdf:parseType="Resource"><dcterms:W3CDTF>2019-02-03T04:05:06Z</dcterms:W3CDTF></dcterms:modified>
+          <dcterms:modified rdf:parseType="Resource"><dcterms:W3CDTF>2020-03-04T05:06:07Z</dcterms:W3CDTF></dcterms:modified>
+        </rdf:Description>
+      </rdf:RDF>
+    </annotation>
+    <listOfParameters>
+      <parameter id="automatic" sboTerm="SBO:0000002" value="1" constant="true"/>
+      <parameter id="deduplicated" metaid="meta_deduplicated" sboTerm="SBO:0000002" value="2" constant="true">
+        <annotation><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/"><rdf:Description rdf:about="#meta_deduplicated"><bqbiol:hasProperty><rdf:Bag><rdf:li rdf:resource="urn:miriam:sbo:SBO:0000002"/></rdf:Bag></bqbiol:hasProperty></rdf:Description></rdf:RDF></annotation>
+      </parameter>
+      <parameter id="nested" metaid="meta_nested" sboTerm="SBO:0000002" value="3" constant="true">
+        <annotation><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/"><rdf:Description rdf:about="#meta_nested"><bqbiol:hasTaxon><rdf:Bag><rdf:li rdf:resource="https://identifiers.org/taxonomy/9606"/><bqbiol:isDescribedBy><rdf:Bag><rdf:li rdf:resource="https://identifiers.org/SBO:0000002"/></rdf:Bag></bqbiol:isDescribedBy></rdf:Bag></bqbiol:hasTaxon></rdf:Description></rdf:RDF></annotation>
+      </parameter>
+      <parameter id="other_subject" metaid="meta_other" value="4" constant="true">
+        <annotation><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/"><rdf:Description rdf:about="#different_subject"><bqbiol:is><rdf:Bag><rdf:li rdf:resource="https://identifiers.org/uniprot/P03023"/></rdf:Bag></bqbiol:is></rdf:Description></rdf:RDF></annotation>
+      </parameter>
+      <parameter id="alternate_prefix" metaid="meta_alternate" value="5" constant="true">
+        <annotation><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bio="http://biomodels.net/biology-qualifiers/"><rdf:Description rdf:about="#meta_alternate"><bio:is><rdf:Bag><rdf:li rdf:resource="https://identifiers.org/uniprot/P03023"/></rdf:Bag></bio:is></rdf:Description></rdf:RDF></annotation>
+      </parameter>
+    </listOfParameters>
+  </model>
+</sbml>

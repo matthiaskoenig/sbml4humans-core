@@ -14,6 +14,7 @@ use sbml4humans_model::{
     UnitDefinition,
 };
 
+use crate::annotations;
 use crate::math::ast_of;
 use crate::strings;
 use crate::sys;
@@ -68,6 +69,9 @@ pub enum ReadError {
     /// kind of a node they do not know.
     #[error("the math holds a node of a type the report has no kind of")]
     MathUnknownKind,
+    /// An annotation contains a qualifier or history value the reader cannot copy.
+    #[error("{0}")]
+    Annotation(String),
 }
 
 /// The lock every read of libsbml holds.
@@ -147,7 +151,7 @@ unsafe fn document(doc: *mut sys::SBMLDocument) -> Result<Document, ReadError> {
             packages: packages(doc),
             // the serialized XML of the document is the whole source and the
             // one of the model nearly all of it, so neither carries it
-            element: element(sys::s4h_document_sbase(doc)),
+            element: element(sys::s4h_document_sbase(doc))?,
             model: Some(model(sbase)?),
         })
     }
@@ -200,7 +204,7 @@ unsafe fn packages(doc: *mut sys::SBMLDocument) -> Vec<Package> {
 unsafe fn model(sbase: *mut sys::SBase) -> Result<Model, ReadError> {
     unsafe {
         Ok(Model {
-            element: element(sbase),
+            element: element(sbase)?,
             function_definitions: elements(
                 sbase,
                 sys::s4h_model_num_function_definitions,
@@ -297,7 +301,7 @@ unsafe fn elements<T>(
 unsafe fn function_definition(sbase: *mut sys::SBase) -> Result<FunctionDefinition, ReadError> {
     unsafe {
         Ok(FunctionDefinition {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             math: math(sbase, sys::s4h_function_definition_math)?,
         })
     }
@@ -312,7 +316,7 @@ unsafe fn function_definition(sbase: *mut sys::SBase) -> Result<FunctionDefiniti
 unsafe fn unit_definition(sbase: *mut sys::SBase) -> Result<UnitDefinition, ReadError> {
     unsafe {
         Ok(UnitDefinition {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             units: elements(
                 sbase,
                 sys::s4h_unit_definition_num_units,
@@ -350,7 +354,7 @@ unsafe fn unit(sbase: *mut sys::SBase) -> Result<Unit, ReadError> {
 unsafe fn compartment(sbase: *mut sys::SBase) -> Result<Compartment, ReadError> {
     unsafe {
         Ok(Compartment {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             spatial_dimensions: number(sbase, sys::s4h_compartment_spatial_dimensions),
             size: number(sbase, sys::s4h_compartment_size),
             constant: flag(sbase, sys::s4h_compartment_constant),
@@ -371,7 +375,7 @@ unsafe fn compartment(sbase: *mut sys::SBase) -> Result<Compartment, ReadError> 
 unsafe fn species(sbase: *mut sys::SBase) -> Result<Species, ReadError> {
     unsafe {
         Ok(Species {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             compartment: strings::borrowed(sys::s4h_species_compartment(sbase)).unwrap_or_default(),
             initial_amount: number(sbase, sys::s4h_species_initial_amount),
             initial_concentration: number(sbase, sys::s4h_species_initial_concentration),
@@ -391,7 +395,7 @@ unsafe fn species(sbase: *mut sys::SBase) -> Result<Species, ReadError> {
 unsafe fn parameter(sbase: *mut sys::SBase) -> Result<Parameter, ReadError> {
     unsafe {
         Ok(Parameter {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             value: number(sbase, sys::s4h_parameter_value),
             constant: flag(sbase, sys::s4h_parameter_constant),
             units: strings::borrowed(sys::s4h_parameter_units(sbase)),
@@ -411,7 +415,7 @@ unsafe fn parameter(sbase: *mut sys::SBase) -> Result<Parameter, ReadError> {
 unsafe fn initial_assignment(sbase: *mut sys::SBase) -> Result<InitialAssignment, ReadError> {
     unsafe {
         Ok(InitialAssignment {
-            element: element_with_id_attribute(sbase),
+            element: element_with_id_attribute(sbase)?,
             symbol: strings::borrowed(sys::s4h_initial_assignment_symbol(sbase))
                 .unwrap_or_default(),
             math: math(sbase, sys::s4h_initial_assignment_math)?,
@@ -444,7 +448,7 @@ unsafe fn rule(sbase: *mut sys::SBase) -> Result<Rule, ReadError> {
             }
         };
         Ok(Rule {
-            element: element_with_id_attribute(sbase),
+            element: element_with_id_attribute(sbase)?,
             kind,
             // an algebraic rule sets no variable, and libsbml answers the
             // empty string of one, which says the same
@@ -466,7 +470,7 @@ unsafe fn rule(sbase: *mut sys::SBase) -> Result<Rule, ReadError> {
 unsafe fn constraint(sbase: *mut sys::SBase) -> Result<Constraint, ReadError> {
     unsafe {
         Ok(Constraint {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             math: math(sbase, sys::s4h_constraint_math)?,
             message: strings::handed_over(sys::s4h_constraint_message(sbase)),
         })
@@ -488,7 +492,7 @@ unsafe fn constraint(sbase: *mut sys::SBase) -> Result<Constraint, ReadError> {
 unsafe fn reaction(sbase: *mut sys::SBase) -> Result<Reaction, ReadError> {
     unsafe {
         Ok(Reaction {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             reversible: flag(sbase, sys::s4h_reaction_reversible),
             fast: flag(sbase, sys::s4h_reaction_fast),
             compartment: strings::borrowed(sys::s4h_reaction_compartment(sbase)),
@@ -530,7 +534,7 @@ unsafe fn reaction(sbase: *mut sys::SBase) -> Result<Reaction, ReadError> {
 unsafe fn species_reference(sbase: *mut sys::SBase) -> Result<SpeciesReference, ReadError> {
     unsafe {
         Ok(SpeciesReference {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             species: strings::borrowed(sys::s4h_species_reference_species(sbase))
                 .unwrap_or_default(),
             // the shim writes the stoichiometry of every reference, so the
@@ -554,7 +558,7 @@ unsafe fn modifier_species_reference(
 ) -> Result<ModifierSpeciesReference, ReadError> {
     unsafe {
         Ok(ModifierSpeciesReference {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             species: strings::borrowed(sys::s4h_species_reference_species(sbase))
                 .unwrap_or_default(),
         })
@@ -570,7 +574,7 @@ unsafe fn modifier_species_reference(
 unsafe fn kinetic_law(sbase: *mut sys::SBase) -> Result<KineticLaw, ReadError> {
     unsafe {
         Ok(KineticLaw {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             math: math(sbase, sys::s4h_kinetic_law_math)?,
             local_parameters: elements(
                 sbase,
@@ -595,7 +599,7 @@ unsafe fn kinetic_law(sbase: *mut sys::SBase) -> Result<KineticLaw, ReadError> {
 unsafe fn local_parameter(sbase: *mut sys::SBase) -> Result<LocalParameter, ReadError> {
     unsafe {
         Ok(LocalParameter {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             value: number(sbase, sys::s4h_local_parameter_value),
             units: strings::borrowed(sys::s4h_local_parameter_units(sbase)),
         })
@@ -611,7 +615,7 @@ unsafe fn local_parameter(sbase: *mut sys::SBase) -> Result<LocalParameter, Read
 unsafe fn event(sbase: *mut sys::SBase) -> Result<Event, ReadError> {
     unsafe {
         Ok(Event {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             use_values_from_trigger_time: flag(sbase, sys::s4h_event_use_values_from_trigger_time),
             trigger: child(sbase, sys::s4h_event_trigger, trigger)?,
             priority: child(sbase, sys::s4h_event_priority, math_element)?,
@@ -635,7 +639,7 @@ unsafe fn event(sbase: *mut sys::SBase) -> Result<Event, ReadError> {
 unsafe fn trigger(sbase: *mut sys::SBase) -> Result<Trigger, ReadError> {
     unsafe {
         Ok(Trigger {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             math: math(sbase, sys::s4h_trigger_math)?,
             initial_value: flag(sbase, sys::s4h_trigger_initial_value),
             persistent: flag(sbase, sys::s4h_trigger_persistent),
@@ -652,7 +656,7 @@ unsafe fn trigger(sbase: *mut sys::SBase) -> Result<Trigger, ReadError> {
 unsafe fn math_element(sbase: *mut sys::SBase) -> Result<MathElement, ReadError> {
     unsafe {
         Ok(MathElement {
-            element: element_with_xml(sbase),
+            element: element_with_xml(sbase)?,
             math: math(sbase, sys::s4h_math_element_math)?,
         })
     }
@@ -670,7 +674,7 @@ unsafe fn math_element(sbase: *mut sys::SBase) -> Result<MathElement, ReadError>
 unsafe fn event_assignment(sbase: *mut sys::SBase) -> Result<EventAssignment, ReadError> {
     unsafe {
         Ok(EventAssignment {
-            element: element_with_id_attribute(sbase),
+            element: element_with_id_attribute(sbase)?,
             variable: strings::borrowed(sys::s4h_event_assignment_variable(sbase))
                 .unwrap_or_default(),
             math: math(sbase, sys::s4h_event_assignment_math)?,
@@ -702,19 +706,21 @@ unsafe fn child<T>(
 /// # Safety
 ///
 /// `sbase` is an element of a document of libsbml which is alive.
-unsafe fn element(sbase: *mut sys::SBase) -> Element {
+unsafe fn element(sbase: *mut sys::SBase) -> Result<Element, ReadError> {
     unsafe {
-        Element {
+        Ok(Element {
             id: strings::borrowed(sys::s4h_sbase_id(sbase)),
             meta_id: strings::borrowed(sys::s4h_sbase_meta_id(sbase)),
             name: strings::borrowed(sys::s4h_sbase_name(sbase)),
             sbo: strings::handed_over(sys::s4h_sbase_sbo_term_id(sbase)),
             notes: strings::handed_over(sys::s4h_sbase_notes(sbase)),
             annotation: strings::handed_over(sys::s4h_sbase_annotation(sbase)),
+            cvterms: annotations::cvterms(sbase)?,
+            history: annotations::history(sbase)?,
             xml: None,
             line: sys::s4h_sbase_line(sbase),
             column: sys::s4h_sbase_column(sbase),
-        }
+        })
     }
 }
 
@@ -723,10 +729,10 @@ unsafe fn element(sbase: *mut sys::SBase) -> Element {
 /// # Safety
 ///
 /// `sbase` is an element of a document of libsbml which is alive.
-unsafe fn element_with_xml(sbase: *mut sys::SBase) -> Element {
-    let mut filled = unsafe { element(sbase) };
+unsafe fn element_with_xml(sbase: *mut sys::SBase) -> Result<Element, ReadError> {
+    let mut filled = unsafe { element(sbase)? };
     filled.xml = unsafe { strings::handed_over(sys::s4h_sbase_xml(sbase)) };
-    filled
+    Ok(filled)
 }
 
 /// The shared fields of an element whose id libsbml aliases to its target.
@@ -740,10 +746,10 @@ unsafe fn element_with_xml(sbase: *mut sys::SBase) -> Element {
 ///
 /// `sbase` is an initial assignment, a rule or an event assignment of a
 /// document of libsbml which is alive.
-unsafe fn element_with_id_attribute(sbase: *mut sys::SBase) -> Element {
-    let mut filled = unsafe { element_with_xml(sbase) };
+unsafe fn element_with_id_attribute(sbase: *mut sys::SBase) -> Result<Element, ReadError> {
+    let mut filled = unsafe { element_with_xml(sbase)? };
     filled.id = unsafe { strings::borrowed(sys::s4h_sbase_id_attribute(sbase)) };
-    filled
+    Ok(filled)
 }
 
 /// The syntax tree of the math of an element, `None` when it has none.

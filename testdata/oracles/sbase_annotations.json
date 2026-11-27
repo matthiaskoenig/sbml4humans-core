@@ -1,0 +1,350 @@
+{
+  "document": {
+    "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n    <rdf:Description rdf:about=\"#meta_document\">\n      <bqmodel:is>\n        <rdf:Bag>\n          <rdf:li rdf:resource=\"https://identifiers.org/biomodels.db/BIOMD0000000012\"/>\n        </rdf:Bag>\n      </bqmodel:is>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+    "comp": null,
+    "cvterms": [
+      {
+        "nested": [],
+        "qualifier": "BQM_IS",
+        "resources": [
+          "https://identifiers.org/biomodels.db/BIOMD0000000012"
+        ]
+      }
+    ],
+    "history": null,
+    "id": null,
+    "keyValuePairs": [],
+    "level": 3,
+    "lists": [],
+    "metaId": "meta_document",
+    "name": null,
+    "notes": null,
+    "packages": [],
+    "pk": "document/SBMLDocument:document",
+    "sbmlType": "SBMLDocument",
+    "sbo": null,
+    "uncertainties": [],
+    "version": 2,
+    "xml": null
+  },
+  "externalModelDefinitions": [],
+  "linkGraph": {
+    "edges": [
+      {
+        "kind": "model",
+        "source": "document/SBMLDocument:document",
+        "target": "annotations/Model:annotations",
+        "targetEntry": null
+      }
+    ],
+    "nodes": {
+      "annotations/Model:annotations": {
+        "id": "annotations",
+        "model": null,
+        "name": null,
+        "pk": "annotations/Model:annotations",
+        "sbmlType": "Model"
+      },
+      "annotations/Parameter:alternate_prefix": {
+        "id": "alternate_prefix",
+        "model": "annotations/Model:annotations",
+        "name": null,
+        "pk": "annotations/Parameter:alternate_prefix",
+        "sbmlType": "Parameter"
+      },
+      "annotations/Parameter:automatic": {
+        "id": "automatic",
+        "model": "annotations/Model:annotations",
+        "name": null,
+        "pk": "annotations/Parameter:automatic",
+        "sbmlType": "Parameter"
+      },
+      "annotations/Parameter:deduplicated": {
+        "id": "deduplicated",
+        "model": "annotations/Model:annotations",
+        "name": null,
+        "pk": "annotations/Parameter:deduplicated",
+        "sbmlType": "Parameter"
+      },
+      "annotations/Parameter:nested": {
+        "id": "nested",
+        "model": "annotations/Model:annotations",
+        "name": null,
+        "pk": "annotations/Parameter:nested",
+        "sbmlType": "Parameter"
+      },
+      "annotations/Parameter:other_subject": {
+        "id": "other_subject",
+        "model": "annotations/Model:annotations",
+        "name": null,
+        "pk": "annotations/Parameter:other_subject",
+        "sbmlType": "Parameter"
+      },
+      "document/SBMLDocument:document": {
+        "id": null,
+        "model": null,
+        "name": null,
+        "pk": "document/SBMLDocument:document",
+        "sbmlType": "SBMLDocument"
+      }
+    }
+  },
+  "models": [
+    {
+      "annotationXml": "<annotation>\n  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\">\n    <rdf:Description rdf:about=\"#meta_model\">\n      <bqmodel:isDescribedBy>\n        <rdf:Bag>\n          <rdf:li rdf:resource=\"https://identifiers.org/pubmed/31219795\"/>\n          <rdf:li rdf:resource=\"https://identifiers.org/pubmed/00000001\"/>\n        </rdf:Bag>\n      </bqmodel:isDescribedBy>\n      <bqbiol:hasTaxon>\n        <rdf:Bag>\n          <rdf:li rdf:resource=\"https://identifiers.org/taxonomy/9606\"/>\n          <bqbiol:isDescribedBy>\n            <rdf:Bag>\n              <rdf:li rdf:resource=\"https://identifiers.org/pubmed/31219795\"/>\n            </rdf:Bag>\n          </bqbiol:isDescribedBy>\n        </rdf:Bag>\n      </bqbiol:hasTaxon>\n      <dcterms:creator>\n        <rdf:Bag>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>König</vCard:Family>\n              <vCard:Given>Matthias</vCard:Given>\n            </vCard:N>\n            <vCard:EMAIL>model@example.org</vCard:EMAIL>\n            <vCard:ORG rdf:parseType=\"Resource\">\n              <vCard:Orgname>Biology Institute</vCard:Orgname>\n            </vCard:ORG>\n          </rdf:li>\n          <rdf:li rdf:parseType=\"Resource\">\n            <vCard:N rdf:parseType=\"Resource\">\n              <vCard:Family>Curie</vCard:Family>\n              <vCard:Given>Marie</vCard:Given>\n            </vCard:N>\n          </rdf:li>\n        </rdf:Bag>\n      </dcterms:creator>\n      <dcterms:created rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>2018-01-02T03:04:05+02:00</dcterms:W3CDTF>\n      </dcterms:created>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>2019-02-03T04:05:06Z</dcterms:W3CDTF>\n      </dcterms:modified>\n      <dcterms:modified rdf:parseType=\"Resource\">\n        <dcterms:W3CDTF>2020-03-04T05:06:07Z</dcterms:W3CDTF>\n      </dcterms:modified>\n    </rdf:Description>\n  </rdf:RDF>\n</annotation>",
+      "areaUnits": null,
+      "areaUnitsLatex": null,
+      "comp": null,
+      "conversionFactor": null,
+      "cvterms": [
+        {
+          "nested": [],
+          "qualifier": "BQB_IS",
+          "resources": [
+            "https://identifiers.org/SBO:0000004"
+          ]
+        },
+        {
+          "nested": [],
+          "qualifier": "BQM_IS_DESCRIBED_BY",
+          "resources": [
+            "https://identifiers.org/pubmed/31219795",
+            "https://identifiers.org/pubmed/00000001"
+          ]
+        },
+        {
+          "nested": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS_DESCRIBED_BY",
+              "resources": [
+                "https://identifiers.org/pubmed/31219795"
+              ]
+            }
+          ],
+          "qualifier": "BQB_HAS_TAXON",
+          "resources": [
+            "https://identifiers.org/taxonomy/9606"
+          ]
+        }
+      ],
+      "extentUnits": null,
+      "extentUnitsLatex": null,
+      "fbc": null,
+      "history": {
+        "createdDate": "2018-01-02T03:04:05+02:00",
+        "creators": [
+          {
+            "email": "model@example.org",
+            "familyName": "König",
+            "givenName": "Matthias",
+            "organization": "Biology Institute"
+          },
+          {
+            "email": null,
+            "familyName": "Curie",
+            "givenName": "Marie",
+            "organization": null
+          }
+        ],
+        "modifiedDates": [
+          "2019-02-03T04:05:06Z",
+          "2020-03-04T05:06:07Z"
+        ]
+      },
+      "id": "annotations",
+      "keyValuePairs": [],
+      "kind": "model",
+      "lengthUnits": null,
+      "lengthUnitsLatex": null,
+      "listOfCompartments": [],
+      "listOfConstraints": [],
+      "listOfEvents": [],
+      "listOfFluxBounds": [],
+      "listOfFunctionDefinitions": [],
+      "listOfGeneProducts": [],
+      "listOfInitialAssignments": [],
+      "listOfObjectives": [],
+      "listOfParameters": [
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "automatic",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": null,
+          "name": null,
+          "notes": null,
+          "pk": "annotations/Parameter:automatic",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 1.0,
+          "xml": "<parameter sboTerm=\"SBO:0000002\" id=\"automatic\" value=\"1\" constant=\"true\"/>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_HAS_PROPERTY",
+              "resources": [
+                "urn:miriam:sbo:SBO:0000002"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "deduplicated",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_deduplicated",
+          "name": null,
+          "notes": null,
+          "pk": "annotations/Parameter:deduplicated",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 2.0,
+          "xml": "<parameter metaid=\"meta_deduplicated\" sboTerm=\"SBO:0000002\" id=\"deduplicated\" value=\"2\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_deduplicated\">\n        <bqbiol:hasProperty>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"urn:miriam:sbo:SBO:0000002\"/>\n          </rdf:Bag>\n        </bqbiol:hasProperty>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [
+            {
+              "nested": [],
+              "qualifier": "BQB_IS",
+              "resources": [
+                "https://identifiers.org/SBO:0000002"
+              ]
+            },
+            {
+              "nested": [
+                {
+                  "nested": [],
+                  "qualifier": "BQB_IS_DESCRIBED_BY",
+                  "resources": [
+                    "https://identifiers.org/SBO:0000002"
+                  ]
+                }
+              ],
+              "qualifier": "BQB_HAS_TAXON",
+              "resources": [
+                "https://identifiers.org/taxonomy/9606"
+              ]
+            }
+          ],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "nested",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_nested",
+          "name": null,
+          "notes": null,
+          "pk": "annotations/Parameter:nested",
+          "sbmlType": "Parameter",
+          "sbo": "SBO:0000002",
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 3.0,
+          "xml": "<parameter metaid=\"meta_nested\" sboTerm=\"SBO:0000002\" id=\"nested\" value=\"3\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\" xmlns:vCard4=\"http://www.w3.org/2006/vcard/ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\" xmlns:bqmodel=\"http://biomodels.net/model-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_nested\">\n        <bqbiol:hasTaxon>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/taxonomy/9606\"/>\n            <bqbiol:isDescribedBy>\n              <rdf:Bag>\n                <rdf:li rdf:resource=\"https://identifiers.org/SBO:0000002\"/>\n              </rdf:Bag>\n            </bqbiol:isDescribedBy>\n          </rdf:Bag>\n        </bqbiol:hasTaxon>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "other_subject",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_other",
+          "name": null,
+          "notes": null,
+          "pk": "annotations/Parameter:other_subject",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 4.0,
+          "xml": "<parameter metaid=\"meta_other\" id=\"other_subject\" value=\"4\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:bqbiol=\"http://biomodels.net/biology-qualifiers/\">\n      <rdf:Description rdf:about=\"#different_subject\">\n        <bqbiol:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/uniprot/P03023\"/>\n          </rdf:Bag>\n        </bqbiol:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        },
+        {
+          "comp": null,
+          "constant": true,
+          "cvterms": [],
+          "derivedUnits": "-",
+          "history": null,
+          "id": "alternate_prefix",
+          "keyValuePairs": [],
+          "lists": [],
+          "metaId": "meta_alternate",
+          "name": null,
+          "notes": null,
+          "pk": "annotations/Parameter:alternate_prefix",
+          "sbmlType": "Parameter",
+          "sbo": null,
+          "uncertainties": [],
+          "units": null,
+          "unitsLatex": null,
+          "value": 5.0,
+          "xml": "<parameter metaid=\"meta_alternate\" id=\"alternate_prefix\" value=\"5\" constant=\"true\">\n  <annotation>\n    <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:bio=\"http://biomodels.net/biology-qualifiers/\">\n      <rdf:Description rdf:about=\"#meta_alternate\">\n        <bio:is>\n          <rdf:Bag>\n            <rdf:li rdf:resource=\"https://identifiers.org/uniprot/P03023\"/>\n          </rdf:Bag>\n        </bio:is>\n      </rdf:Description>\n    </rdf:RDF>\n  </annotation>\n</parameter>"
+        }
+      ],
+      "listOfPorts": [],
+      "listOfQualitativeSpecies": [],
+      "listOfReactions": [],
+      "listOfRules": [],
+      "listOfSpecies": [],
+      "listOfSubmodels": [],
+      "listOfTransitions": [],
+      "listOfUnitDefinitions": [],
+      "listOfUserDefinedConstraints": [],
+      "lists": [],
+      "metaId": "meta_model",
+      "name": null,
+      "notes": null,
+      "pk": "annotations/Model:annotations",
+      "sbmlType": "Model",
+      "sbo": "SBO:0000004",
+      "substanceUnits": null,
+      "substanceUnitsLatex": null,
+      "timeUnits": null,
+      "timeUnitsLatex": null,
+      "uncertainties": [],
+      "volumeUnits": null,
+      "volumeUnitsLatex": null,
+      "xml": null
+    }
+  ],
+  "odeError": null,
+  "odeSystem": {
+    "assignments": [],
+    "events": [],
+    "functions": [],
+    "initial": [],
+    "odes": [],
+    "reactions": [],
+    "unsupported": []
+  }
+}

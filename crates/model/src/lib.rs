@@ -14,5 +14,5 @@ pub use document::{
     Package, Parameter, Reaction, Rule, RuleKind, Species, SpeciesReference, Trigger, Unit,
     UnitDefinition,
 };
-pub use element::Element;
+pub use element::{Creator, CvTerm, Element, History};
 pub use math::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};
