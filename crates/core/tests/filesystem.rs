@@ -110,3 +110,47 @@ fn path_reads_obey_request_limits_and_trusted_gzip_retains_its_model_filename() 
         "./named.xml"
     );
 }
+
+#[test]
+fn selected_example_entries_reuse_confined_companion_admission_without_extraction() {
+    use sbml4humans_core::prepare_host_path;
+    let directory = tempfile::tempdir().unwrap();
+    let mut archive = pymetadata_core::zip::Writer::new(Vec::new());
+    archive.add_stored("manifest.xml", br#"<omexManifest><content location="models/main.xml" format="http://identifiers.org/combine.specifications/sbml" master="true"/></omexManifest>"#).unwrap();
+    archive
+        .add_stored(
+            "models/main.xml",
+            xml(
+                &(external("sub/child.xml") + &external("../outside.xml")),
+                INSTANCE,
+            )
+            .as_bytes(),
+        )
+        .unwrap();
+    archive
+        .add_stored(
+            "models/sub/child.xml",
+            xml(&external("../leaf.xml"), INSTANCE).as_bytes(),
+        )
+        .unwrap();
+    archive
+        .add_stored("models/leaf.xml", xml("", "").as_bytes())
+        .unwrap();
+    archive
+        .add_stored("outside.xml", xml("", "").as_bytes())
+        .unwrap();
+    let path = directory.path().join("example.omex");
+    fs::write(&path, archive.into_bytes().unwrap()).unwrap();
+    let options = SourceOptions::default();
+    let prepared = prepare_host_path(&path, true, &options, Some("./models/main.xml")).unwrap();
+    assert_eq!(
+        prepared
+            .entries
+            .iter()
+            .map(|entry| entry.location.as_str())
+            .collect::<Vec<_>>(),
+        ["./main.xml", "./sub/child.xml", "./leaf.xml"]
+    );
+    assert!(prepare_host_path(&path, false, &options, Some("./models/main.xml")).is_err());
+    assert!(prepare_host_path(&path, true, &options, Some("./missing.xml")).is_err());
+}

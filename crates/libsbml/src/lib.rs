@@ -26,8 +26,8 @@ mod validation;
 pub use fill::{ReadError, read};
 pub use math::{read_formula, read_math};
 pub use validation::{
-    ElementPositions, ValidationContent, ValidationError, ValidationIssue, ValidationSession,
-    ValidationSource,
+    ElementPositions, ValidationContent, ValidationError, ValidationIssue, ValidationRule,
+    ValidationSession, ValidationSource, rule_package, validation_rule,
 };
 
 /// The names of the packages the linked libsbml registers, sorted.

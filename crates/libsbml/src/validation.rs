@@ -168,6 +168,7 @@ unsafe extern "C" {
         context: *mut c_void,
         visit: extern "C" fn(*mut c_void, u32, u32, u32, u32, u32, c_int),
     ) -> c_int;
+    fn s4hv_rule(code: u32, package_only: c_int, issue: *mut Issue) -> c_int;
     fn s4hv_count(doc: *mut sys::SBMLDocument) -> c_uint;
     fn s4hv_issue(doc: *mut sys::SBMLDocument, index: c_uint, issue: *mut Issue) -> c_int;
 }
@@ -402,4 +403,65 @@ unsafe extern "C" fn lookup(
     target
         .filter(|i| unique_uri == 0 || session.uris.get(&session.documents[*i].uri) == Some(i))
         .map_or(std::ptr::null_mut(), |i| session.documents[i].pointer)
+}
+
+/// One validation rule, read from the same native tables as consistency checks.
+#[derive(Debug, Serialize)]
+pub struct ValidationRule {
+    /// The libSBML error identifier.
+    pub id: u32,
+    /// The core or package specification.
+    pub package: String,
+    /// Error or warning.
+    pub severity: &'static str,
+    /// Whitespace-normalized rule text.
+    pub message: String,
+    /// The trailing specification reference, when stated.
+    pub section: Option<String>,
+}
+fn rule_data(code: u32, package_only: bool) -> Result<(String, String, u32), ValidationError> {
+    let _lock = locked();
+    let mut issue = Issue::default();
+    // SAFETY: The bridge fills owned strings and catches native exceptions.
+    let result = unsafe { s4hv_rule(code, c_int::from(package_only), &mut issue) };
+    if result == 1 {
+        return Err(ValidationError::Invalid(format!(
+            "{code} is not a validation rule of libsbml"
+        )));
+    }
+    status(result)?;
+    // SAFETY: Both strings were allocated by the bridge with its shared allocator.
+    let package = unsafe { strings::handed_over(issue.category) }.unwrap_or_default();
+    let message = unsafe { strings::handed_over(issue.message) }.unwrap_or_default();
+    Ok((package, message, issue.severity))
+}
+/// Identify the specification a rule number belongs to, without resolving its text.
+///
+/// # Errors
+/// Refuses numbers below the validation-rule range and native failures.
+pub fn rule_package(code: u32) -> Result<String, ValidationError> {
+    rule_data(code, true).map(|data| data.0)
+}
+/// Resolve the newest applicable rule from native core and package tables.
+///
+/// # Errors
+/// Refuses unknown rule identifiers and native failures.
+pub fn validation_rule(code: u32) -> Result<ValidationRule, ValidationError> {
+    let (package, message, severity) = rule_data(code, false)?;
+    let message = message.split_whitespace().collect::<Vec<_>>().join(" ");
+    let (message, section) = if let Some((message, reference)) = message.split_once("Reference:") {
+        (
+            message.trim_end().to_owned(),
+            Some(reference.trim().to_owned()),
+        )
+    } else {
+        (message, None)
+    };
+    Ok(ValidationRule {
+        id: code,
+        package,
+        severity: if severity == 1 { "warning" } else { "error" },
+        message,
+        section,
+    })
 }

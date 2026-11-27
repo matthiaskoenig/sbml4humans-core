@@ -18,9 +18,11 @@ set -euo pipefail
 
 VERSION=v5.21.2
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-SOURCE=$ROOT/third_party/libsbml
-BUILD=$ROOT/third_party/build
-PREFIX=$ROOT/third_party/prefix
+BUILD_ROOT=${LIBSBML_BUILD_ROOT:-$ROOT/third_party}
+SOURCE=$BUILD_ROOT/libsbml
+BUILD=$BUILD_ROOT/build
+PREFIX=$BUILD_ROOT/prefix
+mkdir -p "$BUILD_ROOT"
 
 if [ ! -d "$SOURCE" ]; then
     git clone --depth 1 --branch "$VERSION" https://github.com/sbmlteam/libsbml.git "$SOURCE"

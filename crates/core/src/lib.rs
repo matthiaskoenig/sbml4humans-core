@@ -8,6 +8,12 @@ mod filesystem;
 #[cfg(not(target_arch = "wasm32"))]
 pub use filesystem::prepare_path;
 pub use sbml4humans_report::normalize_location;
+#[cfg(not(target_arch = "wasm32"))]
+mod host;
+#[cfg(not(target_arch = "wasm32"))]
+pub use host::{
+    ExampleSummary, ReportTransport, encode_report, example_summary, prepare_host_path, report_path,
+};
 mod source;
 pub use source::{
     PreparedEntry, PreparedSource, SourceLimits, SourceManifest, SourceOptions, SourceResponse,

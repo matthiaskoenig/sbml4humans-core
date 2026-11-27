@@ -1,4 +1,5 @@
 // The native-only validation boundary. Documents and resolvers never cross into Python.
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <memory>
@@ -6,6 +7,8 @@
 #include <string>
 #include <vector>
 #include <sbml/SBMLTypes.h>
+#include <sbml/extension/SBMLExtensionRegistry.h>
+#include <sbml/extension/SBMLExtension.h>
 #include <sbml/packages/comp/util/SBMLResolver.h>
 #include <sbml/packages/comp/util/SBMLResolverRegistry.h>
 #include <sbml/packages/comp/util/SBMLUri.h>
@@ -149,4 +152,60 @@ int s4hv_issue(SBMLDocument* doc, unsigned int index, S4hValidationIssue* out) {
         *out = {}; return -1;
     }
 }
+}
+
+extern "C" int s4hv_rule(unsigned int code, int package_only, S4hValidationIssue* out) {
+    *out = {};
+    try {
+        if (code < 10000) return 1;
+        auto& registry = SBMLExtensionRegistry::getInstance();
+        std::string package = "core";
+        unsigned int offset = 0;
+        for (const auto* name : {"comp", "distrib", "fbc", "qual"}) {
+            const auto* extension = registry.getExtension(name);
+            if (extension == nullptr) continue;
+            const auto candidate = extension->getErrorIdOffset();
+            if (candidate <= code && candidate > offset) { offset = candidate; package = name; }
+        }
+        out->category = copy(package);
+        if (package_only) return 0;
+        auto accepted = [](unsigned int severity) {
+            return severity == LIBSBML_SEV_ERROR || severity == LIBSBML_SEV_FATAL ||
+                severity == LIBSBML_SEV_SCHEMA_ERROR || severity == LIBSBML_SEV_WARNING ||
+                severity == LIBSBML_SEV_GENERAL_WARNING;
+        };
+        std::string message;
+        unsigned int severity = 0;
+        bool found = false;
+        if (package == "core") {
+            for (const auto& version : {std::make_pair(3u, 2u), std::make_pair(3u, 1u), std::make_pair(2u, 5u)}) {
+                SBMLError error(code, version.first, version.second);
+                if (error.getCategoryAsString() == "Internal" || error.getMessage().empty() || !accepted(error.getSeverity())) continue;
+                message = error.getMessage(); severity = error.getSeverity(); found = true; break;
+            }
+        } else {
+            const auto* extension = registry.getExtension(package);
+            const auto index = extension->getErrorTableIndex(code);
+            if (index != 0) {
+                std::vector<unsigned int> versions;
+                for (unsigned int i = 0; i < extension->getNumOfSupportedPackageURI(); ++i)
+                    versions.push_back(extension->getPackageVersion(extension->getSupportedPackageURI(i)));
+                std::sort(versions.rbegin(), versions.rend());
+                versions.erase(std::unique(versions.begin(), versions.end()), versions.end());
+                for (auto version : versions) {
+                    severity = extension->getSeverity(index, version);
+                    if (!accepted(severity)) continue;
+                    message = extension->getMessage(index, version, ""); found = true; break;
+                }
+            }
+        }
+        if (!found) { std::free(out->category); *out = {}; return 1; }
+        out->severity = severity == LIBSBML_SEV_WARNING || severity == LIBSBML_SEV_GENERAL_WARNING ? 1 : 2;
+        out->message = copy(message);
+        return 0;
+    } catch (const std::bad_alloc&) {
+        std::free(out->category); std::free(out->message); *out = {}; return -2;
+    } catch (...) {
+        std::free(out->category); std::free(out->message); *out = {}; return -1;
+    }
 }

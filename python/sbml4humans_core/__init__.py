@@ -5,6 +5,8 @@ import uuid
 
 from . import _core
 from ._core import (
+    HOST_CONTRACT,
+    SOURCE_REVISION,
     ODE_SOURCE_CONTRACT,
     REPORT_CONTRACT,
     _ode_path_json,
@@ -17,6 +19,10 @@ from ._core import (
 )
 
 __all__ = [
+    "HOST_CONTRACT",
+    "SOURCE_REVISION",
+    "report_path",
+    "example_json",
     "ODE_SOURCE_CONTRACT",
     "ode_path_json",
     "REPORT_CONTRACT",
@@ -84,11 +90,13 @@ if hasattr(_core, "VALIDATION_SOURCE_CONTRACT"):
         trusted: bool = False,
         max_expanded_elements: int = 10000,
         limits: dict[str, int] | None = None,
+        source_entry: str | None = None,
     ):
         """Prepare validation entirely in Rust, retaining per-entry worker results."""
         options = {"maxExpandedElements": max_expanded_elements}
         if limits is not None:
             options["limits"] = limits
+        options["entry"] = source_entry
         return _core._validation_source(path, trusted, json.dumps(options))
 
     __all__ += ["VALIDATION_SOURCE_CONTRACT", "validation_source"]
@@ -103,6 +111,7 @@ def ode_path_json(
     simulator: bool = False,
     max_expanded_elements: int = 10000,
     limits: dict[str, int] | None = None,
+    source_entry: str | None = None,
 ) -> bytes:
     """Export one admitted model with the shared Rust generator."""
     source = {"maxExpandedElements": max_expanded_elements}
@@ -116,7 +125,38 @@ def ode_path_json(
                 "source": source,
                 "format": format,
                 "entry": location,
+                "sourceEntry": source_entry,
                 "simulator": simulator,
             }
         ),
     )
+
+
+example_json = _core.example_json
+
+
+def report_path(
+    path: str,
+    *,
+    trusted: bool = False,
+    uid: str | None = None,
+    max_expanded_elements: int = 10000,
+    limits: dict[str, int] | None = None,
+    gzip: bool = False,
+    source_entry: str | None = None,
+) -> tuple[bytes, list[str]]:
+    """Serialize directly into JSON or gzip and return small diagnostics separately."""
+    options = {
+        "uid": uuid.uuid4().hex if uid is None else uid,
+        "maxExpandedElements": max_expanded_elements,
+    }
+    if limits is not None:
+        options["limits"] = limits
+    options["entry"] = source_entry
+    return _core.report_path(path, trusted, json.dumps(options), gzip)
+
+
+if hasattr(_core, "rule_json"):
+    rule_json = _core.rule_json
+    rule_package = _core.rule_package
+    __all__ += ["rule_json", "rule_package"]
