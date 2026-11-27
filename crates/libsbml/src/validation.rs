@@ -114,7 +114,8 @@ type Lookup = unsafe extern "C" fn(
     c_int,
 ) -> *mut sys::SBMLDocument;
 unsafe extern "C" {
-    fn s4hv_read_file(path: *const c_char) -> *mut sys::SBMLDocument;
+    fn s4hv_read_file(path: *const c_char, status: *mut c_int) -> *mut sys::SBMLDocument;
+    fn s4hv_read_xml(xml: *const c_char, status: *mut c_int) -> *mut sys::SBMLDocument;
     fn s4hv_location(doc: *mut sys::SBMLDocument, uri: *const c_char) -> c_int;
     fn s4hv_check(doc: *mut sys::SBMLDocument, context: *mut c_void, lookup: Lookup) -> c_int;
     fn s4hv_count(doc: *mut sys::SBMLDocument) -> c_uint;
@@ -182,12 +183,13 @@ impl ValidationSession {
                 let uri = CString::new(source.uri.as_str()).map_err(|_| {
                     ValidationError::Invalid("Source URI contains a NUL byte.".into())
                 })?;
+                let mut read_status = 0;
                 let pointer = match source.content {
                     ValidationContent::Xml(xml) => {
                         let xml = CString::new(xml).map_err(|_| {
                             ValidationError::Invalid("SBML XML string contains a NUL byte.".into())
                         })?;
-                        unsafe { sys::s4h_read(xml.as_ptr()) }
+                        unsafe { s4hv_read_xml(xml.as_ptr(), &mut read_status) }
                     }
                     ValidationContent::Path(path) => {
                         let path = path.to_str().ok_or_else(|| {
@@ -196,9 +198,10 @@ impl ValidationSession {
                         let path = CString::new(path).map_err(|_| {
                             ValidationError::Invalid("Validation path contains a NUL byte.".into())
                         })?;
-                        unsafe { s4hv_read_file(path.as_ptr()) }
+                        unsafe { s4hv_read_file(path.as_ptr(), &mut read_status) }
                     }
                 };
+                status(read_status)?;
                 if pointer.is_null() {
                     return Err(ValidationError::Invalid("libSBML read no document.".into()));
                 }

@@ -71,9 +71,18 @@ struct S4hValidationIssue {
     char *category, *short_message, *message;
 };
 
-SBMLDocument* s4hv_read_file(const char* path) {
+SBMLDocument* s4hv_read_file(const char* path, int* status) {
+    *status = 0;
     try { return readSBMLFromFile(path); }
-    catch (...) { return nullptr; }
+    catch (const std::bad_alloc&) { *status = -2; return nullptr; }
+    catch (...) { *status = -1; return nullptr; }
+}
+
+SBMLDocument* s4hv_read_xml(const char* xml, int* status) {
+    *status = 0;
+    try { return readSBMLFromString(xml); }
+    catch (const std::bad_alloc&) { *status = -2; return nullptr; }
+    catch (...) { *status = -1; return nullptr; }
 }
 
 int s4hv_location(SBMLDocument* doc, const char* uri) {
