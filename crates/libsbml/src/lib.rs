@@ -1,11 +1,10 @@
-//! Reading an SBML document with libsbml into the owned model of the report.
+//! Native libSBML validation and the reference reader of the report tests.
 //!
-//! The crate is temporary. It fills the model of [`sbml4humans_model`] through
-//! libsbml, so that the reader of our own has a report to be held against, and
-//! it is deleted once the two agree on every example. It is therefore a
-//! correct, explicit and small layer over libsbml and no general binding of
-//! the library: it reaches libsbml through `shim.cpp`, a C layer over the C++
-//! API which exposes what the filler reads and nothing else.
+//! [`ValidationSession`] owns the admitted documents, preserves diagnostics and
+//! source keys, and installs a closed comp resolver only while validating.
+//! Native hosts enable it explicitly; portable report and WASM builds do not
+//! link libSBML. The reference reader fills [`sbml4humans_model`] for parity
+//! tests and is not used by the production Rust report pipeline.
 //!
 //! [`read`] answers a [`ReadError`] for every source which is no document and
 //! for every document which holds a math nested deeper than
@@ -22,9 +21,14 @@ mod fill;
 mod math;
 mod strings;
 mod sys;
+mod validation;
 
 pub use fill::{ReadError, read};
 pub use math::{read_formula, read_math};
+pub use validation::{
+    ElementPositions, ValidationContent, ValidationError, ValidationIssue, ValidationSession,
+    ValidationSource,
+};
 
 /// The names of the packages the linked libsbml registers, sorted.
 ///

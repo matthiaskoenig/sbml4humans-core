@@ -2,6 +2,7 @@ name: CI
 
 on:
   push:
+    branches: [develop, main]
   pull_request:
 
 # least privilege
@@ -39,9 +40,9 @@ jobs:
       - name: Check the format
         run: cargo fmt --check
       - name: Lint
-        run: cargo clippy --workspace --all-targets -- -D warnings
+        run: cargo clippy --workspace --all-targets --features sbml4humans-python/validation -- -D warnings
       - name: Test
-        run: cargo test --workspace --release --locked
+        run: cargo test --workspace --release --locked --features sbml4humans-python/validation
 
   native:
     name: native (Python ${{ matrix.python }})
@@ -66,6 +67,39 @@ jobs:
         run: |
           uv venv --python ${{ matrix.python }} .venv
           uv pip install --python .venv/bin/python dist/*.whl
+          .venv/bin/python -m unittest discover -s python/tests -q
+
+  native-validation:
+    name: native validation (Python ${{ matrix.python }})
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        python: ["3.12", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.7"
+          python-version: ${{ matrix.python }}
+      - name: Install native build dependencies
+        run: sudo apt-get update && sudo apt-get install --yes cmake libexpat1-dev zlib1g-dev libbz2-dev
+      - name: Restore the libSBML prefix built by the Rust test job
+        uses: actions/cache/restore@v6
+        with:
+          path: third_party/prefix
+          key: libsbml-${{ runner.os }}-${{ hashFiles('scripts/build-libsbml.sh') }}
+          fail-on-cache-miss: true
+      - name: Build validation-enabled ABI3 wheel
+        run: uv tool run --from 'maturin[patchelf]>=1.16,<2' maturin build --release --locked --features validation --out dist
+      - name: Test the installed native validator and complete reports
+        run: |
+          uv venv --python ${{ matrix.python }} .venv
+          uv pip install --python .venv/bin/python dist/*.whl
+          .venv/bin/python -c 'import sbml4humans_core as c; assert c.VALIDATION_CONTRACT == "validation/1"'
           .venv/bin/python -m unittest discover -s python/tests -q
 
   wasm:

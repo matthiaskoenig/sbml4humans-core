@@ -1,6 +1,6 @@
 [package]
 name = "sbml4humans-libsbml"
-description = "Fills the document model of sbml4humans from libsbml, until the reader of our own agrees with it"
+description = "Native libSBML validation and the reference reader used by report oracles"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -13,6 +13,8 @@ publish = false
 sbml4humans-reader = { path = "../reader" }
 sbml4humans-model = { path = "../model" }
 thiserror.workspace = true
+serde.workspace = true
+serde_json.workspace = true
 
 [dev-dependencies]
 serde_json.workspace = true

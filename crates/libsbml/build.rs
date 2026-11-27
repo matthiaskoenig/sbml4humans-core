@@ -29,6 +29,7 @@ fn prefix() -> PathBuf {
 
 fn main() {
     println!("cargo::rerun-if-changed=shim.cpp");
+    println!("cargo::rerun-if-changed=validation.cpp");
     println!("cargo::rerun-if-env-changed=LIBSBML_DIR");
 
     let prefix = prefix();
@@ -49,6 +50,7 @@ fn main() {
         .flag_if_supported("-Wno-overloaded-virtual")
         .include(&include)
         .file("shim.cpp")
+        .file("validation.cpp")
         .compile("sbml4humans-shim");
 
     // after the shim, which refers to them
@@ -56,7 +58,10 @@ fn main() {
         "cargo::rustc-link-search=native={}",
         prefix.join("lib").display()
     );
-    println!("cargo::rustc-link-lib=static=sbml-static");
+    // Match libSBML's shared-library object order. Selective archive extraction
+    // can choose the internal validator's weak constraint definitions before
+    // the consistency validator's (notably Reaction 21152), changing diagnostics.
+    println!("cargo::rustc-link-lib=static:+whole-archive=sbml-static");
     println!("cargo::rustc-link-lib=expat");
     println!("cargo::rustc-link-lib=z");
     println!("cargo::rustc-link-lib=bz2");

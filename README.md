@@ -1,6 +1,6 @@
 # sbml4humans-core
 
-A pure Rust SBML report builder for [SBML4Humans](https://sbml4humans.de), with a native Python extension and import-free WebAssembly. The CLI, Python extension and browser worker use the same byte-to-report pipeline. Production builds do not link libSBML or run Python. The lossless document model, pure Rust reader and equation generator are shared crates of sbmlsim-core. [Native benchmarks](benchmarks/README.md) measure 6.2x faster complete report construction for E. coli core and 11.7x for Recon3D.
+A pure Rust SBML report builder for [SBML4Humans](https://sbml4humans.de), with a native Python extension and import-free WebAssembly. The CLI, Python extension and browser worker use the same byte-to-report pipeline. Portable report builds do not link libSBML. An optional native validation feature links libSBML behind the Rust validation interface; browser WASM remains independent of it. The lossless document model, pure Rust reader and equation generator are shared crates of sbmlsim-core. [Native benchmarks](benchmarks/README.md) measure 6.2x faster complete report construction for E. coli core and 11.7x for Recon3D.
 
 The report includes core objects, controlled RDF annotations and model history, unit rendering and inference, comp/fbc/qual/distrib objects, the complete reference graph, mathematical expressions and linked differential equations. The reader supports SBML Levels 1 through 3, Content MathML and Level 1 formulas, common XML encodings, namespace aliases, and plain or gzipped SBML. Each report preserves the application's `report/1` JSON contract.
 
@@ -37,6 +37,17 @@ response = json.loads(source_json(Path("models.omex").read_bytes()))
 ```
 
 `source_json(bytes) -> bytes` returns the complete `source/1` envelope; `report_json(bytes)` remains the one-document `report/1` API. Both release the GIL for parsing, analysis and serialization. Calls own their document data and can run concurrently. The ABI3 wheel supports Python 3.12 and later. Invalid XML, gzip or archive input raises `ValueError`; source errors also carry `kind`. Host bindings generate request identities and report total source-construction time in the diagnostic timing field.
+
+Server builds enable native validation explicitly:
+
+```bash
+bash scripts/build-libsbml.sh
+uv tool run --from 'maturin[patchelf]>=1.16,<2' maturin build --release --features validation --out dist
+```
+
+Such wheels expose `VALIDATION_CONTRACT = "validation/1"` and `ValidationSession`. The constructor accepts a sequence of `(location, admitted_file_path, location_uri, positions_json)` records. Position JSON contains `documentPk` and `elements`, the latter a list of `(line, column, depth, primary_key)` records from the report's canonical key builder. The host admits and keeps the files alive until construction completes. Paths are explicit inputs; the validator never discovers neighbouring files or downloads sources.
+
+`session.issues_json(location, check_consistency=True)` returns ordered diagnostics as JSON bytes. Documents are parsed once and checks run once per entry; `check_consistency=False` reads their current parser log without running consistency checks. Native parsing, validation and serialization release the GIL. The comp resolver sees only admitted documents, and its registry is restored after every check. Hosts retain process isolation, deadlines, memory limits and cancellation; separate calls per entry let a killed worker preserve previously completed results. Native allocation failures raise `MemoryError`; ordinary model issues remain successful diagnostic results.
 
 ## Browser and Node
 
@@ -76,7 +87,7 @@ Open <http://localhost:8080/js/example/>. Load the bundled comp example or choos
 
 The complete report is compared field by field against committed Python snapshots for 54 standalone fixtures and 70 corpus models, including Recon3D, with no excluded fields. Both pure Rust and the temporary native oracle are checked. Additional gates cover 6,300 unit factors, 312 inference contexts, 1,834 mathematical expressions, equation formatting, package references, encodings and deep inputs. The complete source response is also compared against 53 real COMBINE archives and two expansion-budget fixtures, preserving every report field. Node and installed native-wheel tests exercise the actual artifacts against every standalone and source fixture. Chromium tests check full report parity, worker responsiveness, cancellation, recovery and the example page.
 
-The temporary `libsbml` crate is oracle scaffolding. Only native oracle and report tests require its prefix; production builds do not. Build the test prefix or point at an existing libSBML 5.21.2 installation:
+The `libsbml` crate provides native validation and the reference reader used by report oracles. Default report and WASM builds need no libSBML prefix. Validation-enabled server wheels and native oracle tests require it. Build the test prefix or point at an existing libSBML 5.21.2 installation:
 
 ```bash
 bash scripts/build-libsbml.sh
@@ -107,7 +118,7 @@ The default host API accepts at most 100 MiB of input and decompressed source co
 | `wasm` | Import-free buffer ABI for WebAssembly |
 | `cli` | JSON report command |
 | `abi` | Wire contract identifier |
-| `libsbml` | Temporary C++ oracle adapter, not a production dependency |
+| `libsbml` | Optional native validation and the C++ reference reader used by oracles |
 | `oracles` | Independent full report and focused parity gates |
 
-MIT licensed. The temporary native oracle links LGPL-2.1 libSBML; the production parser and bindings do not.
+The Rust implementation is MIT licensed. The optional native validator and reference reader link LGPL-2.1 libSBML. Its upstream license and copyright notices are included in `python/sbml4humans_core/licenses/` and in wheel license metadata. `scripts/build-libsbml.sh` and the public source provide the reproducible native build; `LIBSBML_DIR` selects a separately built prefix.

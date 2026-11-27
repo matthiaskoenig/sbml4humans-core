@@ -356,6 +356,7 @@ dependencies = [
  "cc",
  "sbml4humans-model",
  "sbml4humans-reader",
+ "serde",
  "serde_json",
  "thiserror",
 ]
@@ -387,6 +388,7 @@ version = "0.1.0"
 dependencies = [
  "pyo3",
  "sbml4humans-core",
+ "sbml4humans-libsbml",
  "serde_json",
 ]
 
