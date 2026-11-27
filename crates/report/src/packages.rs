@@ -1,16 +1,10 @@
 //! Package report projections. The reader owns XML; this module owns wire names and keys.
 
 use crate::{CompSBase, Double, KeyValuePair, ListOf, ReportModel, SBase, Uncertainty, build, pk};
+pub(crate) use sbml4humans_model::packages::{attr, children};
 use sbml4humans_model::{Attribute, Element, Extension, Model};
 use serde_json::{Value, json};
 
-pub(crate) fn attr<'a>(object: &'a Extension, key: &str) -> Option<&'a str> {
-    object
-        .attributes
-        .iter()
-        .find(|a| a.name == key)
-        .map(|a| a.value.as_str())
-}
 fn qualified<'a>(attributes: &'a [Attribute], package: &str, key: &str) -> Option<&'a str> {
     attributes
         .iter()
@@ -21,14 +15,6 @@ fn qualified<'a>(attributes: &'a [Attribute], package: &str, key: &str) -> Optio
                     .is_some_and(|ns| ns.contains(&format!("/{package}/version")))
         })
         .map(|a| a.value.as_str())
-}
-pub(crate) fn children<'a>(element: &'a Element, package: &str, list: &str) -> Vec<&'a Extension> {
-    element
-        .extensions
-        .iter()
-        .filter(|e| e.package == package && e.name == list)
-        .flat_map(|e| &e.children)
-        .collect()
 }
 fn direct<'a>(element: &'a Element, package: &str, name: &str) -> Option<&'a Extension> {
     element

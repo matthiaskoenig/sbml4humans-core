@@ -10,10 +10,7 @@ repository.workspace = true
 publish = false
 
 [dependencies]
-sbml4humans-model = { path = "../model" }
-roxmltree = "0.21"
-sha1 = "0.11"
-thiserror.workspace = true
+sbmlsim-reader = { git = "https://github.com/matthiaskoenig/sbmlsim-core.git", rev = "0574b018f4669df10c2dd62a403ce77a8b62c6a8" }
 
 [lints]
 workspace = true

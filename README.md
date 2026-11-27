@@ -1,6 +1,6 @@
 # sbml4humans-core
 
-A pure Rust SBML reader and report builder for [SBML4Humans](https://sbml4humans.de), with a native Python extension and import-free WebAssembly. The CLI, Python extension and browser worker use the same byte-to-report pipeline. Production builds do not link libSBML or run Python. [Native benchmarks](benchmarks/README.md) measure 6.2x faster complete report construction for E. coli core and 11.7x for Recon3D.
+A pure Rust SBML report builder for [SBML4Humans](https://sbml4humans.de), with a native Python extension and import-free WebAssembly. The CLI, Python extension and browser worker use the same byte-to-report pipeline. Production builds do not link libSBML or run Python. The lossless document model, pure Rust reader and equation generator are shared crates of sbmlsim-core. [Native benchmarks](benchmarks/README.md) measure 6.2x faster complete report construction for E. coli core and 11.7x for Recon3D.
 
 The report includes core objects, controlled RDF annotations and model history, unit rendering and inference, comp/fbc/qual/distrib objects, the complete reference graph, mathematical expressions and linked differential equations. The reader supports SBML Levels 1 through 3, Content MathML and Level 1 formulas, common XML encodings, namespace aliases, and plain or gzipped SBML. Each report preserves the application's `report/1` JSON contract.
 
@@ -100,7 +100,7 @@ The default host API accepts at most 100 MiB of input and decompressed source co
 | Crate | Role |
 | --- | --- |
 | `model` | Owned SBML data and mathematical AST |
-| `reader` | Pure Rust XML, metadata, package and math reader |
+| `reader` | Compatibility re-export of the shared `sbmlsim-reader` |
 | `report` | Report objects, units, graphs and equation analysis |
 | `core` | Shared plain/gzip byte-to-report pipeline |
 | `python` | PyO3 native Python extension |

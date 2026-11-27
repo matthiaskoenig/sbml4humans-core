@@ -11,3 +11,6 @@ publish = false
 
 [lints]
 workspace = true
+
+[dependencies]
+sbmlsim-document = { git = "https://github.com/matthiaskoenig/sbmlsim-core.git", rev = "0574b018f4669df10c2dd62a403ce77a8b62c6a8" }

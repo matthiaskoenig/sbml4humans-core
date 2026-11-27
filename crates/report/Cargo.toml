@@ -13,6 +13,7 @@ publish = false
 workspace = true
 
 [dependencies]
+sbmlsim-ode = { git = "https://github.com/matthiaskoenig/sbmlsim-core.git", rev = "0574b018f4669df10c2dd62a403ce77a8b62c6a8" }
 indexmap.workspace = true
 serde.workspace = true
 serde_json.workspace = true

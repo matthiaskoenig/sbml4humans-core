@@ -387,7 +387,7 @@ fn exponent_texts(mantissa: f64, exponent: i64) -> (String, Option<String>) {
 
 /// `value` as the `"%.15g"` of C writes it, the float format of libsbml.
 fn significant_15(value: f64) -> String {
-    super::formula::significant_15(value)
+    sbml4humans_model::formatting::significant_15(value)
 }
 
 /// `string(number)` of XPath, as libxml2 writes it (`xmlXPathFormatNumber`).

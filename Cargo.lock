@@ -3,6 +3,15 @@
 version = 4
 
 [[package]]
+name = "aho-corasick"
+version = "1.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c982642fa9e8606056828ee9a8505737230110bb1099153c79efe865c59d12ba"
+dependencies = [
+ "memchr",
+]
+
+[[package]]
 name = "block-buffer"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -154,6 +163,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 
 [[package]]
+name = "minijinja"
+version = "3.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "509eeb2603a84eccabb4d75f6ec8ba23b46bbf441aaeb863d6b83a5887fd51e4"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "minijinja-contrib"
+version = "3.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "64b62a39daf92d02b89f7888ab57f08d15d22dab862e5c95353253f91e9344f0"
+dependencies = [
+ "minijinja",
+]
+
+[[package]]
 name = "once_cell"
 version = "1.21.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -253,6 +280,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "regex"
+version = "1.13.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9807af0e638c12e753aa1b4e601791bf2a8f71274023c8bbeec12fc149950857"
+dependencies = [
+ "aho-corasick",
+ "memchr",
+ "regex-automata",
+ "regex-syntax",
+]
+
+[[package]]
+name = "regex-automata"
+version = "0.4.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "41d60ef07df457506a0a1a2073112eb4aae5733dbd2813c3da77d1b0fd441158"
+dependencies = [
+ "aho-corasick",
+ "memchr",
+ "regex-syntax",
+]
+
+[[package]]
+name = "regex-syntax"
+version = "0.8.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d902046e6a28a1e4c3cab97258a0ce11e994903f01c2d97a9447a0b3df85f4f6"
+
+[[package]]
 name = "roxmltree"
 version = "0.21.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -307,6 +363,9 @@ dependencies = [
 [[package]]
 name = "sbml4humans-model"
 version = "0.1.0"
+dependencies = [
+ "sbmlsim-document",
+]
 
 [[package]]
 name = "sbml4humans-oracles"
@@ -335,10 +394,7 @@ dependencies = [
 name = "sbml4humans-reader"
 version = "0.1.0"
 dependencies = [
- "roxmltree",
- "sbml4humans-model",
- "sha1",
- "thiserror",
+ "sbmlsim-reader",
 ]
 
 [[package]]
@@ -348,6 +404,7 @@ dependencies = [
  "indexmap",
  "sbml4humans-libsbml",
  "sbml4humans-model",
+ "sbmlsim-ode",
  "serde",
  "serde_json",
  "thiserror",
@@ -359,6 +416,42 @@ version = "0.1.0"
 dependencies = [
  "sbml4humans-core",
  "serde_json",
+]
+
+[[package]]
+name = "sbmlsim-document"
+version = "0.36.0"
+source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=0574b018f4669df10c2dd62a403ce77a8b62c6a8#0574b018f4669df10c2dd62a403ce77a8b62c6a8"
+dependencies = [
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "sbmlsim-ode"
+version = "0.36.0"
+source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=0574b018f4669df10c2dd62a403ce77a8b62c6a8#0574b018f4669df10c2dd62a403ce77a8b62c6a8"
+dependencies = [
+ "indexmap",
+ "minijinja",
+ "minijinja-contrib",
+ "regex",
+ "roxmltree",
+ "sbmlsim-document",
+ "sbmlsim-reader",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "sbmlsim-reader"
+version = "0.36.0"
+source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=0574b018f4669df10c2dd62a403ce77a8b62c6a8#0574b018f4669df10c2dd62a403ce77a8b62c6a8"
+dependencies = [
+ "roxmltree",
+ "sbmlsim-document",
+ "sha1",
+ "thiserror",
 ]
 
 [[package]]
