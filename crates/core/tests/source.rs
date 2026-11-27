@@ -60,3 +60,73 @@ fn corrupt_member_crc_is_reported_and_does_not_poison_the_next_source() {
         1
     );
 }
+
+#[test]
+fn nested_gzip_models_share_the_total_decoded_source_budget() {
+    use std::io::Write;
+    let mut writer = pymetadata_core::zip::Writer::new(Vec::new());
+    let manifest=br#"<omexManifest><content location="a.xml.gz" format="http://identifiers.org/combine.specifications/sbml"/><content location="b.xml.gz" format="http://identifiers.org/combine.specifications/sbml"/></omexManifest>"#;
+    writer.add_stored("manifest.xml", manifest).unwrap();
+    let xml = format!(
+        r#"<sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2"><model id="inner"><notes><p xmlns="http://www.w3.org/1999/xhtml">{}</p></notes></model></sbml>"#,
+        "x".repeat(900)
+    );
+    let mut gzip = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::default());
+    gzip.write_all(xml.as_bytes()).unwrap();
+    let compressed = gzip.finish().unwrap();
+    writer.add_stored("a.xml.gz", &compressed).unwrap();
+    writer.add_stored("b.xml.gz", &compressed).unwrap();
+    let bytes = writer.into_bytes().unwrap();
+    let mut options = SourceOptions::default();
+    options.limits.max_content_size = 1600;
+    assert!(bytes.len() < 1600 && xml.len() < 1600 && xml.len() * 2 > 1600);
+    let error = source(&bytes, &options).unwrap_err();
+    assert_eq!(error.kind, "refused");
+    assert!(error.message.contains("total source size"));
+    assert_eq!(
+        source(&bytes, &SourceOptions::default())
+            .unwrap()
+            .reports
+            .len(),
+        2
+    );
+}
+
+#[test]
+fn inferred_sedml_is_master_and_unknown_entries_are_not() {
+    let mut writer = pymetadata_core::zip::Writer::new(Vec::new());
+    writer
+        .add_stored("manifest.xml", b"<omexManifest/>")
+        .unwrap();
+    writer.add_stored("simulation.sedml", b"<sedML/>").unwrap();
+    writer.add_stored("unknown.dat", b"unknown").unwrap();
+    let result = source(&writer.into_bytes().unwrap(), &SourceOptions::default()).unwrap();
+    assert!(
+        result
+            .manifest
+            .entries
+            .iter()
+            .find(|e| e.location == "./simulation.sedml")
+            .unwrap()
+            .master
+    );
+    assert!(
+        !result
+            .manifest
+            .entries
+            .iter()
+            .find(|e| e.location == "./unknown.dat")
+            .unwrap()
+            .master
+    );
+}
+#[test]
+fn standalone_models_cannot_replace_derived_archive_locations() {
+    for location in [".", "./manifest.xml"] {
+        let options = SourceOptions {
+            location: location.into(),
+            ..SourceOptions::default()
+        };
+        assert_eq!(source(XML, &options).unwrap_err().kind, "refused");
+    }
+}

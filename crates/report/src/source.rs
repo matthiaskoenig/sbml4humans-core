@@ -109,6 +109,34 @@ impl<'a> Context<'a> {
             .enumerate()
             .map(|(i, s)| (s.location, i))
             .collect();
+        let model_ids: Vec<_> = reports
+            .iter()
+            .map(|report| {
+                let mut ids = HashMap::new();
+                for (i, model) in report.models.iter().enumerate() {
+                    if let Some(id) = model.sbase.id.as_deref() {
+                        ids.entry(id).or_insert(i);
+                    }
+                }
+                ids
+            })
+            .collect();
+        let mains: Vec<_> = reports
+            .iter()
+            .map(|r| r.models.iter().position(|m| m.kind == "model"))
+            .collect();
+        let external_ids: Vec<_> = reports
+            .iter()
+            .map(|report| {
+                let mut ids = HashMap::new();
+                for emd in &report.external_model_definitions {
+                    if let Some(id) = emd["id"].as_str() {
+                        ids.entry(id).or_insert(emd);
+                    }
+                }
+                ids
+            })
+            .collect();
         let mut resolutions = HashMap::new();
         for (home, report) in reports.iter().enumerate() {
             for root in &report.external_model_definitions {
@@ -149,15 +177,11 @@ impl<'a> Context<'a> {
                             .map(|(expected, actual)| expected.trim().eq_ignore_ascii_case(actual));
                         first = false;
                     }
-                    let target_report = &reports[target_entry];
                     let model_ref = emd["modelRef"].as_str();
-                    if let Some(model) = target_report.models.iter().position(|m| {
-                        if let Some(id) = model_ref {
-                            m.sbase.id.as_deref() == Some(id)
-                        } else {
-                            m.kind == "model"
-                        }
-                    }) {
+                    let model = model_ref.map_or(mains[target_entry], |id| {
+                        model_ids[target_entry].get(id).copied()
+                    });
+                    if let Some(model) = model {
                         break Resolution {
                             status: "resolved",
                             entry: fallback,
@@ -165,10 +189,8 @@ impl<'a> Context<'a> {
                             md5_matches: checksum,
                         };
                     }
-                    if let Some(next) = target_report
-                        .external_model_definitions
-                        .iter()
-                        .find(|e| model_ref.is_some() && e["id"].as_str() == model_ref)
+                    if let Some(next) =
+                        model_ref.and_then(|id| external_ids[target_entry].get(id).copied())
                     {
                         current = (target_entry, next);
                     } else {

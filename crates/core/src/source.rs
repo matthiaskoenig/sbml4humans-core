@@ -170,7 +170,7 @@ fn archive_members(
         };
         let format = guess_format(&suffix, &head);
         entries.push(
-            Entry::new(location, format, format == lookup_format("sed-ml"))
+            Entry::new(location, format, format == lookup_format("sedml"))
                 .map_err(archive_error)?,
         );
     }
@@ -203,14 +203,26 @@ pub fn source(source: &[u8], options: &SourceOptions) -> Result<SourceResponse, 
             let mut entries = Manifest::default().entries().to_vec();
             let entry = Entry::new(&options.location, lookup_format("sbml"), true)
                 .map_err(archive_error)?;
+            if derived(&entry.location) {
+                return Err(ReportError::refused(
+                    "A standalone model cannot use a reserved archive location.",
+                ));
+            }
             inputs.push((entry.location.clone(), source.to_vec()));
             entries.push(entry);
             entries
         };
+    let mut decoded_total = 0usize;
     let documents = inputs
         .iter()
         .map(|(_, bytes)| {
             let decoded = crate::decode(bytes, options.limits.max_content_size)?;
+            decoded_total = decoded_total.saturating_add(decoded.len());
+            if decoded_total > options.limits.max_content_size {
+                return Err(ReportError::refused(
+                    "The decompressed models exceed the total source size limit.",
+                ));
+            }
             let document = sbml4humans_reader::read(&decoded).map_err(|e| ReportError {
                 kind: "malformed",
                 message: e.to_string(),

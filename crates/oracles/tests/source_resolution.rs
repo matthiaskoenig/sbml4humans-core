@@ -87,3 +87,30 @@ fn chains_cycles_checksums_and_non_sbml_locations_preserve_resolution_statuses()
     assert_eq!(definitions[3]["resolution"]["status"], "notFound");
     assert_eq!(definitions[4]["resolution"]["status"], "remoteSource");
 }
+
+#[test]
+fn long_external_definition_chains_use_scoped_identifier_indices() {
+    let mut definitions = String::new();
+    for i in 0..600 {
+        let target = if i == 599 {
+            "shared".to_owned()
+        } else {
+            format!("e{}", i + 1)
+        };
+        definitions.push_str(&format!(r#"<comp:externalModelDefinition comp:id="e{i}" comp:source="a.xml" comp:modelRef="{target}"/>"#));
+    }
+    let model = document("", &definitions);
+    let sources = [SourceDocument {
+        location: "./a.xml",
+        document: &model,
+        checksum: None,
+    }];
+    let reports = build_many(&sources, &[], 10000).unwrap();
+    assert_eq!(reports[0].external_model_definitions.len(), 600);
+    assert!(
+        reports[0]
+            .external_model_definitions
+            .iter()
+            .all(|e| e["resolution"]["model"] == "shared/Model:shared")
+    );
+}

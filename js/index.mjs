@@ -28,7 +28,7 @@ export async function createReader({ source, workerFactory } = {}) {
   function dispatch() {
     if (disposed || !ready || active || !queue.length) return;
     active = queue.shift();
-    try { worker.postMessage({ type: active.type, id: active.id, source: active.source, options: active.options }, [active.source]); }
+    try { worker.postMessage({ type: active.type, id: active.id, source: active.source, options: active.options }, typeof active.source === "string" ? [] : [active.source]); }
     catch (error) { const job = active; active = undefined; finish(job, error); dispatch(); }
   }
   function restart() {
@@ -70,8 +70,12 @@ export async function createReader({ source, workerFactory } = {}) {
   function submit(type, input, { signal, transfer = false, ...options } = {}) {
     if (disposed) return Promise.reject(new Error("The SBML reader is disposed."));
     if (signal?.aborted) return Promise.reject(aborted());
-    const bytes = typeof input === "string" ? new TextEncoder().encode(input) : input instanceof ArrayBuffer ? new Uint8Array(input) : new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
-    const source = transfer && bytes.buffer instanceof ArrayBuffer && bytes.byteOffset === 0 && bytes.byteLength === bytes.buffer.byteLength ? bytes.buffer : bytes.slice().buffer;
+    let source;
+    if (typeof input === "string") source = input;
+    else {
+      const bytes = input instanceof ArrayBuffer ? new Uint8Array(input) : new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
+      source = transfer && bytes.buffer instanceof ArrayBuffer && bytes.byteOffset === 0 && bytes.byteLength === bytes.buffer.byteLength ? bytes.buffer : bytes.slice().buffer;
+    }
     return new Promise((resolve, reject) => {
       const job = { id: ++sequence, type, options, source, signal, resolve, reject };
       job.abort = () => {
