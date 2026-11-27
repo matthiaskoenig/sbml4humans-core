@@ -421,7 +421,7 @@ dependencies = [
 [[package]]
 name = "sbmlsim-document"
 version = "0.36.0"
-source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=0574b018f4669df10c2dd62a403ce77a8b62c6a8#0574b018f4669df10c2dd62a403ce77a8b62c6a8"
+source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=b37a7921a35b44f216fc84ad517a707be63b30af#b37a7921a35b44f216fc84ad517a707be63b30af"
 dependencies = [
  "serde_json",
  "thiserror",
@@ -430,7 +430,7 @@ dependencies = [
 [[package]]
 name = "sbmlsim-ode"
 version = "0.36.0"
-source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=0574b018f4669df10c2dd62a403ce77a8b62c6a8#0574b018f4669df10c2dd62a403ce77a8b62c6a8"
+source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=b37a7921a35b44f216fc84ad517a707be63b30af#b37a7921a35b44f216fc84ad517a707be63b30af"
 dependencies = [
  "indexmap",
  "minijinja",
@@ -446,7 +446,7 @@ dependencies = [
 [[package]]
 name = "sbmlsim-reader"
 version = "0.36.0"
-source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=0574b018f4669df10c2dd62a403ce77a8b62c6a8#0574b018f4669df10c2dd62a403ce77a8b62c6a8"
+source = "git+https://github.com/matthiaskoenig/sbmlsim-core.git?rev=b37a7921a35b44f216fc84ad517a707be63b30af#b37a7921a35b44f216fc84ad517a707be63b30af"
 dependencies = [
  "roxmltree",
  "sbmlsim-document",
