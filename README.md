@@ -23,7 +23,8 @@ Build and install a wheel with Python 3.12 or newer and Maturin:
 
 ```bash
 uv tool run maturin build --release --locked --out dist
-uv pip install dist/*.whl
+uv venv .venv
+uv pip install --python .venv/bin/python dist/*.whl
 ```
 
 ```python
