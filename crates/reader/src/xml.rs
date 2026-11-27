@@ -437,7 +437,11 @@ fn render_fragment(
                     }
                     let parent = node.parent_element();
                     let inherited = parent.and_then(|p| p.lookup_namespace_uri(namespace.name()));
-                    let explicit = node.tag_name().name() == "math" && namespace.name().is_none();
+                    let explicit = (node.tag_name().name() == "math" && namespace.name().is_none())
+                        || (node.tag_name().name() == "RDF"
+                            && node.tag_name().namespace()
+                                == Some("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                            && explicit_namespace(node, namespace.name()));
                     if inherited != Some(namespace.uri()) || explicit {
                         // A detached SBML object keeps the inherited core namespace implicit.
                         if depth == 0

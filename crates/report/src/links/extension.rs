@@ -323,6 +323,7 @@ pub(super) fn document_edges(b: &mut Builder, report: &Report) {
     }
 }
 struct Index<'a> {
+    entry: usize,
     base: ModelIndex<'a>,
     ports: HashMap<&'a str, View<'a>>,
     meta: HashMap<&'a str, &'a str>,
@@ -330,72 +331,141 @@ struct Index<'a> {
 }
 pub(super) struct Universe<'a> {
     indices: Vec<Index<'a>>,
-    models: HashMap<&'a str, usize>,
-    model_refs: HashMap<&'a str, &'a str>,
+    models: HashMap<(usize, &'a str), usize>,
+    model_refs: Vec<HashMap<&'a str, &'a str>>,
+    external: HashMap<(usize, &'a str), usize>,
+    homes: Vec<Vec<usize>>,
+    locations: Vec<Option<&'a str>>,
+    model_keys: Vec<&'a str>,
 }
 impl<'a> Universe<'a> {
     pub(super) fn new(report: &'a Report) -> Self {
-        let mut model_refs: HashMap<_, _> = report
-            .external_model_definitions
-            .iter()
-            .filter_map(|e| Some((e["id"].as_str()?, e["pk"].as_str()?)))
-            .collect();
+        Self::new_many(&[report], &[None])
+    }
+    pub(super) fn new_many(reports: &[&'a Report], locations: &[Option<&'a str>]) -> Self {
         let mut indices = Vec::new();
         let mut models = HashMap::new();
-        for (i, model) in report.models.iter().enumerate() {
-            if let Some(id) = model.sbase.id.as_deref() {
-                models.insert(id, i);
-                model_refs.insert(id, model.sbase.pk.as_str());
-            }
-            let ports = model
-                .list_of_ports
+        let mut model_refs = Vec::new();
+        let mut homes = Vec::new();
+        let mut by_pk = HashMap::new();
+        let mut model_keys = Vec::new();
+        for (entry, report) in reports.iter().enumerate() {
+            let mut refs: HashMap<_, _> = report
+                .external_model_definitions
                 .iter()
-                .map(View::Json)
-                .filter_map(|p| p.id().map(|id| (id, p)))
+                .filter_map(|e| Some((e["id"].as_str()?, e["pk"].as_str()?)))
                 .collect();
-            let mut meta = HashMap::new();
-            for root in roots(model) {
-                for node in with_extensions(root) {
-                    if node.pk() != model.sbase.pk
-                        && let Some(id) = node.string("metaId")
-                    {
-                        meta.entry(id).or_insert(node.pk());
+            let mut home = Vec::new();
+            for model in &report.models {
+                let i = indices.len();
+                home.push(i);
+                model_keys.push(model.sbase.pk.as_str());
+                by_pk.insert((entry, model.sbase.pk.as_str()), i);
+                if let Some(id) = model.sbase.id.as_deref() {
+                    models.insert((entry, id), i);
+                    refs.insert(id, model.sbase.pk.as_str());
+                }
+                let ports = model
+                    .list_of_ports
+                    .iter()
+                    .map(View::Json)
+                    .filter_map(|p| p.id().map(|id| (id, p)))
+                    .collect();
+                let mut meta = HashMap::new();
+                for root in roots(model) {
+                    for node in with_extensions(root) {
+                        if node.pk() != model.sbase.pk
+                            && let Some(id) = node.string("metaId")
+                        {
+                            meta.entry(id).or_insert(node.pk());
+                        }
                     }
                 }
+                let submodels = model
+                    .list_of_submodels
+                    .iter()
+                    .map(View::Json)
+                    .map(|s| (s.pk(), s))
+                    .collect();
+                indices.push(Index {
+                    entry,
+                    base: ModelIndex::new(model),
+                    ports,
+                    meta,
+                    submodels,
+                });
             }
-            let submodels = model
-                .list_of_submodels
-                .iter()
-                .map(View::Json)
-                .map(|s| (s.pk(), s))
-                .collect();
-            indices.push(Index {
-                base: ModelIndex::new(model),
-                ports,
-                meta,
-                submodels,
-            });
+            homes.push(home);
+            model_refs.push(refs);
+        }
+        let mut external = HashMap::new();
+        for (entry, report) in reports.iter().enumerate() {
+            for emd in &report.external_model_definitions {
+                let resolution = &emd["resolution"];
+                let target_entry = resolution["entry"]
+                    .as_str()
+                    .and_then(|loc| locations.iter().position(|p| *p == Some(loc)));
+                if let (Some(target_entry), Some(pk), Some(id)) = (
+                    target_entry,
+                    resolution["model"].as_str(),
+                    emd["id"].as_str(),
+                ) && let Some(&index) = by_pk.get(&(target_entry, pk))
+                {
+                    external.insert((entry, id), index);
+                }
+            }
         }
         Self {
             indices,
             models,
             model_refs,
+            external,
+            homes,
+            locations: locations.to_vec(),
+            model_keys,
+        }
+    }
+    pub(super) fn home(&self, entry: usize, model: usize) -> usize {
+        self.homes[entry][model]
+    }
+    fn edge(&self, b: &mut Builder, source: &str, target: (&str, usize), kind: EdgeKind) {
+        let location = self.locations[self.indices[target.1].entry];
+        b.edge_in(
+            source,
+            target.0,
+            kind,
+            location.filter(|location| Some(*location) != b.location.as_deref()),
+        );
+    }
+    pub(super) fn external_edge(&self, b: &mut Builder, emd: &serde_json::Value, entry: usize) {
+        if let Some(index) = emd["id"]
+            .as_str()
+            .and_then(|id| self.external.get(&(entry, id)))
+        {
+            self.edge(
+                b,
+                emd["pk"].as_str().unwrap_or_default(),
+                (self.model_keys[*index], *index),
+                EdgeKind::ModelRef,
+            );
         }
     }
     pub(super) fn index(&self, i: usize) -> &ModelIndex<'a> {
         &self.indices[i].base
     }
-    fn model_of(&self, submodel: View) -> Option<usize> {
-        submodel
-            .string("modelRef")
-            .and_then(|id| self.models.get(id))
+    fn model_of(&self, submodel: View, from: usize) -> Option<usize> {
+        let entry = self.indices[from].entry;
+        let id = submodel.string("modelRef")?;
+        self.models
+            .get(&(entry, id))
+            .or_else(|| self.external.get(&(entry, id)))
             .copied()
     }
     fn resolve(
         &self,
         reference: View,
         index: usize,
-        seen: &mut HashSet<String>,
+        seen: &mut HashSet<(usize, String)>,
         depth: usize,
     ) -> Option<(&'a str, usize)> {
         if depth > 256 {
@@ -404,13 +474,13 @@ impl<'a> Universe<'a> {
         let current = &self.indices[index];
         let target = if let Some(port) = reference.string("portRef") {
             let port = *current.ports.get(port)?;
-            if !seen.insert(port.pk().to_owned()) {
+            if !seen.insert((index, port.pk().to_owned())) {
                 return None;
             }
             let target = self.resolve(port, index, seen, depth + 1)?;
             if let Some(nested) = port.one("sbaseRef") {
                 let submodel = *self.indices[target.1].submodels.get(target.0)?;
-                self.resolve(nested, self.model_of(submodel)?, seen, depth + 1)?
+                self.resolve(nested, self.model_of(submodel, target.1)?, seen, depth + 1)?
             } else {
                 target
             }
@@ -424,28 +494,37 @@ impl<'a> Universe<'a> {
         };
         Some(target)
     }
-    fn resolve_into(&self, reference: View, submodel: View) -> Option<&'a str> {
+    fn resolve_into(
+        &self,
+        reference: View,
+        submodel: View,
+        from: usize,
+    ) -> Option<(&'a str, usize)> {
         let mut current = reference;
-        let mut index = self.model_of(submodel)?;
+        let mut index = self.model_of(submodel, from)?;
         let mut seen = HashSet::new();
         loop {
             let target = self.resolve(current, index, &mut seen, 0)?;
             if let Some(nested) = current.one("sbaseRef") {
                 let submodel = *self.indices[target.1].submodels.get(target.0)?;
-                index = self.model_of(submodel)?;
+                index = self.model_of(submodel, target.1)?;
                 current = nested;
             } else {
-                return Some(target.0);
+                return Some(target);
             }
         }
     }
-    fn port(&self, port: View, index: usize) -> Option<&'a str> {
-        let mut seen = HashSet::from([port.pk().to_owned()]);
+    fn port(&self, port: View, index: usize) -> Option<(&'a str, usize)> {
+        let mut seen = HashSet::from([(index, port.pk().to_owned())]);
         let target = self.resolve(port, index, &mut seen, 0)?;
         if let Some(nested) = port.one("sbaseRef") {
-            self.resolve_into(nested, *self.indices[target.1].submodels.get(target.0)?)
+            self.resolve_into(
+                nested,
+                *self.indices[target.1].submodels.get(target.0)?,
+                target.1,
+            )
         } else {
-            Some(target.0)
+            Some(target)
         }
     }
 }
@@ -483,8 +562,8 @@ pub(super) fn metadata_edges(
                     .copied()
                 {
                     direct_edge(b, replacement, submodel, kind);
-                    if let Some(target) = universe.resolve_into(replacement, submodel) {
-                        b.edge_pk(replacement.pk(), target, kind);
+                    if let Some(target) = universe.resolve_into(replacement, submodel, i) {
+                        universe.edge(b, replacement.pk(), target, kind);
                     }
                     if let Some(id) = replacement.string("deletion")
                         && let Some(deletion) = submodel
@@ -551,7 +630,7 @@ pub(super) fn model_edges(
     for submodel in model.list_of_submodels.iter().map(View::Json) {
         if let Some(target) = submodel
             .string("modelRef")
-            .and_then(|sid| universe.model_refs.get(sid))
+            .and_then(|sid| universe.model_refs[index.entry].get(sid))
         {
             b.edge_pk(submodel.pk(), target, EdgeKind::ModelRef);
         }
@@ -563,14 +642,14 @@ pub(super) fn model_edges(
         }
         for deletion in submodel.children("listOfDeletions") {
             direct_edge(b, submodel, deletion, EdgeKind::Deletion);
-            if let Some(target) = universe.resolve_into(deletion, submodel) {
-                b.edge_pk(deletion.pk(), target, EdgeKind::Deletion);
+            if let Some(target) = universe.resolve_into(deletion, submodel, i) {
+                universe.edge(b, deletion.pk(), target, EdgeKind::Deletion);
             }
         }
     }
     for port in model.list_of_ports.iter().map(View::Json) {
         if let Some(target) = universe.port(port, i) {
-            b.edge_pk(port.pk(), target, EdgeKind::Port);
+            universe.edge(b, port.pk(), target, EdgeKind::Port);
         }
     }
     for gp in model.list_of_gene_products.iter().map(View::Json) {

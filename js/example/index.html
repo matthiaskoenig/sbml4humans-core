@@ -8,7 +8,7 @@
 </style>
 <h1>SBML Rust reader</h1>
 <p>Read SBML locally with native WebAssembly. Parsing, units, package objects, equations and graph construction run in a worker. Your file stays in this browser.</p>
-<div class="actions"><button id="example" disabled>Load example</button><label class="file">Open SBML <input id="file" type="file" disabled accept=".xml,.sbml,.gz"></label><button id="cancel" disabled>Cancel</button><button id="download" disabled>Download report</button></div>
+<div class="actions"><button id="example" disabled>Load example</button><label class="file">Open SBML <input id="file" type="file" disabled accept=".xml,.sbml,.gz,.omex,.zip"></label><button id="cancel" disabled>Cancel</button><button id="download" disabled>Download report</button></div>
 <p id="status" role="status" data-testid="status">Starting parser…</p><pre id="output">Choose an SBML file or load the bundled example.</pre>
 <script type="module">
 import { createReader } from '../index.mjs';
@@ -17,7 +17,7 @@ let reader,controller,report;
 try{reader=await createReader();status.textContent='Ready';document.querySelector('#example').disabled=false;document.querySelector('#file').disabled=false;}catch(error){status.textContent=error.message;}
 async function read(source,label){
  controller?.abort();const current=controller=new AbortController();cancel.disabled=false;download.disabled=true;status.textContent=`Reading ${label}…`;const started=performance.now();
- try{const result=await reader.report(source,{signal:current.signal});report=result;const model=result.models[0];status.textContent=`Ready: ${model?.id||label}, ${(performance.now()-started).toFixed(0)} ms`;output.textContent=JSON.stringify(result,null,2);download.disabled=false;}
+ try{const result=await reader.source(source,{signal:current.signal});report=result;const model=Object.values(result.reports)[0]?.report.models[0];status.textContent=`Ready: ${model?.id||label}, ${(performance.now()-started).toFixed(0)} ms`;output.textContent=JSON.stringify(result,null,2);download.disabled=false;}
  catch(error){if(controller===current){status.textContent=error.name==='AbortError'?'Cancelled':error.message;}}
  finally{if(controller===current)cancel.disabled=true;}
 }

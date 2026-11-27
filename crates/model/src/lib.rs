@@ -15,4 +15,4 @@ pub use document::{
     SpeciesReference, Trigger, Unit, UnitDefinition,
 };
 pub use element::{Attribute, Creator, CvTerm, Element, Extension, History, ListMetadata};
-pub use math::{Ast, AstKind, AstNumber, MAX_AST_DEPTH};
+pub use math::{Ast, AstKind, AstNumber, MAX_AST_DEPTH, scientific_value};

@@ -458,3 +458,15 @@ impl fmt::Debug for Ast {
         Ok(())
     }
 }
+
+/// Evaluate a decimal scientific literal with the same rounding on native and WASM targets.
+///
+/// Platform `pow` implementations can differ by one ULP even for integer powers
+/// of ten. Decimal conversion fixes that intermediate rounding before multiplying
+/// the separately authored binary64 mantissa, as the native SBML reader does.
+pub fn scientific_value(mantissa: f64, exponent: i64) -> f64 {
+    let power = format!("1e{exponent}")
+        .parse::<f64>()
+        .unwrap_or(if exponent < 0 { 0.0 } else { f64::INFINITY });
+    mantissa * power
+}

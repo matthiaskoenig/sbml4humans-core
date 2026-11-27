@@ -1,7 +1,12 @@
 //! One report pipeline for the CLI, native Python module and browser worker.
 
 use serde::Serialize;
+use std::borrow::Cow;
 use std::io::Read;
+mod source;
+pub use source::{
+    SourceLimits, SourceManifest, SourceOptions, SourceResponse, source, source_json,
+};
 
 /// The maximum uncompressed XML input accepted by the default host API.
 pub const MAX_INPUT_BYTES: usize = 100 * 1024 * 1024;
@@ -28,31 +33,8 @@ impl ReportError {
 
 /// Build a typed report from plain or gzipped SBML bytes.
 pub fn report(source: &[u8]) -> Result<sbml4humans_report::Report, ReportError> {
-    if source.len() > MAX_INPUT_BYTES {
-        return Err(ReportError::refused(format!(
-            "The SBML source exceeds {MAX_INPUT_BYTES} bytes."
-        )));
-    }
-    let decoded;
-    let source = if source.starts_with(&[0x1f, 0x8b]) {
-        let mut output = Vec::new();
-        flate2::read::MultiGzDecoder::new(source)
-            .take(MAX_INPUT_BYTES as u64 + 1)
-            .read_to_end(&mut output)
-            .map_err(|e| ReportError {
-                kind: "malformed",
-                message: format!("Invalid gzip SBML: {e}"),
-            })?;
-        if output.len() > MAX_INPUT_BYTES {
-            return Err(ReportError::refused(format!(
-                "The decompressed SBML source exceeds {MAX_INPUT_BYTES} bytes."
-            )));
-        }
-        decoded = output;
-        decoded.as_slice()
-    } else {
-        source
-    };
+    let decoded = decode(source, MAX_INPUT_BYTES)?;
+    let source = decoded.as_ref();
     let document = sbml4humans_reader::read(source).map_err(|error| ReportError {
         kind: "malformed",
         message: error.to_string(),
@@ -74,6 +56,31 @@ pub fn report_json(source: &[u8]) -> Result<Vec<u8>, ReportError> {
 /// The shared wire contract, independent of host and reader implementation.
 pub fn contract() -> &'static str {
     sbml4humans_abi::REPORT_CONTRACT
+}
+
+pub(crate) fn decode(source: &[u8], limit: usize) -> Result<Cow<'_, [u8]>, ReportError> {
+    if source.len() > limit {
+        return Err(ReportError::refused(format!(
+            "The SBML source exceeds {limit} bytes."
+        )));
+    }
+    if !source.starts_with(&[31, 139]) {
+        return Ok(Cow::Borrowed(source));
+    }
+    let mut output = Vec::new();
+    flate2::read::MultiGzDecoder::new(source)
+        .take(limit.saturating_add(1) as u64)
+        .read_to_end(&mut output)
+        .map_err(|e| ReportError {
+            kind: "malformed",
+            message: format!("Invalid gzip SBML: {e}"),
+        })?;
+    if output.len() > limit {
+        return Err(ReportError::refused(format!(
+            "The decompressed SBML source exceeds {limit} bytes."
+        )));
+    }
+    Ok(Cow::Owned(output))
 }
 
 #[cfg(test)]

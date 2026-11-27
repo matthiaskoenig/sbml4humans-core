@@ -1,0 +1,281 @@
+{
+  "sbml4humans_commit": "15f8e40243df37ba481f21cd648bb71283d6f82e",
+  "files": [
+    {
+      "origin": "omex/CombineArchiveShowCase.omex",
+      "source": "000.omex",
+      "report": "000.json.gz"
+    },
+    {
+      "origin": "omex/CompModels.omex",
+      "source": "001.omex",
+      "report": "001.json.gz"
+    },
+    {
+      "origin": "omex/icg_model.omex",
+      "source": "002.omex",
+      "report": "002.json.gz"
+    },
+    {
+      "origin": "omex/omeprazole_model.omex",
+      "source": "003.omex",
+      "report": "003.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000001.omex",
+      "source": "004.omex",
+      "report": "004.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000002.omex",
+      "source": "005.omex",
+      "report": "005.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000003.omex",
+      "source": "006.omex",
+      "report": "006.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000004.omex",
+      "source": "007.omex",
+      "report": "007.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000005.omex",
+      "source": "008.omex",
+      "report": "008.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000006.omex",
+      "source": "009.omex",
+      "report": "009.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000007.omex",
+      "source": "010.omex",
+      "report": "010.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000008.omex",
+      "source": "011.omex",
+      "report": "011.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000009.omex",
+      "source": "012.omex",
+      "report": "012.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000010.omex",
+      "source": "013.omex",
+      "report": "013.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000011.omex",
+      "source": "014.omex",
+      "report": "014.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000012.omex",
+      "source": "015.omex",
+      "report": "015.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000013.omex",
+      "source": "016.omex",
+      "report": "016.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000014.omex",
+      "source": "017.omex",
+      "report": "017.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000015.omex",
+      "source": "018.omex",
+      "report": "018.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000016.omex",
+      "source": "019.omex",
+      "report": "019.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000017.omex",
+      "source": "020.omex",
+      "report": "020.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000018.omex",
+      "source": "021.omex",
+      "report": "021.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000019.omex",
+      "source": "022.omex",
+      "report": "022.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000020.omex",
+      "source": "023.omex",
+      "report": "023.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000021.omex",
+      "source": "024.omex",
+      "report": "024.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000022.omex",
+      "source": "025.omex",
+      "report": "025.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000023.omex",
+      "source": "026.omex",
+      "report": "026.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000024.omex",
+      "source": "027.omex",
+      "report": "027.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000025.omex",
+      "source": "028.omex",
+      "report": "028.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000026.omex",
+      "source": "029.omex",
+      "report": "029.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000027.omex",
+      "source": "030.omex",
+      "report": "030.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000028.omex",
+      "source": "031.omex",
+      "report": "031.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000029.omex",
+      "source": "032.omex",
+      "report": "032.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000030.omex",
+      "source": "033.omex",
+      "report": "033.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000031.omex",
+      "source": "034.omex",
+      "report": "034.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000032.omex",
+      "source": "035.omex",
+      "report": "035.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000033.omex",
+      "source": "036.omex",
+      "report": "036.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000034.omex",
+      "source": "037.omex",
+      "report": "037.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000035.omex",
+      "source": "038.omex",
+      "report": "038.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000036.omex",
+      "source": "039.omex",
+      "report": "039.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000037.omex",
+      "source": "040.omex",
+      "report": "040.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000038.omex",
+      "source": "041.omex",
+      "report": "041.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000039.omex",
+      "source": "042.omex",
+      "report": "042.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000040.omex",
+      "source": "043.omex",
+      "report": "043.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000041.omex",
+      "source": "044.omex",
+      "report": "044.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000042.omex",
+      "source": "045.omex",
+      "report": "045.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000043.omex",
+      "source": "046.omex",
+      "report": "046.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000044.omex",
+      "source": "047.omex",
+      "report": "047.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000045.omex",
+      "source": "048.omex",
+      "report": "048.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000046.omex",
+      "source": "049.omex",
+      "report": "049.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000047.omex",
+      "source": "050.omex",
+      "report": "050.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000048.omex",
+      "source": "051.omex",
+      "report": "051.json.gz"
+    },
+    {
+      "origin": "biomodels/BIOMD0000000049.omex",
+      "source": "052.omex",
+      "report": "052.json.gz"
+    },
+    {
+      "origin": "synthetic/fan_out",
+      "source": "fan_out.xml",
+      "report": "fan_out.json.gz"
+    },
+    {
+      "origin": "synthetic/at_budget",
+      "source": "at_budget.xml",
+      "report": "at_budget.json.gz",
+      "budget": 235
+    }
+  ]
+}

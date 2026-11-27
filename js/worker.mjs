@@ -12,10 +12,11 @@ if (typeof globalThis.postMessage === "function") {
   listen = (handler) => parentPort.on("message", handler);
 }
 let reader;
-listen(async ({ type, module, id, source }) => {
+listen(async ({ type, module, id, source, options }) => {
   try {
     if (type === "init") { reader = await instantiateReader(module); send({ type: "ready" }); }
     else if (type === "report") { send({ type: "report", id, result: reader.report(source) }); }
+    else if (type === "source") { send({ type: "report", id, result: reader.source(source, options) }); }
     else if (type === "release") { reader?.release(); }
   } catch (error) {
     send({ type: "error", id, message: error.message, kind: error.kind ?? "internal", fatal: error instanceof WebAssembly.RuntimeError });

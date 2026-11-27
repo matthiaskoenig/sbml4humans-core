@@ -30,7 +30,7 @@ pub extern "C" fn report_alloc(length: usize) -> *mut u8 {
         let mut state = state.borrow_mut();
         state.input.clear();
         state.output.clear();
-        if length > MAX_INPUT_BYTES {
+        if length > MAX_INPUT_BYTES + 65536 {
             fail(
                 &mut state,
                 ReportError::refused("The SBML source exceeds the input budget."),
@@ -59,6 +59,38 @@ pub extern "C" fn report_build() -> i32 {
     BUFFERS.with(|state| {
         let mut state = state.borrow_mut();
         let result = sbml4humans_core::report_json(&state.input);
+        state.input.clear();
+        match result {
+            Ok(output) => {
+                state.output = output;
+                0
+            }
+            Err(error) => fail(&mut state, error),
+        }
+    })
+}
+
+/// Build a complete source response. Input is UTF-8 options JSON followed by source bytes.
+#[unsafe(no_mangle)]
+pub extern "C" fn report_source_build(options_length: usize) -> i32 {
+    BUFFERS.with(|state| {
+        let mut state = state.borrow_mut();
+        if options_length > 65536 || options_length > state.input.len() {
+            return fail(
+                &mut state,
+                ReportError::refused("Invalid source options length."),
+            );
+        }
+        let options = serde_json::from_slice::<sbml4humans_core::SourceOptions>(
+            &state.input[..options_length],
+        );
+        let result = match options {
+            Ok(options) => sbml4humans_core::source_json(&state.input[options_length..], &options),
+            Err(error) => Err(ReportError {
+                kind: "malformed",
+                message: format!("Invalid source options: {error}"),
+            }),
+        };
         state.input.clear();
         match result {
             Ok(output) => {
@@ -121,7 +153,7 @@ mod tests {
     }
     #[test]
     fn a_refused_allocation_drops_previous_input() {
-        assert!(report_alloc(MAX_INPUT_BYTES + 1).is_null());
+        assert!(report_alloc(MAX_INPUT_BYTES + 65537).is_null());
         assert_eq!(report_build(), 1);
     }
 }

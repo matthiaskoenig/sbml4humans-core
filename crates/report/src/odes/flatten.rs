@@ -68,8 +68,14 @@ fn ext<'a>(element: &'a Element, name: &str) -> Option<&'a Extension> {
 fn id(element: &Element) -> &str {
     element.id.as_deref().unwrap_or("")
 }
-fn external_error(document: &Document) -> Option<String> {
-    let external = children(&document.element, "comp", "listOfExternalModelDefinitions");
+fn external_error(
+    document: &Document,
+    context: Option<(&crate::source::Context, usize)>,
+) -> Option<String> {
+    let external = children(&document.element, "comp", "listOfExternalModelDefinitions")
+        .into_iter()
+        .filter(|e| context.is_none_or(|(c, entry)| c.model(entry, id(&e.element)).is_none()))
+        .collect::<Vec<_>>();
     if external.is_empty() {
         return None;
     }
@@ -122,6 +128,7 @@ fn external_error(document: &Document) -> Option<String> {
 }
 type PendingInstance<'a> = (
     &'a Model,
+    usize,
     String,
     Option<(usize, &'a Extension)>,
     Vec<usize>,
@@ -135,7 +142,10 @@ struct Flatten<'a> {
     conversion: HashMap<(usize, usize), (usize, String)>,
 }
 impl<'a> Flatten<'a> {
-    fn new(document: &'a Document) -> Result<Self, String> {
+    fn new(
+        document: &'a Document,
+        context: Option<(&crate::source::Context<'a>, usize)>,
+    ) -> Result<Self, String> {
         let model = document
             .model
             .as_ref()
@@ -151,17 +161,22 @@ impl<'a> Flatten<'a> {
             names: HashMap::new(),
             conversion: HashMap::new(),
         };
-        let mut pending: Vec<PendingInstance> =
-            vec![(model, String::new(), None, Vec::<usize>::new())];
+        let mut pending: Vec<PendingInstance> = vec![(
+            model,
+            context.map_or(0, |(_, entry)| entry),
+            String::new(),
+            None,
+            Vec::<usize>::new(),
+        )];
         let mut count = 0;
-        while let Some((model, prefix, parent, mut ancestry)) = pending.pop() {
+        while let Some((model, entry, prefix, parent, mut ancestry)) = pending.pop() {
             let identity = std::ptr::from_ref(model) as usize;
             if ancestry.contains(&identity) {
                 return Err("The comp submodels instantiate their model in a cycle.".into());
             }
             ancestry.push(identity);
             count += core(model).len();
-            if count > 10_000 {
+            if count > context.map_or(10_000, |(c, _)| c.budget) {
                 return Err("The expanded comp model exceeds 10000 SBML elements.".into());
             }
             let i = this.instances.len();
@@ -188,13 +203,19 @@ impl<'a> Flatten<'a> {
             {
                 let sid = id(&submodel.element);
                 let model_ref = attr(submodel, "modelRef").unwrap_or("");
-                let Some(target) = definitions.get(model_ref) else {
+                let target = if let Some((context, _)) = context {
+                    context.model(entry, model_ref)
+                } else {
+                    definitions.get(model_ref).map(|model| (entry, *model))
+                };
+                let Some((target_entry, target)) = target else {
                     return Err(format!(
                         "The submodel '{sid}' references unknown model '{model_ref}'."
                     ));
                 };
                 pending.push((
-                    *target,
+                    target,
+                    target_entry,
                     format!("{prefix}{sid}__"),
                     Some((i, submodel)),
                     ancestry.clone(),
@@ -677,11 +698,14 @@ impl<'a> Flatten<'a> {
     }
 }
 
-pub(super) fn flatten(document: &Document) -> Result<Model, String> {
-    if let Some(error) = external_error(document) {
+pub(super) fn flatten<'a>(
+    document: &'a Document,
+    context: Option<(&crate::source::Context<'a>, usize)>,
+) -> Result<Model, String> {
+    if let Some(error) = external_error(document, context) {
         return Err(error);
     }
-    let mut expanded = Flatten::new(document)?;
+    let mut expanded = Flatten::new(document, context)?;
     expanded.aliases()?;
     let mut models = (0..expanded.instances.len()).map(|i| expanded.model(i));
     let Some(mut model) = models.next() else {
