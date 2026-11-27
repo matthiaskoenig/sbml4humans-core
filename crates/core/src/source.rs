@@ -180,15 +180,17 @@ fn archive_members(
 ///
 /// # Errors
 /// Invalid XML/ZIP or a declared unreadable SBML entry aborts the source; limits refuse it before inflation.
-pub fn source(source: &[u8], options: &SourceOptions) -> Result<SourceResponse, ReportError> {
+pub fn prepare(source: &[u8], options: &SourceOptions) -> Result<PreparedSource, ReportError> {
     if source.len() > options.limits.max_content_size {
         return Err(ReportError::refused(
             "The source exceeds the input size limit.",
         ));
     }
     let mut inputs = Vec::new();
+    let mut archive = false;
     let entries =
         if let Some((reader, entries, members)) = archive_members(source, &options.limits)? {
+            archive = true;
             for entry in entries.iter().filter(|entry| sbml(&entry.format)) {
                 let index = members[&entry.location];
                 inputs.push((
@@ -212,75 +214,205 @@ pub fn source(source: &[u8], options: &SourceOptions) -> Result<SourceResponse, 
             entries.push(entry);
             entries
         };
+    let mut prepared = prepare_inputs(entries, inputs, &options.limits)?;
+    prepared.archive = archive;
+    Ok(prepared)
+}
+
+fn prepare_inputs(
+    entries: Vec<Entry>,
+    inputs: Vec<(String, Vec<u8>)>,
+    limits: &SourceLimits,
+) -> Result<PreparedSource, ReportError> {
     let mut decoded_total = 0usize;
-    let documents = inputs
-        .iter()
-        .map(|(_, bytes)| {
-            let decoded = crate::decode(bytes, options.limits.max_content_size)?;
-            decoded_total = decoded_total.saturating_add(decoded.len());
-            if decoded_total > options.limits.max_content_size {
-                return Err(ReportError::refused(
-                    "The decompressed models exceed the total source size limit.",
-                ));
-            }
-            let document = sbml4humans_reader::read(&decoded).map_err(|e| ReportError {
-                kind: "malformed",
-                message: e.to_string(),
-            })?;
-            if document.model.is_none() {
-                return Err(ReportError {
-                    kind: "malformed",
-                    message: "No SBML model could be read.".into(),
-                });
-            }
-            Ok(document)
-        })
-        .collect::<Result<Vec<_>, ReportError>>()?;
-    let checksums: Vec<_> = inputs
-        .iter()
-        .map(|(_, bytes)| {
-            Md5::digest(bytes)
-                .iter()
-                .map(|byte| format!("{byte:02x}"))
-                .collect::<String>()
-        })
-        .collect();
-    let sources: Vec<_> = inputs
-        .iter()
-        .zip(&documents)
-        .zip(&checksums)
-        .map(|(((location, _), document), checksum)| SourceDocument {
-            location,
-            document,
-            checksum: Some(checksum),
-        })
-        .collect();
-    let locations: Vec<_> = entries.iter().map(|e| e.location.as_str()).collect();
-    let built = sbml4humans_report::build_many(&sources, &locations, options.max_expanded_elements)
-        .map_err(|e| ReportError {
+    let mut prepared = Vec::with_capacity(inputs.len());
+    for (location, bytes) in inputs {
+        let checksum = Md5::digest(&bytes)
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect();
+        let decoded = crate::decode(&bytes, limits.max_content_size)?;
+        decoded_total = decoded_total.saturating_add(decoded.len());
+        if decoded_total > limits.max_content_size {
+            return Err(ReportError::refused(
+                "The decompressed models exceed the total source size limit.",
+            ));
+        }
+        let document = sbml4humans_reader::read(&decoded).map_err(|e| ReportError {
             kind: "malformed",
             message: e.to_string(),
         })?;
-    let reports = inputs
-        .into_iter()
-        .zip(built)
-        .map(|((location, _), report)| {
-            (
-                location,
-                ReportEntry {
-                    report,
-                    debug: DebugInfo {
-                        json_report_time: "0.0 [s]".into(),
-                    },
-                },
-            )
-        })
-        .collect();
-    Ok(SourceResponse {
-        uid: options.uid.clone(),
-        manifest: SourceManifest { entries },
-        reports,
+        if document.model.is_none() {
+            return Err(ReportError {
+                kind: "malformed",
+                message: "No SBML model could be read.".into(),
+            });
+        }
+        // Standalone and uncompressed archive entries keep their admitted allocation.
+        let xml = match decoded {
+            std::borrow::Cow::Borrowed(_) => bytes,
+            std::borrow::Cow::Owned(decoded) => decoded,
+        };
+        prepared.push(PreparedEntry {
+            location,
+            document,
+            xml,
+            checksum,
+        });
+    }
+    Ok(PreparedSource {
+        manifest: entries,
+        entries: prepared,
+        unavailable: vec![],
+        archive: false,
     })
+}
+
+/// One admitted model, retained for reports, validation and exports.
+pub struct PreparedEntry {
+    /// Normalized manifest location.
+    pub location: String,
+    /// The shared pure Rust reader's document.
+    pub document: sbml4humans_model::Document,
+    /// Decompressed original bytes, preserving source encoding and diagnostics.
+    pub xml: Vec<u8>,
+    /// MD5 of the original entry before gzip decoding.
+    pub checksum: String,
+}
+/// A source admitted once through the shared archive and SBML readers.
+pub struct PreparedSource {
+    /// Whether the input is a COMBINE archive rather than standalone SBML.
+    pub archive: bool,
+    /// Complete manifest, including non-SBML entries.
+    pub manifest: Vec<Entry>,
+    /// Models in source order.
+    pub entries: Vec<PreparedEntry>,
+    /// Trusted companions which exist but hold no readable model.
+    pub unavailable: Vec<String>,
+}
+impl PreparedSource {
+    /// Borrow the admitted documents for shared report analysis.
+    pub fn documents(&self) -> Vec<SourceDocument<'_>> {
+        self.entries
+            .iter()
+            .map(|entry| SourceDocument {
+                location: &entry.location,
+                document: &entry.document,
+                checksum: Some(&entry.checksum),
+            })
+            .collect()
+    }
+    /// All known locations, including unreadable trusted companions.
+    pub fn locations(&self) -> Vec<&str> {
+        self.manifest
+            .iter()
+            .map(|e| e.location.as_str())
+            .chain(self.unavailable.iter().map(String::as_str))
+            .collect()
+    }
+    /// Build canonical element positions and comp expansion estimates without equations.
+    ///
+    /// # Errors
+    /// Returns an error if a report projection cannot be built.
+    pub fn indices(&self) -> Result<Vec<sbml4humans_report::SourceIndex>, ReportError> {
+        sbml4humans_report::source_indices(&self.documents(), &self.locations())
+            .map_err(report_error)
+    }
+    /// Export an explicit SBML entry or the first master model from this source.
+    ///
+    /// # Errors
+    /// Returns selection, comp-budget or shared generator errors.
+    pub fn export(
+        &self,
+        format: &str,
+        location: Option<&str>,
+        simulator: bool,
+        budget: usize,
+    ) -> Result<serde_json::Value, ReportError> {
+        let entry = if let Some(location) = location {
+            self.entries
+                .iter()
+                .position(|entry| entry.location == location)
+                .ok_or_else(|| ReportError {
+                    kind: "malformed",
+                    message: format!("The source has no SBML entry '{location}'."),
+                })?
+        } else {
+            self.manifest
+                .iter()
+                .filter(|entry| entry.master)
+                .find_map(|master| {
+                    self.entries
+                        .iter()
+                        .position(|entry| entry.location == master.location)
+                })
+                .unwrap_or(0)
+        };
+        let exported = sbml4humans_report::export_model(
+            &self.documents(),
+            &self.locations(),
+            entry,
+            format,
+            simulator,
+            budget,
+        )
+        .map_err(|message| ReportError {
+            kind: "malformed",
+            message,
+        })?;
+        serde_json::to_value(exported).map_err(|e| ReportError {
+            kind: "internal",
+            message: e.to_string(),
+        })
+    }
+    /// Build the complete response from the admitted documents.
+    ///
+    /// # Errors
+    /// Returns an error if a report cannot be built.
+    pub fn report(&self, options: &SourceOptions) -> Result<SourceResponse, ReportError> {
+        let built = sbml4humans_report::build_many(
+            &self.documents(),
+            &self.locations(),
+            options.max_expanded_elements,
+        )
+        .map_err(report_error)?;
+        let reports = self
+            .entries
+            .iter()
+            .zip(built)
+            .map(|(entry, report)| {
+                (
+                    entry.location.clone(),
+                    ReportEntry {
+                        report,
+                        debug: DebugInfo {
+                            json_report_time: "0.0 [s]".into(),
+                        },
+                    },
+                )
+            })
+            .collect();
+        Ok(SourceResponse {
+            uid: options.uid.clone(),
+            manifest: SourceManifest {
+                entries: self.manifest.clone(),
+            },
+            reports,
+        })
+    }
+}
+fn report_error(error: sbml4humans_report::BuildError) -> ReportError {
+    ReportError {
+        kind: "malformed",
+        message: error.to_string(),
+    }
+}
+/// Read and report plain/gzipped SBML or a COMBINE archive, entirely in memory.
+///
+/// # Errors
+/// Returns input or report construction errors.
+pub fn source(source: &[u8], options: &SourceOptions) -> Result<SourceResponse, ReportError> {
+    prepare(source, options)?.report(options)
 }
 /// Serialize a complete source response without creating host objects per SBML element.
 ///

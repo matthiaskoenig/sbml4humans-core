@@ -54,6 +54,37 @@ class NativeValidationTests(unittest.TestCase):
             issues = json.loads(session.issues_json("model.xml"))
             self.assertEqual([issue["rule"] for issue in issues], [10101])
 
+    def test_source_preparation_uses_report_keys_and_keeps_limits(self) -> None:
+        path = ROOT / "testdata" / "validation.xml"
+        session = core.validation_source(str(path))
+        self.assertEqual(session.locations, ["./model.xml"])
+        result = json.loads(session.entry_json("model.xml"))
+        self.assertIsNone(result["skipped"])
+        issues = result["issues"]
+        self.assertIn(10601, {issue["rule"] for issue in issues})
+        self.assertIn("validation/Parameter:k1", {issue["pk"] for issue in issues})
+        for operation in (
+            core.validation_source,
+            lambda path, **options: core.ode_path_json(path, "python", **options),
+        ):
+            with self.assertRaises(ValueError) as raised:
+                operation(str(path), limits={"maxContentSize": 1})
+            self.assertEqual(raised.exception.kind, "refused")
+        self.assertEqual(result, json.loads(session.entry_json("./model.xml")))
+
+    def test_comp_budget_cannot_be_bypassed_with_a_location_alias(self) -> None:
+        session = core.validation_source(
+            str(ROOT / "testdata" / "minimal_model_comp.xml"),
+            trusted=True,
+            max_expanded_elements=1,
+        )
+        expected = json.loads(session.entry_json(session.locations[0]))
+        self.assertEqual(expected["skipped"], "expandedSize")
+        self.assertEqual(
+            expected,
+            json.loads(session.entry_json(session.locations[0].removeprefix("./"))),
+        )
+
     @unittest.skipUnless(sys.platform == "linux", "requires Linux address-space limits")
     def test_native_allocation_failure_is_memory_error(self) -> None:
         """An isolated native allocation failure keeps the host's memory status."""

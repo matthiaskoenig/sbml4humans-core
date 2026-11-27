@@ -20,4 +20,7 @@ pub use double::Double;
 pub use math::{MathError, formula, latex, math};
 pub use types::*;
 
-pub use source::{SourceDocument, build_many, normalize_location, resolve_source};
+pub use source::{
+    SourceDocument, SourceIndex, SourcePositions, build_many, export_model, normalize_location,
+    resolve_source, source_indices,
+};
