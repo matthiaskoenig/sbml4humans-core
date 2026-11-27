@@ -3,9 +3,15 @@
 use serde::Serialize;
 use std::borrow::Cow;
 use std::io::Read;
+#[cfg(not(target_arch = "wasm32"))]
+mod filesystem;
+#[cfg(not(target_arch = "wasm32"))]
+pub use filesystem::prepare_path;
+pub use sbml4humans_report::normalize_location;
 mod source;
 pub use source::{
-    SourceLimits, SourceManifest, SourceOptions, SourceResponse, source, source_json,
+    PreparedEntry, PreparedSource, SourceLimits, SourceManifest, SourceOptions, SourceResponse,
+    prepare, source, source_json,
 };
 
 /// The maximum uncompressed XML input accepted by the default host API.

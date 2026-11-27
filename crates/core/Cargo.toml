@@ -15,6 +15,7 @@ flate2.workspace = true
 pymetadata-core = { git = "https://github.com/matthiaskoenig/pymetadata-core.git", rev = "ac9ffe56b0da7ac2910e933eb0322184e77e0afa" }
 indexmap.workspace = true
 md-5 = "0.11"
+sbml4humans-model = { path = "../model" }
 sbml4humans-reader = { path = "../reader" }
 sbml4humans-report = { path = "../report" }
 sbml4humans-abi = { path = "../abi" }
@@ -24,3 +25,6 @@ thiserror.workspace = true
 
 [lints]
 workspace = true
+
+[dev-dependencies]
+tempfile = "3"

@@ -102,6 +102,27 @@ int s4hv_check(SBMLDocument* doc, void* context, Lookup lookup) {
     catch (...) { return -1; }
 }
 
+// Canonical keys come from Rust. Native positions add unreported ListOf owners
+// and retain libSBML's depth ordering for elements sharing source coordinates.
+int s4hv_positions(SBMLDocument* doc, void* context,
+    void (*visit)(void*, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, int)) {
+    try {
+        std::unique_ptr<List> elements(doc->getAllElements());
+        visit(context, doc->getLine(), doc->getColumn(), 0, 0, 0, 0);
+        for (unsigned int i = 0; i < elements->getSize(); ++i) {
+            auto* element = static_cast<SBase*>(elements->get(i));
+            auto* parent = element->getParentSBMLObject();
+            unsigned int depth = 0;
+            for (auto* p = parent; p != nullptr; p = p->getParentSBMLObject()) ++depth;
+            visit(context, element->getLine(), element->getColumn(), depth,
+                parent == nullptr ? 0 : parent->getLine(), parent == nullptr ? 0 : parent->getColumn(),
+                dynamic_cast<ListOf*>(element) != nullptr);
+        }
+        return 0;
+    } catch (const std::bad_alloc&) { return -2; }
+    catch (...) { return -1; }
+}
+
 unsigned int s4hv_count(SBMLDocument* doc) { return doc->getNumErrors(); }
 
 int s4hv_issue(SBMLDocument* doc, unsigned int index, S4hValidationIssue* out) {

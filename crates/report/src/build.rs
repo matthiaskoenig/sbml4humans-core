@@ -15,6 +15,13 @@ use crate::{
     pk,
 };
 
+/// Per-build source indexing, shared by core and package projections.
+#[derive(Default)]
+pub(crate) struct BuildContext {
+    capture: bool,
+    positions: std::cell::RefCell<crate::SourcePositions>,
+}
+
 /// The scope and the key python gives the document, the one element keyed by a fixed name.
 const DOCUMENT_KEY: &str = "document";
 
@@ -83,7 +90,13 @@ fn places<T: Keyed>(children: &[T]) -> Vec<String> {
 ///
 /// It is the one place of the builder which makes an `SBase`, through [`SBase::new`], which takes
 /// the type of the element: a report object of no `sbmlType` is one the frontend cannot read.
-pub(crate) fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key: &str) -> SBase {
+pub(crate) fn sbase(
+    context: &BuildContext,
+    scope: &str,
+    sbml_type: &'static str,
+    element: &Element,
+    key: &str,
+) -> SBase {
     let mut base = SBase {
         id: element.id.clone(),
         meta_id: element.meta_id.clone(),
@@ -108,7 +121,14 @@ pub(crate) fn sbase(scope: &str, sbml_type: &'static str, element: &Element, key
         }),
         ..SBase::new(pk::of(scope, sbml_type, key), sbml_type)
     };
-    crate::packages::extend(&mut base, element, scope, key);
+    if context.capture && element.line > 0 {
+        context.positions.borrow_mut().push((
+            element.line,
+            element.column.saturating_sub(1),
+            base.pk.clone(),
+        ));
+    }
+    crate::packages::extend(context, &mut base, element, scope, key);
     base
 }
 
@@ -236,9 +256,14 @@ pub enum BuildError {
 }
 
 /// A compartment of a model.
-fn compartment(scope: &str, key: &str, c: &Compartment) -> ReportCompartment {
+fn compartment(
+    context: &BuildContext,
+    scope: &str,
+    key: &str,
+    c: &Compartment,
+) -> ReportCompartment {
     ReportCompartment {
-        sbase: sbase(scope, Compartment::SBML_TYPE, &c.element, key),
+        sbase: sbase(context, scope, Compartment::SBML_TYPE, &c.element, key),
         spatial_dimensions: c.spatial_dimensions.map(Double),
         size: c.size.map(Double),
         constant: c.constant,
@@ -249,9 +274,9 @@ fn compartment(scope: &str, key: &str, c: &Compartment) -> ReportCompartment {
 }
 
 /// A species of a model.
-fn species(scope: &str, key: &str, s: &Species) -> ReportSpecies {
+fn species(context: &BuildContext, scope: &str, key: &str, s: &Species) -> ReportSpecies {
     ReportSpecies {
-        sbase: sbase(scope, Species::SBML_TYPE, &s.element, key),
+        sbase: sbase(context, scope, Species::SBML_TYPE, &s.element, key),
         compartment: s.compartment.clone(),
         initial_amount: s.initial_amount.map(Double),
         initial_concentration: s.initial_concentration.map(Double),
@@ -267,9 +292,9 @@ fn species(scope: &str, key: &str, s: &Species) -> ReportSpecies {
 }
 
 /// A global parameter of a model.
-fn parameter(scope: &str, key: &str, p: &Parameter) -> ReportParameter {
+fn parameter(context: &BuildContext, scope: &str, key: &str, p: &Parameter) -> ReportParameter {
     ReportParameter {
-        sbase: sbase(scope, Parameter::SBML_TYPE, &p.element, key),
+        sbase: sbase(context, scope, Parameter::SBML_TYPE, &p.element, key),
         value: p.value.map(Double),
         constant: p.constant,
         units: p.units.clone(),
@@ -284,19 +309,31 @@ fn parameter(scope: &str, key: &str, p: &Parameter) -> ReportParameter {
 ///
 /// What [`math_of`] answers for the math of the definition.
 fn function_definition(
+    context: &BuildContext,
     scope: &str,
     key: &str,
     fd: &FunctionDefinition,
 ) -> Result<ReportFunctionDefinition, BuildError> {
-    let sbase = sbase(scope, FunctionDefinition::SBML_TYPE, &fd.element, key);
+    let sbase = sbase(
+        context,
+        scope,
+        FunctionDefinition::SBML_TYPE,
+        &fd.element,
+        key,
+    );
     let math = math_of(fd.math.as_ref(), &sbase.pk)?;
     Ok(ReportFunctionDefinition { sbase, math })
 }
 
 /// A unit definition with its factors.
-fn unit_definition(scope: &str, key: &str, ud: &UnitDefinition) -> ReportUnitDefinition {
+fn unit_definition(
+    context: &BuildContext,
+    scope: &str,
+    key: &str,
+    ud: &UnitDefinition,
+) -> ReportUnitDefinition {
     ReportUnitDefinition {
-        sbase: sbase(scope, UnitDefinition::SBML_TYPE, &ud.element, key),
+        sbase: sbase(context, scope, UnitDefinition::SBML_TYPE, &ud.element, key),
         units_latex: None,
         list_of_units: ud.units.iter().map(unit).collect(),
     }
@@ -308,6 +345,7 @@ fn unit_definition(scope: &str, key: &str, ud: &UnitDefinition) -> ReportUnitDef
 ///
 /// What [`math_of`] answers for the math of the assignment.
 fn initial_assignment(
+    context: &BuildContext,
     scope: &str,
     place: &str,
     ia: &InitialAssignment,
@@ -315,7 +353,13 @@ fn initial_assignment(
     // the symbol is a required attribute, so the empty string is a document which names none
     let symbol = (!ia.symbol.is_empty()).then_some(ia.symbol.as_str());
     let key = key_of_target(&ia.element, symbol, place);
-    let sbase = sbase(scope, InitialAssignment::SBML_TYPE, &ia.element, &key);
+    let sbase = sbase(
+        context,
+        scope,
+        InitialAssignment::SBML_TYPE,
+        &ia.element,
+        &key,
+    );
     let math = math_of(ia.math.as_ref(), &sbase.pk)?;
     Ok(ReportInitialAssignment {
         sbase,
@@ -333,9 +377,14 @@ fn initial_assignment(
 /// # Errors
 ///
 /// What [`math_of`] answers for the math of the rule.
-fn rule(scope: &str, place: &str, r: &Rule) -> Result<ReportRule, BuildError> {
+fn rule(
+    context: &BuildContext,
+    scope: &str,
+    place: &str,
+    r: &Rule,
+) -> Result<ReportRule, BuildError> {
     let key = key_of_target(&r.element, r.variable.as_deref(), place);
-    let sbase = sbase(scope, rule_type(r.kind), &r.element, &key);
+    let sbase = sbase(context, scope, rule_type(r.kind), &r.element, &key);
     let math = math_of(r.math.as_ref(), &sbase.pk)?;
     Ok(ReportRule {
         sbase,
@@ -359,8 +408,13 @@ fn rule(scope: &str, place: &str, r: &Rule) -> Result<ReportRule, BuildError> {
 /// # Errors
 ///
 /// What [`math_of`] answers for the math of the constraint.
-fn constraint(scope: &str, key: &str, c: &Constraint) -> Result<ReportConstraint, BuildError> {
-    let sbase = sbase(scope, Constraint::SBML_TYPE, &c.element, key);
+fn constraint(
+    context: &BuildContext,
+    scope: &str,
+    key: &str,
+    c: &Constraint,
+) -> Result<ReportConstraint, BuildError> {
+    let sbase = sbase(context, scope, Constraint::SBML_TYPE, &c.element, key);
     let math = math_of(c.math.as_ref(), &sbase.pk)?;
     Ok(ReportConstraint {
         sbase,
@@ -408,6 +462,7 @@ fn stoichiometry(sr: &SpeciesReference, level: u32) -> Option<Double> {
 /// two references of one side share is numbered by its occurrence, which is why the keys of the
 /// whole list are derived at once (`pk::derived`).
 fn species_references(
+    context: &BuildContext,
     scope: &str,
     reaction_key: &str,
     side: &str,
@@ -422,7 +477,7 @@ fn species_references(
     list.iter()
         .zip(keys)
         .map(|(sr, key)| ReportSpeciesReference {
-            sbase: sbase(scope, "SpeciesReference", &sr.element, &key),
+            sbase: sbase(context, scope, "SpeciesReference", &sr.element, &key),
             species: sr.species.clone(),
             stoichiometry: stoichiometry(sr, level),
             constant: sr.constant,
@@ -435,6 +490,7 @@ fn species_references(
 /// They are keyed like the reactants and the products of [`species_references`], by the word
 /// `modifier` and the species the modifier is about.
 fn modifier_species_references(
+    context: &BuildContext,
     scope: &str,
     reaction_key: &str,
     list: &[ModifierSpeciesReference],
@@ -447,7 +503,7 @@ fn modifier_species_references(
     list.iter()
         .zip(keys)
         .map(|(m, key)| ReportModifierSpeciesReference {
-            sbase: sbase(scope, "ModifierSpeciesReference", &m.element, &key),
+            sbase: sbase(context, scope, "ModifierSpeciesReference", &m.element, &key),
             species: m.species.clone(),
         })
         .collect()
@@ -491,9 +547,14 @@ fn local_parameter_keys(law_key: &str, parameters: &[LocalParameter]) -> Vec<Str
 /// A local parameter of a kinetic law, keyed by [`local_parameter_keys`].
 ///
 /// The `id` field of the report object carries the id of the parameter all the same.
-fn local_parameter(scope: &str, key: &str, lp: &LocalParameter) -> ReportLocalParameter {
+fn local_parameter(
+    context: &BuildContext,
+    scope: &str,
+    key: &str,
+    lp: &LocalParameter,
+) -> ReportLocalParameter {
     ReportLocalParameter {
-        sbase: sbase(scope, "LocalParameter", &lp.element, key),
+        sbase: sbase(context, scope, "LocalParameter", &lp.element, key),
         value: lp.value.map(Double),
         units: lp.units.clone(),
         units_latex: None,
@@ -510,12 +571,14 @@ fn local_parameter(scope: &str, key: &str, lp: &LocalParameter) -> ReportLocalPa
 ///
 /// What [`math_of`] answers for the math of the law, its rate.
 fn kinetic_law(
+    context: &BuildContext,
     scope: &str,
     reaction_key: &str,
     law: &KineticLaw,
 ) -> Result<ReportKineticLaw, BuildError> {
     let derived = format!("{reaction_key}.kineticLaw");
     let sbase = sbase(
+        context,
         scope,
         "KineticLaw",
         &law.element,
@@ -530,7 +593,7 @@ fn kinetic_law(
             .local_parameters
             .iter()
             .zip(local_parameter_keys(&derived, &law.local_parameters))
-            .map(|(lp, key)| local_parameter(scope, &key, lp))
+            .map(|(lp, key)| local_parameter(context, scope, &key, lp))
             .collect(),
     })
 }
@@ -544,6 +607,7 @@ fn kinetic_law(
 ///
 /// What [`math_of`] answers for the math of the kinetic law of the reaction.
 fn reaction(
+    context: &BuildContext,
     scope: &str,
     key: &str,
     level: u32,
@@ -553,16 +617,16 @@ fn reaction(
     let law = r
         .kinetic_law
         .as_ref()
-        .map(|law| kinetic_law(scope, key, law))
+        .map(|law| kinetic_law(context, scope, key, law))
         .transpose()?;
     Ok(ReportReaction {
-        sbase: sbase(scope, Reaction::SBML_TYPE, &r.element, key),
+        sbase: sbase(context, scope, Reaction::SBML_TYPE, &r.element, key),
         reversible: reversible(r, level),
         fast: fast(r, level, version),
         compartment: r.compartment.clone(),
-        list_of_reactants: species_references(scope, key, "reactant", &r.reactants, level),
-        list_of_products: species_references(scope, key, "product", &r.products, level),
-        list_of_modifiers: modifier_species_references(scope, key, &r.modifiers),
+        list_of_reactants: species_references(context, scope, key, "reactant", &r.reactants, level),
+        list_of_products: species_references(context, scope, key, "product", &r.products, level),
+        list_of_modifiers: modifier_species_references(context, scope, key, &r.modifiers),
         kinetic_law: law,
         equation: crate::equation::equation(r),
         fbc: None,
@@ -577,9 +641,14 @@ fn reaction(
 /// # Errors
 ///
 /// What [`math_of`] answers for the math of the trigger.
-fn trigger(scope: &str, event_key: &str, t: &Trigger) -> Result<ReportTrigger, BuildError> {
+fn trigger(
+    context: &BuildContext,
+    scope: &str,
+    event_key: &str,
+    t: &Trigger,
+) -> Result<ReportTrigger, BuildError> {
     let key = pk::key(&t.element, || format!("{event_key}.trigger"));
-    let sbase = sbase(scope, "Trigger", &t.element, &key);
+    let sbase = sbase(context, scope, "Trigger", &t.element, &key);
     let math = math_of(t.math.as_ref(), &sbase.pk)?;
     Ok(ReportTrigger {
         sbase,
@@ -598,6 +667,7 @@ fn trigger(scope: &str, event_key: &str, t: &Trigger) -> Result<ReportTrigger, B
 ///
 /// What [`math_of`] answers for the math of the element.
 fn math_element(
+    context: &BuildContext,
     scope: &str,
     sbml_type: &'static str,
     event_key: &str,
@@ -605,7 +675,7 @@ fn math_element(
     element: &MathElement,
 ) -> Result<(SBase, Option<Math>), BuildError> {
     let key = pk::key(&element.element, || format!("{event_key}.{name}"));
-    let sbase = sbase(scope, sbml_type, &element.element, &key);
+    let sbase = sbase(context, scope, sbml_type, &element.element, &key);
     let math = math_of(element.math.as_ref(), &sbase.pk)?;
     Ok((sbase, math))
 }
@@ -615,8 +685,13 @@ fn math_element(
 /// # Errors
 ///
 /// What [`math_of`] answers for the math of the priority.
-fn priority(scope: &str, event_key: &str, p: &MathElement) -> Result<ReportPriority, BuildError> {
-    let (sbase, math) = math_element(scope, "Priority", event_key, "priority", p)?;
+fn priority(
+    context: &BuildContext,
+    scope: &str,
+    event_key: &str,
+    p: &MathElement,
+) -> Result<ReportPriority, BuildError> {
+    let (sbase, math) = math_element(context, scope, "Priority", event_key, "priority", p)?;
     Ok(ReportPriority { sbase, math })
 }
 
@@ -625,8 +700,13 @@ fn priority(scope: &str, event_key: &str, p: &MathElement) -> Result<ReportPrior
 /// # Errors
 ///
 /// What [`math_of`] answers for the math of the delay.
-fn delay(scope: &str, event_key: &str, d: &MathElement) -> Result<ReportDelay, BuildError> {
-    let (sbase, math) = math_element(scope, "Delay", event_key, "delay", d)?;
+fn delay(
+    context: &BuildContext,
+    scope: &str,
+    event_key: &str,
+    d: &MathElement,
+) -> Result<ReportDelay, BuildError> {
+    let (sbase, math) = math_element(context, scope, "Delay", event_key, "delay", d)?;
     Ok(ReportDelay { sbase, math })
 }
 
@@ -643,6 +723,7 @@ fn delay(scope: &str, event_key: &str, d: &MathElement) -> Result<ReportDelay, B
 ///
 /// What [`math_of`] answers for the math of the first assignment whose math no writer writes.
 fn event_assignments(
+    context: &BuildContext,
     scope: &str,
     event_key: &str,
     list: &[EventAssignment],
@@ -654,7 +735,7 @@ fn event_assignments(
     );
     let mut assignments = Vec::with_capacity(list.len());
     for (ea, key) in list.iter().zip(keys) {
-        let sbase = sbase(scope, "EventAssignment", &ea.element, &key);
+        let sbase = sbase(context, scope, "EventAssignment", &ea.element, &key);
         let math = math_of(ea.math.as_ref(), &sbase.pk)?;
         assignments.push(ReportEventAssignment {
             sbase,
@@ -675,22 +756,31 @@ fn event_assignments(
 ///
 /// What [`math_of`] answers for the math of the first element of the event whose math no writer
 /// writes.
-fn event(scope: &str, key: &str, e: &Event) -> Result<ReportEvent, BuildError> {
+fn event(
+    context: &BuildContext,
+    scope: &str,
+    key: &str,
+    e: &Event,
+) -> Result<ReportEvent, BuildError> {
     Ok(ReportEvent {
-        sbase: sbase(scope, Event::SBML_TYPE, &e.element, key),
+        sbase: sbase(context, scope, Event::SBML_TYPE, &e.element, key),
         use_values_from_trigger_time: e.use_values_from_trigger_time,
         trigger: e
             .trigger
             .as_ref()
-            .map(|t| trigger(scope, key, t))
+            .map(|t| trigger(context, scope, key, t))
             .transpose()?,
         priority: e
             .priority
             .as_ref()
-            .map(|p| priority(scope, key, p))
+            .map(|p| priority(context, scope, key, p))
             .transpose()?,
-        delay: e.delay.as_ref().map(|d| delay(scope, key, d)).transpose()?,
-        list_of_event_assignments: event_assignments(scope, key, &e.event_assignments)?,
+        delay: e
+            .delay
+            .as_ref()
+            .map(|d| delay(context, scope, key, d))
+            .transpose()?,
+        list_of_event_assignments: event_assignments(context, scope, key, &e.event_assignments)?,
     })
 }
 
@@ -703,6 +793,7 @@ fn event(scope: &str, key: &str, e: &Event) -> Result<ReportEvent, BuildError> {
 /// `level` and `version` are the ones of the document, which a reaction of the model is reported
 /// with the defaults of.
 fn model(
+    context: &BuildContext,
     model: &Model,
     level: u32,
     version: u32,
@@ -720,11 +811,11 @@ fn model(
     let rule_keys = pk::indexed(&model.rules, |r| &r.element, |r| rule_type(r.kind));
     let mut rules = Vec::with_capacity(model.rules.len());
     for (r, key) in model.rules.iter().zip(rule_keys) {
-        rules.push(rule(scope, &key, r)?);
+        rules.push(rule(context, scope, &key, r)?);
     }
     Ok(ReportModel {
         // the model is keyed by the key which is its own scope, python writes `<key>/Model:<key>`
-        sbase: sbase(scope, "Model", &model.element, scope),
+        sbase: sbase(context, scope, "Model", &model.element, scope),
         kind,
         annotation_xml: model.element.annotation.clone(),
         substance_units: None,
@@ -744,56 +835,56 @@ fn model(
             .function_definitions
             .iter()
             .zip(places(&model.function_definitions))
-            .map(|(fd, key)| function_definition(scope, &key, fd))
+            .map(|(fd, key)| function_definition(context, scope, &key, fd))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_unit_definitions: model
             .unit_definitions
             .iter()
             .zip(places(&model.unit_definitions))
-            .map(|(ud, key)| unit_definition(scope, &key, ud))
+            .map(|(ud, key)| unit_definition(context, scope, &key, ud))
             .collect(),
         list_of_compartments: model
             .compartments
             .iter()
             .zip(places(&model.compartments))
-            .map(|(c, key)| compartment(scope, &key, c))
+            .map(|(c, key)| compartment(context, scope, &key, c))
             .collect(),
         list_of_species: model
             .species
             .iter()
             .zip(places(&model.species))
-            .map(|(s, key)| species(scope, &key, s))
+            .map(|(s, key)| species(context, scope, &key, s))
             .collect(),
         list_of_parameters: model
             .parameters
             .iter()
             .zip(places(&model.parameters))
-            .map(|(p, key)| parameter(scope, &key, p))
+            .map(|(p, key)| parameter(context, scope, &key, p))
             .collect(),
         list_of_initial_assignments: model
             .initial_assignments
             .iter()
             .zip(places(&model.initial_assignments))
-            .map(|(ia, key)| initial_assignment(scope, &key, ia))
+            .map(|(ia, key)| initial_assignment(context, scope, &key, ia))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_rules: rules,
         list_of_constraints: model
             .constraints
             .iter()
             .zip(places(&model.constraints))
-            .map(|(c, key)| constraint(scope, &key, c))
+            .map(|(c, key)| constraint(context, scope, &key, c))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_reactions: model
             .reactions
             .iter()
             .zip(places(&model.reactions))
-            .map(|(r, key)| reaction(scope, &key, level, version, r))
+            .map(|(r, key)| reaction(context, scope, &key, level, version, r))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_events: model
             .events
             .iter()
             .zip(places(&model.events))
-            .map(|(e, key)| event(scope, &key, e))
+            .map(|(e, key)| event(context, scope, &key, e))
             .collect::<Result<Vec<_>, BuildError>>()?,
         list_of_submodels: vec![],
         list_of_ports: vec![],
@@ -821,6 +912,20 @@ pub fn build(document: &Document) -> Result<Report, BuildError> {
     Ok(report)
 }
 pub(crate) fn unlinked(document: &Document) -> Result<Report, BuildError> {
+    with_context(&BuildContext::default(), document)
+}
+
+/// Build the report and canonical source index together without links or equations.
+pub(crate) fn indexed(document: &Document) -> Result<(Report, crate::SourcePositions), BuildError> {
+    let context = BuildContext {
+        capture: true,
+        ..BuildContext::default()
+    };
+    let report = with_context(&context, document)?;
+    Ok((report, context.positions.into_inner()))
+}
+
+fn with_context(context: &BuildContext, document: &Document) -> Result<Report, BuildError> {
     let main_key = document.model.as_ref().map(|m| {
         pk::key(&m.element, || {
             document
@@ -845,6 +950,7 @@ pub(crate) fn unlinked(document: &Document) -> Result<Report, BuildError> {
             // the document is the one element whose scope and key are both a fixed name,
             // python writes `document/SBMLDocument:document`
             sbase: sbase(
+                context,
                 DOCUMENT_KEY,
                 "SBMLDocument",
                 &document.element,
@@ -877,16 +983,17 @@ pub(crate) fn unlinked(document: &Document) -> Result<Report, BuildError> {
                     definition_keys[i - usize::from(document.model.is_some())].clone()
                 };
                 let scope = pk::key(&m.element, || fallback);
-                model(m, document.level, document.version, &scope, kind)
+                model(context, m, document.level, document.version, &scope, kind)
             })
             .collect::<Result<Vec<_>, BuildError>>()?,
-        external_model_definitions: crate::packages::external(&document.element),
+        external_model_definitions: crate::packages::external(context, &document.element),
         link_graph: LinkGraph::default(),
         ode_system: None,
         ode_error: None,
     };
     for (input, output) in document.models().zip(&mut report.models) {
         crate::packages::model(
+            context,
             input,
             output,
             document.packages.iter().any(|p| p.name == "fbc"),

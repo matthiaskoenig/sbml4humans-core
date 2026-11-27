@@ -38,12 +38,18 @@ response = json.loads(source_json(Path("models.omex").read_bytes()))
 
 `source_json(bytes) -> bytes` returns the complete `source/1` envelope; `report_json(bytes)` remains the one-document `report/1` API. Both release the GIL for parsing, analysis and serialization. Calls own their document data and can run concurrently. The ABI3 wheel supports Python 3.12 and later. Invalid XML, gzip or archive input raises `ValueError`; source errors also carry `kind`. Host bindings generate request identities and report total source-construction time in the diagnostic timing field.
 
+`source_path_json(path, trusted=False)` exposes `source-path/1` and reads through the same source pipeline without copying the input through Python. With `trusted=True`, standalone models keep their filename and admit comp companions below the selected directory, including recursive references. Canonical paths and symlinks must stay inside that directory. Archives never gain directory companions.
+
+`ode_path_json(path, format, location=None, trusted=False, simulator=False)` exposes `ode-source/1`. It selects the explicit entry, first master model or first SBML entry, applies the shared comp expansion budget and calls the sbmlsim-core generator. The JSON bytes contain `filename` and `content` for Python, Diffrax, Julia, R, LaTeX, Markdown or Typst.
+
 Server builds enable native validation explicitly:
 
 ```bash
 bash scripts/build-libsbml.sh
 uv tool run --from 'maturin[patchelf]>=1.16,<2' maturin build --release --features validation --out dist
 ```
+
+Validation-enabled wheels also expose `VALIDATION_SOURCE_CONTRACT = "validation-source/1"` and `validation_source(path, trusted=False, max_expanded_elements=10000, limits=None)`. Rust admits the source, derives canonical positions through the report key builder and estimates comp expansion with the report's shared analysis. Python supplies no SBML objects, archive members or position maps. The returned session exposes ordered `locations` and `entry_json(location)`, returning `issues` and `skipped`. Entries beyond the expansion budget retain parser diagnostics with `skipped="expandedSize"`. Native ListOf positions inherit their reported owner's key, preserving diagnostic links on unreported containers.
 
 Such wheels expose `VALIDATION_CONTRACT = "validation/1"` and `ValidationSession`. The constructor accepts a sequence of `(location, admitted_file_path, location_uri, positions_json)` records. Position JSON contains `documentPk` and `elements`, the latter a list of `(line, column, depth, primary_key)` records from the report's canonical key builder. The host admits and keeps the files alive until construction completes. Paths are explicit inputs; the validator never discovers neighbouring files or downloads sources.
 
@@ -104,7 +110,7 @@ npm run test:browser
 
 The native binding test must run with the built wheel installed. Regenerating snapshots requires the existing SBML4Humans backend environment; generators in `scripts/` record the source commit and library versions. `scripts/oracle_fixtures.py` regenerates the standalone manifest from all XML paths passed to it; `scripts/corpus_fixtures.py` snapshots the bundled application model corpus. `scripts/sync_contract.py /path/to/sbml4humans --check` verifies that generated frontend types and schema remain synchronized. `scripts/benchmark.py` compares complete native and Python report construction, including JSON serialization, and checks equality outside the timed region.
 
-The default host API accepts at most 100 MiB of input and decompressed source content, 1,000 ZIP members and a compression ratio of 200 above 1 MiB. The shared pymetadata-core reader enforces CRC and size checks; manifest declarations retain authored order and duplicates. XML entity expansion is disabled. Math, package nesting and comp expansion have explicit limits. The reader and equation resolver perform no filesystem or network access. Schema validation is a separate application concern.
+The default host API accepts at most 100 MiB of input and decompressed source content, 1,000 ZIP members and a compression ratio of 200 above 1 MiB. The shared pymetadata-core reader enforces CRC and size checks; manifest declarations retain authored order and duplicates. XML entity expansion is disabled. Math, package nesting and comp expansion have explicit limits. The byte reader and equation resolver perform no filesystem or network access. The explicit native path adapter admits filesystem companions only for trusted standalone sources. Schema validation is a separate application concern.
 
 ## Crates
 

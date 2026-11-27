@@ -18,6 +18,51 @@ pub struct ElementPositions {
     pub elements: Vec<(u32, u32, u32, String)>,
 }
 impl ElementPositions {
+    fn complete(&mut self, document: *mut sys::SBMLDocument) -> Result<(), ValidationError> {
+        type Position = (u32, u32, u32, u32, u32, bool);
+        extern "C" fn visit(
+            context: *mut c_void,
+            line: u32,
+            column: u32,
+            depth: u32,
+            parent_line: u32,
+            parent_column: u32,
+            list: c_int,
+        ) {
+            // SAFETY: The synchronous bridge receives this live Vec and keeps no pointer.
+            let positions = unsafe { &mut *context.cast::<Vec<Position>>() };
+            positions.push((line, column, depth, parent_line, parent_column, list != 0));
+        }
+        let keys: HashMap<_, _> = self
+            .elements
+            .iter()
+            .map(|p| ((p.0, p.1), p.3.clone()))
+            .collect();
+        let mut positions: Vec<Position> = Vec::new();
+        // SAFETY: The session owns this document and holds the global library lock.
+        status(unsafe {
+            s4hv_positions(
+                document,
+                (&mut positions as *mut Vec<Position>).cast(),
+                visit,
+            )
+        })?;
+        positions.sort_by_key(|p| p.2);
+        self.elements.clear();
+        for (line, column, depth, parent_line, parent_column, list) in positions {
+            if line == 0 {
+                continue;
+            }
+            let key = keys.get(&(line, column)).or_else(|| {
+                list.then(|| keys.get(&(parent_line, parent_column)))
+                    .flatten()
+            });
+            if let Some(key) = key {
+                self.elements.push((line, column, depth, key.clone()));
+            }
+        }
+        Ok(())
+    }
     fn prepare(&mut self) {
         self.elements.sort_by_key(|a| (a.0, a.1, a.2));
     }
@@ -118,6 +163,11 @@ unsafe extern "C" {
     fn s4hv_read_xml(xml: *const c_char, status: *mut c_int) -> *mut sys::SBMLDocument;
     fn s4hv_location(doc: *mut sys::SBMLDocument, uri: *const c_char) -> c_int;
     fn s4hv_check(doc: *mut sys::SBMLDocument, context: *mut c_void, lookup: Lookup) -> c_int;
+    fn s4hv_positions(
+        doc: *mut sys::SBMLDocument,
+        context: *mut c_void,
+        visit: extern "C" fn(*mut c_void, u32, u32, u32, u32, u32, c_int),
+    ) -> c_int;
     fn s4hv_count(doc: *mut sys::SBMLDocument) -> c_uint;
     fn s4hv_issue(doc: *mut sys::SBMLDocument, index: c_uint, issue: *mut Issue) -> c_int;
 }
@@ -162,6 +212,21 @@ impl ValidationSession {
     /// Refuses invalid locations, duplicate normalized names, NUL bytes, sources
     /// without models, and native allocation or parsing failures.
     pub fn new(sources: Vec<ValidationSource>) -> Result<Self, ValidationError> {
+        Self::create(sources, false)
+    }
+
+    /// Complete Rust-authored report positions with native list owners and depths.
+    ///
+    /// # Errors
+    /// Returns the same input and native failures as [`Self::new`].
+    pub fn from_report(sources: Vec<ValidationSource>) -> Result<Self, ValidationError> {
+        Self::create(sources, true)
+    }
+
+    fn create(
+        sources: Vec<ValidationSource>,
+        complete_positions: bool,
+    ) -> Result<Self, ValidationError> {
         let mut session = Self {
             documents: Vec::new(),
             locations: HashMap::new(),
@@ -223,6 +288,9 @@ impl ValidationSession {
                     )));
                 }
                 status(unsafe { s4hv_location(pointer, uri.as_ptr()) })?;
+                if complete_positions {
+                    document.positions.complete(pointer)?;
+                }
                 document.positions.prepare();
                 let index = session.documents.len();
                 session.locations.insert(location, index);

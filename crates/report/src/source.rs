@@ -342,3 +342,96 @@ pub fn build_many(
     }
     Ok(reports)
 }
+
+/// Authored line, zero-based column and canonical primary key.
+pub type SourcePositions = Vec<(u32, u32, String)>;
+
+/// Canonical report keys and the comp work estimate for one source entry.
+pub struct SourceIndex {
+    /// Authored positions, with libSBML's zero-based columns.
+    pub positions: SourcePositions,
+    /// Expanded elements, absent when no submodel instance resolves.
+    pub expanded_size: Option<u128>,
+}
+
+/// Prepare validation using the report's key builder and expansion analysis.
+/// Neither equations nor native validation run here.
+///
+/// # Errors
+/// Returns the same construction errors as [`build_many`].
+pub fn source_indices(
+    sources: &[SourceDocument<'_>],
+    locations: &[&str],
+) -> Result<Vec<SourceIndex>, BuildError> {
+    let (reports, positions): (Vec<_>, Vec<_>) = sources
+        .iter()
+        .map(|source| crate::build::indexed(source.document))
+        .collect::<Result<Vec<_>, _>>()?
+        .into_iter()
+        .unzip();
+    let context = Context::new(sources, &reports, locations, usize::MAX);
+    let graphs = crate::links::build_many(&reports, sources);
+    Ok(positions
+        .into_iter()
+        .zip(expanded_sizes(&reports, &context, &graphs))
+        .map(|(positions, expanded_size)| SourceIndex {
+            positions,
+            expanded_size,
+        })
+        .collect())
+}
+
+/// Export one admitted model through the shared sbmlsim-core generator.
+///
+/// # Errors
+/// Refuses an unknown entry, excessive comp expansion or unsupported equations.
+pub fn export_model(
+    sources: &[SourceDocument<'_>],
+    locations: &[&str],
+    entry: usize,
+    format: &str,
+    simulator: bool,
+    budget: usize,
+) -> Result<sbmlsim_ode::Export, String> {
+    let source = sources
+        .get(entry)
+        .ok_or("The source has no selected SBML entry.")?;
+    let reports = sources
+        .iter()
+        .map(|s| crate::build::unlinked(s.document))
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())?;
+    let context = Context::new(sources, &reports, locations, budget);
+    let graphs = crate::links::build_many(&reports, sources);
+    if let Some(size) =
+        expanded_sizes(&reports, &context, &graphs)[entry].filter(|size| *size > budget as u128)
+    {
+        return Err(format!(
+            "The equations of the model were not built: it expands by its comp submodels to {} elements, more than the {} elements a model may expand to.",
+            grouped(size),
+            grouped(budget as u128)
+        ));
+    }
+    let document = source.document;
+    let original = document
+        .model
+        .as_ref()
+        .ok_or("The SBML document has no model.")?;
+    let flattened;
+    let model =
+        if crate::packages::children(&original.element, "comp", "listOfSubmodels").is_empty() {
+            original
+        } else {
+            flattened = sbmlsim_ode::flatten(document, Some((&context, entry)))?;
+            &flattened
+        };
+    sbmlsim_ode::render_model(
+        document,
+        model,
+        format,
+        &sbmlsim_ode::RenderOptions {
+            simulator,
+            ..Default::default()
+        },
+    )
+}

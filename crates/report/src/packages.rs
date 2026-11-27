@@ -123,7 +123,12 @@ fn measure_key(object: &Extension, parent: &str) -> String {
     }
     format!("{parent}.{name}")
 }
-fn measures(object: &Extension, scope: &str, key: &str) -> Vec<Value> {
+fn measures(
+    context: &build::BuildContext,
+    object: &Extension,
+    scope: &str,
+    key: &str,
+) -> Vec<Value> {
     let objects = if object.name == "uncertainty" {
         object
             .children
@@ -148,20 +153,31 @@ fn measures(object: &Extension, scope: &str, key: &str) -> Vec<Value> {
     objects
         .into_iter()
         .zip(keys)
-        .map(|(p, k)| object_value(p, scope, &k))
+        .map(|(p, k)| object_value(context, p, scope, &k))
         .collect()
 }
-fn uncertainty(object: &Extension, scope: &str, fallback: &str) -> Uncertainty {
+fn uncertainty(
+    context: &build::BuildContext,
+    object: &Extension,
+    scope: &str,
+    fallback: &str,
+) -> Uncertainty {
     let key = own(object, fallback);
     Uncertainty {
-        sbase: build::sbase(scope, "Uncertainty", &object.element, &key),
-        uncert_parameters: measures(object, scope, &key),
+        sbase: build::sbase(context, scope, "Uncertainty", &object.element, &key),
+        uncert_parameters: measures(context, object, scope, &key),
     }
 }
 
-pub(crate) fn extend(base: &mut SBase, element: &Element, scope: &str, key: &str) {
+pub(crate) fn extend(
+    context: &build::BuildContext,
+    base: &mut SBase,
+    element: &Element,
+    scope: &str,
+    key: &str,
+) {
     let replaced_by = direct(element, "comp", "replacedBy")
-        .map(|r| object_value(r, scope, &format!("{key}.replacedBy")));
+        .map(|r| object_value(context, r, scope, &format!("{key}.replacedBy")));
     let replacements = children(element, "comp", "listOfReplacedElements");
     let replacement_keys = pk::derived(
         &replacements,
@@ -171,7 +187,7 @@ pub(crate) fn extend(base: &mut SBase, element: &Element, scope: &str, key: &str
     let replaced_elements: Vec<_> = replacements
         .into_iter()
         .zip(replacement_keys)
-        .map(|(r, k)| object_value(r, scope, &k))
+        .map(|(r, k)| object_value(context, r, scope, &k))
         .collect();
     if replaced_by.is_some() || !replaced_elements.is_empty() {
         base.comp = Some(CompSBase {
@@ -184,7 +200,7 @@ pub(crate) fn extend(base: &mut SBase, element: &Element, scope: &str, key: &str
     base.uncertainties = uncertainties
         .into_iter()
         .zip(uncertainty_keys)
-        .map(|(u, k)| uncertainty(u, scope, &k))
+        .map(|(u, k)| uncertainty(context, u, scope, &k))
         .collect();
     base.key_value_pairs = children(element, "fbc", "listOfKeyValuePairs")
         .into_iter()
@@ -209,7 +225,7 @@ pub(crate) fn extend(base: &mut SBase, element: &Element, scope: &str, key: &str
         .iter()
         .zip(list_keys)
         .map(|(l, k)| ListOf {
-            sbase: build::sbase(scope, "ListOf", &l.element, &k),
+            sbase: build::sbase(context, scope, "ListOf", &l.element, &k),
             element: l.name.clone(),
             size: l.size as i64,
         })
@@ -217,10 +233,15 @@ pub(crate) fn extend(base: &mut SBase, element: &Element, scope: &str, key: &str
 }
 
 /// Project one known package object. Package nesting is bounded by the reader.
-pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> Value {
+pub(crate) fn object_value(
+    context: &build::BuildContext,
+    object: &Extension,
+    scope: &str,
+    fallback: &str,
+) -> Value {
     let key = own(object, fallback);
     let sbml_type = kind(object);
-    let mut base = build::sbase(scope, sbml_type, &object.element, &key);
+    let mut base = build::sbase(context, scope, sbml_type, &object.element, &key);
     let association = matches!(
         sbml_type,
         "GeneProductAssociation" | "GeneProductRef" | "And" | "Or"
@@ -248,7 +269,7 @@ pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> V
                     children
                         .into_iter()
                         .zip(keys)
-                        .map(|(e, k)| object_value(e, scope, &k))
+                        .map(|(e, k)| object_value(context, e, scope, &k))
                         .collect(),
                 ),
             );
@@ -265,7 +286,7 @@ pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> V
                 .children
                 .iter()
                 .find(|c| c.name == "sBaseRef")
-                .map(|c| object_value(c, scope, &format!("{key}.sBaseRef")))
+                .map(|c| object_value(context, c, scope, &format!("{key}.sBaseRef")))
                 .unwrap_or(Value::Null),
         );
     }
@@ -286,7 +307,7 @@ pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> V
                     children
                         .into_iter()
                         .zip(keys)
-                        .map(|(e, k)| object_value(e, scope, &k))
+                        .map(|(e, k)| object_value(context, e, scope, &k))
                         .collect(),
                 ),
             );
@@ -318,7 +339,7 @@ pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> V
                     .children
                     .iter()
                     .find(|e| matches!(e.name.as_str(), "and" | "or" | "geneProductRef"))
-                    .map(|e| object_value(e, scope, &format!("{key}.association")))
+                    .map(|e| object_value(context, e, scope, &format!("{key}.association")))
                     .unwrap_or(Value::Null),
             );
         }
@@ -339,7 +360,7 @@ pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> V
                     children
                         .into_iter()
                         .zip(keys)
-                        .map(|(e, k)| object_value(e, scope, &k))
+                        .map(|(e, k)| object_value(context, e, scope, &k))
                         .collect(),
                 ),
             );
@@ -367,7 +388,7 @@ pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> V
                     children
                         .into_iter()
                         .zip(keys)
-                        .map(|(e, k)| object_value(e, scope, &k))
+                        .map(|(e, k)| object_value(context, e, scope, &k))
                         .collect(),
                 ),
             );
@@ -402,7 +423,7 @@ pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> V
             fields.insert(
                 "defaultTerm".into(),
                 default
-                    .map(|e| object_value(e, scope, &format!("{key}.defaultTerm")))
+                    .map(|e| object_value(context, e, scope, &format!("{key}.defaultTerm")))
                     .unwrap_or(Value::Null),
             );
             // The default is stored in the same XML list, outside its member count.
@@ -423,7 +444,7 @@ pub(crate) fn object_value(object: &Extension, scope: &str, fallback: &str) -> V
             fields!("type"=>"type":string,"var"=>"var":string,"value"=>"value":number,"units"=>"units":string,"definitionUrl"=>"definitionURL":string);
             fields.insert(
                 "uncertParameters".into(),
-                Value::Array(measures(object, scope, &key)),
+                Value::Array(measures(context, object, scope, &key)),
             );
             if sbml_type == "UncertSpan" {
                 fields!("valueLower"=>"valueLower":number,"valueUpper"=>"valueUpper":number,"varLower"=>"varLower":string,"varUpper"=>"varUpper":string);
@@ -472,12 +493,17 @@ fn scalar(object: &Extension, name: &str, type_: &str) -> Value {
     }
 }
 
-pub(crate) fn model(input: &Model, output: &mut ReportModel, has_fbc: bool) {
+pub(crate) fn model(
+    context: &build::BuildContext,
+    input: &Model,
+    output: &mut ReportModel,
+    has_fbc: bool,
+) {
     let scope = output.sbase.pk.split('/').next().unwrap_or("model");
     macro_rules! lists { ($($field:ident : $package:literal => $list:literal),* $(,)?) => { $(
         let objects = children(&input.element,$package,$list);
         let keys = indexed(&objects);
-        output.$field = objects.into_iter().zip(keys).map(|(e,k)| object_value(e,scope,&k)).collect();
+        output.$field = objects.into_iter().zip(keys).map(|(e,k)| object_value(context, e,scope,&k)).collect();
     )* }; }
     lists!(list_of_submodels:"comp"=>"listOfSubmodels",list_of_ports:"comp"=>"listOfPorts",list_of_gene_products:"fbc"=>"listOfGeneProducts",list_of_objectives:"fbc"=>"listOfObjectives",list_of_flux_bounds:"fbc"=>"listOfFluxBounds",list_of_user_defined_constraints:"fbc"=>"listOfUserDefinedConstraints",list_of_qualitative_species:"qual"=>"listOfQualitativeSpecies",list_of_transitions:"qual"=>"listOfTransitions");
     if has_fbc {
@@ -512,7 +538,7 @@ pub(crate) fn model(input: &Model, output: &mut ReportModel, has_fbc: bool) {
             .map(|(_, k)| k)
             .unwrap_or("");
         let association = direct(&input.element, "fbc", "geneProductAssociation")
-            .map(|e| object_value(e, scope, &format!("{key}.geneProductAssociation")));
+            .map(|e| object_value(context, e, scope, &format!("{key}.geneProductAssociation")));
         if lower.is_some() || upper.is_some() || association.is_some() {
             output.fbc = Some(
                 json!({"lowerFluxBound":lower,"upperFluxBound":upper,"geneProductAssociation":association}),
@@ -521,12 +547,12 @@ pub(crate) fn model(input: &Model, output: &mut ReportModel, has_fbc: bool) {
     }
 }
 
-pub(crate) fn external(element: &Element) -> Vec<Value> {
+pub(crate) fn external(context: &build::BuildContext, element: &Element) -> Vec<Value> {
     let objects = children(element, "comp", "listOfExternalModelDefinitions");
     let keys = indexed(&objects);
     objects
         .into_iter()
         .zip(keys)
-        .map(|(e, k)| object_value(e, "document", &k))
+        .map(|(e, k)| object_value(context, e, "document", &k))
         .collect()
 }

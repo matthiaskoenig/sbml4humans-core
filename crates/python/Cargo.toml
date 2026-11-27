@@ -15,11 +15,13 @@ crate-type = ["cdylib", "rlib"]
 
 [features]
 extension-module = ["pyo3/extension-module"]
-validation = ["dep:sbml4humans-libsbml"]
+validation = ["dep:sbml4humans-libsbml", "dep:tempfile"]
 
 [dependencies]
 sbml4humans-core = { path = "../core" }
 serde_json.workspace = true
+serde.workspace = true
+tempfile = { version = "3", optional = true }
 pyo3 = { version = "0.30", features = ["abi3-py312"] }
 sbml4humans-libsbml = { path = "../libsbml", optional = true }
 
